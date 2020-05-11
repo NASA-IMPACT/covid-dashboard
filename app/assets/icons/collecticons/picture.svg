@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <rect width="16" height="16" id="icon-bound" fill="none" />
+  <path d="M11.5,7C12.328,7,13,6.328,13,5.5S12.328,4,11.5,4S10,4.672,10,5.5S10.672,7,11.5,7z M13,8l-4,2L6,5l-3,6v1h10V8z M0,1v14 h16V1H0z M14,13H2V3h12V13z" />
+</svg>

@@ -1,0 +1,134 @@
+{
+  "name": "covid-dashboard",
+  "version": "0.1.0",
+  "description": "Frontend application for the Covid Dashboard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NASA-IMPACT/covid-dashboard.git"
+  },
+  "author": {
+    "name": "Development Seed",
+    "url": "https://developmentseed.org"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NASA-IMPACT/covid-dashboard/issues"
+  },
+  "homepage": "https://github.com/NASA-IMPACT/covid-dashboard",
+  "scripts": {
+    "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo \"export default {\n  environment: 'development'\n};\" > app/assets/scripts/config/local.js",
+    "serve": "NODE_ENV=development gulp serve",
+    "build": "NODE_ENV=production gulp",
+    "stage": "NODE_ENV=staging gulp stage",
+    "lint": "yarn lint:js && yarn lint:css",
+    "lint:js": "eslint app/assets/scripts/ --ext .js",
+    "lint:css": "stylelint 'app/assets/styles/**/**' 'app/assets/scripts/**/*.js'",
+    "test": "echo \"No tests\" && exit 0"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "@babel/preset-env",
+            "@babel/preset-react"
+          ],
+          "plugins": [
+            "babel-plugin-styled-components",
+            "@babel/plugin-transform-spread",
+            "@babel/plugin-proposal-object-rest-spread"
+          ]
+        }
+      ],
+      "require-globify",
+      [
+        "envify",
+        {
+          "_": "purge"
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.4",
+    "@babel/plugin-transform-spread": "^7.0.0",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "babel-plugin-styled-components": "^1.10.6",
+    "babelify": "^10.0.0",
+    "browser-sync": "^2.26.7",
+    "browserify": "^16.3.0",
+    "collecticons-processor": "^4.1.0",
+    "del": "^5.0.0",
+    "envify": "^4.1.0",
+    "errorify": "^0.3.1",
+    "eslint": "^6.0.1",
+    "eslint-config-standard": "^14.0.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-standard": "^4.0.0",
+    "fancy-log": "^1.3.2",
+    "gulp": "^4.0.2",
+    "gulp-csso": "^4.0.1",
+    "gulp-exit": "0.0.2",
+    "gulp-if": "^3.0.0",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-load-plugins": "^2.0.0",
+    "gulp-plumber": "^1.2.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-rev": "^9.0.0",
+    "gulp-rev-rewrite": "^3.0.3",
+    "gulp-size": "^3.0.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-terser": "^1.2.0",
+    "gulp-useref": "^4.0.1",
+    "require-globify": "^1.4.1",
+    "stylelint": "^13.3.2",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-processor-styled-components": "^1.10.0",
+    "surge": "^0.21.3",
+    "through2": "^3.0.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.8.7",
+    "@d3fc/d3fc-axis": "^3.0.0",
+    "@mapbox/mapbox-gl-geocoder": "^4.5.1",
+    "d3": "^5.16.0",
+    "date-fns": "^2.12.0",
+    "element-resize-event": "^3.0.3",
+    "history": "^4.9.0",
+    "lodash.defaultsdeep": "^4.6.1",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
+    "mapbox-gl": "^1.3.1",
+    "polished": "^3.4.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-datepicker": "^2.14.1",
+    "react-dom": "^16.9.0",
+    "react-ga": "^2.7.0",
+    "react-helmet": "^6.0.0",
+    "react-redux": "^7.1.1",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
+    "react-tether": "^2.0.7",
+    "react-transition-group": "^4.3.0",
+    "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.1.0"
+  }
+}
