@@ -1,0 +1,107 @@
+# https://github.com/developmentseed/how/issues/149
+# ssh-keygen -m pem -t rsa -b 4096 -C NASA-IMPACT/covid-dashboard -f deploy_key
+
+# YAML anchors for base definitions
+base_def: &base_def
+  docker:
+    - image: node:12
+      environment:
+        STAGING_BRANCH: develop
+        PRODUCTION_BRANCH: master
+  working_directory: ~/repo
+
+restore_cache_def: &restore_cache_def
+  # Download and cache dependencies
+  keys:
+  - v1-dependencies-{{ checksum "package.json" }}
+  - v1-dependencies-  # fallback if checksum fails
+
+##
+## START Circle CI configuration
+##
+
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@1.0.3
+jobs:
+  prepare:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+  lint:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - run: yarn lint
+  test:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - run: yarn test
+  build:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - run: 
+          name: Build app
+          command: |
+            yarn build
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+              - dist/*
+  deploy:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - attach_workspace:
+          at: /workspace
+      # - aws-s3/sync:
+      #     arguments: |
+      #       --acl public-read \
+      #       --cache-control "max-age=86400" \
+      #       --delete
+      #     from: workspace/dist
+      #     overwrite: true
+      #     to: 's3://my-s3-bucket-name/prefix'
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - prepare
+      - lint:
+          requires:
+            - prepare
+      - test:
+          requires:
+            - prepare
+      - build:
+          requires:
+            - prepare
+          filters:
+            branches:
+              ignore: develop
+      - deploy:
+          requires:
+            - lint
+            - test
+            - build
+          filters:
+            branches:
+              only: master
