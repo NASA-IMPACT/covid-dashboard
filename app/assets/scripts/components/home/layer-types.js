@@ -1,6 +1,6 @@
 import config from '../../config';
-const { worldviewFilter, countryFilter } = config.instance.map;
-const { polygons, centroids } = config.instance.boundaries;
+const { worldviewFilter, countryFilter } = config.map;
+const { polygons, centroids } = config.boundaries;
 
 // Timeseries specific functions.
 // These layers are quite complex and layer definition is different for each one.

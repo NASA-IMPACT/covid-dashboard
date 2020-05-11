@@ -8,11 +8,20 @@ import { layerTypes } from './layer-types';
 import MapboxControl from '../common/mapbox-react-control';
 import { glsp } from '../../styles/utils/theme-values';
 
-const { center, zoom, minZoom, maxZoom, styleUrl, worldviewFilter, countryFilter, logos } = config.instance.map;
-const { sourceUrl, sourceLayer } = config.instance.boundaries.polygons;
+const {
+  center,
+  zoom,
+  minZoom,
+  maxZoom,
+  styleUrl,
+  worldviewFilter,
+  countryFilter,
+  logos
+} = config.map;
+const { sourceUrl, sourceLayer } = config.boundaries.polygons;
 
 // Set mapbox token.
-mapboxgl.accessToken = config.instance.mbToken;
+mapboxgl.accessToken = config.mbToken;
 
 const MapContainer = styled.div`
   height: 100%;
@@ -28,7 +37,7 @@ const MapContainer = styled.div`
     }
   }
 
-.partner-logos {
+  .partner-logos {
     display: flex;
     img {
       display: block;
@@ -149,7 +158,7 @@ class MbMap extends React.Component {
     if (logos) {
       const mapLogosControl = new MapboxControl((props, state) => (
         <div className='partner-logos'>
-          {logos.map(l => (
+          {logos.map((l) => (
             <a
               key={l.id}
               href={l.url}
@@ -157,10 +166,7 @@ class MbMap extends React.Component {
               rel='noopener noreferrer'
               target='_blank'
             >
-              <img
-                src={l.src}
-                alt={`${l.label} logo`}
-              />
+              <img src={l.src} alt={`${l.label} logo`} />
             </a>
           ))}
         </div>

@@ -15,7 +15,7 @@ const {
 
 export function fetchAdminAreas () {
   return makeFetchThunk({
-    url: `${config.instance.api}/features.json`,
+    url: `${config.api}/features.json`,
     requestFn: requestAdminAreas,
     receiveFn: receiveAdminAreas
   });
@@ -35,7 +35,7 @@ const {
 
 export function fetchSingleAdminArea (id) {
   return makeFetchThunk({
-    url: `${config.instance.api}/areas/${id}.json`,
+    url: `${config.api}/areas/${id}.json`,
     cache: true,
     statePath: ['adminAreas', 'single', id],
     requestFn: requestSingleAdminArea.bind(null, id),
@@ -63,7 +63,7 @@ const {
 
 export function fetchGroupsAdminArea (id) {
   return makeFetchThunk({
-    url: `${config.instance.api}/${id}.json`,
+    url: `${config.api}/${id}.json`,
     cache: true,
     statePath: ['adminAreas', 'groups', id],
     requestFn: requestGroupsAdminArea.bind(null, id),

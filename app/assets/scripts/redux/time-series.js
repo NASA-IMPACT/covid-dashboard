@@ -16,7 +16,7 @@ const {
 export function fetchTimeSeriesDaily (indicator, date) {
   const key = `${indicator}--${date}`;
   return makeFetchThunk({
-    url: `${config.instance.api}/indicators/${indicator}/daily/${date}.json`,
+    url: `${config.api}/indicators/${indicator}/daily/${date}.json`,
     cache: true,
     statePath: ['timeSeries', 'daily', key],
     requestFn: requestTimeSeriesDaily.bind(null, key),
@@ -38,7 +38,7 @@ const {
 
 export function fetchTimeSeriesOverview (indicator) {
   return makeFetchThunk({
-    url: `${config.instance.api}/indicators/${indicator}/overview.json`,
+    url: `${config.api}/indicators/${indicator}/overview.json`,
     cache: true,
     statePath: ['timeSeries', 'overview', indicator],
     requestFn: requestTimeSeriesOverview.bind(null, indicator),

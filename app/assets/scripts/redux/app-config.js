@@ -13,7 +13,7 @@ const {
 
 export function fetchConfig () {
   return makeFetchThunk({
-    url: `${config.instance.api}/config.json`,
+    url: `${config.api}/config.json`,
     requestFn: requestConfig,
     receiveFn: receiveConfig
   });

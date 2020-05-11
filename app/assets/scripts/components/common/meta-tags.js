@@ -3,8 +3,7 @@ import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import config from '../../config';
-const { environment, baseUrl } = config;
-const { appTitle } = config.instance;
+const { environment, baseUrl, appTitle } = config;
 
 const MetaTags = ({ title, description, children }) => {
   return (

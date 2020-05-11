@@ -13,7 +13,7 @@ const {
 
 export function fetchLayerData (id) {
   return makeFetchThunk({
-    url: `${config.instance.api}/indicators/${id}/overview.json`,
+    url: `${config.api}/indicators/${id}/overview.json`,
     cache: true,
     statePath: ['layerData', id],
     requestFn: requestLayerData.bind(null, id),

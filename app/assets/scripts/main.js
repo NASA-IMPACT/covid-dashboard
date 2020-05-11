@@ -27,7 +27,7 @@ import MobileMessage from './components/common/mobile-message';
 
 import config from './config';
 
-const { gaTrackingCode } = config.instance;
+const { gaTrackingCode } = config;
 
 // Google analytics
 if (gaTrackingCode) {

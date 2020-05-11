@@ -1,6 +1,5 @@
 'use strict';
 import defaultsDeep from 'lodash.defaultsdeep';
-import { loadInstanceConfig } from './instances';
 
 /*
  * App configuration.
@@ -32,7 +31,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 config.default.baseUrl = process.env.BASEURL || '';
-config.default.instance = loadInstanceConfig(config.default.instanceId);
 
 // The require doesn't play super well with es6 imports. It creates an internal
 // 'default' property. Export that.
