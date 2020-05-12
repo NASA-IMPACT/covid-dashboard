@@ -1,7 +1,7 @@
-import example from './example';
+import no2 from './no2';
 
 const datasets = [
-  example
+  no2
 ];
 
 export default datasets;

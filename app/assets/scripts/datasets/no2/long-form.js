@@ -5,7 +5,7 @@ import {
 } from '../../styles/inpage';
 import Prose from '../../styles/type/prose';
 
-export default class ExampleLongForm extends React.Component {
+export default class NO2LongForm extends React.Component {
   render () {
     return (
       <InpageBodyInner>
