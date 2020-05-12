@@ -14,11 +14,8 @@ const {
   minZoom,
   maxZoom,
   styleUrl,
-  worldviewFilter,
-  countryFilter,
   logos
 } = config.map;
-const { sourceUrl, sourceLayer } = config.boundaries.polygons;
 
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;
@@ -70,7 +67,7 @@ class MbMap extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { activeLayers, selectedAdminArea } = this.props;
+    const { activeLayers } = this.props;
     if (prevProps.activeLayers !== activeLayers) {
       const toRemove = prevProps.activeLayers.filter(
         (l) => !activeLayers.includes(l)
@@ -112,32 +109,6 @@ class MbMap extends React.Component {
         return fns.update(this.mbMap, layerInfo, this.props);
       }
     });
-
-    if (prevProps.selectedAdminArea !== selectedAdminArea) {
-      // Unselect if selected.
-      if (this.adminAreaIdActive) {
-        this.setAdminFeatureSelected(this.adminAreaIdActive, false);
-      }
-      // Select if new id
-      if (selectedAdminArea) {
-        this.adminAreaIdActive = selectedAdminArea;
-        this.setAdminFeatureSelected(this.adminAreaIdActive, true);
-      }
-    }
-  }
-
-  setAdminFeatureHover (id, hover) {
-    this.mbMap.setFeatureState(
-      { source: 'base-boundaries', sourceLayer: sourceLayer, id },
-      { hover }
-    );
-  }
-
-  setAdminFeatureSelected (id, selected) {
-    this.mbMap.setFeatureState(
-      { source: 'base-boundaries', sourceLayer: sourceLayer, id },
-      { selected }
-    );
   }
 
   initMap () {
@@ -193,104 +164,8 @@ class MbMap extends React.Component {
     document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
 
     this.mbMap.on('load', () => {
-      this.initBoundariesLayers();
       this.props.onAction('map.loaded');
     });
-
-    this.mbMap.on('mouseenter', 'boundaries-fill', (e) => {
-      this.mbMap.getCanvas().style.cursor = 'pointer';
-    });
-
-    this.mbMap.on('mouseleave', 'boundaries-fill', () => {
-      this.mbMap.getCanvas().style.cursor = '';
-      if (this.adminAreaIdHover) {
-        this.setAdminFeatureHover(this.adminAreaIdHover, false);
-      }
-    });
-
-    this.mbMap.on('mousemove', 'boundaries-fill', (e) => {
-      if (e.features.length > 0) {
-        if (this.adminAreaIdHover) {
-          this.setAdminFeatureHover(this.adminAreaIdHover, false);
-        }
-        this.adminAreaIdHover = e.features[0].id;
-        this.setAdminFeatureHover(this.adminAreaIdHover, true);
-      }
-    });
-
-    this.mbMap.on('click', 'boundaries-fill', (e) => {
-      this.props.onAction('admin-area.click', e.features[0]);
-    });
-  }
-
-  initBoundariesLayers () {
-    // Add source for the base boundaries
-    this.mbMap.addSource('base-boundaries', {
-      type: 'vector',
-      url: sourceUrl
-    });
-
-    const { color } = this.props.theme;
-
-    this.mbMap.addLayer(
-      {
-        id: 'boundaries-fill',
-        type: 'fill',
-        source: 'base-boundaries',
-        'source-layer': sourceLayer,
-        filter: ['all', worldviewFilter, countryFilter],
-        paint: {
-          'fill-color': [
-            'case',
-            ['boolean', ['feature-state', 'hover'], false],
-            color.primary,
-            ['boolean', ['feature-state', 'selected'], false],
-            color.primary,
-            color.baseDark
-          ],
-          'fill-opacity': [
-            'case',
-            ['boolean', ['feature-state', 'hover'], false],
-            1,
-            ['boolean', ['feature-state', 'selected'], false],
-            1,
-            0.08
-          ]
-        }
-      },
-      'admin-1-boundary'
-    );
-
-    this.mbMap.addLayer(
-      {
-        id: 'boundaries-border',
-        type: 'line',
-        source: 'base-boundaries',
-        'source-layer': sourceLayer,
-        filter: ['all', worldviewFilter, countryFilter],
-        paint: {
-          'line-color': [
-            'case',
-            ['boolean', ['feature-state', 'selected'], false],
-            '#FFF',
-            color.baseDark
-          ],
-          'line-opacity': 0.64,
-          'line-width': [
-            'case',
-            ['boolean', ['feature-state', 'selected'], false],
-            2,
-            1
-          ]
-        }
-      },
-      'admin-1-boundary'
-    );
-
-    if (this.props.selectedAdminArea) {
-      this.adminAreaIdActive = this.props.selectedAdminArea;
-      this.setAdminFeatureSelected(this.adminAreaIdActive, true);
-    }
   }
 
   render () {
@@ -307,11 +182,9 @@ class MbMap extends React.Component {
 MbMap.propTypes = {
   onAction: T.func,
   activeLayers: T.array,
-  theme: T.object,
   layers: T.array,
   /* eslint-disable-next-line react/no-unused-prop-types */
-  layerData: T.object,
-  selectedAdminArea: T.string
+  layerData: T.object
 };
 
 export default withTheme(MbMap);
