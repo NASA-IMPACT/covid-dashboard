@@ -38,7 +38,7 @@ const type = {
     size: '1rem',
     line: '1.5',
     color: color.base,
-    family: '"Barlow", sans-serif',
+    family: '"Open Sans", sans-serif',
     style: 'normal',
     weight: 300,
     light: 300,
@@ -49,7 +49,7 @@ const type = {
     antialiasing: true
   },
   heading: {
-    family: '"Barlow", sans-serif',
+    family: '"Open Sans", sans-serif',
     style: 'normal',
     weight: 600,
     light: 300,
