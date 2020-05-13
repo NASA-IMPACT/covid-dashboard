@@ -18,7 +18,7 @@ import {
   InpageBody
 } from '../../styles/inpage';
 import MbMap from './mb-map';
-// import Timeline from './timeline';
+import Timeline from './timeline';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
@@ -36,9 +36,7 @@ import { wrapApiResult, getFromState } from '../../redux/reduxeed';
 import history from '../../utils/history';
 import { utcDate } from '../../utils/utils';
 
-import datasets from '../../datasets';
-
-const mapLayers = datasets;
+import mapLayers from '../../datasets';
 
 /**
  * The different timeseries overviews have different date domains.
@@ -172,12 +170,12 @@ class Home extends React.Component {
         this.setState({
           timelineDate: payload.date
         });
-        this.getActiveTimeseriesLayers().forEach(l => {
-          this.props.fetchTimeSeriesDaily(
-            l.id,
-            format(payload.date, 'yyyy-MM-dd')
-          );
-        });
+        // this.getActiveTimeseriesLayers().forEach(l => {
+        //   this.props.fetchTimeSeriesDaily(
+        //     l.id,
+        //     format(payload.date, 'yyyy-MM-dd')
+        //   );
+        // });
       }
     }
   }
@@ -251,6 +249,10 @@ class Home extends React.Component {
       }
     }
 
+    if (layer.type === 'raster-timeseries') {
+      this.setState({ timelineDate: utcDate(layer.domain[1]) });
+    }
+
     // Hide any layers that are not compatible with the current one.
     // This means that when this layer gets enabled some layers must be disabled.
     const exclusiveWithLayers = layer.exclusiveWith || [];
@@ -273,11 +275,11 @@ class Home extends React.Component {
     });
   }
 
-  // getActiveTimeseriesLayers () {
-  //   return mapLayers.filter((l) =>
-  //     l.type === 'timeseries' && this.state.activeLayers.includes(l.id)
-  //   );
-  // }
+  getActiveTimeseriesLayers () {
+    return mapLayers.filter((l) =>
+      l.type === 'raster-timeseries' && this.state.activeLayers.includes(l.id)
+    );
+  }
 
   // getTimeseriesLayerData (layers) {
   //   const { timelineDate } = this.state;
@@ -318,7 +320,7 @@ class Home extends React.Component {
 
     const layers = this.getLayersWithState();
 
-    // const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
+    const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
     // const activeTimeseriesLayerData = this.getTimeseriesLayerData(
     //   activeTimeseriesLayers
     // );
@@ -352,15 +354,16 @@ class Home extends React.Component {
                   activeLayers={this.state.activeLayers}
                   layerData={layerData}
                   selectedAdminArea={adminAreaFeatId}
+                  date={this.state.timelineDate}
                   // activeTimeSeriesData={activeTimeseriesLayerData}
                 />
-                {/* <Timeline
+                <Timeline
                   isActive={!!activeTimeseriesLayers.length}
                   layers={activeTimeseriesLayers}
-                  overview={activeTimeseriesOverviewData}
+                  // overview={activeTimeseriesOverviewData}
                   date={this.state.timelineDate}
                   onAction={this.onPanelAction}
-                /> */}
+                />
               </ExploreCarto>
               <ExpMapSecPanel
                 onPanelChange={this.resizeMap}
