@@ -7,32 +7,32 @@
 
     <title>Covid Dashboard</title>
 
-    <!-- Twitter -->
+    <!-- start: twitter card meta tags -->
     <meta name='twitter:card' content='summary' />
     <meta name='twitter:site' content='' />
     <meta name='twitter:title' content='Covid Dashboard' />
     <meta name='twitter:description' content='Covid Dashboard' />
     <meta name='twitter:image:src' content='{{baseurl}}/assets/graphics/meta/default-meta-image.png' />
-    <!--/ Twitter -->
+    <!-- end: twitter card meta tags -->
 
-    <!-- OG -->
+    <!-- start: open graph meta tags -->
     <meta property='og:site_name' content='Covid Dashboard' />
     <meta property='og:title' content='Covid Dashboard' />
     <meta property='og:url' content='' />
     <meta property='og:type' content='website' />
     <meta property='og:description' content='Covid Dashboard' />
     <meta property='og:image' content='{{baseurl}}/assets/graphics/meta/default-meta-image.png' />
-    <!--/ OG -->
+    <!-- end: open graph meta tags -->
 
     <link rel='icon' type='image/png' sizes='96x96' href='{{baseurl}}/assets/graphics/meta/favicon.png' />
     <link rel='icon' type='image/png' sizes='192x192' href='{{baseurl}}/assets/graphics/meta/android-chrome.png' />
     <link rel='apple-touch-icon' sizes='180x180' href='{{baseurl}}/assets/graphics/meta/apple-touch-icon.png' />
 
-    <!-- build:css /assets/styles/vendor.css -->
-      <link rel="stylesheet" href="../node_modules/mapbox-gl/dist/mapbox-gl.css" />
-      <link rel="stylesheet" href="../node_modules/@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css" />
-      <link rel="stylesheet" href="../node_modules/react-datepicker/dist/react-datepicker.css" />
-    <!-- endbuild -->
+    <!-- start: vendor css -->
+    <link rel='stylesheet' href='../node_modules/mapbox-gl/dist/mapbox-gl.css' />
+    <link rel='stylesheet' href='../node_modules/@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css' />
+    <link rel='stylesheet' href='../node_modules/react-datepicker/dist/react-datepicker.css' />
+    <!-- end: vendor css -->
 
     <link rel='author' type='text/plain' href='humans.txt' />
     <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,600;1,700&display=swap' />
@@ -55,9 +55,9 @@
         font-weight: bold;
         font-size: 1.25rem;
         color: #323232;
-
         transition: all 320ms ease-in-out;
       }
+
       #welcome-banner.dismissed {
         opacity: 0;
         visibility: hidden;
@@ -66,19 +66,20 @@
   </head>
 
   <body>
-    <!-- Welcome banner gets hidden by React -->
+    <!-- start: welcome banner (it gets hidden by react) -->
     <p id='welcome-banner'>
       Loading COVID-19 Dashboard...
     </p>
+    <!-- end: welcome banner -->
 
     <div id='app-container'>
-      <!-- Content rendered here via React -->
+      <!-- content rendered here via react -->
     </div>
 
     <script>
       // https://stackoverflow.com/a/9851769/728583
 
-      // Internet Explorer 6-11
+      // internet explorer 6-11
       var isIE = /*@cc_on!@*/ false || !!document.documentMode;
 
       if (isIE) {
@@ -88,11 +89,12 @@
       }
     </script>
 
-    <!-- build:js /assets/scripts/vendor.js -->
+    <!-- start: vendor js -->
     <script src='/assets/scripts/vendor.js'></script>
-    <!-- endbuild -->
-    <!-- build:js /assets/scripts/bundle.js -->
+    <!-- end: vendor js -->
+
+    <!-- start: bundle js -->
     <script src='/assets/scripts/bundle.js'></script>
-    <!-- endbuild -->
+    <!-- end: bundle js -->
   </body>
 </html>
