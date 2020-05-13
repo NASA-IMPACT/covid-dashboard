@@ -114,7 +114,8 @@ class Home extends React.Component {
     this.state = {
       activeLayers: [],
       timelineDate: null,
-      mapLoaded: false
+      mapLoaded: false,
+      compare: false
     };
   }
 
@@ -165,6 +166,9 @@ class Home extends React.Component {
     switch (action) {
       case 'layer.toggle':
         this.toggleLayer(payload);
+        break;
+      case 'compare.set':
+        this.setState({ compare: payload.compare });
         break;
       case 'date.set': {
         this.setState({
@@ -355,6 +359,7 @@ class Home extends React.Component {
                   layerData={layerData}
                   selectedAdminArea={adminAreaFeatId}
                   date={this.state.timelineDate}
+                  compare={!!activeTimeseriesLayers.length && this.state.compare}
                   // activeTimeSeriesData={activeTimeseriesLayerData}
                 />
                 <Timeline
@@ -362,6 +367,7 @@ class Home extends React.Component {
                   layers={activeTimeseriesLayers}
                   // overview={activeTimeseriesOverviewData}
                   date={this.state.timelineDate}
+                  compare={this.state.compare}
                   onAction={this.onPanelAction}
                 />
               </ExploreCarto>

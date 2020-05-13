@@ -124,6 +124,12 @@ const CurrentDate = styled.p`
   font-weight: ${themeVal('type.base.bold')};
 `;
 
+const CompareButton = styled(Button)`
+  && {
+    margin-right: 2rem;
+  }
+`;
+
 class Timeline extends React.Component {
   constructor (props) {
     super(props);
@@ -134,7 +140,7 @@ class Timeline extends React.Component {
   }
 
   render () {
-    const { date, onAction, isActive, layers } = this.props;
+    const { date, onAction, isActive, layers, compare } = this.props;
 
     // if (!isActive || !overview.length) return null;
     if (!isActive) return null;
@@ -175,6 +181,15 @@ class Timeline extends React.Component {
               onChange={(selectedDate) =>
                 onAction('date.set', { date: selectedDate })}
             /> */}
+            <CompareButton
+              variation='base-plain'
+              size='small'
+              title='Start/Stop comparing'
+              onClick={() =>
+                onAction('compare.set', { compare: !compare })}
+            >
+              {compare ? 'Stop comparing' : 'Start comparing'}
+            </CompareButton>
             <CurrentDate>{date ? format(date, "MMM yy''") : 'Select date'}</CurrentDate>
             <ButtonGroup orientation='horizontal'>
               <Button
@@ -219,6 +234,7 @@ class Timeline extends React.Component {
 
 Timeline.propTypes = {
   onAction: T.func,
+  compare: T.bool,
   date: T.object,
   layers: T.array,
   isActive: T.bool

@@ -2,6 +2,7 @@ import React from 'react';
 import T from 'prop-types';
 import styled, { withTheme } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
+import CompareMbGL from 'mapbox-gl-compare';
 
 import config from '../../config';
 import { layerTypes } from './layer-types';
@@ -19,8 +20,11 @@ const {
 
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;
+localStorage.setItem('MapboxAccessToken', config.mbToken);
 
-const MapContainer = styled.div`
+const MapsContainer = styled.div`
+  position: relative;
+  overflow: hidden;
   height: 100%;
 
   /* Styles to accommodate the partner logos */
@@ -51,6 +55,14 @@ const MapContainer = styled.div`
   }
 `;
 
+const SingleMapContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
 class MbMap extends React.Component {
   constructor (props) {
     super(props);
@@ -67,7 +79,7 @@ class MbMap extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { activeLayers } = this.props;
+    const { activeLayers, compare } = this.props;
     if (prevProps.activeLayers !== activeLayers) {
       const toRemove = prevProps.activeLayers.filter(
         (l) => !activeLayers.includes(l)
@@ -109,6 +121,33 @@ class MbMap extends React.Component {
         return fns.update(this.mbMap, layerInfo, this.props);
       }
     });
+
+    // Compare Maps
+    if (compare !== prevProps.compare) {
+      if (compare) {
+        this.mbMap.resize();
+        this.mbMapComparing = new mapboxgl.Map({
+          attributionControl: false,
+          container: this.mapContainer2,
+          center: center,
+          zoom: zoom || 5,
+          minZoom: minZoom || 4,
+          maxZoom: maxZoom || 9,
+          style: styleUrl,
+          pitchWithRotate: false,
+          // renderWorldCopies: false,
+          dragRotate: false,
+          logoPosition: 'bottom-left'
+        });
+
+        this.compareControl = new CompareMbGL(this.mbMap, this.mbMapComparing, '#container');
+      } else {
+        if (this.compareControl) {
+          this.compareControl.remove();
+          this.mbMapComparing.remove();
+        }
+      }
+    }
   }
 
   initMap () {
@@ -170,17 +209,25 @@ class MbMap extends React.Component {
 
   render () {
     return (
-      <MapContainer
-        ref={(el) => {
-          this.mapContainer = el;
-        }}
-      />
+      <MapsContainer id='container'>
+        <SingleMapContainer
+          ref={(el) => {
+            this.mapContainer2 = el;
+          }}
+        />
+        <SingleMapContainer
+          ref={(el) => {
+            this.mapContainer = el;
+          }}
+        />
+      </MapsContainer>
     );
   }
 }
 
 MbMap.propTypes = {
   onAction: T.func,
+  compare: T.bool,
   activeLayers: T.array,
   layers: T.array,
   /* eslint-disable-next-line react/no-unused-prop-types */
