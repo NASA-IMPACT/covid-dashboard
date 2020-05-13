@@ -59,7 +59,8 @@ jobs:
       - run: 
           name: Build app
           command: |
-            BASEURL="https://earthdata.nasa.gov/covid19" yarn build
+            yarn build
+            # BASEURL="https://earthdata.nasa.gov/covid19" yarn build
       - persist_to_workspace:
           root: ~/repo
           paths:
