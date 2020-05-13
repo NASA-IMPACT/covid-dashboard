@@ -2,10 +2,10 @@ import { rgba } from 'polished';
 
 let color = {
   baseLight: '#FFFFFF',
-  baseDark: '#1F1F1F',
-  primary: '#6271A4',
-  secondary: '#5991A6',
-  tertiary: '#CF64CC'
+  baseDark: '#323232', // "Black"
+  primary: '#2276AC', // Ocean Blue
+  secondary: '#2C3E50', // Midnight Blue
+  tertiary: '#673285' // Royal Purple
 };
 
 color = {
@@ -13,17 +13,11 @@ color = {
   base: color.baseDark,
   background: color.baseLight,
   surface: color.baseLight,
-  mist: rgba(color.baseDark, 0.04),
-  shadow: rgba(color.baseDark, 0.08),
-  smoke: rgba(color.baseDark, 0.16),
-  glimmer: rgba(color.baseLight, 0.04),
-  spark: rgba(color.baseLight, 0.08),
-  glow: rgba(color.baseLight, 0.16),
   link: color.primary,
-  danger: '#C0392B',
-  success: '#4CB5AE',
-  warning: '#F39C12',
-  info: '#2980B9'
+  danger: '#B3241C', // Red
+  success: '#189C54', // Dark Green
+  warning: '#F39C12', // Yellow
+  info: color.primary
 };
 
 color = {
