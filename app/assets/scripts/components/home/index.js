@@ -96,7 +96,7 @@ const ExploreCanvas = styled.div`
 const ExploreCarto = styled.section`
   position: relative;
   height: 100%;
-  background: ${themeVal('color.mist')};
+  background: ${themeVal('color.baseAlphaA')};
   display: grid;
   grid-template-rows: 1fr auto;
 `;
