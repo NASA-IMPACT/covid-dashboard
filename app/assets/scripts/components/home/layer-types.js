@@ -7,9 +7,11 @@ const prepDateSource = (source, date) => ({
 
 export const layerTypes = {
   'raster-timeseries': {
-    update: (mbMap, layerInfo, props) => {
+    update: (mbMap, layerInfo, props, prevProps) => {
       const { id, source } = layerInfo;
       const { date } = props;
+
+      if (prevProps.date && date.getTime() === prevProps.date.getTime()) return;
 
       if (mbMap.getSource(id)) {
         // https://github.com/mapbox/mapbox-gl-js/issues/2941

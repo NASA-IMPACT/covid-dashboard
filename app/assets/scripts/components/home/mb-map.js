@@ -107,7 +107,7 @@ class MbMap extends React.Component {
         if (fns) {
           fns.show(this.mbMap, layerInfo, this.props);
           if (fns.update) {
-            fns.update(this.mbMap, layerInfo, this.props);
+            fns.update(this.mbMap, layerInfo, this.props, prevProps);
           }
           return;
         }
@@ -121,7 +121,7 @@ class MbMap extends React.Component {
       const layerInfo = this.props.layers.find((l) => l.id === layerId);
       const fns = layerTypes[layerInfo.type];
       if (fns && fns.update) {
-        return fns.update(this.mbMap, layerInfo, this.props);
+        return fns.update(this.mbMap, layerInfo, this.props, prevProps);
       }
     });
 
