@@ -211,9 +211,11 @@ class MbMap extends React.Component {
     document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
 
     // Setup the AIO drawing functions.
-    this.mbDraw = mbAoiDraw(this.mbMap);
-    const { feature } = this.props.aoiState;
-    this.mbDraw.setup(this.props.onAction, feature ? [feature] : null, this.props.theme);
+    if (this.props.aoiState) {
+      this.mbDraw = mbAoiDraw(this.mbMap);
+      const { feature } = this.props.aoiState;
+      this.mbDraw.setup(this.props.onAction, feature ? [feature] : null, this.props.theme);
+    }
 
     this.mbMap.on('load', () => {
       this.props.onAction('map.loaded');

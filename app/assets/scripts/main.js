@@ -92,16 +92,16 @@ class Root extends React.Component {
                     path={['/', '/areas/:id']}
                     component={Home}
                   />
-                  <LargeOnlyRoute
+                  {/* <LargeOnlyRoute
                     exact
                     isLargeUp={isLargeUp}
                     path='/trends'
                     component={TrendsHub}
-                  />
+                  /> */}
                   <LargeOnlyRoute
                     exact
                     isLargeUp={isLargeUp}
-                    path='/trends/:datasetId'
+                    path='/super-sites/:datasetId'
                     component={TrendsSingle}
                   />
                   <Route path='/sandbox' component={Sandbox} />
