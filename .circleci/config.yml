@@ -106,4 +106,4 @@ workflows:
             - build
           filters:
             branches:
-              only: feature/s3
+              only: master
