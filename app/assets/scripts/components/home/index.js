@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 // import { Redirect } from 'react-router';
 import get from 'lodash.get';
-import { format, isAfter, isBefore } from 'date-fns';
+import { format, isAfter, isBefore, sub } from 'date-fns';
 
 import App from '../common/app';
 import ExpMapPrimePanel from './prime-panel';
@@ -34,6 +34,10 @@ import {
 } from '../../redux/time-series';
 import { fetchLayerData as fetchLayerDataAction } from '../../redux/layer-data';
 import { wrapApiResult, getFromState } from '../../redux/reduxeed';
+import {
+  fetchCogTimeData as fetchCogTimeDataAction,
+  invalidateCogTimeData as invalidateCogTimeDataAction
+} from '../../redux/cog-time-data';
 import history from '../../utils/history';
 import { utcDate } from '../../utils/utils';
 
@@ -157,31 +161,31 @@ class Home extends React.Component {
     };
   }
 
-  // async componentDidMount () {
-  //   // TODO: adminAreas are being fetched but not used. Review need.
-  //   const { fetchConfig, fetchAdminAreas } = this.props;
-  //   showGlobalLoading();
-  //   await Promise.all([fetchConfig(), fetchAdminAreas()]);
-  //   this.loadAdminArea();
-  //   hideGlobalLoading();
-  // }
+  componentDidMount () {
+    //   // TODO: adminAreas are being fetched but not used. Review need.
+    //   const { fetchConfig, fetchAdminAreas } = this.props;
+    //   showGlobalLoading();
+    //   await Promise.all([fetchConfig(), fetchAdminAreas()]);
+    //   this.loadAdminArea();
+    //   hideGlobalLoading();
+    // }
 
-  // componentDidUpdate (prevProps, prevState) {
-  //   const { id } = this.props.match.params;
-  //   if (prevProps.match.params.id !== id) {
-  //     this.loadAdminArea();
-  //   }
-  // }
+    // componentDidUpdate (prevProps, prevState) {
+    //   const { id } = this.props.match.params;
+    //   if (prevProps.match.params.id !== id) {
+    //     this.loadAdminArea();
+    //   }
+    // }
 
-  // async loadAdminArea () {
-  //   const { fetchSingleAdminArea } = this.props;
-  //   const { id } = this.props.match.params;
-  //   if (!id) return;
+    // async loadAdminArea () {
+    //   const { fetchSingleAdminArea } = this.props;
+    //   const { id } = this.props.match.params;
+    //   if (!id) return;
 
-  //   showGlobalLoading();
-  //   await fetchSingleAdminArea(id);
-  //   hideGlobalLoading();
-  // }
+    //   showGlobalLoading();
+    //   await fetchSingleAdminArea(id);
+    //   hideGlobalLoading();
+  }
 
   getLayersWithState () {
     const { activeLayers } = this.state;
@@ -200,6 +204,26 @@ class Home extends React.Component {
     }
   }
 
+  async requestCogData () {
+    const {
+      aoi: { feature }
+    } = this.state;
+    if (!feature) return;
+
+    showGlobalLoading();
+    // TODO: Change from hardcoded cog type and date
+    const end = utcDate('2020-03-01');
+    await this.props.fetchCogTimeData(
+      'no2',
+      {
+        start: sub(end, { months: 11 }),
+        end
+      },
+      feature
+    );
+    hideGlobalLoading();
+  }
+
   onPanelAction (action, payload) {
     switch (action) {
       case 'layer.toggle':
@@ -208,7 +232,7 @@ class Home extends React.Component {
       case 'compare.set':
         this.setState({ compare: payload.compare });
         break;
-      case 'date.set': {
+      case 'date.set':
         this.setState({
           timelineDate: payload.date
         });
@@ -362,9 +386,10 @@ class Home extends React.Component {
 
         // Use the max available date if current date is after it.
         const currDate = this.state.timelineDate;
-        const nextDdate = currDate && isBefore(currDate, dateDomain[1])
-          ? currDate
-          : dateDomain[1];
+        const nextDdate =
+          currDate && isBefore(currDate, dateDomain[1])
+            ? currDate
+            : dateDomain[1];
 
         this.setState({ timelineDate: nextDdate });
         this.props.fetchTimeSeriesDaily(
@@ -403,8 +428,9 @@ class Home extends React.Component {
   }
 
   getActiveTimeseriesLayers () {
-    return mapLayers.filter((l) =>
-      l.type === 'raster-timeseries' && this.state.activeLayers.includes(l.id)
+    return mapLayers.filter(
+      (l) =>
+        l.type === 'raster-timeseries' && this.state.activeLayers.includes(l.id)
     );
   }
 
@@ -429,15 +455,11 @@ class Home extends React.Component {
 
   getTimeseriesOverviewData (layers) {
     const { timeSeriesOverview } = this.props;
-    return layers.map(l => timeSeriesOverview[l.id]);
+    return layers.map((l) => timeSeriesOverview[l.id]);
   }
 
   render () {
-    const {
-      layerData,
-      currentAdminArea,
-      appConfig
-    } = this.props;
+    const { layerData, currentAdminArea, appConfig } = this.props;
 
     const adminAreaFeatId = this.props.match.params.id;
 
@@ -500,16 +522,16 @@ class Home extends React.Component {
                 />
               </ExploreCarto>
               <ExpMapSecPanel
+                tempNo2Data={this.props.no2CogTimeData}
                 onPanelChange={this.resizeMap}
                 // selectedAdminArea={adminAreaFeatId}
-                adminArea={currentAdminArea}
-                indicatorsConfig={get(
-                  appConfig.getData(),
-                  'staticIndicators.indicators',
-                  null
-                )}
+                // adminArea={currentAdminArea}
+                // indicatorsConfig={get(
+                //   appConfig.getData(),
+                //   'staticIndicators.indicators',
+                //   null
+                // )}
               />
-
             </ExploreCanvas>
           </InpageBody>
         </Inpage>
@@ -525,12 +547,15 @@ Home.propTypes = {
   fetchLayerData: T.func,
   fetchTimeSeriesDaily: T.func,
   fetchTimeSeriesOverview: T.func,
+  fetchCogTimeData: T.func,
+  invalidateCogTimeData: T.func,
   match: T.object,
   appConfig: T.object,
   layerData: T.object,
   currentAdminArea: T.object,
   // timeSeriesDaily: T.object,
-  timeSeriesOverview: T.object
+  timeSeriesOverview: T.object,
+  no2CogTimeData: T.object
 };
 
 function mapStateToProps (state, props) {
@@ -546,7 +571,8 @@ function mapStateToProps (state, props) {
     layerData: wrapApiResult(state.layerData, true),
     currentAdminArea,
     timeSeriesDaily: wrapApiResult(state.timeSeries.daily, true),
-    timeSeriesOverview: wrapApiResult(state.timeSeries.overview, true)
+    timeSeriesOverview: wrapApiResult(state.timeSeries.overview, true),
+    no2CogTimeData: wrapApiResult(getFromState(state, ['cogTimeData', 'no2']))
   };
 }
 
@@ -556,7 +582,9 @@ const mapDispatchToProps = {
   fetchLayerData: fetchLayerDataAction,
   fetchSingleAdminArea: fetchSingleAdminAreaAction,
   fetchTimeSeriesDaily: fetchTimeSeriesDailyAction,
-  fetchTimeSeriesOverview: fetchTimeSeriesOverviewAction
+  fetchTimeSeriesOverview: fetchTimeSeriesOverviewAction,
+  fetchCogTimeData: fetchCogTimeDataAction,
+  invalidateCogTimeData: invalidateCogTimeDataAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
