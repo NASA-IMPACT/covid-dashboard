@@ -19,6 +19,7 @@ import {
 } from '../../styles/inpage';
 import MbMap from './mb-map';
 import Timeline from './timeline';
+import DrawMessage from './map-draw-message';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
@@ -80,6 +81,36 @@ export const unionOverviewDateDomain = (overview) => {
       ];
   }, null);
 };
+
+const updateFeatureBounds = (feature, bounds) => {
+  const {
+    ne: [neLng, neLat],
+    sw: [swLng, swLat]
+  } = bounds;
+
+  const coordinates = [
+    [
+      [swLng, neLat],
+      [neLng, neLat],
+      [neLng, swLat],
+      [swLng, swLat],
+      [swLng, neLat]
+    ]
+  ];
+
+  return feature
+    ? {
+      ...feature,
+      geometry: { type: 'Polygon', coordinates }
+    }
+    : {
+      type: 'Feature',
+      id: 'aoi-feature',
+      properties: {},
+      geometry: { type: 'Polygon', coordinates }
+    };
+};
+
 const ExploreCanvas = styled.div`
   display: grid;
   height: 100%;
@@ -115,7 +146,14 @@ class Home extends React.Component {
       activeLayers: [],
       timelineDate: null,
       mapLoaded: false,
-      compare: false
+      compare: false,
+
+      aoi: {
+        feature: null,
+        drawing: false,
+        selected: false,
+        actionOrigin: null
+      }
     };
   }
 
@@ -180,7 +218,52 @@ class Home extends React.Component {
         //     format(payload.date, 'yyyy-MM-dd')
         //   );
         // });
-      }
+        break;
+      case 'aoi.draw-click':
+        // There can only be one selection (feature) on the map
+        // If there's a feature toggle the selection.
+        // If there's no feature toggle the drawing.
+        this.setState((state) => {
+          const selected = !!state.aoi.feature && !state.aoi.selected;
+          return {
+            aoi: {
+              ...state.aoi,
+              drawing: !state.aoi.feature && !state.aoi.drawing,
+              selected,
+              actionOrigin: selected ? 'panel' : null
+            }
+          };
+        });
+        break;
+      case 'aoi.set-bounds':
+        this.setState(
+          (state) => ({
+            aoi: {
+              ...state.aoi,
+              feature: updateFeatureBounds(state.aoi.feature, payload.bounds),
+              actionOrigin: 'panel'
+            }
+          }),
+          () => {
+            this.requestCogData();
+          }
+        );
+        break;
+      case 'aoi.clear':
+        this.setState(
+          {
+            aoi: {
+              drawing: false,
+              selected: false,
+              feature: null,
+              actionOrigin: null
+            }
+          },
+          () => {
+            this.props.invalidateCogTimeData();
+          }
+        );
+        break;
     }
   }
 
@@ -189,14 +272,54 @@ class Home extends React.Component {
       case 'admin-area.click':
         history.push(`/areas/${payload.id}`);
         break;
-      case 'map.loaded': {
-        this.setState({ mapLoaded: true });
-        // Enable default layers sequentially so they trigger needed actions.
-        const layersToLoad = mapLayers.filter(l => l.enabled);
-        for (const l of layersToLoad) {
-          await this.toggleLayer(l);
+      case 'map.loaded':
+        {
+          this.setState({ mapLoaded: true });
+          // Enable default layers sequentially so they trigger needed actions.
+          const layersToLoad = mapLayers.filter((l) => l.enabled);
+          for (const l of layersToLoad) {
+            await this.toggleLayer(l);
+          }
         }
-      }
+        break;
+      case 'aoi.draw-finish':
+        this.setState(
+          (state) => ({
+            aoi: {
+              ...state.aoi,
+              drawing: false,
+              feature: payload.feature,
+              actionOrigin: 'map'
+            }
+          }),
+          () => {
+            this.requestCogData();
+          }
+        );
+        break;
+      case 'aoi.selection':
+        this.setState((state) => ({
+          aoi: {
+            ...state.aoi,
+            selected: payload.selected,
+            actionOrigin: payload.selected ? 'map' : null
+          }
+        }));
+        break;
+      case 'aoi.update':
+        this.setState(
+          (state) => ({
+            aoi: {
+              ...state.aoi,
+              feature: payload.feature,
+              actionOrigin: 'map'
+            }
+          }),
+          () => {
+            this.requestCogData();
+          }
+        );
+        break;
     }
   }
 
@@ -347,10 +470,12 @@ class Home extends React.Component {
               <ExpMapPrimePanel
                 layers={layers}
                 mapLoaded={this.state.mapLoaded}
+                aoiState={this.state.aoi}
                 onAction={this.onPanelAction}
                 onPanelChange={this.resizeMap}
               />
               <ExploreCarto>
+                <DrawMessage drawing={this.state.aoi.drawing} />
                 <MbMap
                   ref={this.mbMapRef}
                   onAction={this.onMapAction}
@@ -359,7 +484,10 @@ class Home extends React.Component {
                   layerData={layerData}
                   selectedAdminArea={adminAreaFeatId}
                   date={this.state.timelineDate}
-                  compare={!!activeTimeseriesLayers.length && this.state.compare}
+                  aoiState={this.state.aoi}
+                  compare={
+                    !!activeTimeseriesLayers.length && this.state.compare
+                  }
                   // activeTimeSeriesData={activeTimeseriesLayerData}
                 />
                 <Timeline

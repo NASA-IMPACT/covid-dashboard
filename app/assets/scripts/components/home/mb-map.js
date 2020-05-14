@@ -4,10 +4,12 @@ import styled, { withTheme } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
 
+import MapboxControl from '../common/mapbox-react-control';
+
 import config from '../../config';
 import { layerTypes } from './layer-types';
-import MapboxControl from '../common/mapbox-react-control';
 import { glsp } from '../../styles/utils/theme-values';
+import mbAoiDraw from './mb-aoi-draw';
 
 const {
   center,
@@ -68,6 +70,7 @@ class MbMap extends React.Component {
     super(props);
     this.mapContainer = null;
     this.mbMap = null;
+    this.mbDraw = null;
 
     this.adminAreaIdActive = null;
     this.adminAreaIdHover = null;
@@ -148,6 +151,11 @@ class MbMap extends React.Component {
         }
       }
     }
+
+    // Handle aoi state props update.
+    if (this.mbDraw) {
+      this.mbDraw.update(prevProps.aoiState, this.props.aoiState);
+    }
   }
 
   initMap () {
@@ -201,6 +209,11 @@ class MbMap extends React.Component {
 
     // Remove compass.
     document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
+    // Setup the AIO drawing functions.
+    this.mbDraw = mbAoiDraw(this.mbMap);
+    const { feature } = this.props.aoiState;
+    this.mbDraw.setup(this.props.onAction, feature ? [feature] : null, this.props.theme);
 
     this.mbMap.on('load', () => {
       this.props.onAction('map.loaded');
