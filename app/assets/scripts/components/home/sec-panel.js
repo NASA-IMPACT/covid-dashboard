@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import T from 'prop-types';
+import * as d3 from 'd3';
 
 import { glsp } from '../../styles/utils/theme-values';
 import { themeVal } from '../../styles/utils/general';
 import Prose from '../../styles/type/prose';
 import Heading, { headingAlt, Subheading } from '../../styles/type/heading';
-import { LineChart } from '../common/line-chart';
+import SimpleLineChart from '../common/simple-line-chart/chart';
 
 import { formatThousands } from '../../utils/format';
 
@@ -16,6 +17,9 @@ import Panel, {
 } from '../common/panel';
 
 import ShadowScrollbar from '../common/shadow-scrollbar';
+import FilterAoi from './filter-aoi';
+import { format } from 'date-fns';
+import { utcDate } from '../../utils/utils';
 
 const BodyScroll = styled(ShadowScrollbar)`
   flex: 1;
@@ -47,27 +51,31 @@ const InsightsDetails = styled.dl`
 
 class ExpMapSecPanel extends React.Component {
   renderContent () {
-    const { adminArea, indicatorsConfig } = this.props;
+    const { tempNo2Data } = this.props;
+    // const { adminArea, indicatorsConfig } = this.props;
 
-    if (!indicatorsConfig) {
-      return null;
+    // if (!indicatorsConfig) {
+    //   return null;
+    // }
+
+    if (!tempNo2Data || !tempNo2Data.isReady()) {
+      return <p>There is no area of interest defined.</p>;
     }
 
-    if (!adminArea || !adminArea.isReady()) {
-      return <p>Select an area to get started.</p>;
-    }
+    // const adminAreaData = adminArea.getData();
+    // const { tsData } = adminAreaData;
+    // const mobilityData = tsData[0];
 
-    const adminAreaData = adminArea.getData();
-    const { tsData } = adminAreaData;
-    const mobilityData = tsData[0];
+    const data = tempNo2Data.getData();
+    const xDomain = [
+      utcDate(data[0].date),
+      utcDate(data[data.length - 1].date)
+    ];
+    const yDomain = d3.extent(data, d => d.value);
 
     return (
-      <Prose>
-        <div>
-          <Heading size='large' as='h2'>{adminAreaData.name}</Heading>
-          <Subheading as='h3'>{adminAreaData.parent.name || '-'}</Subheading>
-        </div>
-        {adminAreaData.staticData
+      <div>
+        {/* {adminAreaData.staticData
           ? (
             <InsightsDetails>
               {indicatorsConfig.map((ind) => (
@@ -78,20 +86,22 @@ class ExpMapSecPanel extends React.Component {
               ))}
             </InsightsDetails>
           )
-          : <p>No indicators available.</p>}
-        <LineChart data={mobilityData} title='Mobility Data' />
-      </Prose>
+          : <p>No indicators available.</p>} */}
+        <Heading as='h2'>NO2 Concentration</Heading>
+        <small>mol/cm<sup>3</sup></small>
+        <SimpleLineChart
+          xDomain={xDomain}
+          yDomain={yDomain}
+          data={data}
+        />
+      </div>
     );
   }
 
   render () {
-    const { selectedAdminArea } = this.props;
-
     return (
       <Panel
-        key={selectedAdminArea}
         collapsible
-        initialState={!!selectedAdminArea}
         direction='right'
         onPanelChange={this.props.onPanelChange}
         headerContent={
