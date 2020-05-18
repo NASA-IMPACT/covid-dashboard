@@ -18,8 +18,8 @@ import SizeAwareElement from './components/common/size-aware-element';
 
 // Views
 import Home from './components/home';
-import TrendsHub from './components/trends/hub';
-import TrendsSingle from './components/trends/single';
+import SuperSitesSingle from './components/super-sites/single';
+import DatasetsSingle from './components/datasets/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
 import About from './components/about';
@@ -92,17 +92,17 @@ class Root extends React.Component {
                     path={['/', '/areas/:id']}
                     component={Home}
                   />
-                  {/* <LargeOnlyRoute
-                    exact
-                    isLargeUp={isLargeUp}
-                    path='/trends'
-                    component={TrendsHub}
-                  /> */}
                   <LargeOnlyRoute
                     exact
                     isLargeUp={isLargeUp}
                     path='/super-sites/:datasetId'
-                    component={TrendsSingle}
+                    component={SuperSitesSingle}
+                  />
+                  <LargeOnlyRoute
+                    exact
+                    isLargeUp={isLargeUp}
+                    path='/datasets/:datasetId'
+                    component={DatasetsSingle}
                   />
                   <Route path='/sandbox' component={Sandbox} />
                   <Route path='/about' component={About} />

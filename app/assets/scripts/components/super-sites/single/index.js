@@ -17,7 +17,7 @@ import UhOh from '../../uhoh';
 import { themeVal } from '../../../styles/utils/general';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import { glsp } from '../../../styles/utils/theme-values';
-import { superSitesList } from '../../../datasets';
+import { getSuperSite } from '..';
 
 const ExploreCanvas = styled.div`
   display: grid;
@@ -46,7 +46,7 @@ const PanelBodyInner = styled.div`
   padding: ${glsp()};
 `;
 
-class TrendsSingle extends React.Component {
+class SuperSitesSingle extends React.Component {
   constructor (props) {
     super(props);
     this.resizeMap = this.resizeMap.bind(this);
@@ -149,16 +149,16 @@ class TrendsSingle extends React.Component {
   }
 }
 
-TrendsSingle.propTypes = {
+SuperSitesSingle.propTypes = {
 };
 
 function mapStateToProps (state, props) {
   return {
-    data: superSitesList.find(ss => ss.id === props.match.params.datasetId)
+    data: getSuperSite(props.match.params.datasetId)
   };
 }
 
 const mapDispatchToProps = {
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TrendsSingle);
+export default connect(mapStateToProps, mapDispatchToProps)(SuperSitesSingle);

@@ -13,7 +13,7 @@ import { glsp } from '../../styles/utils/theme-values';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
-import { superSitesList } from '../../datasets';
+import superSitesList from '../super-sites';
 
 const { appTitle, appShortTitle } = config;
 

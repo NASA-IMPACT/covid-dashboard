@@ -5,7 +5,7 @@ import {
 } from '../../styles/inpage';
 import Prose from '../../styles/type/prose';
 
-export default class NO2LongForm extends React.Component {
+class NO2LongForm extends React.Component {
   render () {
     return (
       <InpageBodyInner>
@@ -25,3 +25,9 @@ export default class NO2LongForm extends React.Component {
     );
   }
 }
+
+export default {
+  id: 'no2',
+  name: 'Nitrous Dioxide',
+  LongForm: NO2LongForm
+};

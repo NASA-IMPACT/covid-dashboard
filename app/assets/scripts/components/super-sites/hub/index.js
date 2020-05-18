@@ -16,7 +16,7 @@ import {
 
 import { glsp } from '../../../styles/utils/theme-values';
 import { themeVal } from '../../../styles/utils/general';
-import trendsDatasets from '../../../datasets';
+import superSites from '../index';
 
 const InpageTrendsBody = styled(InpageBody)`
   position: relative;
@@ -71,7 +71,7 @@ const PanelNavLink = styled(NavLink)`
   }
 `;
 
-class TrendsHub extends React.Component {
+class SuperSitesHub extends React.Component {
   render () {
     const { datasets } = this.props;
 
@@ -91,7 +91,7 @@ class TrendsHub extends React.Component {
                 <li key={item.id}>
                   <PanelNavLink
                     to={`/trends/${item.id}`}
-                    title={`View trends for ${item.name}`}
+                    title={`View super site ${item.name}`}
                   >
                     {item.name}
                   </PanelNavLink>
@@ -105,16 +105,16 @@ class TrendsHub extends React.Component {
   }
 }
 
-TrendsHub.propTypes = {
+SuperSitesHub.propTypes = {
   datasets: T.array
 };
 
 function mapStateToProps (state, props) {
   return {
-    datasets: trendsDatasets
+    datasets: superSites
   };
 }
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(TrendsHub);
+export default connect(mapStateToProps, mapDispatchToProps)(SuperSitesHub);

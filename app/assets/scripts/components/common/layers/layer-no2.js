@@ -1,5 +1,3 @@
-import NO2LongForm from './long-form';
-
 export default {
   id: 'no2',
   name: 'Nitrogen dioxide',
@@ -30,6 +28,5 @@ export default {
       '#FEC88C'
     ]
   },
-  info: 'Acute harm due to NO2 exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.',
-  longFormComponent: NO2LongForm
+  info: 'Acute harm due to NO2 exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.'
 };

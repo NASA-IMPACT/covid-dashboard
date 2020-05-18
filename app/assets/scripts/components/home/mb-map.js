@@ -7,7 +7,7 @@ import CompareMbGL from 'mapbox-gl-compare';
 import MapboxControl from '../common/mapbox-react-control';
 
 import config from '../../config';
-import { layerTypes } from './layer-types';
+import { layerTypes } from '../common/layers/types';
 import { glsp } from '../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
 

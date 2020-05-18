@@ -3,8 +3,7 @@ import T from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 // import { Redirect } from 'react-router';
-import get from 'lodash.get';
-import { format, isAfter, isBefore, sub } from 'date-fns';
+import { format, isBefore, sub } from 'date-fns';
 
 import App from '../common/app';
 import ExpMapPrimePanel from './prime-panel';
@@ -23,11 +22,6 @@ import DrawMessage from './map-draw-message';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
-import { fetchConfig as fetchConfigAction } from '../../redux/app-config';
-import {
-  fetchAdminAreas as fetchAdminAreasAction,
-  fetchSingleAdminArea as fetchSingleAdminAreaAction
-} from '../../redux/admin-areas';
 import {
   fetchTimeSeriesDaily as fetchTimeSeriesDailyAction,
   fetchTimeSeriesOverview as fetchTimeSeriesOverviewAction
@@ -40,52 +34,16 @@ import {
 } from '../../redux/cog-time-data';
 import history from '../../utils/history';
 import { utcDate } from '../../utils/utils';
-
-import mapLayers from '../../datasets';
-
-/**
- * The different timeseries overviews have different date domains.
- * To ensure that the data is displayed correctly the intersection of the
- * domains is computed.
- *
- * @param {array} overview Array with timeseries overview data
- */
-export const intersectOverviewDateDomain = (overview) => {
-  return overview.reduce((acc, o) => {
-    const agg = o.getData().aggregate;
-    const domain = [agg[0].date, agg[agg.length - 1].date].map((d) =>
-      utcDate(d)
-    );
-    return acc === null
-      ? domain
-      : [
-        isAfter(domain[0], acc[0]) ? domain[0] : acc[0],
-        isBefore(domain[1], acc[1]) ? domain[1] : acc[1]
-      ];
-  }, null);
-};
+import mapLayers from '../common/layers';
+import { unionOverviewDateDomain } from '../../utils/date';
 
 /**
- * The different timeseries overviews have different date domains.
- * Compute the union of different date domains
+ * Returns a feature with a polygon geometry made of the provided bounds.
+ * If a feature is provided, the properties are maintained.
  *
- * @param {array} overview Array with timeseries overview data
+ * @param {object} feature Feature to update
+ * @param {object} bounds Bounds in NE/SW format
  */
-export const unionOverviewDateDomain = (overview) => {
-  return overview.reduce((acc, o) => {
-    const agg = o.getData().aggregate;
-    const domain = [agg[0].date, agg[agg.length - 1].date].map((d) =>
-      utcDate(d)
-    );
-    return acc === null
-      ? domain
-      : [
-        isBefore(domain[0], acc[0]) ? domain[0] : acc[0],
-        isAfter(domain[1], acc[1]) ? domain[1] : acc[1]
-      ];
-  }, null);
-};
-
 const updateFeatureBounds = (feature, bounds) => {
   const {
     ne: [neLng, neLat],
@@ -161,30 +119,8 @@ class Home extends React.Component {
     };
   }
 
-  componentDidMount () {
-    //   // TODO: adminAreas are being fetched but not used. Review need.
-    //   const { fetchConfig, fetchAdminAreas } = this.props;
-    //   showGlobalLoading();
-    //   await Promise.all([fetchConfig(), fetchAdminAreas()]);
-    //   this.loadAdminArea();
-    //   hideGlobalLoading();
-    // }
-
-    // componentDidUpdate (prevProps, prevState) {
-    //   const { id } = this.props.match.params;
-    //   if (prevProps.match.params.id !== id) {
-    //     this.loadAdminArea();
-    //   }
-    // }
-
-    // async loadAdminArea () {
-    //   const { fetchSingleAdminArea } = this.props;
-    //   const { id } = this.props.match.params;
-    //   if (!id) return;
-
-    //   showGlobalLoading();
-    //   await fetchSingleAdminArea(id);
-    //   hideGlobalLoading();
+  componentWillUnmount () {
+    this.props.invalidateCogTimeData();
   }
 
   getLayersWithState () {
@@ -434,48 +370,18 @@ class Home extends React.Component {
     );
   }
 
-  // getTimeseriesLayerData (layers) {
-  //   const { timelineDate } = this.state;
-  //   const { timeSeriesDaily } = this.props;
-
-  //   if (!layers || !layers.length || !timelineDate) return null;
-
-  //   return layers.map(l => {
-  //     const timeSeriesKey = `${l.id}--${format(timelineDate, 'yyyy-MM-dd')}`;
-  //     const ts = timeSeriesDaily[timeSeriesKey];
-
-  //     return {
-  //       id: l.id,
-  //       data: !ts || !ts.isReady() ? [] : ts.getData(),
-  //       // Store error if there's one so we handle it on the map side.
-  //       error: ts && ts.hasError()
-  //     };
-  //   });
-  // }
-
   getTimeseriesOverviewData (layers) {
     const { timeSeriesOverview } = this.props;
     return layers.map((l) => timeSeriesOverview[l.id]);
   }
 
   render () {
-    const { layerData, currentAdminArea, appConfig } = this.props;
-
+    const { layerData } = this.props;
     const adminAreaFeatId = this.props.match.params.id;
-
-    // if (currentAdminArea.isReady() && currentAdminArea.hasError()) {
-    //   return <Redirect to='/' />;
-    // }
 
     const layers = this.getLayersWithState();
 
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
-    // const activeTimeseriesLayerData = this.getTimeseriesLayerData(
-    //   activeTimeseriesLayers
-    // );
-    // const activeTimeseriesOverviewData = this.getTimeseriesOverviewData(
-    //   activeTimeseriesLayers
-    // );
 
     return (
       <App>
@@ -550,26 +456,15 @@ Home.propTypes = {
   fetchCogTimeData: T.func,
   invalidateCogTimeData: T.func,
   match: T.object,
-  appConfig: T.object,
   layerData: T.object,
-  currentAdminArea: T.object,
   // timeSeriesDaily: T.object,
   timeSeriesOverview: T.object,
   no2CogTimeData: T.object
 };
 
 function mapStateToProps (state, props) {
-  const adminAreaFeatId = props.match.params.id;
-
-  const currentAdminArea = wrapApiResult(
-    getFromState(state, ['adminAreas', 'single', adminAreaFeatId])
-  );
-
   return {
-    appConfig: wrapApiResult(state.appConfig),
-    // adminAreas: wrapApiResult(state.adminAreas.list),
     layerData: wrapApiResult(state.layerData, true),
-    currentAdminArea,
     timeSeriesDaily: wrapApiResult(state.timeSeries.daily, true),
     timeSeriesOverview: wrapApiResult(state.timeSeries.overview, true),
     no2CogTimeData: wrapApiResult(getFromState(state, ['cogTimeData', 'no2']))
@@ -577,10 +472,7 @@ function mapStateToProps (state, props) {
 }
 
 const mapDispatchToProps = {
-  fetchConfig: fetchConfigAction,
-  fetchAdminAreas: fetchAdminAreasAction,
   fetchLayerData: fetchLayerDataAction,
-  fetchSingleAdminArea: fetchSingleAdminAreaAction,
   fetchTimeSeriesDaily: fetchTimeSeriesDailyAction,
   fetchTimeSeriesOverview: fetchTimeSeriesOverviewAction,
   fetchCogTimeData: fetchCogTimeDataAction,
