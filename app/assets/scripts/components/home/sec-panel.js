@@ -88,7 +88,7 @@ class ExpMapSecPanel extends React.Component {
           )
           : <p>No indicators available.</p>} */}
         <Heading as='h2'>NO2 Concentration</Heading>
-        <small>mol/cm<sup>3</sup></small>
+        <small>molecules/cm<sup>2</sup></small>
         <SimpleLineChart
           xDomain={xDomain}
           yDomain={yDomain}
