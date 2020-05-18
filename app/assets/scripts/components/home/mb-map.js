@@ -83,47 +83,6 @@ class MbMap extends React.Component {
 
   componentDidUpdate (prevProps, prevState) {
     const { activeLayers, compare } = this.props;
-    if (prevProps.activeLayers !== activeLayers) {
-      const toRemove = prevProps.activeLayers.filter(
-        (l) => !activeLayers.includes(l)
-      );
-      const toAdd = activeLayers.filter(
-        (l) => !prevProps.activeLayers.includes(l)
-      );
-
-      toRemove.forEach((layerId) => {
-        const layerInfo = this.props.layers.find((l) => l.id === layerId);
-        const fns = layerTypes[layerInfo.type];
-        if (fns) {
-          return fns.hide(this.mbMap, layerInfo, this.props);
-        }
-        /* eslint-disable-next-line no-console */
-        console.error('No functions found for layer type', layerInfo.type);
-      });
-
-      toAdd.forEach(async (layerId) => {
-        const layerInfo = this.props.layers.find((l) => l.id === layerId);
-        const fns = layerTypes[layerInfo.type];
-        if (fns) {
-          fns.show(this.mbMap, layerInfo, this.props);
-          if (fns.update) {
-            fns.update(this.mbMap, layerInfo, this.props, prevProps);
-          }
-          return;
-        }
-        /* eslint-disable-next-line no-console */
-        console.error('No functions found for layer type', layerInfo.type);
-      });
-    }
-
-    // Update all active layers
-    activeLayers.forEach((layerId) => {
-      const layerInfo = this.props.layers.find((l) => l.id === layerId);
-      const fns = layerTypes[layerInfo.type];
-      if (fns && fns.update) {
-        return fns.update(this.mbMap, layerInfo, this.props, prevProps);
-      }
-    });
 
     // Compare Maps
     if (compare !== prevProps.compare) {
@@ -147,10 +106,55 @@ class MbMap extends React.Component {
       } else {
         if (this.compareControl) {
           this.compareControl.remove();
+          this.compareControl = null;
           this.mbMapComparing.remove();
+          this.mbMapComparing = null;
         }
       }
     }
+
+    // TODO: Improve how compare is handled, by the layers that have it.
+    if (prevProps.activeLayers !== activeLayers || compare !== prevProps.compare) {
+      const toRemove = prevProps.activeLayers.filter(
+        (l) => !activeLayers.includes(l)
+      );
+      const toAdd = activeLayers.filter(
+        (l) => !prevProps.activeLayers.includes(l)
+      );
+
+      toRemove.forEach((layerId) => {
+        const layerInfo = this.props.layers.find((l) => l.id === layerId);
+        const fns = layerTypes[layerInfo.type];
+        if (fns) {
+          return fns.hide(this, layerInfo, prevProps);
+        }
+        /* eslint-disable-next-line no-console */
+        console.error('No functions found for layer type', layerInfo.type);
+      });
+
+      toAdd.forEach(async (layerId) => {
+        const layerInfo = this.props.layers.find((l) => l.id === layerId);
+        const fns = layerTypes[layerInfo.type];
+        if (fns) {
+          fns.show(this, layerInfo, prevProps);
+          if (fns.update) {
+            fns.update(this, layerInfo, prevProps);
+          }
+          return;
+        }
+        /* eslint-disable-next-line no-console */
+        console.error('No functions found for layer type', layerInfo.type);
+      });
+    }
+
+    // Update all active layers
+    activeLayers.forEach((layerId) => {
+      const layerInfo = this.props.layers.find((l) => l.id === layerId);
+      const fns = layerTypes[layerInfo.type];
+      if (fns && fns.update) {
+        return fns.update(this, layerInfo, prevProps);
+      }
+    });
 
     // Handle aoi state props update.
     if (this.mbDraw) {

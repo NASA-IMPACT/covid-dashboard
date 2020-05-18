@@ -188,7 +188,7 @@ class Timeline extends React.Component {
               onClick={() =>
                 onAction('compare.set', { compare: !compare })}
             >
-              {compare ? 'Stop comparing' : 'Start comparing'}
+              {compare ? 'Stop compare (5y ago)' : 'Start compare (5y ago)'}
             </CompareButton>
             <CurrentDate>{date ? format(date, "MMM yy''") : 'Select date'}</CurrentDate>
             <ButtonGroup orientation='horizontal'>
