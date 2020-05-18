@@ -4,7 +4,7 @@ export default {
   description: 'Acute harm due to NO2 exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.',
   type: 'raster-timeseries',
   domain: [
-    '2004-10-01',
+    '2010-10-01',
     '2020-03-01'
   ],
   source: {
