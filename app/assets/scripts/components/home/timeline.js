@@ -1,20 +1,21 @@
 import React from 'react';
 import T from 'prop-types';
 import styled, { css } from 'styled-components';
-import { add, sub, isEqual } from 'date-fns';
+import { add, sub, format, isSameMonth } from 'date-fns';
 
 import Button from '../../styles/button/button';
 import ButtonGroup from '../../styles/button/group';
-import DatePicker from './date-picker';
+// import DatePicker from './date-picker';
 import DataBrowserChart from './data-browser/chart';
-import ShadowScrollbar from '../common/shadow-scrollbar';
-import { Accordion, AccordionFold } from '../common/accordion';
+// import ShadowScrollbar from '../common/shadow-scrollbar';
+// import { Accordion, AccordionFold } from '../common/accordion';
 
 import { panelSkin } from '../../styles/skins';
 import { glsp } from '../../styles/utils/theme-values';
-import collecticon from '../../styles/collecticons';
+// import collecticon from '../../styles/collecticons';
 import { themeVal } from '../../styles/utils/general';
-import { unionOverviewDateDomain } from './';
+// import { unionOverviewDateDomain } from './';
+import { utcDate } from '../../utils/utils';
 
 const ExploreDataBrowser = styled.section`
   ${panelSkin()}
@@ -78,44 +79,54 @@ const ExploreDataBrowserActions = styled.div`
   }
 `;
 
-const ChartScrollArea = styled(ShadowScrollbar)`
-  height: 10rem;
+// const ChartScrollArea = styled(ShadowScrollbar)`
+//   height: 10rem;
+// `;
+
+// const DataChartFoldHeader = styled.header`
+//   padding: ${glsp(0.5)} 0.75rem;
+//   box-shadow: 0 1px 0 0 ${themeVal('color.spark')};
+// `;
+
+// const DataChartFoldTitle = styled.a`
+//   display: flex;
+//   align-items: center;
+
+//   &, &:visited {
+//     color: #FFF;
+//   }
+
+//   ::before {
+//     content: '';
+//     display: block;
+//     width: 0.25rem;
+//     height: 1rem;
+//     margin-right: ${glsp(0.25)};
+//     border-radius: ${themeVal('shape.ellipsoid')};
+//     background: ${({ swatch }) => swatch};
+//   }
+
+//   ::after {
+//     ${collecticon('chevron-down--small')};
+//     margin-left: auto;
+//     transition: transform 320ms ease-in-out 0s;
+
+//     ${({ isExpanded }) => isExpanded && 'transform: rotate(180deg);'}
+//   }
+
+//   h2 {
+//     font-size: 1rem;
+//     line-height: 1.5rem;
+//   }
+// `;
+
+const CurrentDate = styled.p`
+  font-weight: ${themeVal('type.base.bold')};
 `;
 
-const DataChartFoldHeader = styled.header`
-  padding: ${glsp(0.5)} 0.75rem;
-  box-shadow: 0 1px 0 0 ${themeVal('color.spark')};
-`;
-
-const DataChartFoldTitle = styled.a`
-  display: flex;
-  align-items: center;
-
-  &, &:visited {
-    color: #FFF;
-  }
-
-  ::before {
-    content: '';
-    display: block;
-    width: 0.25rem;
-    height: 1rem;
-    margin-right: ${glsp(0.25)};
-    border-radius: ${themeVal('shape.ellipsoid')};
-    background: ${({ swatch }) => swatch};
-  }
-
-  ::after {
-    ${collecticon('chevron-down--small')};
-    margin-left: auto;
-    transition: transform 320ms ease-in-out 0s;
-
-    ${({ isExpanded }) => isExpanded && 'transform: rotate(180deg);'}
-  }
-
-  h2 {
-    font-size: 1rem;
-    line-height: 1.5rem;
+const CompareButton = styled(Button)`
+  && {
+    margin-right: 2rem;
   }
 `;
 
@@ -128,71 +139,19 @@ class Timeline extends React.Component {
     };
   }
 
-  renderDataBrowserChart (dateDomain) {
-    const { date, onAction, overview, layers } = this.props;
-
-    return (
-      <ChartScrollArea
-        topShadowVariation='dark'
-        bottomShadowVariation='dark'
-      >
-        <Accordion allowMultiple initialState={[true]}>
-          {({ checkExpanded, setExpanded, canContract }) => (
-            overview.map((o, idx) => {
-              const overviewData = o.getData();
-              const yDomain = overviewData.domain;
-              const timelineData = overviewData.aggregate;
-
-              const layerData = layers.find(l => l.id === overviewData.id);
-
-              return (
-                <AccordionFold
-                  key={overviewData.id}
-                  isFoldExpanded={checkExpanded(idx)}
-                  setFoldExpanded={v => setExpanded(idx, v)}
-                  renderHeader={({ isFoldExpanded, setFoldExpanded }) => (
-                    <DataChartFoldHeader>
-                      <DataChartFoldTitle
-                        href='#'
-                        swatch={layerData.swatch.color}
-                        title='Open/Close timeseries chart'
-                        isExpanded={isFoldExpanded}
-                        canContract={canContract(idx)}
-                        onClick={(e) => { e.preventDefault(); setFoldExpanded(!isFoldExpanded); }}
-                      >
-                        <h2>{layerData.label}</h2>
-                      </DataChartFoldTitle>
-                    </DataChartFoldHeader>
-                  )}
-                  renderBody={() => (
-                    <DataBrowserChart
-                      selectedDate={date}
-                      onAction={onAction}
-                      xDomain={dateDomain}
-                      yDomain={yDomain}
-                      data={timelineData}
-                      swatch={layerData.swatch.color}
-                    />
-                  )}
-                />
-              );
-            })
-          )}
-        </Accordion>
-      </ChartScrollArea>
-    );
-  }
-
   render () {
-    const { date, onAction, isActive, layers, overview } = this.props;
+    const { date, onAction, isActive, layers, compare } = this.props;
 
-    if (!isActive || !overview.length) return null;
+    // if (!isActive || !overview.length) return null;
+    if (!isActive) return null;
 
     // Wait until all the overviews are ready.
-    if (overview.some((o) => !o.isReady())) return null;
+    // if (overview.some((o) => !o.isReady())) return null;
 
     // Compute date intersection between all the overviews.
-    const dateDomain = unionOverviewDateDomain(overview);
+    // const dateDomain = unionOverviewDateDomain(overview);
+    const dateDomain = layers[0].domain.map(utcDate);
+    const swatch = layers[0].swatch.color;
 
     return (
       <ExploreDataBrowser>
@@ -216,34 +175,44 @@ class Timeline extends React.Component {
             </ExploreDataBrowserTitle>
           </ExploreDataBrowserHeadline>
           <ExploreDataBrowserActions>
-            <DatePicker
+            {/* <DatePicker
               dateState={date}
               dateDomain={dateDomain}
               onChange={(selectedDate) =>
                 onAction('date.set', { date: selectedDate })}
-            />
+            /> */}
+            <CompareButton
+              variation='base-plain'
+              size='small'
+              title='Start/Stop comparing'
+              onClick={() =>
+                onAction('compare.set', { compare: !compare })}
+            >
+              {compare ? 'Stop compare (5y ago)' : 'Start compare (5y ago)'}
+            </CompareButton>
+            <CurrentDate>{date ? format(date, "MMM yy''") : 'Select date'}</CurrentDate>
             <ButtonGroup orientation='horizontal'>
               <Button
-                disabled={!date || isEqual(date, dateDomain[0])}
+                disabled={!date || isSameMonth(date, dateDomain[0])}
                 variation='base-plain'
                 size='small'
                 useIcon='chevron-left--small'
                 title='Previous day'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: sub(date, { days: 1 }) })}
+                  onAction('date.set', { date: sub(date, { months: 1 }) })}
               >
                 Previous day
               </Button>
               <Button
-                disabled={!date || isEqual(date, dateDomain[1])}
+                disabled={!date || isSameMonth(date, dateDomain[1])}
                 variation='base-plain'
                 size='small'
                 useIcon='chevron-right--small'
                 title='Next day'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: add(date, { days: 1 }) })}
+                  onAction('date.set', { date: add(date, { months: 1 }) })}
               >
                 Next day
               </Button>
@@ -251,7 +220,12 @@ class Timeline extends React.Component {
           </ExploreDataBrowserActions>
         </ExploreDataBrowserHeader>
         <ExploreDataBrowserBody isExpanded={this.state.isExpanded}>
-          {this.renderDataBrowserChart(dateDomain)}
+          <DataBrowserChart
+            selectedDate={date}
+            onAction={onAction}
+            xDomain={dateDomain}
+            swatch={swatch}
+          />
         </ExploreDataBrowserBody>
       </ExploreDataBrowser>
     );
@@ -260,10 +234,10 @@ class Timeline extends React.Component {
 
 Timeline.propTypes = {
   onAction: T.func,
+  compare: T.bool,
   date: T.object,
   layers: T.array,
-  isActive: T.bool,
-  overview: T.array
+  isActive: T.bool
 };
 
 export default Timeline;

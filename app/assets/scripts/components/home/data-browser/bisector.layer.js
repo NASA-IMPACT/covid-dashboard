@@ -1,14 +1,15 @@
 import * as d3 from 'd3';
 import { css } from 'styled-components';
-import { startOfDay, add, getHours } from 'date-fns';
+import { getDaysInMonth, add, getDate, startOfMonth } from 'date-fns';
 
 import { themeVal } from '../../../styles/utils/general';
 
 const roundDate = date => {
-  const h = getHours(date);
-  return h >= 12
-    ? startOfDay(add(date, { days: 1 }))
-    : startOfDay(date);
+  const days = getDaysInMonth(date);
+  const d = getDate(date);
+  return d >= days / 2
+    ? startOfMonth(add(date, { months: 1 }))
+    : startOfMonth(date);
 };
 
 const styles = props => css`
@@ -19,11 +20,13 @@ const styles = props => css`
     }
     .bisector-interact {
       stroke: ${themeVal('color.baseAlphaC')};
-      stroke-width: 1px;
+      stroke-width: 4px;
+      stroke-linecap: round;
     }
     .bisector-select {
-      stroke: #FFFFFF;
-      stroke-width: 1px;
+      stroke: ${themeVal('color.base')};
+      stroke-width: 4px;
+      stroke-linecap: round;
     }
   }
 `;

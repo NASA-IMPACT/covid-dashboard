@@ -106,9 +106,9 @@ export default class About extends React.Component {
             <InpageBodyInner>
               <AboutProse>
                 <h2>The tool</h2>
-                <p>COVID-19 Dashbord Map provides streaming data about the pandemic to inform decisionmakers in government, community leaders, health responders, and the business community.</p>
+                <p>The COVID EO dashbord provides streaming data about the pandemic to inform decisionmakers in government, community leaders, health responders, and the business community.</p>
 
-                <LogoList>
+                {/* <LogoList>
                   <dt>Developed by</dt>
                   <dd>
                     <LogoLink
@@ -124,7 +124,7 @@ export default class About extends React.Component {
                       <span>Development Seed</span>
                     </LogoLink>
                   </dd>
-                </LogoList>
+                </LogoList> */}
               </AboutProse>
             </InpageBodyInner>
           </InpageBody>

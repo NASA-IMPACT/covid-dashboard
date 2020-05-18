@@ -11,8 +11,6 @@ import { headingAlt } from '../../../styles/type/heading';
 
 import debugLayer from './debug.layer';
 import dataPointsLayer from './data-points.layer';
-import dataExtentLayer from './data-extent.layer';
-import bisectorLayer from './bisector.layer';
 import xaxisLayer from './xaxis.layer';
 import yaxisLayer from './yaxis.layer';
 
@@ -24,7 +22,7 @@ const ChartWrapper = styled(SizeAwareElement)`
   svg {
     display: block;
     width: 100%;
-    height: 5rem;
+    height: 15rem;
   }
 
   .axis {
@@ -43,11 +41,9 @@ const ChartWrapper = styled(SizeAwareElement)`
   }
 
   ${debugLayer.styles}
-  /* ${dataPointsLayer.styles} */
-  ${dataExtentLayer.styles}
-  ${bisectorLayer.styles}
+  ${dataPointsLayer.styles}
   ${xaxisLayer.styles}
-  /* ${yaxisLayer.styles} */
+  ${yaxisLayer.styles}
 `;
 
 class DataBrowserChart extends React.Component {
@@ -110,11 +106,9 @@ class DataBrowserChart extends React.Component {
 
     // Axis.
     xaxisLayer.init(this);
-    // yaxisLayer.init(this);
+    yaxisLayer.init(this);
 
-    // dataPointsLayer.init(this);
-    dataExtentLayer.init(this);
-    bisectorLayer.init(this);
+    dataPointsLayer.init(this);
   }
 
   updateChart () {
@@ -129,10 +123,10 @@ class DataBrowserChart extends React.Component {
       .domain(props.xDomain)
       .range([0, width]);
 
-    // this.yScale = d3
-    //   .scaleLinear()
-    //   .domain(props.yDomain)
-    //   .range([height, 10]);
+    this.yScale = d3
+      .scaleLinear()
+      .domain(props.yDomain)
+      .range([height, 10]);
 
     // ---------------------------------------------------
     // Size updates
@@ -143,13 +137,11 @@ class DataBrowserChart extends React.Component {
     dataCanvas.attr('width', width).attr('height', height);
 
     debugLayer.update(this);
-    // dataPointsLayer.update(this);
-    dataExtentLayer.update(this);
-    bisectorLayer.update(this);
+    dataPointsLayer.update(this);
 
     // Axis.
     xaxisLayer.update(this);
-    // yaxisLayer.update(this);
+    yaxisLayer.update(this);
   }
 
   render () {
@@ -167,6 +159,7 @@ class DataBrowserChart extends React.Component {
 
 DataBrowserChart.propTypes = {
   xDomain: T.array,
+  yDomain: T.array,
   swatch: T.string
 };
 

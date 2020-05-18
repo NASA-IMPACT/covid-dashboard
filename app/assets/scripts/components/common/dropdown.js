@@ -480,7 +480,7 @@ export const DropTitle = styled.h6`
 export const DropMenu = styled.ul`
   list-style: none;
   margin: -${glbS} -${glbS} ${glbS} -${glbS};
-  box-shadow: 0 ${themeVal('layout.border')} 0 0 ${themeVal('color.shadow')};
+  box-shadow: 0 ${themeVal('layout.border')} 0 0 ${themeVal('color.baseAlphaA')};
   padding: ${divide(glbS, 2)} 0;
   min-width: 12rem;
   font-family: ${themeVal('type.base.family')};

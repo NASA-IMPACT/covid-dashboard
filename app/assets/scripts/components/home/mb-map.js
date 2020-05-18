@@ -2,11 +2,14 @@ import React from 'react';
 import T from 'prop-types';
 import styled, { withTheme } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
+import CompareMbGL from 'mapbox-gl-compare';
+
+import MapboxControl from '../common/mapbox-react-control';
 
 import config from '../../config';
-import { layerTypes } from './layer-types';
-import MapboxControl from '../common/mapbox-react-control';
+import { layerTypes } from '../common/layers/types';
 import { glsp } from '../../styles/utils/theme-values';
+import mbAoiDraw from './mb-aoi-draw';
 
 const {
   center,
@@ -19,8 +22,11 @@ const {
 
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;
+localStorage.setItem('MapboxAccessToken', config.mbToken);
 
-const MapContainer = styled.div`
+const MapsContainer = styled.div`
+  position: relative;
+  overflow: hidden;
   height: 100%;
 
   /* Styles to accommodate the partner logos */
@@ -51,11 +57,20 @@ const MapContainer = styled.div`
   }
 `;
 
+const SingleMapContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
 class MbMap extends React.Component {
   constructor (props) {
     super(props);
     this.mapContainer = null;
     this.mbMap = null;
+    this.mbDraw = null;
 
     this.adminAreaIdActive = null;
     this.adminAreaIdHover = null;
@@ -67,8 +82,39 @@ class MbMap extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { activeLayers } = this.props;
-    if (prevProps.activeLayers !== activeLayers) {
+    const { activeLayers, compare } = this.props;
+
+    // Compare Maps
+    if (compare !== prevProps.compare) {
+      if (compare) {
+        this.mbMap.resize();
+        this.mbMapComparing = new mapboxgl.Map({
+          attributionControl: false,
+          container: this.mapContainer2,
+          center: center,
+          zoom: zoom || 5,
+          minZoom: minZoom || 4,
+          maxZoom: maxZoom || 9,
+          style: styleUrl,
+          pitchWithRotate: false,
+          // renderWorldCopies: false,
+          dragRotate: false,
+          logoPosition: 'bottom-left'
+        });
+
+        this.compareControl = new CompareMbGL(this.mbMap, this.mbMapComparing, '#container');
+      } else {
+        if (this.compareControl) {
+          this.compareControl.remove();
+          this.compareControl = null;
+          this.mbMapComparing.remove();
+          this.mbMapComparing = null;
+        }
+      }
+    }
+
+    // TODO: Improve how compare is handled, by the layers that have it.
+    if (prevProps.activeLayers !== activeLayers || compare !== prevProps.compare) {
       const toRemove = prevProps.activeLayers.filter(
         (l) => !activeLayers.includes(l)
       );
@@ -80,7 +126,7 @@ class MbMap extends React.Component {
         const layerInfo = this.props.layers.find((l) => l.id === layerId);
         const fns = layerTypes[layerInfo.type];
         if (fns) {
-          return fns.hide(this.mbMap, layerInfo, this.props);
+          return fns.hide(this, layerInfo, prevProps);
         }
         /* eslint-disable-next-line no-console */
         console.error('No functions found for layer type', layerInfo.type);
@@ -90,9 +136,9 @@ class MbMap extends React.Component {
         const layerInfo = this.props.layers.find((l) => l.id === layerId);
         const fns = layerTypes[layerInfo.type];
         if (fns) {
-          fns.show(this.mbMap, layerInfo, this.props);
+          fns.show(this, layerInfo, prevProps);
           if (fns.update) {
-            fns.update(this.mbMap, layerInfo, this.props);
+            fns.update(this, layerInfo, prevProps);
           }
           return;
         }
@@ -106,9 +152,14 @@ class MbMap extends React.Component {
       const layerInfo = this.props.layers.find((l) => l.id === layerId);
       const fns = layerTypes[layerInfo.type];
       if (fns && fns.update) {
-        return fns.update(this.mbMap, layerInfo, this.props);
+        return fns.update(this, layerInfo, prevProps);
       }
     });
+
+    // Handle aoi state props update.
+    if (this.mbDraw) {
+      this.mbDraw.update(prevProps.aoiState, this.props.aoiState);
+    }
   }
 
   initMap () {
@@ -163,6 +214,13 @@ class MbMap extends React.Component {
     // Remove compass.
     document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
 
+    // Setup the AIO drawing functions.
+    if (this.props.aoiState) {
+      this.mbDraw = mbAoiDraw(this.mbMap);
+      const { feature } = this.props.aoiState;
+      this.mbDraw.setup(this.props.onAction, feature ? [feature] : null, this.props.theme);
+    }
+
     this.mbMap.on('load', () => {
       this.props.onAction('map.loaded');
     });
@@ -170,17 +228,25 @@ class MbMap extends React.Component {
 
   render () {
     return (
-      <MapContainer
-        ref={(el) => {
-          this.mapContainer = el;
-        }}
-      />
+      <MapsContainer id='container'>
+        <SingleMapContainer
+          ref={(el) => {
+            this.mapContainer2 = el;
+          }}
+        />
+        <SingleMapContainer
+          ref={(el) => {
+            this.mapContainer = el;
+          }}
+        />
+      </MapsContainer>
     );
   }
 }
 
 MbMap.propTypes = {
   onAction: T.func,
+  compare: T.bool,
   activeLayers: T.array,
   layers: T.array,
   /* eslint-disable-next-line react/no-unused-prop-types */

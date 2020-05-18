@@ -12,6 +12,8 @@ import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
 
 import Button from '../../styles/button/button';
+import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
+import superSitesList from '../super-sites';
 
 const { appTitle, appShortTitle } = config;
 
@@ -117,33 +119,47 @@ class PageHeader extends React.Component {
                   isActive={(match, location) =>
                     match && location.pathname.match(/^\/(areas\/|$)/)}
                   variation='base-plain'
-                  useIcon='map'
                   title='Explore the map'
-                  hideText
                 >
                   <span>Map</span>
                 </Button>
               </li>
               <li>
-                <Button
-                  as={NavLinkFilter}
-                  to='/trends'
-                  variation='base-plain'
-                  useIcon='chart-bars'
-                  title='Explore the trends'
-                  hideText
+                <Dropdown
+                  alignment='right'
+                  direction='down'
+                  triggerElement={
+                    <Button
+                      variation='base-plain'
+                      title='Explore the Super sites'
+                      useIcon={['chevron-down--small', 'after']}
+                    >
+                      <span>Super sites</span>
+                    </Button>
+                  }
                 >
-                  <span>Trends</span>
-                </Button>
+                  <DropTitle>Super sites</DropTitle>
+                  <DropMenu role='menu' selectable>
+                    {superSitesList.map(ss => (
+                      <li key={ss.id}>
+                        <DropMenuItem
+                          as={NavLink}
+                          to={`/super-sites/${ss.id}`}
+                          data-dropdown='click.close'
+                        >
+                          {ss.label}
+                        </DropMenuItem>
+                      </li>
+                    ))}
+                  </DropMenu>
+                </Dropdown>
               </li>
               <li>
                 <Button
                   as={NavLinkFilter}
                   to='/about'
                   variation='base-plain'
-                  useIcon='circle-information'
                   title='View the about page'
-                  hideText
                 >
                   <span>About</span>
                 </Button>
