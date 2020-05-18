@@ -28,6 +28,6 @@ class NO2LongForm extends React.Component {
 
 export default {
   id: 'no2',
-  name: 'Nitrous Dioxide',
+  name: 'Nitrogen Dioxide',
   LongForm: NO2LongForm
 };
