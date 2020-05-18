@@ -7,6 +7,7 @@ import Panel, {
   PanelTitle
 } from '../common/panel';
 import DataLayersBlock from './data-layers-block';
+import FilterAoi from './filter-aoi';
 
 const PrimePanel = styled(Panel)`
   width: 18rem;
@@ -14,7 +15,8 @@ const PrimePanel = styled(Panel)`
 
 class ExpMapPrimePanel extends React.Component {
   render () {
-    const { layers, onAction, onPanelChange, mapLoaded } = this.props;
+    const { layers, onAction, onPanelChange, mapLoaded, aoiState } = this.props;
+
     return (
       <PrimePanel
         collapsible
@@ -26,11 +28,17 @@ class ExpMapPrimePanel extends React.Component {
           </PanelHeadline>
         }
         bodyContent={
-          <DataLayersBlock
-            layers={layers}
-            mapLoaded={mapLoaded}
-            onAction={onAction}
-          />
+          <>
+            <FilterAoi
+              onAction={onAction}
+              aoiState={aoiState}
+            />
+            <DataLayersBlock
+              layers={layers}
+              mapLoaded={mapLoaded}
+              onAction={onAction}
+            />
+          </>
         }
       />
     );
@@ -41,7 +49,8 @@ ExpMapPrimePanel.propTypes = {
   onPanelChange: T.func,
   onAction: T.func,
   layers: T.array,
-  mapLoaded: T.bool
+  mapLoaded: T.bool,
+  aoiState: T.object
 };
 
 export default ExpMapPrimePanel;

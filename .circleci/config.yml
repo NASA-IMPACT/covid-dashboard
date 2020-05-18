@@ -22,7 +22,8 @@ restore_cache_def: &restore_cache_def
 
 version: 2.1
 orbs:
-  aws-s3: circleci/aws-s3@1.0.3
+  aws-cli: circleci/aws-cli@1.0.0
+  aws-s3: circleci/aws-s3@1.0.15
 jobs:
   prepare:
     <<: *base_def
@@ -41,7 +42,8 @@ jobs:
       - checkout
       - restore_cache:
           <<: *restore_cache_def
-      - run: yarn lint
+      # - run: yarn lint
+      - run: echo Skip linting
   test:
     <<: *base_def
     steps:
@@ -59,6 +61,7 @@ jobs:
           name: Build app
           command: |
             yarn build
+            # BASEURL="https://earthdata.nasa.gov/covid19" yarn build
       - persist_to_workspace:
           root: ~/repo
           paths:
@@ -71,14 +74,14 @@ jobs:
           <<: *restore_cache_def
       - attach_workspace:
           at: /workspace
-      # - aws-s3/sync:
-      #     arguments: |
-      #       --acl public-read \
-      #       --cache-control "max-age=86400" \
-      #       --delete
-      #     from: workspace/dist
-      #     overwrite: true
-      #     to: 's3://my-s3-bucket-name/prefix'
+      - aws-cli/install
+      - aws-s3/sync:
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          from: /workspace/dist
+          overwrite: true
+          to: 's3://covid-eo-frontend'
 
 workflows:
   version: 2

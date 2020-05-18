@@ -10,7 +10,7 @@ const _rgba = stylizeFunction(rgba);
 
 const PageFoot = styled.footer`
   ${visuallyHidden()}
-  background-color: ${themeVal('color.mist')};
+  background-color: ${themeVal('color.baseAlphaA')};
   font-size: 0.875rem;
   line-height: 1rem;
 `;

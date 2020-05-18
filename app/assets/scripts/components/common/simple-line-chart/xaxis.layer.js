@@ -18,6 +18,7 @@ export default {
     const { height } = ctx.getSize();
 
     const xAxis = d3fc.axisBottom(xScale)
+      .tickValues(xScale.domain())
       .tickFormat(d3.timeFormat('%b %y\''));
 
     svg.select('.x.axis')
