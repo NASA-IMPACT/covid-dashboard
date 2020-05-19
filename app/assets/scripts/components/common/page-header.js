@@ -29,7 +29,7 @@ const PageHead = styled.header`
 
 const PageHeadInner = styled.div`
   display: flex;
-  padding: ${glsp()};
+  padding: ${glsp(0.75)};
   align-items: center;
   margin: 0 auto;
   height: 100%;
