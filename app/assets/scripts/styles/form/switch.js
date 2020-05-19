@@ -1,9 +1,12 @@
 import React from 'react';
 import T from 'prop-types';
 import styled, { css } from 'styled-components';
+import { rgba } from 'polished';
 
 import { visuallyHidden, disabled as disabledHelper } from '../helpers';
 import { themeVal } from '../utils/general';
+import { buttonVariationHoverCss, buttonVariationBaseCss } from '../button/button';
+import collecticon from '../collecticons';
 
 /**
  * Renders a FormSwitch component.
@@ -114,44 +117,75 @@ export const FormSwitch = styled(FormSwitchElement)`
 
   ${FormOptionUi} {
     margin: 0.25rem 0;
-    width: 2rem;
+    width: 2.25rem;
     height: 1rem;
     border-radius: ${themeVal('shape.ellipsoid')};
-    background-color: ${themeVal('color.baseAlphaC')};
-    border: ${themeVal('layout.border')} solid ${themeVal('color.baseAlphaB')};
+    background: ${themeVal('color.baseAlphaB')};
+    box-shadow: inset 0 0 0 ${themeVal('layout.border')} ${themeVal('color.baseAlphaB')};
 
     &::before {
+      ${props =>
+      buttonVariationBaseCss(
+        props.theme.type.base.color,
+        'raised',
+        'light',
+        props
+      )}
       position: absolute;
+      z-index: 2;
       top: 50%;
       left: 0;
       z-index: 2;
       content: '';
-      height: 0.75rem;
-      width: 0.75rem;
+      height: 1.25rem;
+      width: 1.25rem;
       border-radius: ${themeVal('shape.ellipsoid')};
-      transform: translate(0.075rem, -50%);
+      transform: translate(0, -50%);
       transition: all 0.24s ease 0s;
-      background: ${themeVal('color.surface')};
-      box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
+    }
+
+    &::after {
+      ${collecticon('eye-disabled')}
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 100%;
+      transform: translate(-100%, -50%);
+      transition: all 0.24s ease 0s;
+      width: 1.25rem;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: ${themeVal('type.base.bold')};
+      line-height: 1;
+      color: ${themeVal('color.baseLight')};
+      text-align: center;
+      opacity: 0;
     }
   }
 
-  &:hover ${/* sc-selector */FormOptionUi} {
-    border-color: ${themeVal('color.baseAlphaC')};
+  &:hover ${/* sc-selector */FormOptionUi}::before {
+    ${props =>
+    buttonVariationHoverCss(
+      props.theme.type.base.color,
+      'raised',
+      'light',
+      props
+    )}
   }
 
   ${({ checked }) => (checked ? `${FormOptionUi},` : '')}
   input:checked ~ ${FormOptionUi} { /* stylelint-disable-line */
-    background: ${themeVal('color.baseAlphaD')};
-    border-color: ${themeVal('color.baseAlphaB')};
-
-    &:hover {
-      border-color: ${themeVal('color.baseAlphaC')};
-    }
+    background: ${themeVal('color.link')};
 
     &::before {
       left: 100%;
-      transform: translate(calc(-100% - 0.075rem), -50%);
+      transform: translate(-100%, -50%);
+    }
+
+    &::after {
+      ${collecticon('eye')}
+      left: 0;
+      transform: translate(0, -50%);
     }
   }
 `;
