@@ -77,8 +77,8 @@ const PageTitle = styled.h1`
 
   sup {
     grid-row: 1;
-    font-size: 0.75rem;
-    font-weight: ${themeVal('type.base.bold')};
+    font-size: 0.875rem;
+    font-weight: ${themeVal('type.base.extrabold')};
     line-height: 1rem;
     text-transform: uppercase;
     align-self: end;
@@ -96,6 +96,7 @@ const PageTitle = styled.h1`
     line-height: 1.5rem;
     font-weight: ${themeVal('type.base.light')};
     align-self: center;
+    letter-spacing: -0.025em;
   }
 
   sub {

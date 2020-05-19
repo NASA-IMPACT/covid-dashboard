@@ -44,19 +44,19 @@ const type = {
     light: 300,
     regular: 400,
     medium: 400,
-    semibold: 600,
     bold: 700,
+    extrabold: 800,
     antialiasing: true
   },
   heading: {
     family: '"Open Sans", sans-serif',
     style: 'normal',
-    weight: 600,
+    weight: 700,
     light: 300,
     regular: 400,
     medium: 400,
-    semibold: 600,
-    bold: 700
+    bold: 700,
+    extrabold: 800
   }
 };
 
