@@ -1,7 +1,6 @@
 import React from 'react';
 import T from 'prop-types';
 import styled, { css } from 'styled-components';
-import { rgba } from 'polished';
 
 import { visuallyHidden, disabled as disabledHelper } from '../helpers';
 import { themeVal } from '../utils/general';
