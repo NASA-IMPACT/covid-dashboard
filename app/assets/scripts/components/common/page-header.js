@@ -31,7 +31,7 @@ const PageHead = styled.header`
 
 const PageHeadInner = styled.div`
   display: flex;
-  padding: 0 ${glsp(0.5)};
+  padding: 0 ${glsp()};
   align-items: center;
   margin: 0 auto;
   height: 100%;
