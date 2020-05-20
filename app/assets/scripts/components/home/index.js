@@ -2,8 +2,8 @@ import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router';
 import { format, isBefore, sub } from 'date-fns';
+import get from 'lodash.get';
 
 import App from '../common/app';
 import ExpMapPrimePanel from './prime-panel';
@@ -26,7 +26,6 @@ import {
   fetchTimeSeriesDaily as fetchTimeSeriesDailyAction,
   fetchTimeSeriesOverview as fetchTimeSeriesOverviewAction
 } from '../../redux/time-series';
-import { fetchLayerData as fetchLayerDataAction } from '../../redux/layer-data';
 import { wrapApiResult, getFromState } from '../../redux/reduxeed';
 import {
   fetchCogTimeData as fetchCogTimeDataAction,
@@ -106,6 +105,10 @@ class Home extends React.Component {
 
     this.state = {
       activeLayers: [],
+      // Additional data that needs to be tracked for the map layers, like the
+      // knob position on a adjustable gradient legend.
+      // Values will be objects keyed by the layer id.
+      layersSettings: {},
       timelineDate: null,
       mapLoaded: false,
       compare: false,
@@ -124,11 +127,16 @@ class Home extends React.Component {
   }
 
   getLayersWithState () {
-    const { activeLayers } = this.state;
-    return mapLayers.map((l) => ({
-      ...l,
-      visible: activeLayers.includes(l.id)
-    }));
+    const { activeLayers, layersSettings } = this.state;
+    return mapLayers.map((l) => {
+      // Get additional propertied from the layerData array.
+      const extra = layersSettings[l.id] || {};
+      return {
+        ...l,
+        visible: activeLayers.includes(l.id),
+        ...extra
+      };
+    });
   }
 
   resizeMap () {
@@ -164,6 +172,22 @@ class Home extends React.Component {
     switch (action) {
       case 'layer.toggle':
         this.toggleLayer(payload);
+        break;
+      case 'layer.legend-knob':
+        this.setState(state => ({
+          layersSettings: {
+            ...state.layersSettings,
+            [payload.id]: {
+              ...state.layersSettings[payload.id],
+              knobPos: payload.value,
+              // If the event was the end of a drag, set the current value for
+              // the map to pick up.
+              knobCurrPos: payload.end
+                ? payload.value
+                : get(state, ['layersSettings', payload.id, 'knobCurrPos'])
+            }
+          }
+        }));
         break;
       case 'compare.set':
         this.setState({ compare: payload.compare });
@@ -284,25 +308,11 @@ class Home extends React.Component {
   }
 
   async toggleLayer (layer) {
-    const { layerData, fetchLayerData, fetchTimeSeriesOverview } = this.props;
+    const { fetchTimeSeriesOverview } = this.props;
     const layerId = layer.id;
 
     const { activeLayers } = this.state;
     const isEnabled = activeLayers.includes(layerId);
-
-    if (layer.type === 'feature-data') {
-      // Check if there layer data for this layer.
-      // If not, load the data and only enable the layer if successful.
-      const data = layerData[layerId];
-      if (!data || data.hasError()) {
-        showGlobalLoading();
-        const res = await fetchLayerData(layerId);
-        hideGlobalLoading();
-        if (res.error) return;
-      } else if (!data.isReady()) {
-        return;
-      }
-    }
 
     if (layer.type === 'timeseries') {
       // Check if there layer data for this layer.
@@ -338,7 +348,27 @@ class Home extends React.Component {
     }
 
     if (layer.type === 'raster-timeseries') {
-      this.setState({ timelineDate: utcDate(layer.domain[1]) });
+      this.setState(state => {
+        // Check if there's a knob value set. If not, means that this is the
+        // first time it is enabled and we need to set a default.
+        const knobCurrPos = get(state, ['layersSettings', layer.id, 'knobCurrPos'], null);
+        const knobData = knobCurrPos === null
+          ? {
+            knobPos: 50,
+            knobCurrPos: 50
+          }
+          : {};
+        return {
+          timelineDate: utcDate(layer.domain[1]),
+          layersSettings: {
+            ...state.layersSettings,
+            [layer.id]: {
+              ...state.layersSettings[layer.id],
+              ...knobData
+            }
+          }
+        };
+      });
     }
 
     // Hide any layers that are not compatible with the current one.
@@ -376,7 +406,6 @@ class Home extends React.Component {
   }
 
   render () {
-    const { layerData } = this.props;
     const adminAreaFeatId = this.props.match.params.id;
 
     const layers = this.getLayersWithState();
@@ -409,7 +438,7 @@ class Home extends React.Component {
                   onAction={this.onMapAction}
                   layers={layers}
                   activeLayers={this.state.activeLayers}
-                  layerData={layerData}
+                  layerData={this.state.layersSettings}
                   selectedAdminArea={adminAreaFeatId}
                   date={this.state.timelineDate}
                   aoiState={this.state.aoi}
@@ -450,13 +479,11 @@ Home.propTypes = {
   // fetchConfig: T.func,
   // fetchAdminAreas: T.func,
   // fetchSingleAdminArea: T.func,
-  fetchLayerData: T.func,
   fetchTimeSeriesDaily: T.func,
   fetchTimeSeriesOverview: T.func,
   fetchCogTimeData: T.func,
   invalidateCogTimeData: T.func,
   match: T.object,
-  layerData: T.object,
   // timeSeriesDaily: T.object,
   timeSeriesOverview: T.object,
   no2CogTimeData: T.object
@@ -464,7 +491,6 @@ Home.propTypes = {
 
 function mapStateToProps (state, props) {
   return {
-    layerData: wrapApiResult(state.layerData, true),
     timeSeriesDaily: wrapApiResult(state.timeSeries.daily, true),
     timeSeriesOverview: wrapApiResult(state.timeSeries.overview, true),
     no2CogTimeData: wrapApiResult(getFromState(state, ['cogTimeData', 'no2']))
@@ -472,7 +498,6 @@ function mapStateToProps (state, props) {
 }
 
 const mapDispatchToProps = {
-  fetchLayerData: fetchLayerDataAction,
   fetchTimeSeriesDaily: fetchTimeSeriesDailyAction,
   fetchTimeSeriesOverview: fetchTimeSeriesOverviewAction,
   fetchCogTimeData: fetchCogTimeDataAction,
