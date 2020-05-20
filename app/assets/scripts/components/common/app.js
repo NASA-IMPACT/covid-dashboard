@@ -15,7 +15,7 @@ const { appTitle, appDescription } = config;
 
 const Page = styled(SizeAwareElement)`
   display: grid;
-  grid-template-rows: 3rem auto 0;
+  grid-template-rows: minmax(3rem, min-content) auto 0;
   min-height: 100vh;
 `;
 

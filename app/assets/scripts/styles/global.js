@@ -135,8 +135,8 @@ const baseStyles = css`
      ========================================================================== */
 
   ::selection {
-    background-color: ${_rgba(themeVal('color.base'), 0.32)};
-    color: ${themeVal('color.base')};
+    background-color: ${_rgba(themeVal('color.base'), 0.64)};
+    color: ${themeVal('color.baseLight')};
   }
 
   #root {

@@ -44,6 +44,9 @@ if (process.env.CIRCLE_BRANCH) {
 const isDev = () => process.env.NODE_ENV === 'development';
 const readPackage = () => JSON.parse(fs.readFileSync('package.json'));
 
+// Set the version in an env variable so it gets replaced in the config.
+process.env.APP_VERSION = readPackage().version;
+
 // /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Callable tasks ----------------------------------//
 // ---------------------------------------------------------------------------//
