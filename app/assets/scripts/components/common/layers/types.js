@@ -8,14 +8,14 @@ const prepDateSource = (source, date) => ({
 
 const prepGammaSource = (source, knobPos) => {
   // Gamma is calculated with the following scale:
-  // domain: 0-100  range: 2-0
+  // domain: 0-100  range: 2-0.1
   // The higher the Knob, the lower the gamma.
   // This is a linear scale of type y = -mx + b
   // y = -0.02x + 2;
 
   return {
     ...source,
-    tiles: source.tiles.map((t) => t.replace('{gamma}', -0.02 * knobPos + 2))
+    tiles: source.tiles.map((t) => t.replace('{gamma}', -0.019 * knobPos + 2))
   };
 };
 

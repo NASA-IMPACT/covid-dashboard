@@ -1,15 +1,15 @@
 import * as d3 from 'd3';
 import { css } from 'styled-components';
+import { tint } from 'polished';
+
+import { themeVal, stylizeFunction } from '../../../styles/utils/general';
+
+const _tint = stylizeFunction(tint);
 
 const styles = props => css`
   .knob {
-    pointer-events: none;
     fill: #fff;
-  }
-
-  .knob-ghost {
-    fill: #fff;
-    fill-opacity: 0.32;
+    stroke: ${_tint(0.48, themeVal('color.base'))};
     cursor: grab;
 
     &:active {
@@ -18,29 +18,28 @@ const styles = props => css`
   }
 `;
 
+const knobSize = 10;
+const knobTip = knobSize * 1.5;
+const knobPoints = [
+  [0, 0],
+  [knobSize, 0],
+  [knobSize, knobSize],
+  [knobSize / 2, knobTip],
+  [0, knobSize],
+  [0, 0]
+];
+
 export default {
   styles,
   init: ctx => {
     const controls = ctx.dataCanvas.append('g')
       .attr('class', 'controls');
 
-    controls.append('circle')
-      .attr('class', 'knob-ghost')
-      .attr('r', 6)
-      .on('mouseover', () => {
-        d3.select('.controls .knob')
-          .transition()
-          .attr('r', 5);
-      })
-      .on('mouseout', () => {
-        d3.select('.controls .knob')
-          .transition()
-          .attr('r', 3);
-      });
+    const knob = d3.line();
 
-    controls.append('circle')
+    controls.append('path')
       .attr('class', 'knob')
-      .attr('r', 3);
+      .attr('d', knob(knobPoints));
   },
 
   update: ctx => {
@@ -60,12 +59,7 @@ export default {
       .on('end', () => dragEvent(true));
 
     dataCanvas.select('.knob')
-      .attr('cx', xScale(props.knobPos))
-      .attr('cy', height - trackSize / 2);
-
-    dataCanvas.select('.knob-ghost')
-      .attr('cx', xScale(props.knobPos))
-      .attr('cy', height - trackSize / 2)
+      .attr('transform', `translate(${xScale(props.knobPos) - knobSize / 2}, ${height - trackSize / 2 - knobTip})`)
       .call(dragger);
   }
 };

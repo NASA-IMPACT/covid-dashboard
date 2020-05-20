@@ -13,7 +13,7 @@ const ChartWrapper = styled.div`
   svg {
     display: block;
     width: 100%;
-    height: 0.5rem;
+    height: 1.25rem;
   }
 
   ${trackLayer.styles}
@@ -23,7 +23,7 @@ const ChartWrapper = styled.div`
 class DataBrowserChart extends React.Component {
   constructor (props) {
     super(props);
-    this.margin = { top: 0, right: 4, bottom: 0, left: 4 };
+    this.margin = { top: 0, right: 8, bottom: 0, left: 8 };
     // Control whether the chart was rendered.
     // The size aware element fires a onChange event once it is rendered
     // But at that time the chart is not ready yet so we can't update the size.
