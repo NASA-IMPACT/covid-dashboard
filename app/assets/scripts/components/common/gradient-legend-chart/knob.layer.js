@@ -26,7 +26,17 @@ export default {
 
     controls.append('circle')
       .attr('class', 'knob-ghost')
-      .attr('r', 6);
+      .attr('r', 6)
+      .on('mouseover', () => {
+        d3.select('.controls .knob')
+          .transition()
+          .attr('r', 5);
+      })
+      .on('mouseout', () => {
+        d3.select('.controls .knob')
+          .transition()
+          .attr('r', 3);
+      });
 
     controls.append('circle')
       .attr('class', 'knob')

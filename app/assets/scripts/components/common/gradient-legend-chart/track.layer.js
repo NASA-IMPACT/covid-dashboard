@@ -56,7 +56,23 @@ export default {
       .attr('x2', width)
       .attr('y2', height);
 
-    const gradientStops = trackGradient.selectAll('.stop').data(props.stops);
+    // We always need at lest 3 stops, since the first and last are fixed it's
+    // the middle one that moved and makes the gradient shift.
+    // When we only have 2, we need to infer the middle one.
+    let stops = props.stops;
+    if (stops.length === 2) {
+      const stopsScale = d3.scaleLinear()
+        .domain([0, 100])
+        .range(stops);
+
+      stops = [
+        stops[0],
+        stopsScale(50),
+        stops[1]
+      ];
+    }
+
+    const gradientStops = trackGradient.selectAll('.stop').data(stops);
     // Remove old.
     gradientStops.exit().remove();
     // Handle new.
