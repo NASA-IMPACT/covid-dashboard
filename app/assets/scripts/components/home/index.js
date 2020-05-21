@@ -456,6 +456,7 @@ class Home extends React.Component {
                   date={this.state.timelineDate}
                   compare={this.state.compare}
                   onAction={this.onPanelAction}
+                  onSizeChange={this.resizeMap}
                 />
               </ExploreCarto>
               <ExpMapSecPanel

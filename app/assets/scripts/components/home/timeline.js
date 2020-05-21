@@ -139,6 +139,15 @@ class Timeline extends React.Component {
     };
   }
 
+  componentDidUpdate (prevProps, prevState) {
+    if (
+      prevProps.isActive !== this.props.isActive ||
+      prevState.isExpanded !== this.state.isExpanded
+    ) {
+      this.props.onSizeChange && this.props.onSizeChange();
+    }
+  }
+
   render () {
     const { date, onAction, isActive, layers, compare } = this.props;
 
@@ -234,7 +243,7 @@ class Timeline extends React.Component {
 
 Timeline.propTypes = {
   onAction: T.func,
-  compare: T.bool,
+  onSizeChange: T.func,
   date: T.object,
   layers: T.array,
   isActive: T.bool
