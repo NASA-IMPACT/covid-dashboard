@@ -40,7 +40,7 @@ const replaceRasterTiles = (theMap, sourceId, tiles) => {
 export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
-      const { mbMap, mbMapComparing, props } = ctx;
+      const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
       const { id, source } = layerInfo;
       const prevLayerInfo = prevProps.layers.find(l => l.id === layerInfo.id);
       const { date, comparing } = props;
@@ -64,7 +64,7 @@ export const layerTypes = {
       if (!mbMap.getSource(id)) return;
 
       // If we're comparing, and the compare map is not loaded.
-      if (comparing && !mbMapComparing.isStyleLoaded()) return;
+      if (comparing && !mbMapComparingLoaded) return;
 
       // END update checks.
 

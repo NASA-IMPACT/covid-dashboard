@@ -96,6 +96,7 @@ class MbMap extends React.Component {
         });
 
         this.mbMapComparing.once('load', () => {
+          this.mbMapComparingLoaded = true;
           this.updateActiveLayers(prevProps);
         });
 
@@ -106,6 +107,7 @@ class MbMap extends React.Component {
           this.compareControl = null;
           this.mbMapComparing.remove();
           this.mbMapComparing = null;
+          this.mbMapComparingLoaded = false;
         }
       }
     }

@@ -110,10 +110,10 @@ class Root extends React.Component {
                   <Route path='*' component={UhOh} />
                 </Switch>
                 <GlobalLoading />
-              <ReactTooltip
-                effect='solid'
-                className='type-primary'
-              />
+                <ReactTooltip
+                  effect='solid'
+                  className='type-primary'
+                />
               </SizeAwareElement>
             </ErrorBoundary>
           </ThemeProvider>
