@@ -1,9 +1,29 @@
 import { format, sub } from 'date-fns';
+import get from 'lodash.get';
 
 const prepDateSource = (source, date) => ({
   ...source,
   tiles: source.tiles.map((t) => t.replace('{date}', format(date, 'yyyyMM')))
 });
+
+const prepGammaSource = (source, knobPos) => {
+  // Gamma is calculated with the following scale:
+  // domain: 0-100  range: 2-0.1
+  // The higher the Knob, the lower the gamma.
+  // This is a linear scale of type y = -mx + b
+  // y = -0.02x + 2;
+
+  return {
+    ...source,
+    tiles: source.tiles.map((t) => t.replace('{gamma}', -0.019 * knobPos + 2))
+  };
+};
+
+const prepSource = (source, date, knobPos) => {
+  source = prepDateSource(source, date);
+  source = prepGammaSource(source, knobPos);
+  return source;
+};
 
 const replaceRasterTiles = (theMap, sourceId, tiles) => {
   // https://github.com/mapbox/mapbox-gl-js/issues/2941
@@ -24,18 +44,23 @@ export const layerTypes = {
       const { id, source } = layerInfo;
       const { date, compare } = props;
 
+      const knobPos = get(props, ['layerData', id, 'knobCurrPos']);
+      const knobPosPrev = get(prevProps, ['layerData', id, 'knobCurrPos']);
+
       if (
         prevProps.date &&
         date.getTime() === prevProps.date.getTime() &&
-        compare === prevProps.compare
+        compare === prevProps.compare &&
+        knobPos === knobPosPrev
       ) { return; }
 
       if (mbMap.getSource(id)) {
-        const tiles = prepDateSource(source, date).tiles;
+        const tiles = prepSource(source, date, knobPos).tiles;
+
         replaceRasterTiles(mbMap, id, tiles);
 
         if (compare) {
-          const source5years = prepDateSource(source, sub(date, { years: 5 }));
+          const source5years = prepSource(source, sub(date, { years: 5 }), knobPos);
           if (mbMapComparing.getSource(id)) {
             replaceRasterTiles(mbMapComparing, id, source5years.tiles);
           } else {
@@ -72,7 +97,8 @@ export const layerTypes = {
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
-        mbMap.addSource(id, prepDateSource(source, date));
+        const knobPos = get(props, ['layerData', id, 'knobCurrPos']);
+        mbMap.addSource(id, prepSource(source, date, knobPos));
         mbMap.addLayer(
           {
             id: id,

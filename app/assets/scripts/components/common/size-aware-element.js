@@ -56,7 +56,7 @@ class SizeAwareElement extends React.Component {
 
 SizeAwareElement.propTypes = {
   onChange: T.func,
-  element: T.string,
+  element: T.elementType,
   children: T.node
 };
 

@@ -39,12 +39,14 @@ class DataLayersBlock extends React.Component {
                         active={l.visible}
                         swatchColor={get(l, 'swatch.color')}
                         swatchName={get(l, 'swatch.name')}
-                        mapStyle={l.mapStyle}
+                        dataOrder={l.dataOrder}
                         info={l.info}
                         legend={l.legend}
                         isExpanded={checkExpanded(idx)}
                         setExpanded={v => setExpanded(idx, v)}
                         onToggleClick={() => onAction('layer.toggle', l)}
+                        onLegendKnobChange={(payload) => onAction('layer.legend-knob', { id: l.id, ...payload })}
+                        knobPos={l.knobPos}
                       />
                     </li>
                   ))}

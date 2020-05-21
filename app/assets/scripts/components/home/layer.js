@@ -5,12 +5,14 @@ import styled from 'styled-components';
 import { themeVal } from '../../styles/utils/general';
 import { visuallyHidden, truncated } from '../../styles/helpers';
 import { glsp } from '../../styles/utils/theme-values';
-import Prose from '../../styles/type/prose';
 import { headingAlt } from '../../styles/type/heading';
-import Button from '../../styles/button/button';
-import { FormSwitch } from '../../styles/form/switch';
-import { AccordionFold } from '../common/accordion';
 import { formatThousands } from '../../utils/format';
+
+import Prose from '../../styles/type/prose';
+import { FormSwitch } from '../../styles/form/switch';
+import Button from '../../styles/button/button';
+import { AccordionFold } from '../common/accordion';
+import GradientChart from '../common/gradient-legend-chart/chart';
 
 const makeGradient = (stops) => {
   const d = 100 / stops.length - 1;
@@ -47,10 +49,6 @@ const LayerTitle = styled.h1`
 const LayerSubtitle = styled.p`
   ${visuallyHidden()}
 `;
-  // ${headingAlt()}
-  // ${truncated()}
-  // font-size: 0.75rem;
-  // line-height: 1rem;
 
 const LayerSwatch = styled.span`
   position: absolute;
@@ -85,16 +83,6 @@ const LayerLegend = styled.div`
   grid-row: 2;
   grid-column: 1 / span 2;
 
-  dt {
-    display: block;
-    font-size: 0;
-    height: 0.5rem;
-    border-radius: ${themeVal('shape.rounded')};
-    background: ${({ stops }) => makeGradient(stops)};
-    margin: 0 0 ${glsp(1 / 8)} 0;
-    box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
-  }
-
   dd {
     ${headingAlt()}
     font-size: 0.75rem;
@@ -106,6 +94,16 @@ const LayerLegend = styled.div`
       opacity: 0;
     }
   }
+`;
+
+const LayerLegendGradientTrack = styled.dt`
+  display: block;
+  font-size: 0;
+  height: 0.5rem;
+  border-radius: ${themeVal('shape.rounded')};
+  background: ${({ stops }) => makeGradient(stops)};
+  margin: 0 0 ${glsp(1 / 8)} 0;
+  box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
 `;
 
 const LayerLegendTitle = styled.h2`
@@ -134,29 +132,22 @@ const typesSubtitles = {
 };
 
 class Layer extends React.Component {
-  render () {
+  renderLegend () {
     const {
-      id,
-      label,
-      type,
-      disabled,
-      active,
-      swatchColor,
-      swatchName,
-      mapStyle,
-      info,
+      dataOrder,
       legend,
-      onToggleClick,
-      isExpanded,
-      setExpanded
+      knobPos,
+      onLegendKnobChange
     } = this.props;
+
+    if (!legend) return null;
 
     let defaultStops;
     // Two default styles:
-    // - pos-neg - where a high value needs to be highlighted (high % of 65+)
-    // - neg-pos - where low values are highlighted (m2 living area per person)
-    switch (mapStyle) {
-      case ('neg-pos'):
+    // - highlight-high - where a high value needs to be highlighted (high % of 65+)
+    // - highlight-low - where low values are highlighted (m2 living area per person)
+    switch (dataOrder) {
+      case ('highlight-low'):
         defaultStops = [
           'hsla(105, 91%, 67%, 0.69)',
           'hsla(173, 75%, 66%, 0.69)',
@@ -175,9 +166,63 @@ class Layer extends React.Component {
         ];
     }
 
-    const stops = legend && legend.stops && legend.stops !== 'default'
+    const stops = legend.stops && legend.stops !== 'default'
       ? legend.stops
       : defaultStops;
+
+    if (legend.type === 'gradient-adjustable') {
+      return (
+        <LayerLegend>
+          <LayerLegendTitle>Legend</LayerLegendTitle>
+          <dl>
+            <dt>
+              <GradientChart
+                onAction={(a, p) => {
+                  onLegendKnobChange(p);
+                }}
+                stops={stops}
+                knobPos={knobPos !== undefined ? knobPos : 50}
+              />
+            </dt>
+            <dd>
+              <span>{printLegendVal(legend.min)}</span>
+              <i> – </i>
+              <span>{printLegendVal(legend.max)}</span>
+            </dd>
+          </dl>
+        </LayerLegend>
+      );
+    }
+
+    return (
+      <LayerLegend>
+        <LayerLegendTitle>Legend</LayerLegendTitle>
+        <dl>
+          <LayerLegendGradientTrack stops={stops}>Gradient</LayerLegendGradientTrack>
+          <dd>
+            <span>{printLegendVal(legend.min)}</span>
+            <i> – </i>
+            <span>{printLegendVal(legend.max)}</span>
+          </dd>
+        </dl>
+      </LayerLegend>
+    );
+  }
+
+  render () {
+    const {
+      id,
+      label,
+      type,
+      disabled,
+      active,
+      swatchColor,
+      swatchName,
+      info,
+      onToggleClick,
+      isExpanded,
+      setExpanded
+    } = this.props;
 
     return (
       <LayerSelf
@@ -216,19 +261,7 @@ class Layer extends React.Component {
                 Toggle layer visibility
               </FormSwitch>
             </LayerToolbar>
-            {legend && (
-              <LayerLegend stops={stops}>
-                <LayerLegendTitle>Legend</LayerLegendTitle>
-                <dl>
-                  <dt>Gradient</dt>
-                  <dd>
-                    <span>{printLegendVal(legend.min)}</span>
-                    <i> – </i>
-                    <span>{printLegendVal(legend.max)}</span>
-                  </dd>
-                </dl>
-              </LayerLegend>
-            )}
+            {this.renderLegend()}
           </LayerHeader>
         )}
         renderBody={() => (
@@ -249,12 +282,14 @@ Layer.propTypes = {
   active: T.bool,
   swatchColor: T.string,
   swatchName: T.string,
-  mapStyle: T.string,
+  dataOrder: T.string,
   info: T.node,
   legend: T.object,
   onToggleClick: T.func,
   isExpanded: T.bool,
-  setExpanded: T.func
+  setExpanded: T.func,
+  onLegendKnobChange: T.func,
+  knobPos: T.number
 };
 
 export default Layer;
