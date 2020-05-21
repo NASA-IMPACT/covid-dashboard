@@ -140,10 +140,15 @@ class Home extends React.Component {
   }
 
   resizeMap () {
-    if (this.mbMapRef.current) {
+    const component = this.mbMapRef.current;
+    if (component) {
       // Delay execution to give the panel animation time to finish.
       setTimeout(() => {
-        this.mbMapRef.current.mbMap.resize();
+        component.mbMap.resize();
+        // Also resize the compare map if it exists.
+        if (component.mbMapComparing) {
+          component.mbMapComparing.resize();
+        }
       }, 200);
     }
   }
