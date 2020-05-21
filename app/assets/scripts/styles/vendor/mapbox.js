@@ -221,4 +221,15 @@ export default () => css`
       text-decoration: none;
     }
   }
+
+  /* SWIPE COMPARE styles */
+  .mapboxgl-compare .compare-swiper-vertical {
+    width: 3rem;
+    height: 3rem;
+    left: 0;
+    margin-top: 0;
+    transform: translate(-50%,-50%);
+    background-size: 3rem;
+    background-color: ${themeVal('color.primary')};
+  }
 `;

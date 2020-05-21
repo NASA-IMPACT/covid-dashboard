@@ -1,3 +1,5 @@
+import { format, sub } from 'date-fns';
+
 export default {
   id: 'no2',
   name: 'Nitrogen dioxide',
@@ -12,6 +14,11 @@ export default {
     tiles: [
       'https://8ib71h0627.execute-api.us-east-1.amazonaws.com/v1/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_{date}_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1e16&color_map=magma&color_formula=gamma r {gamma}'
     ]
+  },
+  compare: {
+    enabled: true,
+    help: 'Compare with baseline (5 years ago)',
+    mapLabel: date => `${format(date, "MMM yy''")} — ${format(sub(date, { years: 5 }), "MMM yy''")}`
   },
   swatch: {
     color: '#411073',

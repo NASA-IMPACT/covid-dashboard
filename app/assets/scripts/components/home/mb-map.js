@@ -4,8 +4,6 @@ import styled, { withTheme } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
 
-import MapboxControl from '../common/mapbox-react-control';
-
 import config from '../../config';
 import { layerTypes } from '../common/layers/types';
 import { glsp } from '../../styles/utils/theme-values';
@@ -16,8 +14,7 @@ const {
   zoom,
   minZoom,
   maxZoom,
-  styleUrl,
-  logos
+  styleUrl
 } = config.map;
 
 // Set mapbox token.
@@ -71,9 +68,6 @@ class MbMap extends React.Component {
     this.mapContainer = null;
     this.mbMap = null;
     this.mbDraw = null;
-
-    this.adminAreaIdActive = null;
-    this.adminAreaIdHover = null;
   }
 
   componentDidMount () {
@@ -82,24 +76,27 @@ class MbMap extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { activeLayers, compare } = this.props;
+    const { activeLayers, comparing } = this.props;
 
     // Compare Maps
-    if (compare !== prevProps.compare) {
-      if (compare) {
+    if (comparing !== prevProps.comparing) {
+      if (comparing) {
         this.mbMap.resize();
         this.mbMapComparing = new mapboxgl.Map({
           attributionControl: false,
-          container: this.mapContainer2,
-          center: center,
-          zoom: zoom || 5,
+          container: this.mapContainerComparing,
+          center: this.mbMap.getCenter(),
+          zoom: this.mbMap.getZoom(),
           minZoom: minZoom || 4,
           maxZoom: maxZoom || 9,
           style: styleUrl,
           pitchWithRotate: false,
-          // renderWorldCopies: false,
           dragRotate: false,
           logoPosition: 'bottom-left'
+        });
+
+        this.mbMapComparing.once('load', () => {
+          this.updateActiveLayers(prevProps);
         });
 
         this.compareControl = new CompareMbGL(this.mbMap, this.mbMapComparing, '#container');
@@ -114,7 +111,7 @@ class MbMap extends React.Component {
     }
 
     // TODO: Improve how compare is handled, by the layers that have it.
-    if (prevProps.activeLayers !== activeLayers || compare !== prevProps.compare) {
+    if (prevProps.activeLayers !== activeLayers || comparing !== prevProps.comparing) {
       const toRemove = prevProps.activeLayers.filter(
         (l) => !activeLayers.includes(l)
       );
@@ -148,18 +145,22 @@ class MbMap extends React.Component {
     }
 
     // Update all active layers
-    activeLayers.forEach((layerId) => {
+    this.updateActiveLayers(prevProps);
+
+    // Handle aoi state props update.
+    if (this.mbDraw) {
+      this.mbDraw.update(prevProps.aoiState, this.props.aoiState);
+    }
+  }
+
+  updateActiveLayers (prevProps) {
+    this.props.activeLayers.forEach((layerId) => {
       const layerInfo = this.props.layers.find((l) => l.id === layerId);
       const fns = layerTypes[layerInfo.type];
       if (fns && fns.update) {
         return fns.update(this, layerInfo, prevProps);
       }
     });
-
-    // Handle aoi state props update.
-    if (this.mbDraw) {
-      this.mbDraw.update(prevProps.aoiState, this.props.aoiState);
-    }
   }
 
   initMap () {
@@ -172,32 +173,9 @@ class MbMap extends React.Component {
       maxZoom: maxZoom || 9,
       style: styleUrl,
       pitchWithRotate: false,
-      // renderWorldCopies: false,
       dragRotate: false,
       logoPosition: 'bottom-left'
     });
-
-    if (logos) {
-      const mapLogosControl = new MapboxControl((props, state) => (
-        <div className='partner-logos'>
-          {logos.map((l) => (
-            <a
-              key={l.id}
-              href={l.url}
-              title={`Visit ${l.label}`}
-              rel='noopener noreferrer'
-              target='_blank'
-            >
-              <img src={l.src} alt={`${l.label} logo`} />
-            </a>
-          ))}
-        </div>
-      ));
-
-      this.mbMap.addControl(mapLogosControl, 'bottom-left');
-
-      mapLogosControl.render(this.props, this.state);
-    }
 
     // Disable map rotation using right click + drag.
     this.mbMap.dragRotate.disable();
@@ -231,7 +209,7 @@ class MbMap extends React.Component {
       <MapsContainer id='container'>
         <SingleMapContainer
           ref={(el) => {
-            this.mapContainer2 = el;
+            this.mapContainerComparing = el;
           }}
         />
         <SingleMapContainer
@@ -246,11 +224,9 @@ class MbMap extends React.Component {
 
 MbMap.propTypes = {
   onAction: T.func,
-  compare: T.bool,
+  comparing: T.bool,
   activeLayers: T.array,
-  layers: T.array,
-  /* eslint-disable-next-line react/no-unused-prop-types */
-  layerData: T.object
+  layers: T.array
 };
 
 export default withTheme(MbMap);

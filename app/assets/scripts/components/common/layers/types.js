@@ -42,41 +42,51 @@ export const layerTypes = {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, props } = ctx;
       const { id, source } = layerInfo;
-      const { date, compare } = props;
+      const prevLayerInfo = prevProps.layers.find(l => l.id === layerInfo.id);
+      const { date, comparing } = props;
 
-      const knobPos = get(props, ['layerData', id, 'knobCurrPos']);
-      const knobPosPrev = get(prevProps, ['layerData', id, 'knobCurrPos']);
+      const knobPos = layerInfo.knobCurrPos;
+      const knobPosPrev = prevLayerInfo.knobCurrPos;
 
+      // Do not update if:
       if (
-        prevProps.date &&
+        // There's no date defined.
+        prevProps.date && date &&
+        // Dates are the same
         date.getTime() === prevProps.date.getTime() &&
-        compare === prevProps.compare &&
-        knobPos === knobPosPrev
-      ) { return; }
+        // Knob position for gamma correction is the same.
+        knobPos === knobPosPrev &&
+        // Compare didn't change.
+        comparing === prevProps.comparing
+      ) return;
 
-      if (mbMap.getSource(id)) {
-        const tiles = prepSource(source, date, knobPos).tiles;
+      // The source we're updating is not present.
+      if (!mbMap.getSource(id)) return;
 
-        replaceRasterTiles(mbMap, id, tiles);
+      // If we're comparing, and the compare map is not loaded.
+      if (comparing && !mbMapComparing.isStyleLoaded()) return;
 
-        if (compare) {
-          const source5years = prepSource(source, sub(date, { years: 5 }), knobPos);
-          if (mbMapComparing.getSource(id)) {
-            replaceRasterTiles(mbMapComparing, id, source5years.tiles);
-          } else {
-            // TODO: Waiting for a map to load should be decoupled from the layer types.
-            mbMapComparing.once('load', () => {
-              mbMapComparing.addSource(id, source5years);
-              mbMapComparing.addLayer(
-                {
-                  id: id,
-                  type: 'raster',
-                  source: id
-                },
-                'admin-1-boundary-bg'
-              );
-            });
-          }
+      // END update checks.
+
+      // Update layer tiles.
+      const tiles = prepSource(source, date, knobPos).tiles;
+      replaceRasterTiles(mbMap, id, tiles);
+
+      // Update/init compare layer tiles.
+      if (comparing) {
+        const source5years = prepSource(source, sub(date, { years: 5 }), knobPos);
+        if (mbMapComparing.getSource(id)) {
+          replaceRasterTiles(mbMapComparing, id, source5years.tiles);
+        } else {
+          mbMapComparing.addSource(id, source5years);
+          mbMapComparing.addLayer(
+            {
+              id: id,
+              type: 'raster',
+              source: id
+            },
+            'admin-1-boundary-bg'
+          );
         }
       }
     },
@@ -97,8 +107,7 @@ export const layerTypes = {
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
-        const knobPos = get(props, ['layerData', id, 'knobCurrPos']);
-        mbMap.addSource(id, prepSource(source, date, knobPos));
+        mbMap.addSource(id, prepSource(source, date, layerInfo.knobCurrPos));
         mbMap.addLayer(
           {
             id: id,

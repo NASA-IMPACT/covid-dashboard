@@ -124,12 +124,6 @@ const CurrentDate = styled.p`
   font-weight: ${themeVal('type.base.bold')};
 `;
 
-const CompareButton = styled(Button)`
-  && {
-    margin-right: 2rem;
-  }
-`;
-
 class Timeline extends React.Component {
   constructor (props) {
     super(props);
@@ -149,16 +143,10 @@ class Timeline extends React.Component {
   }
 
   render () {
-    const { date, onAction, isActive, layers, compare } = this.props;
+    const { date, onAction, isActive, layers } = this.props;
 
-    // if (!isActive || !overview.length) return null;
     if (!isActive) return null;
 
-    // Wait until all the overviews are ready.
-    // if (overview.some((o) => !o.isReady())) return null;
-
-    // Compute date intersection between all the overviews.
-    // const dateDomain = unionOverviewDateDomain(overview);
     const dateDomain = layers[0].domain.map(utcDate);
     const swatch = layers[0].swatch.color;
 
@@ -190,16 +178,9 @@ class Timeline extends React.Component {
               onChange={(selectedDate) =>
                 onAction('date.set', { date: selectedDate })}
             /> */}
-            <CompareButton
-              variation='base-plain'
-              size='small'
-              title='Start/Stop comparing'
-              onClick={() =>
-                onAction('compare.set', { compare: !compare })}
-            >
-              {compare ? 'Stop compare (5y ago)' : 'Start compare (5y ago)'}
-            </CompareButton>
-            <CurrentDate>{date ? format(date, "MMM yy''") : 'Select date'}</CurrentDate>
+            <CurrentDate>
+              {date ? format(date, "MMM yy''") : 'Select date'}
+            </CurrentDate>
             <ButtonGroup orientation='horizontal'>
               <Button
                 disabled={!date || isSameMonth(date, dateDomain[0])}
