@@ -18,7 +18,7 @@ import {
 } from '../../styles/inpage';
 import MbMap from './mb-map';
 import Timeline from './timeline';
-import DrawMessage from './map-draw-message';
+import MapMessage from './map-message';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
@@ -432,7 +432,9 @@ class Home extends React.Component {
                 onPanelChange={this.resizeMap}
               />
               <ExploreCarto>
-                <DrawMessage drawing={this.state.aoi.drawing} />
+                <MapMessage active={this.state.aoi.drawing}>
+                  <p>Draw an AOI on the map</p>
+                </MapMessage>
                 <MbMap
                   ref={this.mbMapRef}
                   onAction={this.onMapAction}
