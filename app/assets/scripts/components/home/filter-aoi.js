@@ -39,7 +39,6 @@ export const FilterHeadline = styled.div`
 
 export const FilterTitle = styled.h1`
   ${headingAlt()}
-  color: ${themeVal('color.base')};
   font-size: 0.75rem;
   line-height: 1rem;
   margin: 0;
