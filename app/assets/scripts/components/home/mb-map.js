@@ -95,6 +95,15 @@ class MbMap extends React.Component {
           logoPosition: 'bottom-left'
         });
 
+        // Add zoom controls.
+        this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+        // Style attribution.
+        this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
+
+        // Remove compass.
+        document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
         this.mbMapComparing.once('load', () => {
           this.mbMapComparingLoaded = true;
           this.updateActiveLayers(prevProps);
@@ -146,7 +155,7 @@ class MbMap extends React.Component {
       });
     }
 
-    // Update all active layers
+    // Update all active layers.
     this.updateActiveLayers(prevProps);
 
     // Handle aoi state props update.
