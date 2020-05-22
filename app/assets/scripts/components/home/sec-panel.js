@@ -3,22 +3,15 @@ import styled from 'styled-components';
 import T from 'prop-types';
 import * as d3 from 'd3';
 
-import { glsp } from '../../styles/utils/theme-values';
-import { themeVal } from '../../styles/utils/general';
-import Prose from '../../styles/type/prose';
-import Heading, { headingAlt, Subheading } from '../../styles/type/heading';
+import Heading from '../../styles/type/heading';
 import SimpleLineChart from '../common/simple-line-chart/chart';
-
-import { formatThousands } from '../../utils/format';
-
 import Panel, {
   PanelHeadline,
   PanelTitle
 } from '../common/panel';
-
 import ShadowScrollbar from '../common/shadow-scrollbar';
-import FilterAoi from './filter-aoi';
-import { format } from 'date-fns';
+
+import { glsp } from '../../styles/utils/theme-values';
 import { utcDate } from '../../utils/utils';
 
 const BodyScroll = styled(ShadowScrollbar)`
@@ -33,40 +26,26 @@ const InsightsBlock = styled.div`
   flex: 1;
 `;
 
-const InsightsDetails = styled.dl`
-  dt {
-    ${headingAlt}
-    margin: 0 0 ${glsp(1 / 4)} 0;
-    font-size: 0.75rem;
-    line-height: 1rem;
-  }
-
-  dd {
-    font-size: 1.25rem;
-    font-weight: ${themeVal('type.base.bold')};
-    line-height: 1;
-    margin: 0 0 ${glsp()} 0;
-  }
-`;
-
 class ExpMapSecPanel extends React.Component {
   renderContent () {
-    const { tempNo2Data } = this.props;
-    // const { adminArea, indicatorsConfig } = this.props;
+    const { cogTimeData, aoiFeature, layers } = this.props;
 
-    // if (!indicatorsConfig) {
-    //   return null;
-    // }
-
-    if (!tempNo2Data || !tempNo2Data.isReady()) {
+    if (!aoiFeature) {
       return <p>There is no area of interest defined.</p>;
     }
 
-    // const adminAreaData = adminArea.getData();
-    // const { tsData } = adminAreaData;
-    // const mobilityData = tsData[0];
+    if (!layers.length) {
+      return <p>There are no layers with time data enabled.</p>;
+    }
 
-    const data = tempNo2Data.getData();
+    // TODO: Do not use hardcoded values.
+    const no2cogTimeData = cogTimeData.no2;
+
+    if (!no2cogTimeData || !no2cogTimeData.isReady()) {
+      return null;
+    }
+
+    const data = no2cogTimeData.getData();
     const xDomain = [
       utcDate(data[0].date),
       utcDate(data[data.length - 1].date)
@@ -75,18 +54,6 @@ class ExpMapSecPanel extends React.Component {
 
     return (
       <div>
-        {/* {adminAreaData.staticData
-          ? (
-            <InsightsDetails>
-              {indicatorsConfig.map((ind) => (
-                <React.Fragment key={ind.attribute}>
-                  <dt>{ind.description}</dt>
-                  <dd>{formatThousands(adminAreaData.staticData[ind.attribute], { decimals: 1 }) || 'n/a'}</dd>
-                </React.Fragment>
-              ))}
-            </InsightsDetails>
-          )
-          : <p>No indicators available.</p>} */}
         <Heading as='h2'>NO2 Concentration</Heading>
         <small>molecules/cm<sup>2</sup></small>
         <SimpleLineChart
@@ -110,10 +77,7 @@ class ExpMapSecPanel extends React.Component {
           </PanelHeadline>
         }
         bodyContent={
-          <BodyScroll
-            topShadowVariation='dark'
-            bottomShadowVariation='dark'
-          >
+          <BodyScroll>
             <InsightsBlock>
               {this.renderContent()}
             </InsightsBlock>
@@ -126,9 +90,9 @@ class ExpMapSecPanel extends React.Component {
 
 ExpMapSecPanel.propTypes = {
   onPanelChange: T.func,
-  selectedAdminArea: T.string,
-  indicatorsConfig: T.array,
-  adminArea: T.object
+  layers: T.array,
+  aoiFeature: T.object,
+  cogTimeData: T.object
 };
 
 export default ExpMapSecPanel;

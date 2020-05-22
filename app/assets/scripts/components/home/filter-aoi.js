@@ -29,6 +29,7 @@ export const Filter = styled.section`
   display: flex;
   align-items: flex-start;
   padding: ${glsp()};
+  box-shadow: inset 0 -1px 0 0 ${themeVal('color.baseAlphaB')};
 `;
 
 export const FilterHeadline = styled.div`

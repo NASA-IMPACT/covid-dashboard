@@ -67,7 +67,7 @@ export function makeAPIReducer (actionName, hasKey) {
     const hasId = typeof action.id !== 'undefined';
     switch (action.type) {
       case `INVALIDATE_${actionName}`:
-        return hasId ? { ...state, [action.id]: base } : base;
+        return hasId ? { ...state, [action.id]: initial } : initial;
       case `REQUEST_${actionName}`: {
         const changeReq = {
           ...base,
