@@ -3,13 +3,13 @@ import ssLosAngeles from './ss-la';
 import ssNewYork from './ss-ny';
 import ssTokyo from './ss-tk';
 
-const superSites = [
+const spotlightAreas = [
   ssSanFrancisco,
   ssLosAngeles,
   ssNewYork,
   ssTokyo
 ];
 
-export default superSites;
+export default spotlightAreas;
 
-export const getSuperSite = (id) => superSites.find((d) => d.id === id);
+export const getSpotlightArea = (id) => spotlightAreas.find((d) => d.id === id);

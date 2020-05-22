@@ -16,7 +16,7 @@ import {
 
 import { glsp } from '../../../styles/utils/theme-values';
 import { themeVal } from '../../../styles/utils/general';
-import superSites from '../index';
+import spotlightAreas from '../index';
 
 const InpageTrendsBody = styled(InpageBody)`
   position: relative;
@@ -71,17 +71,17 @@ const PanelNavLink = styled(NavLink)`
   }
 `;
 
-class SuperSitesHub extends React.Component {
+class SpotlightAreasHub extends React.Component {
   render () {
     const { datasets } = this.props;
 
     return (
-      <App pageTitle='Trends'>
+      <App pageTitle='Spotlight areas'>
         <Inpage>
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Trends</InpageTitle>
+                <InpageTitle>Spotlight areas</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
@@ -91,7 +91,7 @@ class SuperSitesHub extends React.Component {
                 <li key={item.id}>
                   <PanelNavLink
                     to={`/trends/${item.id}`}
-                    title={`View super site ${item.name}`}
+                    title={`View spotlight area ${item.name}`}
                   >
                     {item.name}
                   </PanelNavLink>
@@ -105,16 +105,16 @@ class SuperSitesHub extends React.Component {
   }
 }
 
-SuperSitesHub.propTypes = {
+SpotlightAreasHub.propTypes = {
   datasets: T.array
 };
 
 function mapStateToProps (state, props) {
   return {
-    datasets: superSites
+    datasets: spotlightAreas
   };
 }
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SuperSitesHub);
+export default connect(mapStateToProps, mapDispatchToProps)(SpotlightAreasHub);

@@ -13,7 +13,7 @@ import { glsp } from '../../styles/utils/theme-values';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
-import superSitesList from '../super-sites';
+import spotlightSitesList from '../spotlight';
 
 const { appTitle, appShortTitle, appVersion } = config;
 
@@ -177,20 +177,20 @@ class PageHeader extends React.Component {
                   triggerElement={
                     <Button
                       variation='achromic-plain'
-                      title='Explore the Super sites'
+                      title='Explore the Spotlight areas'
                       useIcon={['chevron-down--small', 'after']}
                     >
-                      <span>Super sites</span>
+                      <span>Spotlight</span>
                     </Button>
                   }
                 >
-                  <DropTitle>Super sites</DropTitle>
+                  <DropTitle>Spotlight areas</DropTitle>
                   <DropMenu role='menu' selectable>
-                    {superSitesList.map(ss => (
+                    {spotlightSitesList.map(ss => (
                       <li key={ss.id}>
                         <DropMenuItem
                           as={NavLink}
-                          to={`/super-sites/${ss.id}`}
+                          to={`/spotlight/${ss.id}`}
                           data-dropdown='click.close'
                         >
                           {ss.label}

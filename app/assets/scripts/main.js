@@ -19,7 +19,7 @@ import SizeAwareElement from './components/common/size-aware-element';
 
 // Views
 import Home from './components/home';
-import SuperSitesSingle from './components/super-sites/single';
+import SpotlightSingle from './components/spotlight/single';
 import DatasetsSingle from './components/datasets/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
@@ -96,8 +96,8 @@ class Root extends React.Component {
                   <LargeOnlyRoute
                     exact
                     isLargeUp={isLargeUp}
-                    path='/super-sites/:datasetId'
-                    component={SuperSitesSingle}
+                    path='/spotlight/:datasetId'
+                    component={SpotlightSingle}
                   />
                   <LargeOnlyRoute
                     exact
