@@ -1,6 +1,7 @@
 import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import config from '../../config';
 
@@ -10,10 +11,10 @@ import { themeVal } from '../../styles/utils/general';
 import { reveal } from '../../styles/animation';
 import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
+import { wrapApiResult } from '../../redux/reduxeed';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
-import spotlightSitesList from '../spotlight';
 import datasetsList from '../datasets';
 
 const { appTitle, appShortTitle, appVersion } = config;
@@ -143,7 +144,9 @@ const NavLinkFilter = filterComponentProps(NavLink, propsToFilter);
 
 class PageHeader extends React.Component {
   render () {
-    const { useShortTitle } = this.props;
+    const { useShortTitle, spotlightList } = this.props;
+
+    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
     return (
       <PageHead role='banner'>
@@ -175,6 +178,7 @@ class PageHeader extends React.Component {
                 <Dropdown
                   alignment='right'
                   direction='down'
+                  disabled={!spotlightAreas}
                   triggerElement={
                     <Button
                       variation='achromic-plain'
@@ -187,7 +191,7 @@ class PageHeader extends React.Component {
                 >
                   <DropTitle>Spotlight areas</DropTitle>
                   <DropMenu role='menu' selectable>
-                    {spotlightSitesList.map(ss => (
+                    {spotlightAreas && spotlightAreas.map(ss => (
                       <li key={ss.id}>
                         <DropMenuItem
                           as={NavLink}
@@ -250,7 +254,16 @@ class PageHeader extends React.Component {
 }
 
 PageHeader.propTypes = {
-  useShortTitle: T.bool
+  useShortTitle: T.bool,
+  spotlightList: T.object
 };
 
-export default PageHeader;
+function mapStateToProps (state, props) {
+  return {
+    spotlightList: wrapApiResult(state.spotlight.list)
+  };
+}
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageHeader);

@@ -16,7 +16,7 @@ import {
 
 import { glsp } from '../../../styles/utils/theme-values';
 import { themeVal } from '../../../styles/utils/general';
-import spotlightAreas from '../index';
+import { wrapApiResult } from '../../../redux/reduxeed';
 
 const InpageTrendsBody = styled(InpageBody)`
   position: relative;
@@ -73,7 +73,9 @@ const PanelNavLink = styled(NavLink)`
 
 class SpotlightAreasHub extends React.Component {
   render () {
-    const { datasets } = this.props;
+    const { spotlightList } = this.props;
+
+    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
     return (
       <App pageTitle='Spotlight areas'>
@@ -87,13 +89,13 @@ class SpotlightAreasHub extends React.Component {
           </InpageHeader>
           <InpageTrendsBody>
             <ul>
-              {datasets.map((item) => (
+              {spotlightAreas && spotlightAreas.map((item) => (
                 <li key={item.id}>
                   <PanelNavLink
-                    to={`/trends/${item.id}`}
-                    title={`View spotlight area ${item.name}`}
+                    to={`/spotlight/${item.id}`}
+                    title={`View spotlight area ${item.label}`}
                   >
-                    {item.name}
+                    {item.label}
                   </PanelNavLink>
                 </li>
               ))}
@@ -106,12 +108,12 @@ class SpotlightAreasHub extends React.Component {
 }
 
 SpotlightAreasHub.propTypes = {
-  datasets: T.array
+  spotlightList: T.object
 };
 
 function mapStateToProps (state, props) {
   return {
-    datasets: spotlightAreas
+    spotlightList: wrapApiResult(state.spotlight.list)
   };
 }
 

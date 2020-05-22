@@ -1,4 +1,5 @@
 import React from 'react';
+import T from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
@@ -17,7 +18,9 @@ import UhOh from '../../uhoh';
 import { themeVal } from '../../../styles/utils/general';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import { glsp } from '../../../styles/utils/theme-values';
-import { getSpotlightArea } from '..';
+import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
+import { wrapApiResult, getFromState } from '../../../redux/reduxeed';
+import { showGlobalLoading, hideGlobalLoading } from '../../common/global-loading';
 
 const ExploreCanvas = styled.div`
   display: grid;
@@ -56,14 +59,21 @@ class SpotlightAreasSingle extends React.Component {
     this.mbMapRef = React.createRef();
   }
 
+  componentDidMount () {
+    this.requestSpotlight();
+  }
+
   componentDidUpdate (prevProps, prevState) {
-    const { data } = this.props;
-    if (data && data.id !== prevProps.data.id) {
-      this.mbMapRef.current.mbMap.flyTo({
-        center: this.props.data.center,
-        zoom: 9
-      });
+    const { spotlightId } = this.props.match.params;
+    if (spotlightId !== prevProps.match.params.spotlightId) {
+      this.requestSpotlight();
     }
+  }
+
+  async requestSpotlight () {
+    showGlobalLoading();
+    await this.props.fetchSpotlightSingle(this.props.match.params.spotlightId);
+    hideGlobalLoading();
   }
 
   resizeMap () {
@@ -77,17 +87,20 @@ class SpotlightAreasSingle extends React.Component {
 
   async onMapAction (action, payload) {
     switch (action) {
-      case 'map.loaded':
-        this.mbMapRef.current.mbMap.flyTo({
-          center: this.props.data.center,
-          zoom: 9
-        });
+      case 'map.loaded': {
+        const spotlightData = this.props.spotlight.getData();
+        this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
         break;
+      }
     }
   }
 
   render () {
-    if (!this.props.data) return <UhOh />;
+    const { spotlight } = this.props;
+
+    if (spotlight.hasError()) return <UhOh />;
+
+    const spotlightData = spotlight.getData();
 
     return (
       <App>
@@ -99,50 +112,52 @@ class SpotlightAreasSingle extends React.Component {
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
-          <InpageBody>
-            <ExploreCanvas>
-              <PrimePanel
-                collapsible
-                direction='left'
-                onPanelChange={this.resizeMap}
-                headerContent={
-                  <PanelHeadline>
-                    <h2>{this.props.data.label}</h2>
-                  </PanelHeadline>
-                }
-                bodyContent={
-                  <PanelBodyInner>
-                    <p>Layers to control the map.</p>
-                  </PanelBodyInner>
-                }
-              />
-              <ExploreCarto>
-                <MbMap
-                  ref={this.mbMapRef}
-                  onAction={this.onMapAction}
-                  layers={[]}
-                  activeLayers={[]}
-                  layerData={{}}
-                  aoiState={null}
+          {spotlight.isReady() && (
+            <InpageBody>
+              <ExploreCanvas>
+                <PrimePanel
+                  collapsible
+                  direction='left'
+                  onPanelChange={this.resizeMap}
+                  headerContent={
+                    <PanelHeadline>
+                      <h2>{spotlightData.label}</h2>
+                    </PanelHeadline>
+                  }
+                  bodyContent={
+                    <PanelBodyInner>
+                      <p>Layers to control the map.</p>
+                    </PanelBodyInner>
+                  }
                 />
-              </ExploreCarto>
-              <Panel
-                collapsible
-                direction='right'
-                onPanelChange={this.resizeMap}
-                headerContent={
-                  <PanelHeadline>
-                    <PanelTitle>Insights</PanelTitle>
-                  </PanelHeadline>
-                }
-                bodyContent={
-                  <PanelBodyInner>
-                    <p>Detailed information for the area being viewed and/or interacted by the user.</p>
-                  </PanelBodyInner>
-                }
-              />
-            </ExploreCanvas>
-          </InpageBody>
+                <ExploreCarto>
+                  <MbMap
+                    ref={this.mbMapRef}
+                    onAction={this.onMapAction}
+                    layers={[]}
+                    activeLayers={[]}
+                    layerData={{}}
+                    aoiState={null}
+                  />
+                </ExploreCarto>
+                <Panel
+                  collapsible
+                  direction='right'
+                  onPanelChange={this.resizeMap}
+                  headerContent={
+                    <PanelHeadline>
+                      <PanelTitle>Insights</PanelTitle>
+                    </PanelHeadline>
+                  }
+                  bodyContent={
+                    <PanelBodyInner>
+                      <p>Detailed information for the area being viewed and/or interacted by the user.</p>
+                    </PanelBodyInner>
+                  }
+                />
+              </ExploreCanvas>
+            </InpageBody>
+          )}
         </Inpage>
       </App>
     );
@@ -150,15 +165,19 @@ class SpotlightAreasSingle extends React.Component {
 }
 
 SpotlightAreasSingle.propTypes = {
+  fetchSpotlightSingle: T.func,
+  spotlight: T.object,
+  match: T.object
 };
 
 function mapStateToProps (state, props) {
   return {
-    data: getSpotlightArea(props.match.params.datasetId)
+    spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', props.match.params.spotlightId]))
   };
 }
 
 const mapDispatchToProps = {
+  fetchSpotlightSingle: fetchSpotlightSingleAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpotlightAreasSingle);
