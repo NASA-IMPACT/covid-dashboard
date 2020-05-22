@@ -558,18 +558,18 @@ export const DropInset = styled.div`
   background: ${_tint(0.96, themeVal('color.base'))};
   color: ${_tint(0.32, themeVal('type.base.color'))};
   box-shadow:
-    inset 0 ${themeVal('layout.border')} 0 0 ${themeVal('color.shadow')},
-    inset 0 -${themeVal('layout.border')} 0 0 ${themeVal('color.shadow')};
+    inset 0 ${themeVal('layout.border')} 0 0 ${themeVal('color.baseAlphaB')},
+    inset 0 -${themeVal('layout.border')} 0 0 ${themeVal('color.baseAlphaB')};
   margin: -${glbS} -${glbS} ${glbS} -${glbS};
   padding: ${glbS};
 
   &:first-child {
-    box-shadow: inset 0 -${themeVal('layout.border')} 0 0 ${themeVal('color.shadow')};
+    box-shadow: inset 0 -${themeVal('layout.border')} 0 0 ${themeVal('color.baseAlphaB')};
   }
 
   &:last-child {
     margin-bottom: -${glbS};
-    box-shadow: inset 0 ${themeVal('layout.border')} 0 0 ${themeVal('color.shadow')};
+    box-shadow: inset 0 ${themeVal('layout.border')} 0 0 ${themeVal('color.baseAlphaB')};
     border-radius: 0 0 ${themeVal('shape.rounded')} ${themeVal('shape.rounded')};
   }
 
