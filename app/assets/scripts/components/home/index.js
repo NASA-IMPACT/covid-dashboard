@@ -2,7 +2,7 @@ import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { format, isBefore, sub } from 'date-fns';
+import { sub } from 'date-fns';
 import get from 'lodash.get';
 import find from 'lodash.find';
 
@@ -23,10 +23,6 @@ import MapMessage from './map-message';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
-import {
-  fetchTimeSeriesDaily as fetchTimeSeriesDailyAction,
-  fetchTimeSeriesOverview as fetchTimeSeriesOverviewAction
-} from '../../redux/time-series';
 import { wrapApiResult, getFromState } from '../../redux/reduxeed';
 import {
   fetchCogTimeData as fetchCogTimeDataAction,
@@ -35,7 +31,6 @@ import {
 import history from '../../utils/history';
 import { utcDate } from '../../utils/utils';
 import mapLayers from '../common/layers';
-import { unionOverviewDateDomain } from '../../utils/date';
 
 /**
  * Returns a feature with a polygon geometry made of the provided bounds.
@@ -132,6 +127,16 @@ class Home extends React.Component {
     this.props.invalidateCogTimeData();
   }
 
+  /**
+   * Sets the state of a give layer in the component state.
+   * Works exactly like setState, but for a specific layer data.
+   *
+   * @param {string} id If of the layer for which to update data
+   * @param {mixed} data Object with data to merge or function. If a function is
+   *                provided, it will be called with the current data. It should
+   *                return an object which will be merged with the existent data
+   * @param {funct} cb Callback to execute after setting state.
+   */
   setLayerState (id, data, cb) {
     this.setState(state => {
       const currentState = state.layersState[id] || {};
@@ -147,6 +152,13 @@ class Home extends React.Component {
     }, () => cb && cb());
   }
 
+  /**
+   * Returns the layer state for a given layer id, or a specific state path
+   * if second parameter is provided.
+   *
+   * @param {string} id Layer for which to get the state.
+   * @param {mixed} prop Path to a specific prop (optional). Used lodash.get
+   */
   getLayerState (id, prop) {
     const path = prop
       ? typeof prop === 'string' ? [id, prop] : [id, ...prop]
@@ -154,6 +166,10 @@ class Home extends React.Component {
     return get(this.state.layersState, path);
   }
 
+  /**
+   * Returns the layer list, merging the visibility state and any other data
+   * stored for each layer in the layer state.
+   */
   getLayersWithState () {
     const { activeLayers, layersState } = this.state;
     return mapLayers.map((l) => {
@@ -224,7 +240,6 @@ class Home extends React.Component {
           timelineDate: payload.date
         });
         // this.getActiveTimeseriesLayers().forEach(l => {
-        //   this.props.fetchTimeSeriesDaily(
         //     l.id,
         //     format(payload.date, 'yyyy-MM-dd')
         //   );
@@ -335,50 +350,16 @@ class Home extends React.Component {
   }
 
   async toggleLayer (layer) {
-    const { fetchTimeSeriesOverview } = this.props;
     const layerId = layer.id;
 
     const { activeLayers } = this.state;
     const isEnabled = activeLayers.includes(layerId);
 
-    if (layer.type === 'timeseries') {
-      // Check if there layer data for this layer.
-      // If not, load the data and only enable the layer if successful.
-      if (!isEnabled) {
-        showGlobalLoading();
-        const res = await fetchTimeSeriesOverview(layerId);
-        // Before setting a new date see if it is available for all active
-        // timeseries layers.
-        const activeTSLayers = this.getActiveTimeseriesLayers()
-          // Add the one we're about to enable in the format needed
-          // by getTimeseriesOverviewData
-          .concat({ id: layerId });
-        const activeTSOverview = this.getTimeseriesOverviewData(activeTSLayers);
-        // Compute date intersection between all the overviews.
-        const dateDomain = unionOverviewDateDomain(activeTSOverview);
-
-        // Use the max available date if current date is after it.
-        const currDate = this.state.timelineDate;
-        const nextDdate =
-          currDate && isBefore(currDate, dateDomain[1])
-            ? currDate
-            : dateDomain[1];
-
-        this.setState({ timelineDate: nextDdate });
-        this.props.fetchTimeSeriesDaily(
-          layer.id,
-          format(nextDdate, 'yyyy-MM-dd')
-        );
-        hideGlobalLoading();
-        if (res.error) return;
-      }
-    }
-
     if (layer.type === 'raster-timeseries') {
       this.setState(state => {
         // Check if there's a knob value set. If not, means that this is the
         // first time it is enabled and we need to set a default.
-        const knobCurrPos = get(state, ['layersState', layer.id, 'knobCurrPos'], null);
+        const knobCurrPos = get(state, ['layersState', layerId, 'knobCurrPos'], null);
         const knobData = knobCurrPos === null
           ? {
             knobPos: 50,
@@ -389,8 +370,8 @@ class Home extends React.Component {
           timelineDate: utcDate(layer.domain[1]),
           layersState: {
             ...state.layersState,
-            [layer.id]: {
-              ...state.layersState[layer.id],
+            [layerId]: {
+              ...state.layersState[layerId],
               ...knobData
             }
           }
@@ -399,7 +380,7 @@ class Home extends React.Component {
     }
 
     // If we disable a layer we're comparing, disable the comparison as well.
-    if (this.getLayerState(layer.id, 'comparing')) {
+    if (this.getLayerState(layerId, 'comparing')) {
       this.toggleLayerCompare(layer);
     }
 
@@ -426,10 +407,11 @@ class Home extends React.Component {
   }
 
   toggleLayerCompare (layer) {
-    const isEnabled = this.getLayerState(layer.id, 'comparing');
+    const layerId = layer.id;
+    const isComparing = this.getLayerState(layerId, 'comparing');
 
-    if (isEnabled) {
-      this.setLayerState(layer.id, {
+    if (isComparing) {
+      this.setLayerState(layerId, {
         comparing: false
       });
     } else {
@@ -446,8 +428,8 @@ class Home extends React.Component {
         }), state.layersState);
 
         // Set current as active
-        layersState[layer.id] = {
-          ...layersState[layer.id],
+        layersState[layerId] = {
+          ...layersState[layerId],
           comparing: true
         };
 
@@ -461,11 +443,6 @@ class Home extends React.Component {
       (l) =>
         l.type === 'raster-timeseries' && this.state.activeLayers.includes(l.id)
     );
-  }
-
-  getTimeseriesOverviewData (layers) {
-    const { timeSeriesOverview } = this.props;
-    return layers.map((l) => timeSeriesOverview[l.id]);
   }
 
   render () {
@@ -544,25 +521,18 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  fetchTimeSeriesDaily: T.func,
-  fetchTimeSeriesOverview: T.func,
   fetchCogTimeData: T.func,
   invalidateCogTimeData: T.func,
-  timeSeriesOverview: T.object,
   no2CogTimeData: T.object
 };
 
 function mapStateToProps (state, props) {
   return {
-    timeSeriesDaily: wrapApiResult(state.timeSeries.daily, true),
-    timeSeriesOverview: wrapApiResult(state.timeSeries.overview, true),
     no2CogTimeData: wrapApiResult(getFromState(state, ['cogTimeData', 'no2']))
   };
 }
 
 const mapDispatchToProps = {
-  fetchTimeSeriesDaily: fetchTimeSeriesDailyAction,
-  fetchTimeSeriesOverview: fetchTimeSeriesOverviewAction,
   fetchCogTimeData: fetchCogTimeDataAction,
   invalidateCogTimeData: invalidateCogTimeDataAction
 };

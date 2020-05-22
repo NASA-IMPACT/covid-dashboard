@@ -1,6 +1,7 @@
-
-import { makeActions, fetchJSON, makeAPIReducer } from './reduxeed';
 import { eachMonthOfInterval, format } from 'date-fns';
+
+import config from '../config';
+import { makeActions, fetchJSON, makeAPIReducer } from './reduxeed';
 
 // /////////////////////////////////////////////////////////////////////////////
 // COG_TIME_DATA
@@ -16,7 +17,7 @@ export function fetchCogTimeData (id, timeframe, area) {
 
     const { start, end } = timeframe;
     const months = eachMonthOfInterval({ start, end });
-    const url = 'https://8ib71h0627.execute-api.us-east-1.amazonaws.com/v1/timelapse';
+    const url = `${config.api}/timelapse`;
 
     const requests = months.map(async date => {
       const reqDate = format(date, 'yyyyMM');

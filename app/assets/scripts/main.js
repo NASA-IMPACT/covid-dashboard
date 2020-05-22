@@ -11,6 +11,8 @@ import ReactTooltip from 'react-tooltip';
 import theme, { mediaRanges } from './styles/theme/theme';
 import store from './utils/store';
 import history from './utils/history';
+import config from './config';
+import { fetchSpotlightList } from './redux/spotlight';
 
 import GlobalStyles from './styles/global';
 import ErrorBoundary from './fatal-error-boundary';
@@ -19,14 +21,15 @@ import SizeAwareElement from './components/common/size-aware-element';
 
 // Views
 import Home from './components/home';
-import SuperSitesSingle from './components/super-sites/single';
+import SpotlightSingle from './components/spotlight/single';
 import DatasetsSingle from './components/datasets/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
 import About from './components/about';
 import MobileMessage from './components/common/mobile-message';
 
-import config from './config';
+// Load the spotlight areas list.
+store.dispatch(fetchSpotlightList());
 
 const { gaTrackingCode } = config;
 
@@ -96,8 +99,8 @@ class Root extends React.Component {
                   <LargeOnlyRoute
                     exact
                     isLargeUp={isLargeUp}
-                    path='/super-sites/:datasetId'
-                    component={SuperSitesSingle}
+                    path='/spotlight/:spotlightId'
+                    component={SpotlightSingle}
                   />
                   <LargeOnlyRoute
                     exact

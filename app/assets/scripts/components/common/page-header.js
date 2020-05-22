@@ -1,6 +1,7 @@
 import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import config from '../../config';
 
@@ -10,10 +11,11 @@ import { themeVal } from '../../styles/utils/general';
 import { reveal } from '../../styles/animation';
 import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
+import { wrapApiResult } from '../../redux/reduxeed';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
-import superSitesList from '../super-sites';
+import datasetsList from '../datasets';
 
 const { appTitle, appShortTitle, appVersion } = config;
 
@@ -142,7 +144,9 @@ const NavLinkFilter = filterComponentProps(NavLink, propsToFilter);
 
 class PageHeader extends React.Component {
   render () {
-    const { useShortTitle } = this.props;
+    const { useShortTitle, spotlightList } = this.props;
+
+    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
     return (
       <PageHead role='banner'>
@@ -174,26 +178,57 @@ class PageHeader extends React.Component {
                 <Dropdown
                   alignment='right'
                   direction='down'
+                  disabled={!spotlightAreas}
                   triggerElement={
                     <Button
                       variation='achromic-plain'
-                      title='Explore the Super sites'
+                      title='Explore the Spotlight areas'
                       useIcon={['chevron-down--small', 'after']}
                     >
-                      <span>Super sites</span>
+                      <span>Spotlight</span>
                     </Button>
                   }
                 >
-                  <DropTitle>Super sites</DropTitle>
+                  <DropTitle>Spotlight areas</DropTitle>
                   <DropMenu role='menu' selectable>
-                    {superSitesList.map(ss => (
+                    {spotlightAreas && spotlightAreas.map(ss => (
                       <li key={ss.id}>
                         <DropMenuItem
                           as={NavLink}
-                          to={`/super-sites/${ss.id}`}
+                          to={`/spotlight/${ss.id}`}
                           data-dropdown='click.close'
                         >
                           {ss.label}
+                        </DropMenuItem>
+                      </li>
+                    ))}
+                  </DropMenu>
+                </Dropdown>
+              </li>
+              <li>
+                <Dropdown
+                  alignment='right'
+                  direction='down'
+                  triggerElement={
+                    <Button
+                      variation='achromic-plain'
+                      title='Explore the datasets'
+                      useIcon={['chevron-down--small', 'after']}
+                    >
+                      <span>Datasets</span>
+                    </Button>
+                  }
+                >
+                  <DropTitle>Datasets</DropTitle>
+                  <DropMenu role='menu' selectable>
+                    {datasetsList.filter(d => !!d.LongForm).map(d => (
+                      <li key={d.id}>
+                        <DropMenuItem
+                          as={NavLink}
+                          to={`/datasets/${d.id}`}
+                          data-dropdown='click.close'
+                        >
+                          {d.name}
                         </DropMenuItem>
                       </li>
                     ))}
@@ -219,7 +254,16 @@ class PageHeader extends React.Component {
 }
 
 PageHeader.propTypes = {
-  useShortTitle: T.bool
+  useShortTitle: T.bool,
+  spotlightList: T.object
 };
 
-export default PageHeader;
+function mapStateToProps (state, props) {
+  return {
+    spotlightList: wrapApiResult(state.spotlight.list)
+  };
+}
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageHeader);

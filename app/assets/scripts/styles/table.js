@@ -38,7 +38,7 @@ const Table = styled.table`
   tbody td {
     text-align: left;
     vertical-align: top;
-    border-bottom: ${themeVal('layout.border')} solid ${themeVal('color.shadow')};
+    border-bottom: ${themeVal('layout.border')} solid ${themeVal('color.baseAlphaB')};
   }
 
   th:first-child, td:first-child {
