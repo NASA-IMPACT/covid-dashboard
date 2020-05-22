@@ -8,10 +8,6 @@ import { headingAlt } from '../../styles/type/heading';
 import { panelSkin } from '../../styles/skins';
 import { glsp } from '../../styles/utils/theme-values';
 
-import {
-  PanelBlock,
-  PanelBlockHeader
-} from '../common/panel-block';
 import Button from '../../styles/button/button';
 
 const _tint = stylizeFunction(tint);
@@ -81,11 +77,7 @@ const PanelBody = styled.div`
     max-width: 100vw;
     opacity: 1;
     overflow: visible;
-  `}
-
-  > ${/* sc-selector */PanelBlock}:first-child ${PanelBlockHeader} {
-    margin-top: -${glsp(0.75)};
-  }  
+  `} 
 `;
 
 const PanelOffsetActions = styled.div`
@@ -128,6 +120,7 @@ class Panel extends React.Component {
   render () {
     const {
       headerContent,
+      renderHeader,
       bodyContent,
       collapsible,
       direction,
@@ -147,11 +140,17 @@ class Panel extends React.Component {
           ? 'shrink-to-right'
           : 'expand-from-right';
 
-    return (
-      <PanelSelf revealed={revealed} className={className}>
+    const header = typeof renderHeader === 'function'
+      ? renderHeader({ revealed })
+      : headerContent ? (
         <PanelHeader revealed={revealed}>
           {headerContent}
         </PanelHeader>
+      ) : null;
+
+    return (
+      <PanelSelf revealed={revealed} className={className}>
+        {header}
         <PanelBody revealed={revealed}>{bodyContent}</PanelBody>
         {collapsible && (
           <PanelOffsetActions direction={direction}>
@@ -180,6 +179,7 @@ Panel.propTypes = {
   className: T.string,
   collapsible: T.bool,
   headerContent: T.node,
+  renderHeader: T.func,
   bodyContent: T.node
 };
 

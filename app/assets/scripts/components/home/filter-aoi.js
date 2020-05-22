@@ -29,6 +29,7 @@ export const Filter = styled.section`
   display: flex;
   align-items: flex-start;
   padding: ${glsp()};
+  box-shadow: inset 0 -1px 0 0 ${themeVal('color.baseAlphaB')};
 `;
 
 export const FilterHeadline = styled.div`
@@ -38,7 +39,6 @@ export const FilterHeadline = styled.div`
 
 export const FilterTitle = styled.h1`
   ${headingAlt()}
-  color: ${themeVal('color.base')};
   font-size: 0.75rem;
   line-height: 1rem;
   margin: 0;

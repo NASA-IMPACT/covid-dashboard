@@ -201,7 +201,9 @@ class Home extends React.Component {
     const {
       aoi: { feature }
     } = this.state;
-    if (!feature) return;
+    const activeLayers = this.getActiveTimeseriesLayers();
+
+    if (!feature || !activeLayers.length) return;
 
     showGlobalLoading();
     // TODO: Change from hardcoded cog type and date
@@ -295,9 +297,6 @@ class Home extends React.Component {
 
   async onMapAction (action, payload) {
     switch (action) {
-      case 'admin-area.click':
-        history.push(`/areas/${payload.id}`);
-        break;
       case 'map.loaded':
         {
           this.setState({ mapLoaded: true });
@@ -403,6 +402,8 @@ class Home extends React.Component {
       return {
         activeLayers: [...diff, layerId]
       };
+    }, () => {
+      this.requestCogData();
     });
   }
 
@@ -502,15 +503,10 @@ class Home extends React.Component {
                 />
               </ExploreCarto>
               <ExpMapSecPanel
-                tempNo2Data={this.props.no2CogTimeData}
+                aoiFeature={this.state.aoi.feature}
+                cogTimeData={this.props.cogTimeData}
+                layers={activeTimeseriesLayers}
                 onPanelChange={this.resizeMap}
-                // selectedAdminArea={adminAreaFeatId}
-                // adminArea={currentAdminArea}
-                // indicatorsConfig={get(
-                //   appConfig.getData(),
-                //   'staticIndicators.indicators',
-                //   null
-                // )}
               />
             </ExploreCanvas>
           </InpageBody>
@@ -523,12 +519,12 @@ class Home extends React.Component {
 Home.propTypes = {
   fetchCogTimeData: T.func,
   invalidateCogTimeData: T.func,
-  no2CogTimeData: T.object
+  cogTimeData: T.object
 };
 
 function mapStateToProps (state, props) {
   return {
-    no2CogTimeData: wrapApiResult(getFromState(state, ['cogTimeData', 'no2']))
+    cogTimeData: wrapApiResult(state.cogTimeData, true)
   };
 }
 
