@@ -1,29 +1,29 @@
 import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import config from '../../config';
 
 import { Link, NavLink } from 'react-router-dom';
+import { visuallyHidden } from '../../styles/helpers';
 import { themeVal } from '../../styles/utils/general';
 import { reveal } from '../../styles/animation';
-import { panelSkin } from '../../styles/skins';
 import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
+import { wrapApiResult } from '../../redux/reduxeed';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
-import superSitesList from '../super-sites';
+import datasetsList from '../datasets';
 
-const { appTitle, appShortTitle } = config;
+const { appTitle, appShortTitle, appVersion } = config;
 
 const PageHead = styled.header`
-  ${panelSkin()}
-  position: sticky;
+  position: relative;
   z-index: 20;
-  top: 0;
-  left: 0;
-  bottom: 0;
+  background: ${themeVal('color.link')};
+  color: ${themeVal('color.baseLight')};
 
   /* Animation */
   animation: ${reveal} 0.32s ease 0s 1;
@@ -31,7 +31,7 @@ const PageHead = styled.header`
 
 const PageHeadInner = styled.div`
   display: flex;
-  padding: 0 ${glsp(0.5)};
+  padding: ${glsp(0.75)};
   align-items: center;
   margin: 0 auto;
   height: 100%;
@@ -44,27 +44,75 @@ const PageHeadline = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  display: flex;
-  text-align: center;
-  align-items: center;
   margin: 0;
-  font-weight: ${themeVal('type.base.semibold')};
-  text-transform: uppercase;
+  line-height: 1;
 
   a {
-    display: flex;
-    align-items: center;
-    transition: all 0.24s ease 0s;
+    display: grid;
+    grid-gap: 0 ${glsp(0.5)};
+    grid-template-columns: min-content 1fr min-content;
 
     &,
     &:visited {
       color: inherit;
     }
+
+    &::before {
+      grid-row: 1 / span 2;
+      content: '';
+      height: 48px;
+      width: 56px;
+      background: url('/assets/graphics/layout/app-logo-sprites.png');
+      background-size: auto 100%;
+      background-repeat: none;
+      background-position: top right;
+    }
+
+    &:hover {
+      opacity: 1;
+
+      &::before {
+        background-position: top left;
+      }
+    }
   }
 
-  span {
-    font-size: 1rem;
-    line-height: 1;
+  sup {
+    grid-row: 1;
+    font-size: 0.875rem;
+    font-weight: ${themeVal('type.base.extrabold')};
+    line-height: 1rem;
+    text-transform: uppercase;
+    align-self: end;
+    top: inherit;
+    vertical-align: inherit;
+
+    span {
+      ${visuallyHidden()};
+    }
+  }
+
+  strong {
+    grid-row: 2;
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    font-weight: ${themeVal('type.base.light')};
+    align-self: center;
+    letter-spacing: -0.025em;
+  }
+
+  sub {
+    grid-row: 2;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    text-transform: uppercase;
+    color: ${themeVal('color.link')};
+    background: ${themeVal('color.surface')};
+    padding: 0 ${glsp(0.5)};
+    border-radius: ${themeVal('shape.rounded')};
+    bottom: inherit;
+    vertical-align: inherit;
+    align-self: center;
   }
 `;
 
@@ -96,7 +144,9 @@ const NavLinkFilter = filterComponentProps(NavLink, propsToFilter);
 
 class PageHeader extends React.Component {
   render () {
-    const { useShortTitle } = this.props;
+    const { useShortTitle, spotlightList } = this.props;
+
+    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
     return (
       <PageHead role='banner'>
@@ -104,9 +154,9 @@ class PageHeader extends React.Component {
           <PageHeadline>
             <PageTitle>
               <Link to='/' title='Go to welcome page'>
-                <span>
-                  {useShortTitle ? appShortTitle || 'COVID-19' : appTitle}
-                </span>
+                <sup><span>NASA - </span>Earthdata</sup>
+                <strong>{useShortTitle ? appShortTitle || 'COVID-19' : appTitle}</strong>
+                <sub>{appVersion}</sub>
               </Link>
             </PageTitle>
           </PageHeadline>
@@ -118,7 +168,7 @@ class PageHeader extends React.Component {
                   to='/'
                   isActive={(match, location) =>
                     match && location.pathname.match(/^\/(areas\/|$)/)}
-                  variation='base-plain'
+                  variation='achromic-plain'
                   title='Explore the map'
                 >
                   <span>Map</span>
@@ -128,23 +178,24 @@ class PageHeader extends React.Component {
                 <Dropdown
                   alignment='right'
                   direction='down'
+                  disabled={!spotlightAreas}
                   triggerElement={
                     <Button
-                      variation='base-plain'
-                      title='Explore the Super sites'
+                      variation='achromic-plain'
+                      title='Explore the Spotlight areas'
                       useIcon={['chevron-down--small', 'after']}
                     >
-                      <span>Super sites</span>
+                      <span>Spotlight</span>
                     </Button>
                   }
                 >
-                  <DropTitle>Super sites</DropTitle>
+                  <DropTitle>Spotlight areas</DropTitle>
                   <DropMenu role='menu' selectable>
-                    {superSitesList.map(ss => (
+                    {spotlightAreas && spotlightAreas.map(ss => (
                       <li key={ss.id}>
                         <DropMenuItem
                           as={NavLink}
-                          to={`/super-sites/${ss.id}`}
+                          to={`/spotlight/${ss.id}`}
                           data-dropdown='click.close'
                         >
                           {ss.label}
@@ -155,10 +206,40 @@ class PageHeader extends React.Component {
                 </Dropdown>
               </li>
               <li>
+                <Dropdown
+                  alignment='right'
+                  direction='down'
+                  triggerElement={
+                    <Button
+                      variation='achromic-plain'
+                      title='Explore the datasets'
+                      useIcon={['chevron-down--small', 'after']}
+                    >
+                      <span>Datasets</span>
+                    </Button>
+                  }
+                >
+                  <DropTitle>Datasets</DropTitle>
+                  <DropMenu role='menu' selectable>
+                    {datasetsList.filter(d => !!d.LongForm).map(d => (
+                      <li key={d.id}>
+                        <DropMenuItem
+                          as={NavLink}
+                          to={`/datasets/${d.id}`}
+                          data-dropdown='click.close'
+                        >
+                          {d.name}
+                        </DropMenuItem>
+                      </li>
+                    ))}
+                  </DropMenu>
+                </Dropdown>
+              </li>
+              <li>
                 <Button
                   as={NavLinkFilter}
                   to='/about'
-                  variation='base-plain'
+                  variation='achromic-plain'
                   title='View the about page'
                 >
                   <span>About</span>
@@ -173,7 +254,16 @@ class PageHeader extends React.Component {
 }
 
 PageHeader.propTypes = {
-  useShortTitle: T.bool
+  useShortTitle: T.bool,
+  spotlightList: T.object
 };
 
-export default PageHeader;
+function mapStateToProps (state, props) {
+  return {
+    spotlightList: wrapApiResult(state.spotlight.list)
+  };
+}
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageHeader);

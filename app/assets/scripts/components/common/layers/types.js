@@ -5,6 +5,25 @@ const prepDateSource = (source, date) => ({
   tiles: source.tiles.map((t) => t.replace('{date}', format(date, 'yyyyMM')))
 });
 
+const prepGammaSource = (source, knobPos) => {
+  // Gamma is calculated with the following scale:
+  // domain: 0-100  range: 2-0.1
+  // The higher the Knob, the lower the gamma.
+  // This is a linear scale of type y = -mx + b
+  // y = -0.02x + 2;
+
+  return {
+    ...source,
+    tiles: source.tiles.map((t) => t.replace('{gamma}', -0.019 * knobPos + 2))
+  };
+};
+
+const prepSource = (source, date, knobPos) => {
+  source = prepDateSource(source, date);
+  source = prepGammaSource(source, knobPos);
+  return source;
+};
+
 const replaceRasterTiles = (theMap, sourceId, tiles) => {
   // https://github.com/mapbox/mapbox-gl-js/issues/2941
   // Set the tile url to a cache-busting url (to circumvent browser caching behaviour):
@@ -20,38 +39,53 @@ const replaceRasterTiles = (theMap, sourceId, tiles) => {
 export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
-      const { mbMap, mbMapComparing, props } = ctx;
+      const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
       const { id, source } = layerInfo;
-      const { date, compare } = props;
+      const prevLayerInfo = prevProps.layers.find(l => l.id === layerInfo.id);
+      const { date, comparing } = props;
 
+      const knobPos = layerInfo.knobCurrPos;
+      const knobPosPrev = prevLayerInfo.knobCurrPos;
+
+      // Do not update if:
       if (
-        prevProps.date &&
+        // There's no date defined.
+        prevProps.date && date &&
+        // Dates are the same
         date.getTime() === prevProps.date.getTime() &&
-        compare === prevProps.compare
-      ) { return; }
+        // Knob position for gamma correction is the same.
+        knobPos === knobPosPrev &&
+        // Compare didn't change.
+        comparing === prevProps.comparing
+      ) return;
 
-      if (mbMap.getSource(id)) {
-        const tiles = prepDateSource(source, date).tiles;
-        replaceRasterTiles(mbMap, id, tiles);
+      // The source we're updating is not present.
+      if (!mbMap.getSource(id)) return;
 
-        if (compare) {
-          const source5years = prepDateSource(source, sub(date, { years: 5 }));
-          if (mbMapComparing.getSource(id)) {
-            replaceRasterTiles(mbMapComparing, id, source5years.tiles);
-          } else {
-            // TODO: Waiting for a map to load should be decoupled from the layer types.
-            mbMapComparing.once('load', () => {
-              mbMapComparing.addSource(id, source5years);
-              mbMapComparing.addLayer(
-                {
-                  id: id,
-                  type: 'raster',
-                  source: id
-                },
-                'admin-1-boundary-bg'
-              );
-            });
-          }
+      // If we're comparing, and the compare map is not loaded.
+      if (comparing && !mbMapComparingLoaded) return;
+
+      // END update checks.
+
+      // Update layer tiles.
+      const tiles = prepSource(source, date, knobPos).tiles;
+      replaceRasterTiles(mbMap, id, tiles);
+
+      // Update/init compare layer tiles.
+      if (comparing) {
+        const source5years = prepSource(source, sub(date, { years: 5 }), knobPos);
+        if (mbMapComparing.getSource(id)) {
+          replaceRasterTiles(mbMapComparing, id, source5years.tiles);
+        } else {
+          mbMapComparing.addSource(id, source5years);
+          mbMapComparing.addLayer(
+            {
+              id: id,
+              type: 'raster',
+              source: id
+            },
+            'admin-1-boundary-bg'
+          );
         }
       }
     },
@@ -72,7 +106,7 @@ export const layerTypes = {
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
-        mbMap.addSource(id, prepDateSource(source, date));
+        mbMap.addSource(id, prepSource(source, date, layerInfo.knobCurrPos));
         mbMap.addLayer(
           {
             id: id,

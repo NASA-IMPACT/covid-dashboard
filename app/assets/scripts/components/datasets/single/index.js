@@ -1,6 +1,5 @@
 import React from 'react';
 import T from 'prop-types';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import App from '../../common/app';
@@ -10,21 +9,12 @@ import {
   InpageHeaderInner,
   InpageHeadline,
   InpageTitle,
+  InpageSubtitle,
   InpageBody
 } from '../../../styles/inpage';
 import UhOh from '../../uhoh';
 
-import { glsp } from '../../../styles/utils/theme-values';
 import { getDataset } from '../';
-
-const InpageTrendsBody = styled(InpageBody)`
-  position: relative;
-  z-index: 9;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  height: 100%;
-  padding: ${glsp(1, 3)};
-`;
 
 class DatasetsSingle extends React.Component {
   render () {
@@ -39,12 +29,13 @@ class DatasetsSingle extends React.Component {
             <InpageHeaderInner>
               <InpageHeadline>
                 <InpageTitle>{dataset.name}</InpageTitle>
+                <InpageSubtitle>Dataset</InpageSubtitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
-          <InpageTrendsBody>
+          <InpageBody>
             <dataset.LongForm />
-          </InpageTrendsBody>
+          </InpageBody>
         </Inpage>
       </App>
     );

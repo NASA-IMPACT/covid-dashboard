@@ -6,6 +6,7 @@ import { collecticonsFont } from './collecticons';
 import { unscrollableY, unscrollableX } from './helpers';
 import mapboxStyles from './vendor/mapbox';
 import reactDatepickerStyles from './vendor/react-datepicker';
+import reactTooltipStyles from './vendor/react-tooltip';
 
 const _rgba = stylizeFunction(rgba);
 
@@ -135,8 +136,8 @@ const baseStyles = css`
      ========================================================================== */
 
   ::selection {
-    background-color: ${_rgba(themeVal('color.base'), 0.32)};
-    color: ${themeVal('color.base')};
+    background-color: ${_rgba(themeVal('color.base'), 0.64)};
+    color: ${themeVal('color.baseLight')};
   }
 
   #root {
@@ -161,5 +162,6 @@ export default createGlobalStyle`
   ${collecticonsFont()}
   ${mapboxStyles()}
   ${reactDatepickerStyles()}
+  ${reactTooltipStyles()}
   ${baseStyles}
 `;

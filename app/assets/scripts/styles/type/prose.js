@@ -1,10 +1,20 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
 import { themeVal } from '../utils/general';
 import { multiply } from '../utils/math';
+import { glsp } from '../utils/theme-values';
+
+// Extract fn to avoid complaints by the linter.
+const numColumnsFn = ({ numColumns }) => numColumns && css`
+  column-count: ${numColumns};
+  column-gap: ${glsp(2)};
+`;
 
 const Prose = styled.div`
-  font-size: ${themeVal('type.base.size')};                                     /* 16px */
-  line-height: ${themeVal('type.base.line')};                                   /* 24px */
+  font-size: ${themeVal('type.base.size')};                           /* 16px */
+  line-height: ${themeVal('type.base.line')};                         /* 24px */
+
+  ${numColumnsFn}
 
   ul, ol, dl {
     padding: 0;
@@ -28,14 +38,12 @@ const Prose = styled.div`
     margin-bottom: 0;
   }
 
-  &, li {
-    > * {
-      margin-bottom: ${multiply(themeVal('type.base.size'), themeVal('type.base.line'))}; /* same as line-height */
-    }
-  
-    > *:last-child {
-      margin-bottom: 0;
-    }
+  > * {
+    margin-bottom: ${multiply(themeVal('type.base.size'), themeVal('type.base.line'))}; /* same as line-height */
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
   }
 `;
 

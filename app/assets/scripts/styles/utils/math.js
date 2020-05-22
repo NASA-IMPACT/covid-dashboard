@@ -1,3 +1,7 @@
+import get from 'lodash.get';
+
+import { px, rem } from './general';
+
 /**
  * Creates a math function that performs the given operation taking into account
  * only the unit of the first value. Eg: 2rem * 2 = 4rem | 2 * 2rem = 4
@@ -79,3 +83,84 @@ export const divide = createMathOperation('/');
  * @param {string} b Second value
  */
 export const multiply = createMathOperation('*');
+
+/**
+ * Convert the given value to the given unit using the base size defined in the
+ * theme. (theme.type.base.root) If value is a function will execute it. This
+ * allows to use directly in styled-components with themeVal.
+ * Only conversion between rem and px is allowed. Any other destination unit
+ * will be ignored and the value returned as is.
+ *
+ * @example
+ * rp2rp(themeVal('layout.max'), 'px')
+ *
+ * @param {mixed} v The value
+ * @param {mixed} unit The destination unit
+ *
+ * @throws Error if the root type pixel value is not defined.
+ */
+const rp2rp = (v, unit) => (...args) => {
+  v = typeof v === 'function' ? v(...args) : v;
+  unit = typeof unit === 'function' ? unit(...args) : unit;
+
+  const rootV = get(args[0], 'theme.type.base.root', null);
+  if (rootV === null) {
+    throw new Error('Root type pixel value not found in theme.type.base.root');
+  }
+
+  const srcUnit = (v + '').match(/[0-9]*(?:.[0-9]+)?(.*)/)[1];
+  const srcVal = parseFloat(v);
+
+  if (unit === 'px') {
+    return srcUnit === 'rem'
+      ? srcVal * parseFloat(rootV)
+      : px(srcVal);
+  }
+
+  if (unit === 'rem') {
+    return srcUnit === 'px'
+      ? srcVal / parseFloat(rootV)
+      : rem(srcVal);
+  }
+
+  // Invalid unit - return as is.
+  return v;
+};
+
+/**
+ * Convert the given value to pixels using the base size defined in the theme.
+ * (theme.type.base.root)
+ * If value is a function will execute it. This allows to use directly in
+ * styled-components with themeVal
+ *
+ * @see rp2rp()
+ *
+ * @example
+ * val2px(themeVal('layout.max'))
+ *
+ * @param {mixed} val The value
+ *
+ * @throws Error if the root type pixel value is not defined.
+ */
+export const val2px = (val) => {
+  return rp2rp(val, 'px');
+};
+
+/**
+ * Convert the given value to rem using the base size defined in the theme.
+ * (theme.type.base.root)
+ * If value is a function will execute it. This allows to use directly in
+ * styled-components with themeVal
+ *
+ * @see rp2rp()
+ *
+ * @example
+ * val2rem(themeVal('layout.max'))
+ *
+ * @param {mixed} val The value
+ *
+ * @throws Error if the root type pixel value is not defined.
+ */
+export const val2rem = (val) => {
+  return rp2rp(val, 'rem');
+};

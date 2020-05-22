@@ -16,7 +16,7 @@ import {
 
 import { glsp } from '../../../styles/utils/theme-values';
 import { themeVal } from '../../../styles/utils/general';
-import superSites from '../index';
+import { wrapApiResult } from '../../../redux/reduxeed';
 
 const InpageTrendsBody = styled(InpageBody)`
   position: relative;
@@ -71,29 +71,31 @@ const PanelNavLink = styled(NavLink)`
   }
 `;
 
-class SuperSitesHub extends React.Component {
+class SpotlightAreasHub extends React.Component {
   render () {
-    const { datasets } = this.props;
+    const { spotlightList } = this.props;
+
+    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
     return (
-      <App pageTitle='Trends'>
+      <App pageTitle='Spotlight areas'>
         <Inpage>
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Trends</InpageTitle>
+                <InpageTitle>Spotlight areas</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
           <InpageTrendsBody>
             <ul>
-              {datasets.map((item) => (
+              {spotlightAreas && spotlightAreas.map((item) => (
                 <li key={item.id}>
                   <PanelNavLink
-                    to={`/trends/${item.id}`}
-                    title={`View super site ${item.name}`}
+                    to={`/spotlight/${item.id}`}
+                    title={`View spotlight area ${item.label}`}
                   >
-                    {item.name}
+                    {item.label}
                   </PanelNavLink>
                 </li>
               ))}
@@ -105,16 +107,16 @@ class SuperSitesHub extends React.Component {
   }
 }
 
-SuperSitesHub.propTypes = {
-  datasets: T.array
+SpotlightAreasHub.propTypes = {
+  spotlightList: T.object
 };
 
 function mapStateToProps (state, props) {
   return {
-    datasets: superSites
+    spotlightList: wrapApiResult(state.spotlight.list)
   };
 }
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SuperSitesHub);
+export default connect(mapStateToProps, mapDispatchToProps)(SpotlightAreasHub);

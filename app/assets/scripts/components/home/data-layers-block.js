@@ -1,5 +1,6 @@
 import React from 'react';
 import T from 'prop-types';
+import styled from 'styled-components';
 import get from 'lodash.get';
 
 import {
@@ -12,20 +13,21 @@ import {
 import Layer from './layer';
 import { Accordion } from '../common/accordion';
 
+const PanelBlockLayer = styled(PanelBlock)`
+  flex: 2;
+`;
+
 class DataLayersBlock extends React.Component {
   render () {
     const { onAction, layers, mapLoaded } = this.props;
 
     return (
-      <PanelBlock>
+      <PanelBlockLayer>
         <PanelBlockHeader>
           <PanelBlockTitle>Data</PanelBlockTitle>
         </PanelBlockHeader>
         <PanelBlockBody>
-          <PanelBlockScroll
-            topShadowVariation='dark'
-            bottomShadowVariation='dark'
-          >
+          <PanelBlockScroll>
             <Accordion>
               {({ checkExpanded, setExpanded }) => (
                 <ol>
@@ -39,12 +41,18 @@ class DataLayersBlock extends React.Component {
                         active={l.visible}
                         swatchColor={get(l, 'swatch.color')}
                         swatchName={get(l, 'swatch.name')}
-                        mapStyle={l.mapStyle}
+                        dataOrder={l.dataOrder}
                         info={l.info}
                         legend={l.legend}
                         isExpanded={checkExpanded(idx)}
                         setExpanded={v => setExpanded(idx, v)}
                         onToggleClick={() => onAction('layer.toggle', l)}
+                        onLegendKnobChange={(payload) => onAction('layer.legend-knob', { id: l.id, ...payload })}
+                        knobPos={l.knobPos}
+                        compareEnabled={get(l, 'compare.enabled')}
+                        compareActive={l.comparing}
+                        compareHelp={get(l, 'compare.help')}
+                        onCompareClick={() => onAction('layer.compare', l)}
                       />
                     </li>
                   ))}
@@ -53,7 +61,7 @@ class DataLayersBlock extends React.Component {
             </Accordion>
           </PanelBlockScroll>
         </PanelBlockBody>
-      </PanelBlock>
+      </PanelBlockLayer>
     );
   }
 }

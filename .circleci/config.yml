@@ -42,8 +42,7 @@ jobs:
       - checkout
       - restore_cache:
           <<: *restore_cache_def
-      # - run: yarn lint
-      - run: echo Skip linting
+      - run: yarn lint
   test:
     <<: *base_def
     steps:

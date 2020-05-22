@@ -1,10 +1,12 @@
 import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 
-import { visuallyHidden, truncated } from './helpers';
+import { visuallyHidden } from './helpers';
 import { themeVal, stylizeFunction } from './utils/general';
-import { multiply } from './utils/math';
-import { headingAlt } from './type/heading';
+
+import { glsp } from './utils/theme-values';
+
+import Constrainer from './constrainer';
 
 const _rgba = stylizeFunction(rgba);
 
@@ -30,25 +32,32 @@ export const Inpage = styled.article`
 `;
 
 export const InpageHeader = styled.header`
+  background: ${themeVal('color.primary')};
+  color: ${themeVal('color.baseLight')};
+  box-shadow: inset 0 1px 0 0 ${_rgba('#FFFFFF', 0.12)};
+
   /* Visually hidden */
-  ${({ isHidden }) => isHidden &&
-   css`
+  ${({ isHidden }) =>
+    isHidden &&
+    css`
       ${visuallyHidden()}
     `}
 `;
 
-export const InpageHeaderInner = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: flex-end;
-  padding: ${multiply(themeVal('layout.space'), 4)} ${multiply(themeVal('layout.space'), 4)} ${multiply(themeVal('layout.space'), 2)} ${multiply(themeVal('layout.space'), 4)};
-  margin: 0 auto;
+export const InpageHeaderInner = styled(Constrainer)`
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: ${glsp(4)} ${glsp(2)};
+  padding-top: ${glsp(4)};
+  padding-bottom: ${glsp(4)};
 `;
 
 export const InpageHeadline = styled.div`
   display: flex;
   flex-flow: column;
   min-width: 0;
+  grid-row: 1;
+  grid-column: span 8;
 
   > *:last-child {
     margin-bottom: 0;
@@ -59,30 +68,24 @@ export const InpageToolbar = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  padding-left: ${multiply(themeVal('layout.space'), 2)};
-  margin-left: auto;
-`;
-
-export const InpageTitleWrapper = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  min-width: 0;
-  margin-bottom: ${multiply(themeVal('layout.space'), 1.5)};
+  grid-row: 1;
+  grid-column: 9 / span 4;
 `;
 
 export const InpageTitle = styled.h1`
-  ${truncated()}
-  font-size: 2rem;
-  line-height: 2.5rem;
-  margin: 0;
+  font-size: 3rem;
+  line-height: 3.5rem;
+  font-weight: ${themeVal('type.base.light')};
+  letter-spacing: -0.025em;
+  margin: 0 0 0 -0.125rem;
 `;
 
-export const InpageTagline = styled.p`
-  ${headingAlt()}
+export const InpageSubtitle = styled.p`
+  font-size: 1rem;
+  font-weight: ${themeVal('type.base.extrabold')};
+  line-height: 1;
+  text-transform: uppercase;
   order: -1;
-  font-size: 0.875rem;
-  line-height: 1rem;
-  color: ${_rgba('#FFFFFF', 0.64)};
 `;
 
 export const InpageBody = styled.div`
@@ -90,6 +93,6 @@ export const InpageBody = styled.div`
 `;
 
 export const InpageBodyInner = styled.div`
-  padding: 0 ${multiply(themeVal('layout.space'), 4)} ${multiply(themeVal('layout.space'), 4)} ${multiply(themeVal('layout.space'), 4)};
+  padding: 0 ${glsp(4)} ${glsp(4)} ${glsp(4)} ${glsp(4)};
   max-width: ${themeVal('layout.max')};
 `;
