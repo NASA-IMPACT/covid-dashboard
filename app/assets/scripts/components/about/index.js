@@ -8,9 +8,16 @@ import {
   InpageHeaderInner,
   InpageHeadline,
   InpageTitle,
-  InpageBody,
-  InpageBodyInner
+  InpageBody
 } from '../../styles/inpage';
+
+import {
+  Fold,
+  FoldTitle
+} from '../../styles/fold';
+
+import Constrainer from '../../styles/constrainer';
+
 import Prose from '../../styles/type/prose';
 import Dl from '../../styles/type/definition-list';
 
@@ -20,7 +27,8 @@ import { visuallyHidden } from '../../styles/helpers';
 import { themeVal } from '../../styles/utils/general';
 
 const AboutProse = styled(Prose)`
-  max-width: 40rem;
+  grid-row: 1;
+  grid-column: span 8;
 `;
 
 const LogoList = styled(Dl)`
@@ -103,30 +111,35 @@ export default class About extends React.Component {
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
-            <InpageBodyInner>
-              <AboutProse>
-                <h2>The tool</h2>
-                <p>The COVID EO dashbord provides streaming data about the pandemic to inform decisionmakers in government, community leaders, health responders, and the business community.</p>
-
-                {/* <LogoList>
-                  <dt>Developed by</dt>
-                  <dd>
-                    <LogoLink
-                      href='https://developmentseed.org/'
-                      title='Visit Development Seed'
-                      rel='noopener noreferrer'
-                      target='_blank'
-                    >
-                      <img
-                        alt='Development Seed logo'
-                        src='/assets/graphics/content/logos/ds-logo-hor--pos.svg'
-                      />
-                      <span>Development Seed</span>
-                    </LogoLink>
-                  </dd>
-                </LogoList> */}
-              </AboutProse>
-            </InpageBodyInner>
+            <Fold>
+              <Constrainer>
+                <AboutProse>
+                  <FoldTitle>The tool</FoldTitle>
+                  <p>
+                    The COVID EO dashbord provides streaming data about the
+                    pandemic to inform decisionmakers in government, community
+                    leaders, health responders, and the business community.
+                  </p>
+                  {/* <LogoList>
+                    <dt>Developed by</dt>
+                    <dd>
+                      <LogoLink
+                        href='https://developmentseed.org/'
+                        title='Visit Development Seed'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                      >
+                        <img
+                          alt='Development Seed logo'
+                          src='/assets/graphics/content/logos/ds-logo-hor--pos.svg'
+                        />
+                        <span>Development Seed</span>
+                      </LogoLink>
+                    </dd>
+                  </LogoList> */}
+                </AboutProse>
+              </Constrainer>
+            </Fold>
           </InpageBody>
         </Inpage>
       </App>
