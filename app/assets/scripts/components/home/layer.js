@@ -1,6 +1,7 @@
 import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
+import ReactTooltip from 'react-tooltip';
 
 import { themeVal } from '../../styles/utils/general';
 import { visuallyHidden, truncated } from '../../styles/helpers';
@@ -132,6 +133,10 @@ const typesSubtitles = {
 };
 
 class Layer extends React.Component {
+  componentDidMount () {
+    ReactTooltip.rebuild();
+  }
+
   renderLegend () {
     const {
       dataOrder,
@@ -219,6 +224,10 @@ class Layer extends React.Component {
       swatchColor,
       swatchName,
       info,
+      compareEnabled,
+      compareActive,
+      compareHelp,
+      onCompareClick,
       onToggleClick,
       isExpanded,
       setExpanded
@@ -250,6 +259,19 @@ class Layer extends React.Component {
                 onClick={() => setFoldExpanded(!isFoldExpanded)}
               >
                 <span>Info</span>
+              </Button>
+              <Button
+                variation={compareActive ? 'primary-plain' : 'base-plain'}
+                size='small'
+                useIcon='clock'
+                title='Enable/disable layer compare'
+                hideText
+                disabled={disabled || !compareEnabled || !active}
+                data-tip={compareHelp}
+                active={compareActive}
+                onClick={onCompareClick}
+              >
+                <span>Compare</span>
               </Button>
               <FormSwitch
                 hideText
@@ -289,7 +311,11 @@ Layer.propTypes = {
   isExpanded: T.bool,
   setExpanded: T.func,
   onLegendKnobChange: T.func,
-  knobPos: T.number
+  knobPos: T.number,
+  compareEnabled: T.bool,
+  compareActive: T.bool,
+  compareHelp: T.string,
+  onCompareClick: T.func
 };
 
 export default Layer;

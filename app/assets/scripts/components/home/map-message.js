@@ -13,7 +13,7 @@ const Message = styled.div`
   left: 50%;
   z-index: 10;
   transform: translate(-50%, 0);
-  padding: ${glsp(1 / 2, 1)};
+  padding: ${glsp(1 / 4, 1)};
   background: #fff;
   box-shadow: 0 0 4px 4px ${themeVal('color.baseAlphaA')};
   border-radius: ${themeVal('shape.rounded')};
@@ -21,25 +21,25 @@ const Message = styled.div`
   transition: all ${fadeDuration}ms ease-in-out;
   ${({ show }) => show ? css`
     visibility: visible;
-    top: 2rem;
+    top: 0.5rem;
     opacity: 1;
   ` : css`
     visibility: hidden;
-    top: 0;
+    top: -2rem;
     opacity: 0;
   `}
 `;
 
-class DrawMessage extends Component {
+class MapMessage extends Component {
   render () {
     return (
       <Transition
-        in={this.props.drawing}
+        in={this.props.active}
         timeout={fadeDuration}
       >
         {state => (
           <Message show={state === 'entered' || state === 'entering'}>
-            <p>Draw an AOI on the map</p>
+            {this.props.children}
           </Message>
         )}
       </Transition>
@@ -47,8 +47,9 @@ class DrawMessage extends Component {
   }
 }
 
-DrawMessage.propTypes = {
-  drawing: T.bool
+MapMessage.propTypes = {
+  children: T.node,
+  active: T.bool
 };
 
-export default DrawMessage;
+export default MapMessage;

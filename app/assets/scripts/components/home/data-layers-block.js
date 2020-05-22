@@ -47,6 +47,10 @@ class DataLayersBlock extends React.Component {
                         onToggleClick={() => onAction('layer.toggle', l)}
                         onLegendKnobChange={(payload) => onAction('layer.legend-knob', { id: l.id, ...payload })}
                         knobPos={l.knobPos}
+                        compareEnabled={get(l, 'compare.enabled')}
+                        compareActive={l.comparing}
+                        compareHelp={get(l, 'compare.help')}
+                        onCompareClick={() => onAction('layer.compare', l)}
                       />
                     </li>
                   ))}

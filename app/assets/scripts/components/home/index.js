@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { format, isBefore, sub } from 'date-fns';
 import get from 'lodash.get';
+import find from 'lodash.find';
 
 import App from '../common/app';
 import ExpMapPrimePanel from './prime-panel';
@@ -18,7 +19,7 @@ import {
 } from '../../styles/inpage';
 import MbMap from './mb-map';
 import Timeline from './timeline';
-import DrawMessage from './map-draw-message';
+import MapMessage from './map-message';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
@@ -108,10 +109,15 @@ class Home extends React.Component {
       // Additional data that needs to be tracked for the map layers, like the
       // knob position on a adjustable gradient legend.
       // Values will be objects keyed by the layer id.
-      layersSettings: {},
+      layersState: {
+        // id: {
+        //   comparing: bool
+        //   knosPos: number
+        //   knobCurrPos: number
+        // }
+      },
       timelineDate: null,
       mapLoaded: false,
-      compare: false,
 
       aoi: {
         feature: null,
@@ -126,11 +132,33 @@ class Home extends React.Component {
     this.props.invalidateCogTimeData();
   }
 
+  setLayerState (id, data, cb) {
+    this.setState(state => {
+      const currentState = state.layersState[id] || {};
+      return {
+        layersState: {
+          ...state.layersState,
+          [id]: {
+            ...currentState,
+            ...(typeof data === 'function' ? data(currentState) : data)
+          }
+        }
+      };
+    }, () => cb && cb());
+  }
+
+  getLayerState (id, prop) {
+    const path = prop
+      ? typeof prop === 'string' ? [id, prop] : [id, ...prop]
+      : id;
+    return get(this.state.layersState, path);
+  }
+
   getLayersWithState () {
-    const { activeLayers, layersSettings } = this.state;
+    const { activeLayers, layersState } = this.state;
     return mapLayers.map((l) => {
       // Get additional propertied from the layerData array.
-      const extra = layersSettings[l.id] || {};
+      const extra = layersState[l.id] || {};
       return {
         ...l,
         visible: activeLayers.includes(l.id),
@@ -140,10 +168,15 @@ class Home extends React.Component {
   }
 
   resizeMap () {
-    if (this.mbMapRef.current) {
+    const component = this.mbMapRef.current;
+    if (component) {
       // Delay execution to give the panel animation time to finish.
       setTimeout(() => {
-        this.mbMapRef.current.mbMap.resize();
+        component.mbMap.resize();
+        // Also resize the compare map if it exists.
+        if (component.mbMapComparing) {
+          component.mbMapComparing.resize();
+        }
       }, 200);
     }
   }
@@ -173,24 +206,18 @@ class Home extends React.Component {
       case 'layer.toggle':
         this.toggleLayer(payload);
         break;
-      case 'layer.legend-knob':
-        this.setState(state => ({
-          layersSettings: {
-            ...state.layersSettings,
-            [payload.id]: {
-              ...state.layersSettings[payload.id],
-              knobPos: payload.value,
-              // If the event was the end of a drag, set the current value for
-              // the map to pick up.
-              knobCurrPos: payload.end
-                ? payload.value
-                : get(state, ['layersSettings', payload.id, 'knobCurrPos'])
-            }
-          }
-        }));
+      case 'layer.compare':
+        this.toggleLayerCompare(payload);
         break;
-      case 'compare.set':
-        this.setState({ compare: payload.compare });
+      case 'layer.legend-knob':
+        this.setLayerState(payload.id, layerState => ({
+          knobPos: payload.value,
+          // If the event was the end of a drag, set the current value for
+          // the map to pick up.
+          knobCurrPos: payload.end
+            ? payload.value
+            : layerState.knobCurrPos
+        }));
         break;
       case 'date.set':
         this.setState({
@@ -351,7 +378,7 @@ class Home extends React.Component {
       this.setState(state => {
         // Check if there's a knob value set. If not, means that this is the
         // first time it is enabled and we need to set a default.
-        const knobCurrPos = get(state, ['layersSettings', layer.id, 'knobCurrPos'], null);
+        const knobCurrPos = get(state, ['layersState', layer.id, 'knobCurrPos'], null);
         const knobData = knobCurrPos === null
           ? {
             knobPos: 50,
@@ -360,15 +387,20 @@ class Home extends React.Component {
           : {};
         return {
           timelineDate: utcDate(layer.domain[1]),
-          layersSettings: {
-            ...state.layersSettings,
+          layersState: {
+            ...state.layersState,
             [layer.id]: {
-              ...state.layersSettings[layer.id],
+              ...state.layersState[layer.id],
               ...knobData
             }
           }
         };
       });
+    }
+
+    // If we disable a layer we're comparing, disable the comparison as well.
+    if (this.getLayerState(layer.id, 'comparing')) {
+      this.toggleLayerCompare(layer);
     }
 
     // Hide any layers that are not compatible with the current one.
@@ -393,6 +425,37 @@ class Home extends React.Component {
     });
   }
 
+  toggleLayerCompare (layer) {
+    const isEnabled = this.getLayerState(layer.id, 'comparing');
+
+    if (isEnabled) {
+      this.setLayerState(layer.id, {
+        comparing: false
+      });
+    } else {
+      this.setState(state => {
+        // Disable compare on all other layers.
+        // Having a object with settings makes it very fast to access, but it is
+        // harder to apply changes across all objects.
+        const layersState = Object.keys(state.layersState).reduce((acc, id) => ({
+          ...acc,
+          [id]: {
+            ...acc[id],
+            comparing: false
+          }
+        }), state.layersState);
+
+        // Set current as active
+        layersState[layer.id] = {
+          ...layersState[layer.id],
+          comparing: true
+        };
+
+        return { layersState };
+      });
+    }
+  }
+
   getActiveTimeseriesLayers () {
     return mapLayers.filter(
       (l) =>
@@ -406,11 +469,17 @@ class Home extends React.Component {
   }
 
   render () {
-    const adminAreaFeatId = this.props.match.params.id;
-
     const layers = this.getLayersWithState();
-
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
+
+    // Check if there's any layer that's comparing.
+    const comparingLayer = find(layers, 'comparing');
+    const isComparing = !!comparingLayer;
+
+    const mapLabel = get(comparingLayer, 'compare.mapLabel');
+    const compareMessage = isComparing && mapLabel
+      ? typeof mapLabel === 'function' ? mapLabel(this.state.timelineDate) : mapLabel
+      : '';
 
     return (
       <App>
@@ -432,28 +501,27 @@ class Home extends React.Component {
                 onPanelChange={this.resizeMap}
               />
               <ExploreCarto>
-                <DrawMessage drawing={this.state.aoi.drawing} />
+                <MapMessage active={this.state.aoi.drawing}>
+                  <p>Draw an AOI on the map</p>
+                </MapMessage>
+                <MapMessage active={!this.state.aoi.drawing && isComparing && !!compareMessage}>
+                  <p>{compareMessage}</p>
+                </MapMessage>
                 <MbMap
                   ref={this.mbMapRef}
                   onAction={this.onMapAction}
                   layers={layers}
                   activeLayers={this.state.activeLayers}
-                  layerData={this.state.layersSettings}
-                  selectedAdminArea={adminAreaFeatId}
                   date={this.state.timelineDate}
                   aoiState={this.state.aoi}
-                  compare={
-                    !!activeTimeseriesLayers.length && this.state.compare
-                  }
-                  // activeTimeSeriesData={activeTimeseriesLayerData}
+                  comparing={isComparing}
                 />
                 <Timeline
                   isActive={!!activeTimeseriesLayers.length}
                   layers={activeTimeseriesLayers}
-                  // overview={activeTimeseriesOverviewData}
                   date={this.state.timelineDate}
-                  compare={this.state.compare}
                   onAction={this.onPanelAction}
+                  onSizeChange={this.resizeMap}
                 />
               </ExploreCarto>
               <ExpMapSecPanel
@@ -476,15 +544,10 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  // fetchConfig: T.func,
-  // fetchAdminAreas: T.func,
-  // fetchSingleAdminArea: T.func,
   fetchTimeSeriesDaily: T.func,
   fetchTimeSeriesOverview: T.func,
   fetchCogTimeData: T.func,
   invalidateCogTimeData: T.func,
-  match: T.object,
-  // timeSeriesDaily: T.object,
   timeSeriesOverview: T.object,
   no2CogTimeData: T.object
 };

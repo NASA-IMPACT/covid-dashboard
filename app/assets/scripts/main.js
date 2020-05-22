@@ -6,6 +6,7 @@ import T from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 import { Router, Route, Switch } from 'react-router-dom';
 import ReactGA from 'react-ga';
+import ReactTooltip from 'react-tooltip';
 
 import theme, { mediaRanges } from './styles/theme/theme';
 import store from './utils/store';
@@ -109,6 +110,10 @@ class Root extends React.Component {
                   <Route path='*' component={UhOh} />
                 </Switch>
                 <GlobalLoading />
+                <ReactTooltip
+                  effect='solid'
+                  className='type-primary'
+                />
               </SizeAwareElement>
             </ErrorBoundary>
           </ThemeProvider>

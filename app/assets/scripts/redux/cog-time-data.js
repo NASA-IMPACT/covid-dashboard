@@ -16,7 +16,7 @@ export function fetchCogTimeData (id, timeframe, area) {
 
     const { start, end } = timeframe;
     const months = eachMonthOfInterval({ start, end });
-    const url = 'https://xsmt29iqqb.execute-api.us-east-1.amazonaws.com/v1/timelapse';
+    const url = 'https://8ib71h0627.execute-api.us-east-1.amazonaws.com/v1/timelapse';
 
     const requests = months.map(async date => {
       const reqDate = format(date, 'yyyyMM');
