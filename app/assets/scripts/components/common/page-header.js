@@ -14,6 +14,7 @@ import { glsp } from '../../styles/utils/theme-values';
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
 import spotlightSitesList from '../spotlight';
+import datasetsList from '../datasets';
 
 const { appTitle, appShortTitle, appVersion } = config;
 
@@ -194,6 +195,36 @@ class PageHeader extends React.Component {
                           data-dropdown='click.close'
                         >
                           {ss.label}
+                        </DropMenuItem>
+                      </li>
+                    ))}
+                  </DropMenu>
+                </Dropdown>
+              </li>
+              <li>
+                <Dropdown
+                  alignment='right'
+                  direction='down'
+                  triggerElement={
+                    <Button
+                      variation='achromic-plain'
+                      title='Explore the datasets'
+                      useIcon={['chevron-down--small', 'after']}
+                    >
+                      <span>Datasets</span>
+                    </Button>
+                  }
+                >
+                  <DropTitle>Datasets</DropTitle>
+                  <DropMenu role='menu' selectable>
+                    {datasetsList.filter(d => !!d.LongForm).map(d => (
+                      <li key={d.id}>
+                        <DropMenuItem
+                          as={NavLink}
+                          to={`/datasets/${d.id}`}
+                          data-dropdown='click.close'
+                        >
+                          {d.name}
                         </DropMenuItem>
                       </li>
                     ))}

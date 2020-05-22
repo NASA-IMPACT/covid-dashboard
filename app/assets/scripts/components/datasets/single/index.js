@@ -17,13 +17,8 @@ import UhOh from '../../uhoh';
 import { glsp } from '../../../styles/utils/theme-values';
 import { getDataset } from '../';
 
-const InpageTrendsBody = styled(InpageBody)`
-  position: relative;
-  z-index: 9;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  height: 100%;
-  padding: ${glsp(1, 3)};
+const DatasetInpageHeaderInner = styled(InpageHeaderInner)`
+  padding-left: ${glsp(2)};
 `;
 
 class DatasetsSingle extends React.Component {
@@ -36,15 +31,15 @@ class DatasetsSingle extends React.Component {
       <App pageTitle={dataset.name}>
         <Inpage>
           <InpageHeader>
-            <InpageHeaderInner>
+            <DatasetInpageHeaderInner>
               <InpageHeadline>
                 <InpageTitle>{dataset.name}</InpageTitle>
               </InpageHeadline>
-            </InpageHeaderInner>
+            </DatasetInpageHeaderInner>
           </InpageHeader>
-          <InpageTrendsBody>
+          <InpageBody>
             <dataset.LongForm />
-          </InpageTrendsBody>
+          </InpageBody>
         </Inpage>
       </App>
     );
