@@ -134,7 +134,6 @@ export const FormSwitch = styled(FormSwitchElement)`
       z-index: 2;
       top: 50%;
       left: 0;
-      z-index: 2;
       content: '';
       height: 1.25rem;
       width: 1.25rem;

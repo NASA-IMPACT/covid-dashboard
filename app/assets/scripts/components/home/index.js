@@ -23,12 +23,11 @@ import MapMessage from './map-message';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
-import { wrapApiResult, getFromState } from '../../redux/reduxeed';
+import { wrapApiResult } from '../../redux/reduxeed';
 import {
   fetchCogTimeData as fetchCogTimeDataAction,
   invalidateCogTimeData as invalidateCogTimeDataAction
 } from '../../redux/cog-time-data';
-import history from '../../utils/history';
 import { utcDate } from '../../utils/utils';
 import mapLayers from '../common/layers';
 

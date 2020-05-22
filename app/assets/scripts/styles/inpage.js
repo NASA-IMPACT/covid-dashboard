@@ -1,9 +1,8 @@
 import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 
-import { visuallyHidden, truncated } from './helpers';
+import { visuallyHidden } from './helpers';
 import { themeVal, stylizeFunction } from './utils/general';
-import { headingAlt } from './type/heading';
 
 import { glsp } from './utils/theme-values';
 
@@ -78,7 +77,7 @@ export const InpageTitle = styled.h1`
   line-height: 3.5rem;
   font-weight: ${themeVal('type.base.light')};
   letter-spacing: -0.025em;
-  margin: 0 0 0 -0.125rem;;
+  margin: 0 0 0 -0.125rem;
 `;
 
 export const InpageSubtitle = styled.p`

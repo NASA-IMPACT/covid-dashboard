@@ -235,6 +235,8 @@ class MbMap extends React.Component {
 
 MbMap.propTypes = {
   onAction: T.func,
+  theme: T.object,
+  aoiState: T.object,
   comparing: T.bool,
   activeLayers: T.array,
   layers: T.array

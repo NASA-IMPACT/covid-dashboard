@@ -1,5 +1,4 @@
 import { format, sub } from 'date-fns';
-import get from 'lodash.get';
 
 const prepDateSource = (source, date) => ({
   ...source,
