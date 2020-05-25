@@ -166,12 +166,24 @@ class PageHeader extends React.Component {
                 <Button
                   as={NavLinkFilter}
                   to='/'
-                  isActive={(match, location) =>
-                    match && location.pathname.match(/^\/(areas\/|$)/)}
+                  exact
+                  hideText
+                  useIcon='house'
                   variation='achromic-plain'
-                  title='Explore the map'
+                  title='View the welcome page'
                 >
-                  <span>Map</span>
+                  <span>Welcome</span>
+                </Button>
+              </li>
+              <li>
+                <Button
+                  as={NavLinkFilter}
+                  to='/global'
+                  exact
+                  variation='achromic-plain'
+                  title='Explore the global map'
+                >
+                  <span>Global</span>
                 </Button>
               </li>
               <li>

@@ -12,7 +12,7 @@ import {
   InpageTitle,
   InpageBody
 } from '../../../styles/inpage';
-import MbMap from '../../home/mb-map';
+import MbMap from '../../global/mb-map';
 import UhOh from '../../uhoh';
 
 import { themeVal } from '../../../styles/utils/general';
