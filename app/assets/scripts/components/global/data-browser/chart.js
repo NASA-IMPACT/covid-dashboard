@@ -194,8 +194,8 @@ class DataBrowserChart extends React.Component {
   }
 
   renderPopover () {
-    if (!this.dataCanvas) return;
     const { bisecting, xPos, xPosDate } = this.state;
+    if (!this.dataCanvas || !xPosDate) return;
 
     const matrix = this.dataCanvas.node().getScreenCTM()
       .translate(xPos, 0);
@@ -240,6 +240,7 @@ class DataBrowserChart extends React.Component {
 }
 
 DataBrowserChart.propTypes = {
+  timeUnit: T.string,
   xDomain: T.array,
   swatch: T.string
 };
