@@ -1,8 +1,11 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
+import { PropTypes as T } from 'prop-types';
 import styled from 'styled-components';
+import { CSSTransition } from 'react-transition-group';
 import * as d3 from 'd3';
 import { rgba } from 'polished';
-import { PropTypes as T } from 'prop-types';
+import { format } from 'date-fns';
 
 import SizeAwareElement from '../../common/size-aware-element';
 
@@ -15,6 +18,7 @@ import dataExtentLayer from './data-extent.layer';
 import bisectorLayer from './bisector.layer';
 import xaxisLayer from './xaxis.layer';
 import yaxisLayer from './yaxis.layer';
+import Popover from './popover';
 
 const _rgba = stylizeFunction(rgba);
 
@@ -50,10 +54,18 @@ const ChartWrapper = styled(SizeAwareElement)`
   /* ${yaxisLayer.styles} */
 `;
 
+const formatDate = (date, interval) => {
+  if (interval === 'day') {
+    return format(date, 'dd MMMM yyyy');
+  } else {
+    return format(date, "MMMM yy''");
+  }
+};
+
 class DataBrowserChart extends React.Component {
   constructor (props) {
     super(props);
-    this.margin = { top: 16, right: 32, bottom: 40, left: 64 };
+    this.margin = { top: 16, right: 32, bottom: 40, left: 32 };
     // Control whether the chart was rendered.
     // The size aware element fires a onChange event once it is rendered
     // But at that time the chart is not ready yet so we can't update the size.
@@ -64,6 +76,12 @@ class DataBrowserChart extends React.Component {
     this.dataCanvas = null;
 
     this.resizeListener = this.resizeListener.bind(this);
+
+    this.state = {
+      bisecting: false,
+      xPos: null,
+      xPosDate: null
+    };
   }
 
   componentDidMount () {
@@ -74,6 +92,29 @@ class DataBrowserChart extends React.Component {
 
   componentDidUpdate (prevProps, prevState) {
     this.updateChart();
+  }
+
+  onInternalAction (action, payload) {
+    switch (action) {
+      case 'bisector.show':
+        this.setState({
+          bisecting: true,
+          xPos: payload.x,
+          xPosDate: payload.date
+        });
+        break;
+      case 'bisector.hide':
+        this.setState({
+          bisecting: false
+        });
+        break;
+      case 'bisector.move':
+        this.setState({
+          xPos: payload.x,
+          xPosDate: payload.date
+        });
+        break;
+    }
   }
 
   resizeListener () {
@@ -152,15 +193,48 @@ class DataBrowserChart extends React.Component {
     // yaxisLayer.update(this);
   }
 
+  renderPopover () {
+    if (!this.dataCanvas) return;
+    const { bisecting, xPos, xPosDate } = this.state;
+
+    const matrix = this.dataCanvas.node().getScreenCTM()
+      .translate(xPos, 0);
+
+    const posY = matrix.f;
+    const posX = matrix.e;
+
+    const style = {
+      left: posX + 'px',
+      top: posY + 'px'
+    };
+
+    return createPortal((
+      <CSSTransition
+        in={bisecting}
+        appear={true}
+        unmountOnExit={true}
+        classNames='pop-chart'
+        timeout={{ enter: 300, exit: 300 }}
+      >
+        <Popover style={style}>
+          {formatDate(xPosDate, this.props.timeUnit)}
+        </Popover>
+      </CSSTransition>
+    ), document.querySelector('#app-container'));
+  }
+
   render () {
     return (
-      <ChartWrapper
-        swatch={this.props.swatch}
-        ref={el => {
-          this.container = el;
-        }}
-        onChange={this.resizeListener}
-      />
+      <>
+        {this.renderPopover()}
+        <ChartWrapper
+          swatch={this.props.swatch}
+          ref={el => {
+            this.container = el;
+          }}
+          onChange={this.resizeListener}
+        />
+      </>
     );
   }
 }

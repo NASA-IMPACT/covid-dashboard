@@ -1,21 +1,40 @@
 import React from 'react';
 import T from 'prop-types';
 import styled, { css } from 'styled-components';
-import { add, sub, format, isSameMonth } from 'date-fns';
+import { add, sub, format, isSameMonth, isSameDay } from 'date-fns';
 
 import Button from '../../styles/button/button';
 import ButtonGroup from '../../styles/button/group';
-// import DatePicker from './date-picker';
 import DataBrowserChart from './data-browser/chart';
-// import ShadowScrollbar from '../common/shadow-scrollbar';
-// import { Accordion, AccordionFold } from '../common/accordion';
 
 import { panelSkin } from '../../styles/skins';
 import { glsp } from '../../styles/utils/theme-values';
-// import collecticon from '../../styles/collecticons';
 import { themeVal } from '../../styles/utils/general';
-// import { unionOverviewDateDomain } from './';
 import { utcDate } from '../../utils/utils';
+
+const checkSameDate = (date, compareDate, interval) => {
+  if (interval === 'day') {
+    return isSameDay(date, compareDate);
+  } else {
+    return isSameMonth(date, compareDate);
+  }
+};
+
+const getOperationParam = (interval) => {
+  if (interval === 'day') {
+    return { days: 1 };
+  } else {
+    return { months: 1 };
+  }
+};
+
+const formatDate = (date, interval) => {
+  if (interval === 'day') {
+    return format(date, "dd MMM yy''");
+  } else {
+    return format(date, "MMM yy''");
+  }
+};
 
 const ExploreDataBrowser = styled.section`
   ${panelSkin()}
@@ -79,47 +98,6 @@ const ExploreDataBrowserActions = styled.div`
   }
 `;
 
-// const ChartScrollArea = styled(ShadowScrollbar)`
-//   height: 10rem;
-// `;
-
-// const DataChartFoldHeader = styled.header`
-//   padding: ${glsp(0.5)} 0.75rem;
-//   box-shadow: 0 1px 0 0 ${themeVal('color.spark')};
-// `;
-
-// const DataChartFoldTitle = styled.a`
-//   display: flex;
-//   align-items: center;
-
-//   &, &:visited {
-//     color: #FFF;
-//   }
-
-//   ::before {
-//     content: '';
-//     display: block;
-//     width: 0.25rem;
-//     height: 1rem;
-//     margin-right: ${glsp(0.25)};
-//     border-radius: ${themeVal('shape.ellipsoid')};
-//     background: ${({ swatch }) => swatch};
-//   }
-
-//   ::after {
-//     ${collecticon('chevron-down--small')};
-//     margin-left: auto;
-//     transition: transform 320ms ease-in-out 0s;
-
-//     ${({ isExpanded }) => isExpanded && 'transform: rotate(180deg);'}
-//   }
-
-//   h2 {
-//     font-size: 1rem;
-//     line-height: 1.5rem;
-//   }
-// `;
-
 const CurrentDate = styled.p`
   font-weight: ${themeVal('type.base.bold')};
 `;
@@ -150,6 +128,8 @@ class Timeline extends React.Component {
     const dateDomain = layers[0].domain.map(utcDate);
     const swatch = layers[0].swatch.color;
 
+    const timeUnit = layers[0].timeUnit || 'month';
+
     return (
       <ExploreDataBrowser>
         <ExploreDataBrowserHeader>
@@ -167,7 +147,7 @@ class Timeline extends React.Component {
                     isExpanded: !isExpanded
                   }))}
               >
-                {layers.length > 1 ? 'Timelines' : 'Timeline'}
+                Timeline
               </TimelineExpanderButton>
             </ExploreDataBrowserTitle>
           </ExploreDataBrowserHeadline>
@@ -179,30 +159,30 @@ class Timeline extends React.Component {
                 onAction('date.set', { date: selectedDate })}
             /> */}
             <CurrentDate>
-              {date ? format(date, "MMM yy''") : 'Select date'}
+              {date ? formatDate(date, timeUnit) : 'Select date'}
             </CurrentDate>
             <ButtonGroup orientation='horizontal'>
               <Button
-                disabled={!date || isSameMonth(date, dateDomain[0])}
+                disabled={!date || checkSameDate(date, dateDomain[0], timeUnit)}
                 variation='base-plain'
                 size='small'
                 useIcon='chevron-left--small'
                 title='Previous day'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: sub(date, { months: 1 }) })}
+                  onAction('date.set', { date: sub(date, getOperationParam(timeUnit)) })}
               >
                 Previous day
               </Button>
               <Button
-                disabled={!date || isSameMonth(date, dateDomain[1])}
+                disabled={!date || checkSameDate(date, dateDomain[1], timeUnit)}
                 variation='base-plain'
                 size='small'
                 useIcon='chevron-right--small'
                 title='Next day'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: add(date, { months: 1 }) })}
+                  onAction('date.set', { date: add(date, getOperationParam(timeUnit)) })}
               >
                 Next day
               </Button>
@@ -212,6 +192,7 @@ class Timeline extends React.Component {
         <ExploreDataBrowserBody isExpanded={this.state.isExpanded}>
           <DataBrowserChart
             selectedDate={date}
+            timeUnit={timeUnit}
             onAction={onAction}
             xDomain={dateDomain}
             swatch={swatch}
