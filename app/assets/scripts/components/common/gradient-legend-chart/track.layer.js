@@ -85,8 +85,6 @@ export default {
       .merge(gradientStops)
       // Update current.
       .attr('offset', (d, i, all) => {
-        if (i === 0) return 0;
-        if (i === all.length - 1) return 1;
         const count = all.length - 1;
         const pointOriginalPosition = 1 / count * i;
         return stopScale(pointOriginalPosition);
