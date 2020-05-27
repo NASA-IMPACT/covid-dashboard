@@ -12,8 +12,7 @@ import {
 } from '../../styles/inpage';
 
 import {
-  Fold,
-  FoldTitle
+  Fold
 } from '../../styles/fold';
 
 import Constrainer from '../../styles/constrainer';
