@@ -52,7 +52,6 @@ export default {
 
     if (!props.noBaselineConfidence) {
       const area = d3.area()
-        .defined(d => d.value !== null)
         .x(d => xScale(utcDate(d.date)))
         .y0(d => yScale(d.baselineMax))
         .y1(d => yScale(d.baselineMin));

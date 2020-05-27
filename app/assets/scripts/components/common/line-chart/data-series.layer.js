@@ -50,12 +50,11 @@ export default {
 
     if (!props.noIndicatorConfidence) {
       const area = d3.area()
-        .defined(d => d.value !== null)
         .x(d => xScale(utcDate(d.date)))
         .y0(d => yScale(d.cMax))
         .y1(d => yScale(d.cMin));
 
-      const confidenceArea = dataSeries.selectAll('.confidence-area').data([data]);
+      const confidenceArea = dataSeries.selectAll('.confidence-area').data([props.data]);
 
       // Remove old.
       confidenceArea.exit().remove();
