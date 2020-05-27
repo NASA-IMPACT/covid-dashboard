@@ -14,6 +14,7 @@ import {
 } from '../../../styles/inpage';
 import MbMap from '../../global/mb-map';
 import UhOh from '../../uhoh';
+import LineChart from '../../common/line-chart/chart';
 
 import { themeVal } from '../../../styles/utils/general';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
@@ -21,6 +22,7 @@ import { glsp } from '../../../styles/utils/theme-values';
 import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
 import { wrapApiResult, getFromState } from '../../../redux/reduxeed';
 import { showGlobalLoading, hideGlobalLoading } from '../../common/global-loading';
+import { utcDate } from '../../../utils/utils';
 
 const ExploreCanvas = styled.div`
   display: grid;
@@ -43,6 +45,10 @@ const ExploreCarto = styled.section`
 
 const PrimePanel = styled(Panel)`
   width: 18rem;
+`;
+
+const SecPanel = styled(Panel)`
+  width: 24rem;
 `;
 
 const PanelBodyInner = styled.div`
@@ -140,7 +146,7 @@ class SpotlightAreasSingle extends React.Component {
                     aoiState={null}
                   />
                 </ExploreCarto>
-                <Panel
+                <SecPanel
                   collapsible
                   direction='right'
                   onPanelChange={this.resizeMap}
@@ -151,7 +157,27 @@ class SpotlightAreasSingle extends React.Component {
                   }
                   bodyContent={
                     <PanelBodyInner>
-                      <p>Detailed information for the area being viewed and/or interacted by the user.</p>
+                      {spotlightData.indicators.length ? spotlightData.indicators.map(ind => {
+                        const xDomain = ind.domain.date.map(utcDate);
+                        const yDomain = ind.domain.indicator;
+
+                        return (
+                          <React.Fragment key={ind.id}>
+                            <h2>{ind.id}</h2>
+                            <LineChart
+                              xDomain={xDomain}
+                              yDomain={yDomain}
+                              data={ind.data}
+                              // highlightBands={chartData.highlightBands}
+                              noBaseline
+                              noBaselineConfidence
+                              noIndicatorConfidence
+                            />
+                          </React.Fragment>
+                        );
+                      }) : (
+                        <p>Detailed information for the area being viewed and/or interacted by the user.</p>
+                      )}
                     </PanelBodyInner>
                   }
                 />
