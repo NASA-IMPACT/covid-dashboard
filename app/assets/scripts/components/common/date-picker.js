@@ -3,9 +3,9 @@ import { PropTypes as T } from 'prop-types';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 
-import Dropdown from '../common/dropdown';
+import Dropdown from './dropdown';
 import Button from '../../styles/button/button';
-import DateRange from '../common/date-range';
+import DateRange from './date-range';
 
 const DATE_FORMAT = 'MMM dd, yyyy';
 

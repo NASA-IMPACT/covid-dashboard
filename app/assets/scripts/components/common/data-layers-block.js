@@ -9,9 +9,9 @@ import {
   PanelBlockTitle,
   PanelBlockBody,
   PanelBlockScroll
-} from '../common/panel-block';
+} from './panel-block';
 import Layer from './layer';
-import { Accordion } from '../common/accordion';
+import { Accordion } from './accordion';
 
 const PanelBlockLayer = styled(PanelBlock)`
   flex: 2;

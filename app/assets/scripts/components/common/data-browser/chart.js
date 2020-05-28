@@ -7,7 +7,7 @@ import * as d3 from 'd3';
 import { rgba } from 'polished';
 import { format } from 'date-fns';
 
-import SizeAwareElement from '../../common/size-aware-element';
+import SizeAwareElement from '../size-aware-element';
 
 import { themeVal, stylizeFunction } from '../../../styles/utils/general';
 import { headingAlt } from '../../../styles/type/heading';

@@ -1,6 +1,6 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
-import { mod } from '../../utils/utils.js';
+import { mod } from '../../../utils/utils.js';
 
 // Baseline Draw mode
 const DirectSelect = MapboxDraw.modes.direct_select;
