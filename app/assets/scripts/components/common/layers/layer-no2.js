@@ -21,7 +21,7 @@ export default {
   compare: {
     enabled: true,
     help: 'Compare with baseline (5 years ago)',
-    mapLabel: date => `${format(date, "MMM yy''")} — ${format(sub(date, { years: 5 }), "MMM yy''")}`
+    mapLabel: date => `${format(sub(date, { years: 5 }), "MMM yy''")} — ${format(date, "MMM yy''")}`
   },
   swatch: {
     color: '#411073',

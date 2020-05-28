@@ -109,7 +109,7 @@ class MbMap extends React.Component {
           this.updateActiveLayers(prevProps);
         });
 
-        this.compareControl = new CompareMbGL(this.mbMap, this.mbMapComparing, '#container');
+        this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
       } else {
         if (this.compareControl) {
           this.compareControl.remove();
