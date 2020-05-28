@@ -29,7 +29,12 @@ import {
   invalidateCogTimeData as invalidateCogTimeDataAction
 } from '../../redux/cog-time-data';
 import { utcDate } from '../../utils/utils';
-import mapLayers from '../common/layers';
+import allMapLayers from '../common/layers';
+
+const mapLayers = allMapLayers.filter(l => [
+  'no2',
+  'population'
+].includes(l.id));
 
 /**
  * Returns a feature with a polygon geometry made of the provided bounds.
