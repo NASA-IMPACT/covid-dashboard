@@ -52,6 +52,7 @@ const PopoverSelf = styled.article`
   background-color: ${themeVal('color.surface')};
   box-shadow: 0 0 8px 0 ${themeVal('color.baseAlphaC')};
   padding: ${glsp(0.25, 0.5)};
+  /* width set through js */
 
   ${({ direction }) => direction === 'left' && css`
     transform: translate(-100%, -50%);

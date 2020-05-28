@@ -251,6 +251,7 @@ class DataBrowserChart extends React.Component {
       : 'right';
 
     const style = {
+      width: popoverWidth + 'px',
       left: posX + 'px',
       top: posY + 'px'
     };
