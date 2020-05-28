@@ -155,6 +155,11 @@ const baseStyles = css`
   .unscrollable-x {
     ${unscrollableX()}
   }
+
+  #app-container {
+    position: relative;
+    overflow-x: hidden;
+  }
 `;
 
 export default createGlobalStyle`

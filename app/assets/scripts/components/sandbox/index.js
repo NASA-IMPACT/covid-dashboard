@@ -21,6 +21,7 @@ import ButtonGroup from '../../styles/button/group';
 import BtnExample from './buttons';
 import FormsExample from './forms';
 import ColorsExample from './colors';
+import LineChartExample from './line-chart';
 
 import config from '../../config';
 
@@ -44,6 +45,11 @@ const sandboxPages = [
     name: 'Forms',
     url: '/forms',
     cmp: FormsExample
+  },
+  {
+    name: 'Line chart',
+    url: '/line-chart',
+    cmp: LineChartExample
   }
 ];
 
