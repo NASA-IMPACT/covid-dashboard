@@ -216,6 +216,10 @@ class GlobalExplore extends React.Component {
           const layersToLoad = this.props.mapLayers.filter((l) => l.enabled);
           for (const l of layersToLoad) {
             await this.toggleLayer(l);
+            // Enable compare if set as default.
+            if (l.compare.enabled) {
+              this.toggleLayerCompare(l);
+            }
           }
         }
         break;
