@@ -19,6 +19,7 @@ const LineChartExample = ({ theme }) => {
       <LineChart
         xDomain={xDomain}
         yDomain={yDomain}
+        yUnit='mg/m2'
         data={chartData.data}
         highlightBands={chartData.highlightBands}
         // noBaseline
