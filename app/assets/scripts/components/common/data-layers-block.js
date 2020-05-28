@@ -9,9 +9,9 @@ import {
   PanelBlockTitle,
   PanelBlockBody,
   PanelBlockScroll
-} from '../common/panel-block';
+} from './panel-block';
 import Layer from './layer';
-import { Accordion } from '../common/accordion';
+import { Accordion } from './accordion';
 
 const PanelBlockLayer = styled(PanelBlock)`
   flex: 2;
@@ -49,7 +49,7 @@ class DataLayersBlock extends React.Component {
                         onToggleClick={() => onAction('layer.toggle', l)}
                         onLegendKnobChange={(payload) => onAction('layer.legend-knob', { id: l.id, ...payload })}
                         knobPos={l.knobPos}
-                        compareEnabled={get(l, 'compare.enabled')}
+                        compareEnabled={!!l.compare}
                         compareActive={l.comparing}
                         compareHelp={get(l, 'compare.help')}
                         onCompareClick={() => onAction('layer.compare', l)}

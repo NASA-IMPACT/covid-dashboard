@@ -3,7 +3,7 @@ import T from 'prop-types';
 import styled from 'styled-components';
 
 import Panel from '../common/panel';
-import DataLayersBlock from './data-layers-block';
+import DataLayersBlock from '../common/data-layers-block';
 import {
   PanelBlock,
   PanelBlockHeader,

@@ -74,7 +74,6 @@ const ChartWrapper = styled(SizeAwareElement)`
       ${headingAlt}
       font-size: 0.75rem;
       line-height: 1;
-      background: red;
       fill: ${_rgba(themeVal('type.base.color'), 0.64)};
     }
   }

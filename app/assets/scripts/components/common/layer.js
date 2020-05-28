@@ -12,8 +12,8 @@ import { formatThousands } from '../../utils/format';
 import Prose from '../../styles/type/prose';
 import { FormSwitch } from '../../styles/form/switch';
 import Button from '../../styles/button/button';
-import { AccordionFold } from '../common/accordion';
-import GradientChart from '../common/gradient-legend-chart/chart';
+import { AccordionFold } from './accordion';
+import GradientChart from './gradient-legend-chart/chart';
 
 const makeGradient = (stops) => {
   const d = 100 / stops.length - 1;
