@@ -245,13 +245,15 @@ class SpotlightAreasSingle extends React.Component {
 
                         return (
                           <React.Fragment key={ind.id}>
-                            <h2>{ind.id}</h2>
+                            <h2>{ind.name}</h2>
+                            {ind.description && <p>{ind.description}</p>}
                             <LineChart
                               xDomain={xDomain}
                               yDomain={yDomain}
                               data={ind.data}
+                              yUnit={ind.units}
                               // highlightBands={chartData.highlightBands}
-                              noBaseline
+                              noBaseline={ind.data[0].baseline === undefined}
                               noBaselineConfidence
                               noIndicatorConfidence
                             />
