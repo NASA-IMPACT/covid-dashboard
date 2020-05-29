@@ -149,6 +149,38 @@ class NO2LongForm extends React.Component {
             </Prose>
           </Gridder>
         </FactsFold>
+
+        <FactsFold>
+          <Gridder>
+            <InpageHGroup
+              title='Additional resources'
+              dashColor={metadata.color}
+            />
+            <Prose>
+              <p>NASA Features</p>
+              <ul>
+                <li><a href='https://earthobservatory.nasa.gov/images/146362/airborne-nitrogen-dioxide-plummets-over-china' target='_blank' rel='noopener noreferrer'>Airborne Nitrogen Dioxide Plummets Over China</a></li>
+                <li><a href='https://earthobservatory.nasa.gov/blogs/earthmatters/2020/03/13/airborne-nitrogen-dioxide-decreases-over-italy/' target='_blank' rel='noopener noreferrer'>Airborne Nitrogen Dioxide Decreases Over Italy</a></li>
+                <li><a href='https://www.nasa.gov/feature/goddard/2020/drop-in-air-pollution-over-northeast' target='_blank' rel='noopener noreferrer'>NASA Satellite Data Show 30 Percent Drop In Air Pollution Over Northeast U.S.</a></li>
+                <li><a href='https://earthobservatory.nasa.gov/images/146596/airborne-particle-levels-plummet-in-northern-india' target='_blank' rel='noopener noreferrer'>Airborne Particle Levels Plummet in Northern India</a></li>
+                <li><a href='https://www.nasa.gov/feature/goddard/2020/nasa-satellite-data-show-air-pollution-decreases-over-southwest-us-cities' target='_blank' rel='noopener noreferrer'>NASA Satellite Data Show Air Pollution Decreases over Southwest U.S. Cities</a></li>
+                <li><a href='https://earthobservatory.nasa.gov/images/146741/nitrogen-dioxide-levels-rebound-in-china?utm_source=card_2&utm_campaign=home' target='_blank' rel='noopener noreferrer'>Nitrogen Dioxide Levels Rebound in China</a></li>
+              </ul>
+              <p>Explore the Data</p>
+              <ul>
+                <li><a href='https://earthdata.nasa.gov/learn/articles/feature-articles/health-and-air-quality-articles/find-no2-data' target='_blank' rel='noopener noreferrer'>How to Find and Visualize Nitrogen Dioxide Satellite Data</a></li>
+                <li><a href='https://earthdata.nasa.gov/learn/pathfinders/covid-19' target='_blank' rel='noopener noreferrer'>COVID-19 Data Pathfinder</a></li>
+                <li><a href='https://svs.gsfc.nasa.gov/4810' target='_blank' rel='noopener noreferrer'>Reductions in Nitrogen Dioxide Associated with Decreased Fossil Fuel Use Resulting from COVID-19 Mitigation </a></li>
+              </ul>
+              <p>Explore the Missions</p>
+              <ul>
+                <li><a href='https://aura.gsfc.nasa.gov/omi.html' target='_blank' rel='noopener noreferrer'>Ozone Monitoring Instrument (OMI)</a></li>
+                <li><a href='http://tempo.si.edu/outreach.html' target='_blank' rel='noopener noreferrer'>Tropospheric Emissions: Monitoring of Pollution (TEMPO)</a></li>
+                <li><a href='https://pandora.gsfc.nasa.gov/' target='_blank' rel='noopener noreferrer'>Pandora Project</a></li>
+              </ul>
+            </Prose>
+          </Gridder>
+        </FactsFold>
       </React.Fragment>
     );
   }
