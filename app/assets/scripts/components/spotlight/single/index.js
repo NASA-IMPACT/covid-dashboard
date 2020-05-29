@@ -48,7 +48,7 @@ const layersBySpotlight = {
   gh: ['no2'],
   la: ['no2'],
   sf: ['no2'],
-  tk: ['no2']
+  tk: ['no2', 'nightlights']
 };
 
 const ExploreCanvas = styled.div`

@@ -90,7 +90,7 @@ const ChartWrapper = styled(SizeAwareElement)`
 class DataBrowserChart extends React.Component {
   constructor (props) {
     super(props);
-    this.margin = { top: 16, right: 32, bottom: 80, left: 64 };
+    this.margin = { top: 16, right: 32, bottom: 80, left: 48 };
     // Control whether the chart was rendered.
     // The size aware element fires a onChange event once it is rendered
     // But at that time the chart is not ready yet so we can't update the size.
