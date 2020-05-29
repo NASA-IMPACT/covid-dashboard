@@ -7,79 +7,21 @@ import Constrainer from '../../styles/constrainer';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
 import Button from '../../styles/button/button';
-import { Fold, FoldDetails, FoldTitle } from '../../styles/fold';
+import { Fold } from '../../styles/fold';
 import MediaImage from '../../styles/media-image';
 import {
   IntroLead,
   IntroDescription,
   StatsFold,
   StatsHeader,
-  StatsList,
-  DetectionLead,
-  DetectionFold
+  StatsList
 } from '../../styles/datasets';
 
-import { themeVal } from '../../styles/utils/general';
 import { glsp } from '../../styles/utils/theme-values';
 import Heading from '../../styles/type/heading';
 
-const DetectionStep1 = styled(Fold)`
-  padding-bottom: 0;
-
-  ${Gridder} {
-    align-items: center;
-  }
-
-  ${MediaImage} {
-    grid-column: full-start / content-7;
-    grid-row: 1;
-  }
-
-  ${FoldDetails} {
-    grid-column: content-8 / content-end;
-    text-align: left;
-  }
-`;
-
-const DetectionStep2 = styled(Fold)`
-  ${Gridder} {
-    align-items: center;
-  }
-
-  ${FoldDetails} {
-    grid-column: content-start / content-6;
-    text-align: left;
-    grid-row: 1;
-  }
-
-  ${MediaImage} {
-    grid-column: content-7 / full-end;
-    grid-row: 1;
-  }
-`;
-
-const EffectEntry = styled.section`
-  ${Heading} {
-    margin-bottom: ${glsp(1)};
-  }
-`;
-
-const EffectsFold = styled(Fold)`
-  background: ${themeVal('color.baseAlphaB')};
-
-  ${EffectEntry} {
-    grid-row: 3;
-    grid-column: span 4;
-  }
-
-  ${/* sc-selector */EffectEntry}:first-of-type {
-    grid-row: 2;
-    grid-column: 5 / span 8;
-  }
-`;
-
 const FactsFold = styled(Fold)`
-  padding-bottom: ${glsp(10)};
+  padding-bottom: ${glsp(6)};
 
   ${Gridder} {
     align-items: center;
@@ -94,17 +36,7 @@ const FactsFold = styled(Fold)`
   ${Prose} {
     grid-column: content-start / content-end;
     grid-row: 2;
-    margin-bottom: ${glsp(4)};
-  }
-
-  ${MediaImage} {
-    grid-column: content-6 / full-end;
-    grid-row: 3;
-
-    figcaption {
-      max-width: 46rem;
-      padding-right: ${glsp(2)};
-    }
+    margin-bottom: ${glsp(2)};
   }
 `;
 
@@ -121,196 +53,100 @@ class NO2LongForm extends React.Component {
         <Fold>
           <Constrainer>
             <IntroLead>
-              Some intro lead, like the key takeaway of this particular dataset
+              Since the onset of COVID-19, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in some regions.
             </IntroLead>
-            <IntroDescription>
-              <p>Some more in depth information</p>
-              <p>
-                Consectetur adipisicing elit. Vitae laboriosam recusandae esse,
-                rem hic nobis. Labore voluptatum eligendi nisi eius, quod ipsa
-                soluta odio placeat hic ad, repudiandae, velit earum!
-              </p>
-            </IntroDescription>
           </Constrainer>
         </Fold>
 
-        <StatsFold>
-          <Constrainer>
-            <StatsHeader>
-              <Heading as='h2'>This dataset in the wild</Heading>
-              <Button
-                as={NavLink}
-                size='large'
-                variation='primary-raised-dark'
-                title='Go to map'
-                to='/'
-              >
-                View global map
-              </Button>
-            </StatsHeader>
-            <StatsList dashColor={metadata.color}>
-              <dt>Last year</dt>
-              <dd>100</dd>
-              <dt>Last month</dt>
-              <dd>2000</dd>
-            </StatsList>
-          </Constrainer>
-        </StatsFold>
-
-        <DetectionFold>
-          <Constrainer>
-            <FoldTitle size='xlarge'>How was this created?</FoldTitle>
-          </Constrainer>
-
-          <DetectionStep1>
-            <Gridder>
-              <FoldDetails>
-                <InpageHGroup
-                  suptitle='01'
-                  title='Research'
-                  dashColor={metadata.color}
-                />
-                <Prose>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Numquam rerum minus nesciunt necessitatibus ea id veritatis,
-                    et ut porro possimus accusamus assumenda, pariatur fugit
-                    praesentium magnam enim vero non, a repellat quae distinctio
-                    neque voluptatem. Dignissimos saepe animi praesentium
-                    sapiente.
-                  </p>
-                  <p>
-                    Neque reprehenderit ullam numquam nulla tempore ea natus
-                    voluptates. Sunt dolor reiciendis dolore impedit asperiores
-                    fugiat, quas saepe quibusdam itaque deleniti ratione
-                    corporis incidunt dignissimos quia nostrum aliquam possimus
-                    unde, voluptatem temporibus repellendus aliquid officia.
-                    Molestiae sit animi sequi velit consectetur est facere
-                    excepturi possimus incidunt! Pariatur blanditiis illo eaque
-                    asperiores harum.
-                  </p>
-                </Prose>
-              </FoldDetails>
-              <MediaImage
-                src='https://placeimg.com/640/480/nature?v1'
-                alt='Image'
-              />
-            </Gridder>
-          </DetectionStep1>
-
-          <DetectionStep2>
-            <Gridder>
-              <FoldDetails>
-                <InpageHGroup
-                  suptitle='02'
-                  title='Peer review'
-                  dashColor={metadata.color}
-                />
-                <Prose>
-                  <p>
-                    Blanditiis ea commodi vero ipsa hic nam corporis! At
-                    similique aspernatur ab, praesentium veniam placeat autem
-                    iste veritatis voluptates amet nesciunt suscipit optio qui
-                    voluptatum tempore. Dolores quaerat consequuntur nulla vero
-                    expedita.
-                  </p>
-                </Prose>
-              </FoldDetails>
-              <MediaImage
-                src='https://placeimg.com/640/480/nature?v2'
-                alt='Image'
-              />
-            </Gridder>
-          </DetectionStep2>
-
-          <DetectionLead>
-            <Gridder>
+        <FactsFold>
+          <Gridder>
+            <Prose numColumns={2}>
               <p>
-                Some important lead, like the conclusion of the previous topic.
-                Distinctio ullam quaerat esse id consectetur vitae praesentium
-                facilis facere voluptate.
+                Nitrogen dioxide (NO2) is a common air pollutant primarily emitted from the burning of fossil fuels
+                in cars and power plants. Lower to the ground, nitrogen dioxide can directly irritate peoples’ lungs
+                and contributes to the production of particulate pollution and smog when it reacts with sunlight.
               </p>
-            </Gridder>
-          </DetectionLead>
-        </DetectionFold>
-
-        <EffectsFold>
-          <Constrainer>
-            <FoldTitle size='xlarge'>
-              Some content in the form of columns
-            </FoldTitle>
-
-            <EffectEntry>
-              <Heading as='h2'>Ducimus</Heading>
               <p>
-                Exercitationem voluptatum expedita vel rerum nemo quidem quas
-                error. Assumenda harum dolores quia error illo odio et numquam
-                magnam qui? Dolores dolorem quisquam aperiam id a ipsum rerum
-                nesciunt magnam pariatur? Ipsa nemo sequi ad recusandae commodi
-                non, voluptatum nobis iste a temporibus quidem natus labore
-                ullam distinctio illum nesciunt molestiae! Ducimus autem ea
-                aperiam in maxime quae cupiditate magni aut? Quis, blanditiis.
-                Ipsum esse sapiente ex reprehenderit veniam aliquam maiores
-                labore.
+                During the COVID-19 pandemic, scientists have observed considerable decreases in nitrogen
+                dioxide levels around the world. These decreases are predominantly associated with changing
+                human behavior in response to the spread of COVID-19. As communities worldwide have
+                implemented travel restrictions in an attempt to stem the spread of the virus, the reduction in
+                human transportation activity has resulted in less NO 2 being emitted into the atmosphere.
               </p>
-            </EffectEntry>
-            <EffectEntry>
-              <Heading as='h2'>Aspernatur</Heading>
               <p>
-                Ab quibusdam, consequatur magni magnam nisi molestiae doloremque
-                architecto hic reiciendis atque error accusamus vero sapiente,
-                in enim! Nam, iste quas cum doloremque molestiae autem odit
-                animi eius error aspernatur voluptas nobis.
+                These changes are particularly apparent over large urban areas and economic corridors, which
+                typically have high levels of automobile traffic, airline flights, and other related activity.
               </p>
-            </EffectEntry>
-            <EffectEntry>
-              <Heading as='h2'>Flora</Heading>
               <p>
-                Temporibus non aliquid numquam eius. Doloremque dolore fugit,
-                quam qui nihil possimus inventore. Provident nisi dignissimos
-                aliquid assumenda dolor nemo adipisci voluptas.
+                NASA is also able to observe subsequent rebounds in nitrogen dioxide as the lockdown
+                restrictions ease.
               </p>
-            </EffectEntry>
-            <EffectEntry>
-              <Heading as='h2'>Nobis</Heading>
-              <p>
-                Officiis nulla aliquam deserunt facilis consequuntur laborum
-                voluptas nobis eaque, in aperiam officia excepturi eius,
-                provident porro? Nobis praesentium quis eos excepturi.
-              </p>
-            </EffectEntry>
-          </Constrainer>
-        </EffectsFold>
+            </Prose>
+          </Gridder>
+        </FactsFold>
 
         <FactsFold>
           <Gridder>
             <InpageHGroup
-              suptitle='Known facts'
-              title='Earum eaque repudiandae, maxime incidunt modi porro quod quo reprehenderit autem esse.'
+              title='Scientific Research'
               dashColor={metadata.color}
             />
             <Prose numColumns={2}>
               <p>
-                Distinctio sunt sequi est, ex velit, eligendi id ducimus nemo
-                vero tempora, maiores laudantium dignissimos saepe beatae facere
-                facilis in corrupti? Facere, modi. Voluptatum eum adipisci ad
-                illum explicabo eveniet facere. Unde enim tempore dolore
-                doloribus inventore obcaecati aspernatur cum possimus voluptatum
-                fugit omnis quis molestiae id eos consectetur tempora delectus
-                quos maiores voluptatem quas doloremque, consequatur ex impedit.
-                Iure unde est quae doloribus necessitatibus libero aliquid
-                deleniti odit quas. Iste vel assumenda quae optio quo quam
-                labore, asperiores provident. A ducimus ipsa amet ullam iste
-                consequuntur ex, delectus quaerat qui perferendis.
+                <a href='https://airquality.gsfc.nasa.gov/'>Ongoing research</a> by
+                scientists in the Atmospheric Chemistry and Dynamics Laboratory at NASA’s
+                Goddard Space Flight Center and <a href='https://science.nasa.gov/earth-science/rrnes-awards'>new research</a> funded
+                by NASA’s Rapid Response and Novel research in the Earth Sciences
+                (RRNES) program element seek to better understand the atmospheric effects
+                of the COVID-19 shutdowns.
+              </p>
+              <p>
+                For nitrogen dioxide levels related to COVID-19, NASA uses data collected
+                by the joint NASA/Royal Netherlands Meteorological Institute (KNMI) <a href='https://aura.gsfc.nasa.gov/omi.html'>Ozone Monitoring Instrument (OMI)</a> aboard
+                the Aura satellite, as well as data collected by the Tropospheric
+                Monitoring Instrument (TROPOMI) aboard the European Commission’s Copernicus
+                Sentinel-5P satellite, built by the European Space Agency.
+              </p>
+              <p>
+                OMI, which launched in 2004, is the predecessor to TROPOMI. Although TROPOMI,
+                which launched in 2017, provides higher resolution information, the longer
+                OMI data record provides good context for the current TROPOMI observations.
+              </p>
+              <p>
+                Scientists will be using these data to investigate how travel bans and lockdown
+                orders related to COVID-19 are impacting regional air quality and chemistry, as
+                well as why these restrictions may be having inconsistent effects on air quality
+                around the world.
               </p>
             </Prose>
-            <MediaImage
-              src='https://placeimg.com/640/480/nature?v3'
-              alt='Image'
-            >
-              [See Author et al. 2017 Obcaecati, unde sit commodi molestiae
-              placeat ipsa].
-            </MediaImage>
+          </Gridder>
+        </FactsFold>
+
+        <FactsFold>
+          <Gridder>
+            <InpageHGroup
+              title='Interpreting the Data'
+              dashColor={metadata.color}
+            />
+            <Prose numColumns={2}>
+              <p>
+                Nitrogen dioxide has a relatively short lifetime in the atmosphere. Once it is emitted, it lasts
+                only a few hours before it dissipates, so it does not travel far from its source.
+              </p>
+              <p>
+                Because nitrogen dioxide is primarily emitted from burning fossil fuels, changes in its
+                atmospheric concentration can be related to changes in human activity if the data are properly
+                processed and interpreted.
+              </p>
+              <p>
+                However, care must be taken when interpreting satellite NO 2 data, as the quantity observed by
+                satellite is not exactly the same as the abundance at ground level, and natural variations in
+                weather (e.g., temperature, wind speed, solar intensity) influence the amount of NO 2 in the
+                atmosphere. In addition, the OMI and TROPOMI instruments cannot observe the NO 2
+                abundance underneath clouds. For more information on processing and cautions related to
+                interpreting this data, please <a href='https://airquality.gsfc.nasa.gov/caution-interpretation'>click here</a>.
+              </p>
+            </Prose>
           </Gridder>
         </FactsFold>
       </React.Fragment>
