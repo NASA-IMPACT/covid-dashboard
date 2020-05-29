@@ -1,15 +1,29 @@
 import * as d3 from 'd3';
 import { css } from 'styled-components';
-import { getDaysInMonth, add, getDate, startOfMonth } from 'date-fns';
+import {
+  add,
+  getDaysInMonth,
+  getDate,
+  getHours,
+  startOfMonth,
+  startOfDay
+} from 'date-fns';
 
 import { themeVal } from '../../../styles/utils/general';
 
-const roundDate = date => {
-  const days = getDaysInMonth(date);
-  const d = getDate(date);
-  return d >= days / 2
-    ? startOfMonth(add(date, { months: 1 }))
-    : startOfMonth(date);
+const roundDate = (date, interval) => {
+  if (interval === 'day') {
+    const h = getHours(date);
+    return h >= 12
+      ? startOfDay(add(date, { days: 1 }))
+      : startOfDay(date);
+  } else {
+    const days = getDaysInMonth(date);
+    const d = getDate(date);
+    return d >= days / 2
+      ? startOfMonth(add(date, { months: 1 }))
+      : startOfMonth(date);
+  }
 };
 
 const styles = props => css`
@@ -34,6 +48,8 @@ const styles = props => css`
 export default {
   styles,
   init: ctx => {
+    const { timeUnit } = ctx.props;
+
     const bisectorG = ctx.dataCanvas
       .append('g')
       .attr('class', 'bisector');
@@ -50,14 +66,19 @@ export default {
       .style('fill', 'none')
       .style('pointer-events', 'all')
       .on('mouseover', function () {
+        const xPos = d3.mouse(this)[0];
+        const date = roundDate(ctx.xScale.invert(xPos), timeUnit);
+        const xPosSnap = ctx.xScale(date);
         bisectorG.select('.bisector-interact').style('display', '');
+        ctx.onInternalAction('bisector.show', { date, x: xPosSnap });
       })
       .on('mouseout', function () {
         bisectorG.select('.bisector-interact').style('display', 'none');
+        ctx.onInternalAction('bisector.hide');
       })
       .on('mousemove', function () {
         const xPos = d3.mouse(this)[0];
-        const date = roundDate(ctx.xScale.invert(xPos));
+        const date = roundDate(ctx.xScale.invert(xPos), timeUnit);
         const xPosSnap = ctx.xScale(date);
         const { height } = ctx.getSize();
         bisectorG.select('.bisector-interact')
@@ -65,10 +86,11 @@ export default {
           .attr('y1', height)
           .attr('x1', xPosSnap)
           .attr('x2', xPosSnap);
+        ctx.onInternalAction('bisector.move', { date, x: xPosSnap });
       })
       .on('click', function () {
         const xPos = d3.mouse(this)[0];
-        const date = roundDate(ctx.xScale.invert(xPos));
+        const date = roundDate(ctx.xScale.invert(xPos), timeUnit);
         ctx.props.onAction('date.set', { date });
       });
   },

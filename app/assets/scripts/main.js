@@ -21,6 +21,7 @@ import SizeAwareElement from './components/common/size-aware-element';
 
 // Views
 import Home from './components/home';
+import GlobalExplore from './components/global';
 import SpotlightSingle from './components/spotlight/single';
 import DatasetsSingle from './components/datasets/single';
 import Sandbox from './components/sandbox';
@@ -90,11 +91,12 @@ class Root extends React.Component {
               <SizeAwareElement onChange={this.resizeListener}>
                 <GlobalStyles />
                 <Switch>
+                  <Route exact path='/' component={Home} />
                   <LargeOnlyRoute
                     isLargeUp={isLargeUp}
                     exact
-                    path={['/', '/areas/:id']}
-                    component={Home}
+                    path='/global'
+                    component={GlobalExplore}
                   />
                   <LargeOnlyRoute
                     exact

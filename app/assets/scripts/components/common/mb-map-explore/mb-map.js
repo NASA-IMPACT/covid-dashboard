@@ -4,9 +4,9 @@ import styled, { withTheme } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
 
-import config from '../../config';
-import { layerTypes } from '../common/layers/types';
-import { glsp } from '../../styles/utils/theme-values';
+import config from '../../../config';
+import { layerTypes } from '../layers/types';
+import { glsp } from '../../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
 
 const {
@@ -109,7 +109,7 @@ class MbMap extends React.Component {
           this.updateActiveLayers(prevProps);
         });
 
-        this.compareControl = new CompareMbGL(this.mbMap, this.mbMapComparing, '#container');
+        this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
       } else {
         if (this.compareControl) {
           this.compareControl.remove();
@@ -121,7 +121,6 @@ class MbMap extends React.Component {
       }
     }
 
-    // TODO: Improve how compare is handled, by the layers that have it.
     if (prevProps.activeLayers !== activeLayers || comparing !== prevProps.comparing) {
       const toRemove = prevProps.activeLayers.filter(
         (l) => !activeLayers.includes(l)

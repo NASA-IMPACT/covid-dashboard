@@ -2,7 +2,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import DrawRectangle from 'mapbox-gl-draw-rectangle-mode';
 
 import DirectSelectRectangle from './mgd-select-rectangle-mode';
-import { isEqualObj } from '../../utils/utils';
+import { isEqualObj } from '../../../utils/utils';
 
 const modes = {
   ...MapboxDraw.modes,
