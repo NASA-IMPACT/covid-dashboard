@@ -44,8 +44,14 @@ const chartData = {
     indicator: [6, 21]
   },
   highlightBands: [
-    ['2019-03-01', '2019-05-01'],
-    ['2020-01-01', '2020-02-01']
+    {
+      label: 'Band #1',
+      interval: ['2019-03-01', '2019-05-01']
+    },
+    {
+      label: 'Band #2',
+      interval: ['2020-01-01', '2020-02-01']
+    }
   ],
   data: [
     {
