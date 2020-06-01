@@ -11,10 +11,13 @@ const styles = props => css`
       fill-opacity: 0.16;
       fill: ${themeVal('color.tertiary')};
     }
+  }
 
+  .data-bands-labels {
     .label {
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       fill: ${_rgba(themeVal('type.base.color'), 0.96)};
+      font-weight: ${themeVal('type.base.bold')};
     }
   }
 `;
@@ -76,6 +79,6 @@ export default {
       .attr('transform', 'rotate(-90)')
       .attr('text-anchor', 'end')
       .attr('dy', '1.15em')
-      .attr('dx', '-0.25em');
+      .attr('dx', '-0.5em');
   }
 };

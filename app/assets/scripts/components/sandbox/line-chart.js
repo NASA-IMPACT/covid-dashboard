@@ -45,12 +45,12 @@ const chartData = {
   },
   highlightBands: [
     {
-      label: 'Band #1',
-      interval: ['2019-03-01', '2019-05-01']
+      label: 'Detection',
+      interval: ['2019-12-01', '2019-12-31']
     },
     {
-      label: 'Band #2',
-      interval: ['2020-01-01', '2020-02-01']
+      label: 'Emergency state',
+      interval: ['2020-01-16', '2020-03-15']
     }
   ],
   data: [
