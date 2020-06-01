@@ -146,7 +146,7 @@ export function handlePanelAction (action, payload) {
  */
 export function getUpdatedActiveLayersState (state, layer) {
   const { exclusiveWith, id } = layer;
-  const { activeLayers } = state;
+  const { activeLayers, layersState } = state;
   // Hide any layers that are not compatible with the current one.
   // This means that when this layer gets enabled some layers must be disabled.
   const exclusiveWithLayers = exclusiveWith || [];
@@ -163,8 +163,23 @@ export function getUpdatedActiveLayersState (state, layer) {
   const diff = activeLayers.filter(
     (v) => !exclusiveWithLayers.includes(v)
   );
+
+  // Disable the comparison on any exclusive layer.
+  const newLayersState = exclusiveWithLayers.reduce((acc, id) => {
+    return get(layersState, [id, 'comparing'])
+      ? {
+        ...acc,
+        [id]: {
+          ...acc[id],
+          comparing: false
+        }
+      }
+      : acc;
+  }, state.layersState);
+
   return {
-    activeLayers: [...diff, id]
+    activeLayers: [...diff, id],
+    layersState: newLayersState
   };
 }
 
