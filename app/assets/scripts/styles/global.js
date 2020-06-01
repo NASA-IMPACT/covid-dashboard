@@ -158,7 +158,7 @@ const baseStyles = css`
 
   #app-container {
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 `;
 
