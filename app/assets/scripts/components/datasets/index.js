@@ -35,9 +35,11 @@
  *
  */
 import no2 from './dataset-no2';
+import bm from './dataset-nightlights';
 import population from './dataset-population';
 
 const datasets = [
+  bm,
   no2,
   population
 ];
