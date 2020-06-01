@@ -70,7 +70,7 @@ class NO2LongForm extends React.Component {
                 During the COVID-19 pandemic, scientists have observed considerable decreases in nitrogen
                 dioxide levels around the world. These decreases are predominantly associated with changing
                 human behavior in response to the spread of COVID-19. As communities worldwide have
-                implemented travel restrictions in an attempt to stem the spread of the virus, the reduction in
+                implemented lockdown restrictions in an attempt to stem the spread of the virus, the reduction in
                 human transportation activity has resulted in less NO 2 being emitted into the atmosphere.
               </p>
               <p>
@@ -78,7 +78,7 @@ class NO2LongForm extends React.Component {
                 typically have high levels of automobile traffic, airline flights, and other related activity.
               </p>
               <p>
-                NASA is also able to observe subsequent rebounds in nitrogen dioxide as the lockdown
+                NASA has been able to observe subsequent rebounds in nitrogen dioxide as the lockdown
                 restrictions ease.
               </p>
             </Prose>
