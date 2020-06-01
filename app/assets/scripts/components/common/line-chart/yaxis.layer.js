@@ -1,10 +1,8 @@
 import * as d3fc from '@d3fc/d3fc-axis';
 import { css } from 'styled-components';
-import { rgba } from 'polished';
 
-import { themeVal, stylizeFunction } from '../../../styles/utils/general';
-
-const _rgba = stylizeFunction(rgba);
+import { themeVal } from '../../../styles/utils/general';
+import { _rgba } from '../../../styles/utils/theme-values';
 
 const styles = props => css`
   /* YAxis specific styles */
