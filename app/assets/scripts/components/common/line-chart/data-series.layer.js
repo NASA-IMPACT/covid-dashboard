@@ -51,8 +51,8 @@ export default {
     if (!props.noIndicatorConfidence) {
       const area = d3.area()
         .x(d => xScale(utcDate(d.date)))
-        .y0(d => yScale(d.cMax))
-        .y1(d => yScale(d.cMin));
+        .y0(d => yScale(d.indicator_conf_high))
+        .y1(d => yScale(d.indicator_conf_low));
 
       const confidenceArea = dataSeries.selectAll('.confidence-area').data([props.data]);
 

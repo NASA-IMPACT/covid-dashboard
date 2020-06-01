@@ -53,8 +53,8 @@ export default {
     if (!props.noBaselineConfidence) {
       const area = d3.area()
         .x(d => xScale(utcDate(d.date)))
-        .y0(d => yScale(d.baselineMax))
-        .y1(d => yScale(d.baselineMin));
+        .y0(d => yScale(d.baseline_conf_high))
+        .y1(d => yScale(d.baseline_conf_low));
 
       const baselineRange = dataSeries.selectAll('.range').data([data]);
 
@@ -87,12 +87,12 @@ export default {
       linesData = [
         {
           id: 'max',
-          data: mapData('baselineMax')
+          data: mapData('baseline_conf_high')
         },
         ...linesData,
         {
           id: 'min',
-          data: mapData('baselineMin')
+          data: mapData('baseline_conf_low')
         }
       ];
     }
