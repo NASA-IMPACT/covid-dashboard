@@ -1,24 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 
 import Prose from '../../styles/type/prose';
 import Constrainer from '../../styles/constrainer';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
-import Button from '../../styles/button/button';
 import { Fold } from '../../styles/fold';
-import MediaImage from '../../styles/media-image';
 import {
-  IntroLead,
-  IntroDescription,
-  StatsFold,
-  StatsHeader,
-  StatsList
+  IntroLead
 } from '../../styles/datasets';
 
 import { glsp } from '../../styles/utils/theme-values';
-import Heading from '../../styles/type/heading';
 
 const FactsFold = styled(Fold)`
   padding-bottom: ${glsp(6)};
