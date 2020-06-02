@@ -41,6 +41,7 @@ import {
   toggleLayerRasterTimeseries,
   getActiveTimeseriesLayers
 } from '../../../utils/map-explore-utils';
+import ShadowScrollbar from '../../common/shadow-scrollbar';
 
 const layersBySpotlight = {
   be: ['no2', 'car-count'],
@@ -76,6 +77,11 @@ const PrimePanel = styled(Panel)`
 
 const SecPanel = styled(Panel)`
   width: 24rem;
+`;
+
+const BodyScroll = styled(ShadowScrollbar)`
+  flex: 1;
+  z-index: 1;
 `;
 
 const PanelBodyInner = styled.div`
@@ -238,31 +244,33 @@ class SpotlightAreasSingle extends React.Component {
                     </PanelHeadline>
                   }
                   bodyContent={
-                    <PanelBodyInner>
-                      {spotlightData.indicators.length ? spotlightData.indicators.map(ind => {
-                        const xDomain = ind.domain.date.map(utcDate);
-                        const yDomain = ind.domain.indicator;
+                    <BodyScroll>
+                      <PanelBodyInner>
+                        {spotlightData.indicators.length ? spotlightData.indicators.map(ind => {
+                          const xDomain = ind.domain.date.map(utcDate);
+                          const yDomain = ind.domain.indicator;
 
-                        return (
-                          <React.Fragment key={ind.id}>
-                            <h2>{ind.name}</h2>
-                            {ind.description && <p>{ind.description}</p>}
-                            <LineChart
-                              xDomain={xDomain}
-                              yDomain={yDomain}
-                              data={ind.data}
-                              yUnit={ind.units}
-                              // highlightBands={chartData.highlightBands}
-                              noBaseline={ind.data[0].baseline === undefined}
-                              noBaselineConfidence
-                              noIndicatorConfidence
-                            />
-                          </React.Fragment>
-                        );
-                      }) : (
-                        <p>Detailed information for the area being viewed and/or interacted by the user.</p>
-                      )}
-                    </PanelBodyInner>
+                          return (
+                            <React.Fragment key={ind.id}>
+                              <h2>{ind.name}</h2>
+                              {ind.description && <p>{ind.description}</p>}
+                              <LineChart
+                                xDomain={xDomain}
+                                yDomain={yDomain}
+                                data={ind.data}
+                                yUnit={ind.units}
+                                highlightBands={ind.highlightBands && ind.highlightBands.length ? ind.highlightBands : null}
+                                noBaseline={ind.data[0].baseline === undefined}
+                                noBaselineConfidence
+                                noIndicatorConfidence
+                              />
+                            </React.Fragment>
+                          );
+                        }) : (
+                          <p>Detailed information for the area being viewed and/or interacted by the user.</p>
+                        )}
+                      </PanelBodyInner>
+                    </BodyScroll>
                   }
                 />
               </ExploreCanvas>
