@@ -1,0 +1,160 @@
+import React from 'react';
+import T from 'prop-types';
+import styled from 'styled-components';
+
+import LineChart from '../../common/line-chart/chart';
+import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
+import ShadowScrollbar from '../../common/shadow-scrollbar';
+import {
+  PanelBlock,
+  PanelBlockHeader,
+  PanelBlockTitle
+} from '../../common/panel-block';
+import { Accordion, AccordionFold } from '../../common/accordion';
+
+import { glsp } from '../../../styles/utils/theme-values';
+import { utcDate } from '../../../utils/utils';
+import collecticon from '../../../styles/collecticons';
+
+const PanelSelf = styled(Panel)`
+  width: 24rem;
+`;
+
+const BodyScroll = styled(ShadowScrollbar)`
+  flex: 1;
+  z-index: 1;
+`;
+
+export const AccordionFoldTrigger = styled.a`
+  display: flex;
+  align-items: center;
+  margin: -${glsp(0.5)} -${glsp()};
+  padding: ${glsp(0.5)} ${glsp()};
+
+  &,
+  &:visited {
+    color: inherit;
+  }
+
+  &:after {
+    ${collecticon('chevron-down--small')}
+    margin-left: auto;
+    transition: transform 240ms ease-in-out;
+    transform: ${({ isExpanded }) =>
+      isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'};
+  }
+`;
+
+const PanelBodyInner = styled.div`
+  padding: ${glsp()};
+
+  figcaption {
+    margin-bottom: ${glsp(0.5)};
+  }
+
+  > *:not(:last-child) {
+    margin-bottom: ${glsp(2)};
+  }
+`;
+
+const Attribution = styled.p`
+  font-size: 0.874rem;
+  text-align: right;
+  padding-right: ${glsp(2)};
+  margin-bottom: ${glsp()};
+`;
+
+export default function SecPanel (props) {
+  const { onPanelChange, indicators, indicatorGroups, selectedDate } = props;
+
+  return (
+    <PanelSelf
+      collapsible
+      direction='right'
+      onPanelChange={onPanelChange}
+      headerContent={
+        <PanelHeadline>
+          <PanelTitle>Insights</PanelTitle>
+        </PanelHeadline>
+      }
+      bodyContent={
+        <BodyScroll>
+          <Accordion allowMultiple initialState={[true]}>
+            {({ checkExpanded, setExpanded }) => (
+              !!indicators.length && indicatorGroups && indicatorGroups.map((group, idx) => (
+                <AccordionFold
+                  forwardedAs={PanelBlock}
+                  key={group.id}
+                  isFoldExpanded={checkExpanded(idx)}
+                  setFoldExpanded={(v) => setExpanded(idx, v)}
+                  renderHeader={({ isFoldExpanded, setFoldExpanded }) => (
+                    <PanelBlockHeader>
+                      <AccordionFoldTrigger
+                        isExpanded={isFoldExpanded}
+                        onClick={() => setFoldExpanded(!isFoldExpanded)}
+                      >
+                        <PanelBlockTitle>{group.label}</PanelBlockTitle>
+                      </AccordionFoldTrigger>
+                    </PanelBlockHeader>
+                  )}
+                  renderBody={() => (
+                    <PanelBodyInner>
+                      {group.prose && <p>{group.prose}</p>}
+                      {group.indicators.map((indId) => {
+                        const ind = indicators.find((o) => o.id === indId);
+                        if (!ind) return null;
+
+                        const xDomain = ind.domain.date.map(utcDate);
+                        const yDomain = ind.domain.indicator;
+
+                        return (
+                          <figure key={ind.id}>
+                            <figcaption>
+                              <h2>{ind.name}</h2>
+                            </figcaption>
+                            {ind.description && <p>{ind.description}</p>}
+                            <LineChart
+                              xDomain={xDomain}
+                              yDomain={yDomain}
+                              data={ind.data}
+                              yUnit={ind.units}
+                              selectedDate={selectedDate}
+                              highlightBands={
+                                ind.highlightBands &&
+                                ind.highlightBands.length
+                                  ? ind.highlightBands
+                                  : null
+                              }
+                              noBaseline={
+                                ind.data[0].baseline === undefined
+                              }
+                              noBaselineConfidence
+                              noIndicatorConfidence
+                            />
+                            {ind.attribution && (
+                              <Attribution>
+                                By: {ind.attribution}
+                              </Attribution>
+                            )}
+                            {ind.prose && <p>{ind.prose}</p>}
+                          </figure>
+                        );
+                      })}
+                    </PanelBodyInner>
+                  )}
+                />
+              ))
+            )}
+          </Accordion>
+        </BodyScroll>
+      }
+    />
+  );
+}
+
+SecPanel.propTypes = {
+  onPanelChange: T.func,
+  indicators: T.array,
+  indicatorGroups: T.array,
+  selectedDate: T.object
+};

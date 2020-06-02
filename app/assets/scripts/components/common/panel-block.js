@@ -18,7 +18,7 @@ export const PanelBlock = styled.section`
 `;
 
 export const PanelBlockHeader = styled.header`
-  box-shadow: 0 1px 0 0 ${themeVal('color.baseAlphaB')};
+  box-shadow: inset 0 -1px 0 0 ${themeVal('color.baseAlphaB')};
   background: ${_tint(0.02, themeVal('color.surface'))};
   position: relative;
   z-index: 10;
