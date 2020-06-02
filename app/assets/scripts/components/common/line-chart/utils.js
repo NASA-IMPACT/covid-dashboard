@@ -2,14 +2,15 @@ import * as d3 from 'd3';
 
 import { utcDate } from '../../../utils/utils';
 
-export function bisectorPoints (data) {
+export function dataPoints (data) {
   let _yprop = 'value';
+  let _klass = null;
   let _x = null;
   let _y = null;
 
   function main (context) {
     const points = context
-      .selectAll('.bisector-point')
+      .selectAll(`.${_klass}`)
       .data(data);
 
     // Remove old.
@@ -19,7 +20,7 @@ export function bisectorPoints (data) {
       .enter()
       .append('circle')
       .attr('r', 4)
-      .attr('class', 'bisector-point')
+      .attr('class', _klass)
       .merge(points)
       // Update current.
       .attr('cx', d => _x(utcDate(d.date)))
@@ -38,6 +39,11 @@ export function bisectorPoints (data) {
 
   main.y = _ => {
     _y = _;
+    return main;
+  };
+
+  main.pointClass = _ => {
+    _klass = _;
     return main;
   };
 
