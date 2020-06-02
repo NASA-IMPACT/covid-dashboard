@@ -259,6 +259,7 @@ class SpotlightAreasSingle extends React.Component {
                                 yDomain={yDomain}
                                 data={ind.data}
                                 yUnit={ind.units}
+                                selectedDate={!!activeTimeseriesLayers.length && this.state.timelineDate}
                                 highlightBands={ind.highlightBands && ind.highlightBands.length ? ind.highlightBands : null}
                                 noBaseline={ind.data[0].baseline === undefined}
                                 noBaselineConfidence
