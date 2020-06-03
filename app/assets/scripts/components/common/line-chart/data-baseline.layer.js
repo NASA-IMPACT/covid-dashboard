@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 import { themeVal } from '../../../styles/utils/general';
-import { bisectorPoints, confidenceLines } from './utils';
+import { dataPoints, confidenceLines } from './utils';
 
 const styles = props => css`
   /* Data specific styles */
@@ -59,7 +59,8 @@ export default {
     // Show the bisector point if needed.
     const bisectorPointData = ctx.state.bisecting ? [ctx.state.doc] : [];
     dataSeries.call(
-      bisectorPoints(bisectorPointData)
+      dataPoints(bisectorPointData)
+        .pointClass('bisector-point')
         .x(xScale)
         .y(yScale)
         .yProp('baseline')

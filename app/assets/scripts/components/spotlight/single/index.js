@@ -86,6 +86,20 @@ const BodyScroll = styled(ShadowScrollbar)`
 
 const PanelBodyInner = styled.div`
   padding: ${glsp()};
+
+  figcaption {
+    margin-bottom: ${glsp(0.5)};
+  }
+
+  > *:not(:last-child) {
+    margin-bottom: ${glsp(2)};
+  }
+`;
+
+const Attribution = styled.p`
+  font-size: 0.874rem;
+  text-align: right;
+  padding-right: ${glsp(2)};
 `;
 
 class SpotlightAreasSingle extends React.Component {
@@ -251,20 +265,24 @@ class SpotlightAreasSingle extends React.Component {
                           const yDomain = ind.domain.indicator;
 
                           return (
-                            <React.Fragment key={ind.id}>
-                              <h2>{ind.name}</h2>
+                            <figure key={ind.id}>
+                              <figcaption>
+                                <h2>{ind.name}</h2>
+                              </figcaption>
                               {ind.description && <p>{ind.description}</p>}
                               <LineChart
                                 xDomain={xDomain}
                                 yDomain={yDomain}
                                 data={ind.data}
                                 yUnit={ind.units}
+                                selectedDate={!!activeTimeseriesLayers.length && this.state.timelineDate}
                                 highlightBands={ind.highlightBands && ind.highlightBands.length ? ind.highlightBands : null}
                                 noBaseline={ind.data[0].baseline === undefined}
                                 noBaselineConfidence
                                 noIndicatorConfidence
                               />
-                            </React.Fragment>
+                              {ind.attribution && <Attribution>By: {ind.attribution}</Attribution>}
+                            </figure>
                           );
                         }) : (
                           <p>Detailed information for the area being viewed and/or interacted by the user.</p>
