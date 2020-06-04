@@ -42,12 +42,12 @@ import {
 } from '../../../utils/map-explore-utils';
 
 const layersBySpotlight = {
-  be: ['no2', 'car-count'],
-  du: ['no2'],
-  gh: ['no2'],
-  la: ['no2'],
-  sf: ['no2', 'nightlights-day'],
-  tk: ['no2', 'nightlights']
+  be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
+  du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  la: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  sf: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  tk: ['no2', 'nightlights-hd', 'nightlights-viirs']
 };
 
 const ExploreCanvas = styled.div`
@@ -151,15 +151,18 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   render () {
-    const { spotlight } = this.props;
+    const { spotlight, indicatorGroups } = this.props;
 
-    if (spotlight.hasError()) return <UhOh />;
+    if (spotlight.hasError() || indicatorGroups.hasError()) return <UhOh />;
 
     const {
       label,
-      indicators,
-      indicatorGroups
+      indicators
     } = spotlight.getData();
+
+    const indicatorGroupsData = indicatorGroups.isReady()
+      ? indicatorGroups.getData()
+      : null;
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
 
@@ -227,7 +230,7 @@ class SpotlightAreasSingle extends React.Component {
                 <SecPanel
                   onPanelChange={this.resizeMap}
                   indicators={indicators}
-                  indicatorGroups={indicatorGroups}
+                  indicatorGroups={indicatorGroupsData}
                   selectedDate={activeTimeseriesLayers.length ? this.state.timelineDate : null}
                 />
               </ExploreCanvas>
@@ -243,15 +246,58 @@ SpotlightAreasSingle.propTypes = {
   fetchSpotlightSingle: T.func,
   mapLayers: T.array,
   spotlight: T.object,
+  indicatorGroups: T.object,
   match: T.object
 };
 
 function mapStateToProps (state, props) {
   const { spotlightId } = props.match.params;
   const layersToUse = layersBySpotlight[spotlightId] || [];
+  // Filter by the layers to include &
+  // Replace the {site} property on the layers
+  const spotlightMapLayers = allMapLayers
+    .filter(l => layersToUse.includes(l.id))
+    .map(l => {
+      // This layer requires a special handling.
+      if (l.id === 'nightlights-viirs') {
+        const siteCode = {
+          be: 'h29v05',
+          gh: 'h18v03',
+          du: 'h18v03',
+          la: 'h06v05',
+          sf: 'h05v05',
+          tk: 'h31v05'
+        }[spotlightId];
+
+        return {
+          ...l,
+          domain: l.domain.filter(d => {
+            if (siteCode === 'h18v03') {
+              const dates = ['2020-05-05', '2020-05-07', '2020-05-11', '2020-05-13', '2020-05-16', '2020-05-18', '2020-05-19'];
+              return !dates.includes(d);
+            }
+            return true;
+          }),
+          source: {
+            ...l.source,
+            tiles: l.source.tiles.map(t => t.replace('{siteCode}', siteCode))
+          }
+        };
+      } else {
+        return {
+          ...l,
+          source: {
+            ...l.source,
+            tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+          }
+        };
+      }
+    });
+
   return {
-    mapLayers: allMapLayers.filter(l => layersToUse.includes(l.id)),
-    spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId]))
+    mapLayers: spotlightMapLayers,
+    spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId])),
+    indicatorGroups: wrapApiResult(state.indicators.groups)
   };
 }
 

@@ -1,21 +1,21 @@
 import config from '../../../config';
 
 export default {
-  id: 'nightlights-day',
-  name: 'Nightlights Daily',
+  id: 'nightlights-hd',
+  name: 'Nightlights HD',
   type: 'raster-timeseries',
-  timeUnit: 'day',
+  timeUnit: 'month',
   domain: [
     '2020-01-01',
-    '2020-06-01'
+    '2020-05-01'
   ],
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/BM_500M_DAILY/VNP46A2_V011.h05v05.{date}.5000.76.68_44.97_V30_cog.tif&resampling_method=bilinear&bidx=1&rescale=0%2C100&color_map=viridis`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/BMHD_30M_MONTHLY/BMHD_VNP46A2_{spotlightId}_{date}_cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
     ]
   },
-  exclusiveWith: ['no2'],
+  exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-viirs'],
   swatch: {
     color: '#f2a73a',
     name: 'Gold'

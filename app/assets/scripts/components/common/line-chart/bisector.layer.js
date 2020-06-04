@@ -3,31 +3,8 @@ import { css } from 'styled-components';
 import { isWithinInterval } from 'date-fns';
 
 import { themeVal } from '../../../styles/utils/general';
-import { utcDate } from '../../../utils/utils';
+import { utcDate, bisectByDate } from '../../../utils/utils';
 import { _rgba } from '../../../styles/utils/theme-values';
-
-const bisectByDate = (data, date) => {
-  // Define bisector function. Is used to find where this date would fin in the
-  // data array
-  const bisect = d3.bisector(data => (new Date(data.date)).getTime()).left;
-  const mouseDate = date.getTime();
-  // Returns the index to the current data item.
-  const i = bisect(data, mouseDate);
-
-  if (i === 0) {
-    return data[i];
-  } else if (i === data.length) {
-    return data[i - 1];
-  } else {
-    const docR = data[i];
-    const docL = data[i - 1];
-    const deltaL = mouseDate - (new Date(docL.date)).getTime();
-    const deltaR = (new Date(docR.date)).getTime() - mouseDate;
-    return deltaL > deltaR
-      ? docR
-      : docL;
-  }
-};
 
 const styles = props => css`
   /* Bisector specific styles */

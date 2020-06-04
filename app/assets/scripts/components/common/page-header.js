@@ -17,7 +17,7 @@ import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
 import indicatorsList from '../indicators';
 
-const { appTitle, appShortTitle, appVersion } = config;
+const { appTitle, appShortTitle, appVersion, baseUrl } = config;
 
 const PageHead = styled.header`
   position: relative;
@@ -62,7 +62,7 @@ const PageTitle = styled.h1`
       content: '';
       height: 48px;
       width: 56px;
-      background: url('/assets/graphics/layout/app-logo-sprites.png');
+      background: url(${`${baseUrl}/assets/graphics/layout/app-logo-sprites.png`});
       background-size: auto 100%;
       background-repeat: none;
       background-position: top right;

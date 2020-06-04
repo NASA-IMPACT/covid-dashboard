@@ -20,6 +20,30 @@ const checkSameDate = (date, compareDate, interval) => {
   }
 };
 
+const getNextDate = (domain, date, timeUnit) => {
+  // If we're working with a discrete domain, get the closest value.
+  if (domain.length > 2) {
+    const currIdx = domain.findIndex(d => isSameDay(d, date));
+    if (currIdx < 0 || currIdx >= domain.length - 1) return null;
+    return domain[currIdx + 1];
+  } else {
+    // If we only have start and end, round based on time unit.
+    return add(date, getOperationParam(timeUnit));
+  }
+};
+
+const getPrevDate = (domain, date, timeUnit) => {
+  // If we're working with a discrete domain, get the closest value.
+  if (domain.length > 2) {
+    const currIdx = domain.findIndex(d => isSameDay(d, date));
+    if (currIdx <= 0) return null;
+    return domain[currIdx - 1];
+  } else {
+    // If we only have start and end, round based on time unit.
+    return sub(date, getOperationParam(timeUnit));
+  }
+};
+
 const getOperationParam = (interval) => {
   if (interval === 'day') {
     return { days: 1 };
@@ -170,19 +194,19 @@ class Timeline extends React.Component {
                 title='Previous entry'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: sub(date, getOperationParam(timeUnit)) })}
+                  onAction('date.set', { date: getPrevDate(dateDomain, date, timeUnit) })}
               >
                 Previous entry
               </Button>
               <Button
-                disabled={!date || checkSameDate(date, dateDomain[1], timeUnit)}
+                disabled={!date || checkSameDate(date, dateDomain[dateDomain.length - 1], timeUnit)}
                 variation='base-plain'
                 size='small'
                 useIcon='chevron-right--small'
                 title='Next entry'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: add(date, getOperationParam(timeUnit)) })}
+                  onAction('date.set', { date: getNextDate(dateDomain, date, timeUnit) })}
               >
                 Next entry
               </Button>
