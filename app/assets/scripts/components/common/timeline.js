@@ -30,9 +30,9 @@ const getOperationParam = (interval) => {
 
 const formatDate = (date, interval) => {
   if (interval === 'day') {
-    return format(date, "dd MMM yy''");
+    return format(date, "dd MMM ''yy");
   } else {
-    return format(date, "MMM yy''");
+    return format(date, "MMM ''yy");
   }
 };
 
