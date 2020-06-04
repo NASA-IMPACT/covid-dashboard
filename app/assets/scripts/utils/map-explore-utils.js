@@ -235,7 +235,7 @@ export function toggleLayerRasterTimeseries (layer) {
       }
       : {};
     return {
-      timelineDate: utcDate(layer.domain[1]),
+      timelineDate: utcDate(layer.domain[layer.domain.length - 1]),
       layersState: {
         ...state.layersState,
         [layer.id]: {

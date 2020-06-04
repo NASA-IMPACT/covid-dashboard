@@ -165,9 +165,14 @@ class DataBrowserChart extends React.Component {
 
     // ---------------------------------------------------
     // Functions
+    const xDomain = [
+      props.xDomain[0],
+      props.xDomain[props.xDomain.length - 1]
+    ];
+
     this.xScale = d3
       .scaleTime()
-      .domain(props.xDomain)
+      .domain(xDomain)
       .range([0, width]);
 
     // this.yScale = d3
