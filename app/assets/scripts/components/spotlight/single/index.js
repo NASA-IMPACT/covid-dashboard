@@ -46,7 +46,7 @@ const layersBySpotlight = {
   du: ['no2'],
   gh: ['no2'],
   la: ['no2'],
-  sf: ['no2'],
+  sf: ['no2', 'nightlights-day'],
   tk: ['no2', 'nightlights']
 };
 
