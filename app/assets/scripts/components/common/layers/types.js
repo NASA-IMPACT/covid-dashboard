@@ -84,7 +84,7 @@ export const layerTypes = {
               type: 'raster',
               source: id
             },
-            'admin-1-boundary-bg'
+            'admin-0-boundary-bg'
           );
         }
       }
@@ -113,7 +113,7 @@ export const layerTypes = {
             type: 'raster',
             source: id
           },
-          'admin-1-boundary-bg'
+          'admin-0-boundary-bg'
         );
       }
     }
@@ -140,7 +140,7 @@ export const layerTypes = {
             type: 'raster',
             source: id
           },
-          'admin-1-boundary-bg'
+          'admin-0-boundary-bg'
         );
       }
     }
