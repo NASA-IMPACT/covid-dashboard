@@ -42,12 +42,12 @@ import {
 } from '../../../utils/map-explore-utils';
 
 const layersBySpotlight = {
-  be: ['no2', 'car-count'],
-  du: ['no2'],
-  gh: ['no2'],
-  la: ['no2'],
-  sf: ['no2', 'nightlights-day'],
-  tk: ['no2', 'nightlights']
+  be: ['no2', 'nightlights-hd', 'car-count'],
+  du: ['no2', 'nightlights-hd'],
+  gh: ['no2', 'nightlights-hd'],
+  la: ['no2', 'nightlights-hd'],
+  sf: ['no2', 'nightlights-hd'],
+  tk: ['no2', 'nightlights-hd']
 };
 
 const ExploreCanvas = styled.div`
@@ -253,8 +253,20 @@ SpotlightAreasSingle.propTypes = {
 function mapStateToProps (state, props) {
   const { spotlightId } = props.match.params;
   const layersToUse = layersBySpotlight[spotlightId] || [];
+  // Filter by the layers to include &
+  // Replace the {site} property on the layers
+  const spotlightMapLayers = allMapLayers
+    .filter(l => layersToUse.includes(l.id))
+    .map(l => ({
+      ...l,
+      source: {
+        ...l.source,
+        tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+      }
+    }));
+
   return {
-    mapLayers: allMapLayers.filter(l => layersToUse.includes(l.id)),
+    mapLayers: spotlightMapLayers,
     spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId])),
     indicatorGroups: wrapApiResult(state.indicators.groups)
   };

@@ -1,8 +1,8 @@
 import config from '../../../config';
 
 export default {
-  id: 'nightlights-day',
-  name: 'Nightlights Daily',
+  id: 'nightlights-viirs',
+  name: 'Nightlights VIIRS',
   type: 'raster-timeseries',
   timeUnit: 'day',
   domain: [
@@ -15,7 +15,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/BM_500M_DAILY/VNP46A2_V011.h05v05.{date}.5000.76.68_44.97_V30_cog.tif&resampling_method=bilinear&bidx=1&rescale=0%2C100&color_map=viridis`
     ]
   },
-  exclusiveWith: ['no2'],
+  exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-hd'],
   swatch: {
     color: '#f2a73a',
     name: 'Gold'
