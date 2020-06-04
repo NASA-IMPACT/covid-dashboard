@@ -24,7 +24,7 @@ const getNextDate = (domain, date, timeUnit) => {
   // If we're working with a discrete domain, get the closest value.
   if (domain.length > 2) {
     const currIdx = domain.findIndex(d => isSameDay(d, date));
-    if (currIdx < 0 || currIdx >= domain.length - 2) return null;
+    if (currIdx < 0 || currIdx >= domain.length - 1) return null;
     return domain[currIdx + 1];
   } else {
     // If we only have start and end, round based on time unit.
@@ -194,7 +194,7 @@ class Timeline extends React.Component {
                 title='Previous entry'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: getPrevDate(dateDomain, date) })}
+                  onAction('date.set', { date: getPrevDate(dateDomain, date, timeUnit) })}
               >
                 Previous entry
               </Button>
@@ -206,7 +206,7 @@ class Timeline extends React.Component {
                 title='Next entry'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: getNextDate(dateDomain, date) })}
+                  onAction('date.set', { date: getNextDate(dateDomain, date, timeUnit) })}
               >
                 Next entry
               </Button>

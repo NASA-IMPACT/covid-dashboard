@@ -42,12 +42,12 @@ import {
 } from '../../../utils/map-explore-utils';
 
 const layersBySpotlight = {
-  be: ['no2', 'nightlights-hd', 'car-count'],
-  du: ['no2', 'nightlights-hd'],
-  gh: ['no2', 'nightlights-hd'],
-  la: ['no2', 'nightlights-hd'],
-  sf: ['no2', 'nightlights-hd'],
-  tk: ['no2', 'nightlights-hd']
+  be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
+  du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  la: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  sf: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  tk: ['no2', 'nightlights-hd', 'nightlights-viirs']
 };
 
 const ExploreCanvas = styled.div`
@@ -257,13 +257,42 @@ function mapStateToProps (state, props) {
   // Replace the {site} property on the layers
   const spotlightMapLayers = allMapLayers
     .filter(l => layersToUse.includes(l.id))
-    .map(l => ({
-      ...l,
-      source: {
-        ...l.source,
-        tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+    .map(l => {
+      // This layer requires a special handling.
+      if (l.id === 'nightlights-viirs') {
+        const siteCode = {
+          be: 'h29v05',
+          gh: 'h18v03',
+          du: 'h18v03',
+          la: 'h06v05',
+          sf: 'h05v05',
+          tk: 'h31v05'
+        }[spotlightId];
+
+        return {
+          ...l,
+          domain: l.domain.filter(d => {
+            if (siteCode === 'h18v03') {
+              const dates = ['2020-05-05', '2020-05-07', '2020-05-11', '2020-05-13', '2020-05-16', '2020-05-18', '2020-05-19'];
+              return !dates.includes(d);
+            }
+            return true;
+          }),
+          source: {
+            ...l.source,
+            tiles: l.source.tiles.map(t => t.replace('{siteCode}', siteCode))
+          }
+        };
+      } else {
+        return {
+          ...l,
+          source: {
+            ...l.source,
+            tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+          }
+        };
       }
-    }));
+    });
 
   return {
     mapLayers: spotlightMapLayers,
