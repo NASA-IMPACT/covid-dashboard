@@ -70,6 +70,11 @@ const Attribution = styled.p`
 export default function SecPanel (props) {
   const { onPanelChange, indicators, indicatorGroups, selectedDate } = props;
 
+  // Ensure that we only deal with groups that have data.
+  const groups = (indicatorGroups || []).filter(g => (
+    g.indicators.some(indId => indicators.find(ind => ind.id === indId))
+  ));
+
   return (
     <PanelSelf
       collapsible
@@ -84,7 +89,7 @@ export default function SecPanel (props) {
         <BodyScroll>
           <Accordion allowMultiple initialState={[true]}>
             {({ checkExpanded, setExpanded }) => (
-              !!indicators.length && indicatorGroups && indicatorGroups.map((group, idx) => (
+              !!groups.length && groups.map((group, idx) => (
                 <AccordionFold
                   forwardedAs={PanelBlock}
                   key={group.id}

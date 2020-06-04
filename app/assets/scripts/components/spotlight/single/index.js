@@ -151,15 +151,18 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   render () {
-    const { spotlight } = this.props;
+    const { spotlight, indicatorGroups } = this.props;
 
-    if (spotlight.hasError()) return <UhOh />;
+    if (spotlight.hasError() || indicatorGroups.hasError()) return <UhOh />;
 
     const {
       label,
-      indicators,
-      indicatorGroups
+      indicators
     } = spotlight.getData();
+
+    const indicatorGroupsData = indicatorGroups.isReady()
+      ? indicatorGroups.getData()
+      : null;
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
 
@@ -227,7 +230,7 @@ class SpotlightAreasSingle extends React.Component {
                 <SecPanel
                   onPanelChange={this.resizeMap}
                   indicators={indicators}
-                  indicatorGroups={indicatorGroups}
+                  indicatorGroups={indicatorGroupsData}
                   selectedDate={activeTimeseriesLayers.length ? this.state.timelineDate : null}
                 />
               </ExploreCanvas>
@@ -243,6 +246,7 @@ SpotlightAreasSingle.propTypes = {
   fetchSpotlightSingle: T.func,
   mapLayers: T.array,
   spotlight: T.object,
+  indicatorGroups: T.object,
   match: T.object
 };
 
@@ -251,7 +255,8 @@ function mapStateToProps (state, props) {
   const layersToUse = layersBySpotlight[spotlightId] || [];
   return {
     mapLayers: allMapLayers.filter(l => layersToUse.includes(l.id)),
-    spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId]))
+    spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId])),
+    indicatorGroups: wrapApiResult(state.indicators.groups)
   };
 }
 
