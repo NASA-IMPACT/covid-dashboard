@@ -204,6 +204,7 @@ class PageHeader extends React.Component {
                   <DropMenu role='menu' selectable>
                     <li>
                       <DropMenuItem
+                        exact
                         as={NavLink}
                         to='/spotlight'
                         data-dropdown='click.close'
@@ -242,6 +243,18 @@ class PageHeader extends React.Component {
                     </Button>
                   }
                 >
+                  <DropMenu role='menu' selectable>
+                    <li>
+                      <DropMenuItem
+                        exact
+                        as={NavLink}
+                        to='/indicators'
+                        data-dropdown='click.close'
+                      >
+                        About
+                      </DropMenuItem>
+                    </li>
+                  </DropMenu>
                   <DropTitle>Indicators</DropTitle>
                   <DropMenu role='menu' selectable>
                     {indicatorsList.filter(d => !!d.LongForm).map(d => (

@@ -24,6 +24,7 @@ import Home from './components/home';
 import GlobalExplore from './components/global';
 import SpotlightHub from './components/spotlight/hub';
 import SpotlightSingle from './components/spotlight/single';
+import IndicatorsHub from './components/indicators/hub';
 import IndicatorsSingle from './components/indicators/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
@@ -109,6 +110,11 @@ class Root extends React.Component {
                     isLargeUp={isLargeUp}
                     path='/spotlight/:spotlightId'
                     component={SpotlightSingle}
+                  />
+                  <Route
+                    exact
+                    path='/indicators'
+                    component={IndicatorsHub}
                   />
                   <LargeOnlyRoute
                     exact
