@@ -1,9 +1,16 @@
 import { format, sub } from 'date-fns';
 
-const prepDateSource = (source, date) => ({
-  ...source,
-  tiles: source.tiles.map((t) => t.replace('{date}', format(date, 'yyyyMM')))
-});
+const prepDateSource = (source, date, timeUnit = 'month') => {
+  const formats = {
+    month: 'yyyyMM',
+    day: 'yyyy_MM_dd'
+  };
+
+  return {
+    ...source,
+    tiles: source.tiles.map((t) => t.replace('{date}', format(date, formats[timeUnit])))
+  };
+};
 
 const prepGammaSource = (source, knobPos) => {
   // Gamma is calculated with the following scale:
@@ -18,9 +25,11 @@ const prepGammaSource = (source, knobPos) => {
   };
 };
 
-const prepSource = (source, date, knobPos) => {
-  source = prepDateSource(source, date);
-  source = prepGammaSource(source, knobPos);
+const prepSource = (layerInfo, source, date, knobPos) => {
+  if (layerInfo.legend.type === 'gradient-adjustable') {
+    source = prepGammaSource(source, knobPos);
+  }
+  source = prepDateSource(source, date, layerInfo.timeUnit);
   return source;
 };
 
@@ -68,12 +77,12 @@ export const layerTypes = {
       // END update checks.
 
       // Update layer tiles.
-      const tiles = prepSource(source, date, knobPos).tiles;
+      const tiles = prepSource(layerInfo, source, date, knobPos).tiles;
       replaceRasterTiles(mbMap, id, tiles);
 
       // Update/init compare layer tiles.
       if (comparing) {
-        const source5years = prepSource(source, sub(date, { years: 5 }), knobPos);
+        const source5years = prepSource(layerInfo, source, sub(date, { years: 5 }), knobPos);
         if (mbMapComparing.getSource(id)) {
           replaceRasterTiles(mbMapComparing, id, source5years.tiles);
         } else {
@@ -106,7 +115,7 @@ export const layerTypes = {
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
-        mbMap.addSource(id, prepSource(source, date, layerInfo.knobCurrPos));
+        mbMap.addSource(id, prepSource(layerInfo, source, date, layerInfo.knobCurrPos));
         mbMap.addLayer(
           {
             id: id,

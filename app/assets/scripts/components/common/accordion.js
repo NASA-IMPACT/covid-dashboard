@@ -165,7 +165,7 @@ function AccordionFoldCmp ({
   );
 }
 AccordionFoldCmp.propTypes = {
-  as: T.node,
+  as: T.any,
   id: T.string,
   className: T.string,
   isFoldExpanded: T.bool,

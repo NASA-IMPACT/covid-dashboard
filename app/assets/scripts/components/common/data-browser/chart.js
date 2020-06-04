@@ -58,7 +58,7 @@ const formatDate = (date, interval) => {
   if (interval === 'day') {
     return format(date, 'dd MMMM yyyy');
   } else {
-    return format(date, "MMMM yy''");
+    return format(date, 'MMMM yyyy');
   }
 };
 

@@ -14,27 +14,27 @@ import {
 } from '../../../styles/inpage';
 import UhOh from '../../uhoh';
 
-import { getDataset } from '../';
+import { getIndicator } from '../';
 
-class DatasetsSingle extends React.Component {
+class IndicatorsSingle extends React.Component {
   render () {
-    const { dataset } = this.props;
+    const { indicator } = this.props;
 
-    if (!dataset || !dataset.LongForm) return <UhOh />;
+    if (!indicator || !indicator.LongForm) return <UhOh />;
 
     return (
-      <App pageTitle={dataset.name}>
+      <App pageTitle={indicator.name}>
         <Inpage>
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>{dataset.name}</InpageTitle>
-                <InpageSubtitle>Dataset</InpageSubtitle>
+                <InpageTitle>{indicator.name}</InpageTitle>
+                <InpageSubtitle>Indicator</InpageSubtitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
-            <dataset.LongForm />
+            <indicator.LongForm />
           </InpageBody>
         </Inpage>
       </App>
@@ -42,17 +42,17 @@ class DatasetsSingle extends React.Component {
   }
 }
 
-DatasetsSingle.propTypes = {
-  dataset: T.object
+IndicatorsSingle.propTypes = {
+  indicator: T.object
 };
 
 function mapStateToProps (state, props) {
-  const { datasetId } = props.match.params;
+  const { indicatorId } = props.match.params;
   return {
-    dataset: getDataset(datasetId)
+    indicator: getIndicator(indicatorId)
   };
 }
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(DatasetsSingle);
+export default connect(mapStateToProps, mapDispatchToProps)(IndicatorsSingle);

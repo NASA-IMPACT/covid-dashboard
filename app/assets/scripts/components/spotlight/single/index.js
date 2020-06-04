@@ -16,18 +16,17 @@ import {
 } from '../../../styles/inpage';
 import MbMap from '../../common/mb-map-explore/mb-map';
 import UhOh from '../../uhoh';
-import LineChart from '../../common/line-chart/chart';
 import DataLayersBlock from '../../common/data-layers-block';
-import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
+import Panel, { PanelHeadline } from '../../common/panel';
 import MapMessage from '../../common/map-message';
 import Timeline from '../../common/timeline';
+import SecPanel from './sec-panel';
+import Heading from '../../../styles/type/heading';
 
 import { themeVal } from '../../../styles/utils/general';
-import { glsp } from '../../../styles/utils/theme-values';
 import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
 import { wrapApiResult, getFromState } from '../../../redux/reduxeed';
 import { showGlobalLoading, hideGlobalLoading } from '../../common/global-loading';
-import { utcDate } from '../../../utils/utils';
 import allMapLayers from '../../common/layers';
 import {
   setLayerState,
@@ -41,14 +40,13 @@ import {
   toggleLayerRasterTimeseries,
   getActiveTimeseriesLayers
 } from '../../../utils/map-explore-utils';
-import ShadowScrollbar from '../../common/shadow-scrollbar';
 
 const layersBySpotlight = {
   be: ['no2', 'car-count'],
   du: ['no2'],
   gh: ['no2'],
   la: ['no2'],
-  sf: ['no2'],
+  sf: ['no2', 'nightlights-day'],
   tk: ['no2', 'nightlights']
 };
 
@@ -73,33 +71,6 @@ const ExploreCarto = styled.section`
 
 const PrimePanel = styled(Panel)`
   width: 18rem;
-`;
-
-const SecPanel = styled(Panel)`
-  width: 24rem;
-`;
-
-const BodyScroll = styled(ShadowScrollbar)`
-  flex: 1;
-  z-index: 1;
-`;
-
-const PanelBodyInner = styled.div`
-  padding: ${glsp()};
-
-  figcaption {
-    margin-bottom: ${glsp(0.5)};
-  }
-
-  > *:not(:last-child) {
-    margin-bottom: ${glsp(2)};
-  }
-`;
-
-const Attribution = styled.p`
-  font-size: 0.874rem;
-  text-align: right;
-  padding-right: ${glsp(2)};
 `;
 
 class SpotlightAreasSingle extends React.Component {
@@ -184,7 +155,11 @@ class SpotlightAreasSingle extends React.Component {
 
     if (spotlight.hasError()) return <UhOh />;
 
-    const spotlightData = spotlight.getData();
+    const {
+      label,
+      indicators,
+      indicatorGroups
+    } = spotlight.getData();
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
 
@@ -216,7 +191,7 @@ class SpotlightAreasSingle extends React.Component {
                   onPanelChange={this.resizeMap}
                   headerContent={
                     <PanelHeadline>
-                      <h2>{spotlightData.label}</h2>
+                      <Heading as='h2' size='large'>{label}</Heading>
                     </PanelHeadline>
                   }
                   bodyContent={
@@ -248,48 +223,12 @@ class SpotlightAreasSingle extends React.Component {
                     onSizeChange={this.resizeMap}
                   />
                 </ExploreCarto>
-                <SecPanel
-                  collapsible
-                  direction='right'
-                  onPanelChange={this.resizeMap}
-                  headerContent={
-                    <PanelHeadline>
-                      <PanelTitle>Insights</PanelTitle>
-                    </PanelHeadline>
-                  }
-                  bodyContent={
-                    <BodyScroll>
-                      <PanelBodyInner>
-                        {spotlightData.indicators.length ? spotlightData.indicators.map(ind => {
-                          const xDomain = ind.domain.date.map(utcDate);
-                          const yDomain = ind.domain.indicator;
 
-                          return (
-                            <figure key={ind.id}>
-                              <figcaption>
-                                <h2>{ind.name}</h2>
-                              </figcaption>
-                              {ind.description && <p>{ind.description}</p>}
-                              <LineChart
-                                xDomain={xDomain}
-                                yDomain={yDomain}
-                                data={ind.data}
-                                yUnit={ind.units}
-                                selectedDate={!!activeTimeseriesLayers.length && this.state.timelineDate}
-                                highlightBands={ind.highlightBands && ind.highlightBands.length ? ind.highlightBands : null}
-                                noBaseline={ind.data[0].baseline === undefined}
-                                noBaselineConfidence
-                                noIndicatorConfidence
-                              />
-                              {ind.attribution && <Attribution>By: {ind.attribution}</Attribution>}
-                            </figure>
-                          );
-                        }) : (
-                          <p>Detailed information for the area being viewed and/or interacted by the user.</p>
-                        )}
-                      </PanelBodyInner>
-                    </BodyScroll>
-                  }
+                <SecPanel
+                  onPanelChange={this.resizeMap}
+                  indicators={indicators}
+                  indicatorGroups={indicatorGroups}
+                  selectedDate={activeTimeseriesLayers.length ? this.state.timelineDate : null}
                 />
               </ExploreCanvas>
             </InpageBody>
