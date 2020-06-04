@@ -21,6 +21,7 @@ import Panel, { PanelHeadline } from '../../common/panel';
 import MapMessage from '../../common/map-message';
 import Timeline from '../../common/timeline';
 import SecPanel from './sec-panel';
+import Heading from '../../../styles/type/heading';
 
 import { themeVal } from '../../../styles/utils/general';
 import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
@@ -190,7 +191,7 @@ class SpotlightAreasSingle extends React.Component {
                   onPanelChange={this.resizeMap}
                   headerContent={
                     <PanelHeadline>
-                      <h2>{label}</h2>
+                      <Heading as='h2' size='large'>{label}</Heading>
                     </PanelHeadline>
                   }
                   bodyContent={

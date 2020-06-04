@@ -14,7 +14,7 @@ export const PanelBlock = styled.section`
   flex: 1;
   position: relative;
   z-index: 10;
-  box-shadow: 0 -1px 0 0 ${themeVal('color.baseAlphaB')};
+  box-shadow: inset 0 -1px 0 0 ${themeVal('color.baseAlphaB')};
 `;
 
 export const PanelBlockHeader = styled.header`

@@ -11,10 +11,12 @@ import {
   PanelBlockTitle
 } from '../../common/panel-block';
 import { Accordion, AccordionFold } from '../../common/accordion';
+import Heading from '../../../styles/type/heading';
 
 import { glsp } from '../../../styles/utils/theme-values';
 import { utcDate } from '../../../utils/utils';
 import collecticon from '../../../styles/collecticons';
+import Prose from '../../../styles/type/prose';
 
 const PanelSelf = styled(Panel)`
   width: 24rem;
@@ -48,18 +50,19 @@ export const AccordionFoldTrigger = styled.a`
 const PanelBodyInner = styled.div`
   padding: ${glsp()};
 
-  figcaption {
-    margin-bottom: ${glsp(0.5)};
+  > *:not(:last-child) {
+    margin-bottom: ${glsp(1.5)};
   }
 
-  > *:not(:last-child) {
-    margin-bottom: ${glsp(2)};
+  figure {
+    margin-top: -1rem;
   }
 `;
 
 const Attribution = styled.p`
   font-size: 0.874rem;
   text-align: right;
+  font-style: italic;
   padding-right: ${glsp(2)};
   margin-bottom: ${glsp()};
 `;
@@ -99,7 +102,11 @@ export default function SecPanel (props) {
                   )}
                   renderBody={() => (
                     <PanelBodyInner>
-                      {group.prose && <p>{group.prose}</p>}
+                      {group.prose && (
+                        <Prose size='small'>
+                          <p>{group.prose}</p>
+                        </Prose>
+                      )}
                       {group.indicators.map((indId) => {
                         const ind = indicators.find((o) => o.id === indId);
                         if (!ind) return null;
@@ -108,36 +115,40 @@ export default function SecPanel (props) {
                         const yDomain = ind.domain.indicator;
 
                         return (
-                          <figure key={ind.id}>
-                            <figcaption>
-                              <h2>{ind.name}</h2>
-                            </figcaption>
-                            {ind.description && <p>{ind.description}</p>}
-                            <LineChart
-                              xDomain={xDomain}
-                              yDomain={yDomain}
-                              data={ind.data}
-                              yUnit={ind.units}
-                              selectedDate={selectedDate}
-                              highlightBands={
-                                ind.highlightBands &&
-                                ind.highlightBands.length
-                                  ? ind.highlightBands
-                                  : null
-                              }
-                              noBaseline={
-                                ind.data[0].baseline === undefined
-                              }
-                              noBaselineConfidence
-                              noIndicatorConfidence
-                            />
-                            {ind.attribution && (
-                              <Attribution>
-                                By: {ind.attribution}
-                              </Attribution>
-                            )}
-                            {ind.prose && <p>{ind.prose}</p>}
-                          </figure>
+                          <section key={ind.id}>
+                            <Prose size='small'>
+                              <Heading as='h2' size='medium'>{ind.name}</Heading>
+                              {ind.description && <p>{ind.description}</p>}
+                              <figure>
+                                <LineChart
+                                  xDomain={xDomain}
+                                  yDomain={yDomain}
+                                  data={ind.data}
+                                  yUnit={ind.units}
+                                  selectedDate={selectedDate}
+                                  highlightBands={
+                                    ind.highlightBands &&
+                                    ind.highlightBands.length
+                                      ? ind.highlightBands
+                                      : null
+                                  }
+                                  noBaseline={
+                                    ind.data[0].baseline === undefined
+                                  }
+                                  noBaselineConfidence
+                                  noIndicatorConfidence
+                                />
+                                {ind.attribution && (
+                                  <figcaption>
+                                    <Attribution>
+                                      By: {ind.attribution}
+                                    </Attribution>
+                                  </figcaption>
+                                )}
+                              </figure>
+                              {ind.prose && <p>{ind.prose}</p>}
+                            </Prose>
+                          </section>
                         );
                       })}
                     </PanelBodyInner>
