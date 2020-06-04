@@ -15,7 +15,7 @@ import { wrapApiResult } from '../../redux/reduxeed';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
-import datasetsList from '../datasets';
+import indicatorsList from '../indicators';
 
 const { appTitle, appShortTitle, appVersion } = config;
 
@@ -235,20 +235,20 @@ class PageHeader extends React.Component {
                   triggerElement={
                     <Button
                       variation='achromic-plain'
-                      title='Explore the datasets'
+                      title='Explore the indicators'
                       useIcon={['chevron-down--small', 'after']}
                     >
-                      <span>Datasets</span>
+                      <span>Indicators</span>
                     </Button>
                   }
                 >
-                  <DropTitle>Datasets</DropTitle>
+                  <DropTitle>Indicators</DropTitle>
                   <DropMenu role='menu' selectable>
-                    {datasetsList.filter(d => !!d.LongForm).map(d => (
+                    {indicatorsList.filter(d => !!d.LongForm).map(d => (
                       <li key={d.id}>
                         <DropMenuItem
                           as={NavLink}
-                          to={`/datasets/${d.id}`}
+                          to={`/indicators/${d.id}`}
                           data-dropdown='click.close'
                         >
                           {d.name}
