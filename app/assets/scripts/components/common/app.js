@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import T from 'prop-types';
+import { withRouter } from 'react-router';
 import styled from 'styled-components';
 
 import MetaTags from './meta-tags';
@@ -38,6 +39,17 @@ class App extends Component {
     this.resizeListener = this.resizeListener.bind(this);
   }
 
+  componentDidMount () {
+    window.scrollTo(0, 0);
+  }
+
+  // Handle cases where the page is updated without changing
+  componentDidUpdate (prevProps) {
+    if (this.props.location && this.props.location.pathname !== prevProps.location.pathname) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   resizeListener ({ width }) {
     this.setState({
       useShortTitle: width < mediaRanges.small[0]
@@ -63,7 +75,8 @@ class App extends Component {
 
 App.propTypes = {
   pageTitle: T.string,
-  children: T.node
+  children: T.node,
+  location: T.object
 };
 
-export default App;
+export default withRouter(App);
