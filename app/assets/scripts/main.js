@@ -22,6 +22,7 @@ import SizeAwareElement from './components/common/size-aware-element';
 // Views
 import Home from './components/home';
 import GlobalExplore from './components/global';
+import SpotlightHub from './components/spotlight/hub';
 import SpotlightSingle from './components/spotlight/single';
 import DatasetsSingle from './components/datasets/single';
 import Sandbox from './components/sandbox';
@@ -97,6 +98,11 @@ class Root extends React.Component {
                     exact
                     path='/global'
                     component={GlobalExplore}
+                  />
+                  <Route
+                    exact
+                    path='/spotlight'
+                    component={SpotlightHub}
                   />
                   <LargeOnlyRoute
                     exact

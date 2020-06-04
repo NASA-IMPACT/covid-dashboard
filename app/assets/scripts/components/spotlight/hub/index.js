@@ -13,19 +13,13 @@ import {
   InpageTitle,
   InpageBody
 } from '../../../styles/inpage';
+import Constrainer from '../../../styles/constrainer';
+import Prose from '../../../styles/type/prose';
+import Heading from '../../../styles/type/heading';
 
 import { glsp } from '../../../styles/utils/theme-values';
 import { themeVal } from '../../../styles/utils/general';
 import { wrapApiResult } from '../../../redux/reduxeed';
-
-const InpageTrendsBody = styled(InpageBody)`
-  position: relative;
-  z-index: 9;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  height: 100%;
-  padding: ${glsp(1, 3)};
-`;
 
 const PanelNavLink = styled(NavLink)`
   position: relative;
@@ -71,6 +65,30 @@ const PanelNavLink = styled(NavLink)`
   }
 `;
 
+const PageConstrainer = styled(Constrainer)`
+  padding-top: ${glsp(4)};
+  padding-bottom: ${glsp(4)};
+
+  ${Prose} {
+    max-width: 50rem;
+  }
+
+  > *:not(:last-child) {
+    margin-bottom: ${glsp(2)};
+  }
+`;
+
+const EntriesList = styled.ul`
+  display: grid;
+  grid-gap: ${glsp(2)};
+  grid-template-columns: repeat(12, 1fr);
+
+  li {
+    text-align: center;
+    grid-column: auto / span 3;
+  }
+`;
+
 class SpotlightAreasHub extends React.Component {
   render () {
     const { spotlightList } = this.props;
@@ -87,20 +105,30 @@ class SpotlightAreasHub extends React.Component {
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
-          <InpageTrendsBody>
-            <ul>
-              {spotlightAreas && spotlightAreas.map((item) => (
-                <li key={item.id}>
-                  <PanelNavLink
-                    to={`/spotlight/${item.id}`}
-                    title={`View spotlight area ${item.label}`}
-                  >
-                    {item.label}
-                  </PanelNavLink>
-                </li>
-              ))}
-            </ul>
-          </InpageTrendsBody>
+          <InpageBody>
+            <PageConstrainer>
+              <Prose>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure molestias deserunt blanditiis veritatis, porro exercitationem quaerat pariatur fugit nam iusto cum ullam animi? Velit voluptatibus provident deserunt, corrupti natus porro.
+                Expedita repudiandae qui at ab eveniet nihil laborum eligendi numquam nemo error, fuga, quasi natus debitis. Soluta labore sed, rem autem alias accusamus dignissimos, nam aut suscipit voluptas, harum nemo!</p>
+                <p>Porro aliquid sed veritatis cumque maiores adipisci ea et perspiciatis officia deserunt perferendis assumenda mollitia ab nihil quas similique aspernatur labore ipsa asperiores, eum minima repudiandae, at fugiat! Totam, delectus!
+                Ab aut necessitatibus delectus pariatur eaque eveniet velit consequuntur nam odio minus. Non est reiciendis, eveniet aut, ut esse ratione libero temporibus inventore, enim vitae alias necessitatibus error pariatur in.</p>
+              </Prose>
+
+              <Heading as='h2' size='large'>Spotlight Areas</Heading>
+              <EntriesList>
+                {spotlightAreas && spotlightAreas.map((item) => (
+                  <li key={item.id}>
+                    <PanelNavLink
+                      to={`/spotlight/${item.id}`}
+                      title={`View spotlight area ${item.label}`}
+                    >
+                      {item.label}
+                    </PanelNavLink>
+                  </li>
+                ))}
+              </EntriesList>
+            </PageConstrainer>
+          </InpageBody>
         </Inpage>
       </App>
     );

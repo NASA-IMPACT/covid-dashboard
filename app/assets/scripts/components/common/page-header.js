@@ -201,6 +201,17 @@ class PageHeader extends React.Component {
                     </Button>
                   }
                 >
+                  <DropMenu role='menu' selectable>
+                    <li>
+                      <DropMenuItem
+                        as={NavLink}
+                        to='/spotlight'
+                        data-dropdown='click.close'
+                      >
+                        About
+                      </DropMenuItem>
+                    </li>
+                  </DropMenu>
                   <DropTitle>Spotlight areas</DropTitle>
                   <DropMenu role='menu' selectable>
                     {spotlightAreas && spotlightAreas.map(ss => (
