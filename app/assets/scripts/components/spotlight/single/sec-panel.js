@@ -19,7 +19,7 @@ import collecticon from '../../../styles/collecticons';
 import Prose from '../../../styles/type/prose';
 
 const PanelSelf = styled(Panel)`
-  width: 24rem;
+  width: 30rem;
 `;
 
 const BodyScroll = styled(ShadowScrollbar)`
