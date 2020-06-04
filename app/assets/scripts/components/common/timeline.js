@@ -167,24 +167,24 @@ class Timeline extends React.Component {
                 variation='base-plain'
                 size='small'
                 useIcon='chevron-left--small'
-                title='Previous day'
+                title='Previous entry'
                 hideText
                 onClick={() =>
                   onAction('date.set', { date: sub(date, getOperationParam(timeUnit)) })}
               >
-                Previous day
+                Previous entry
               </Button>
               <Button
                 disabled={!date || checkSameDate(date, dateDomain[1], timeUnit)}
                 variation='base-plain'
                 size='small'
                 useIcon='chevron-right--small'
-                title='Next day'
+                title='Next entry'
                 hideText
                 onClick={() =>
                   onAction('date.set', { date: add(date, getOperationParam(timeUnit)) })}
               >
-                Next day
+                Next entry
               </Button>
             </ButtonGroup>
           </ExploreDataBrowserActions>
