@@ -151,7 +151,7 @@ export default function SecPanel (props) {
                                   </figcaption>
                                 )}
                               </figure>
-                              {ind.prose && <p>{ind.prose}</p>}
+                              {ind.notes && <p>{ind.notes}</p>}
                             </Prose>
                           </section>
                         );
