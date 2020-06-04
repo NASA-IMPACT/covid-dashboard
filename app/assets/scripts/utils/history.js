@@ -6,5 +6,5 @@ import { createBrowserHistory } from 'history';
 import config from '../config';
 
 export default createBrowserHistory({
-  basename: config.baseUrl ? config.baseUrl.split('/').slice(-1)[0] : '/'
+  basename: config.baseUrl ? (new URL(config.baseUrl).pathname) : '/'
 });
