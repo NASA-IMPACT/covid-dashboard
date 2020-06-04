@@ -12,7 +12,7 @@ const BMProse = styled(Prose)`
 
 const metadata = {
   id: 'bm',
-  name: 'Black Marble',
+  name: 'Nightlights',
   color: '#2276AC'
 };
 
@@ -24,8 +24,8 @@ class BMLongForm extends React.Component {
           <Constrainer>
             <BMProse>
               <p>
-                In addition to their beauty, the images produced from NASA’s Black Marble products gives us an extraordinary view of
-                human activity over time. NASA’s Black Marble products contribute valuable information to help track changes in human
+                In addition to their beauty, the images produced from NASA’s Nightlights products gives us an extraordinary view of
+                human activity over time. NASA’s Nightlights products contribute valuable information to help track changes in human
                 activity during the pandemic, and they are vital to ongoing research on urbanization and human development, light
                 pollution, illegal fishing, fires, and disaster impact and recovery.
               </p>
@@ -37,14 +37,14 @@ class BMLongForm extends React.Component {
                 light from snow, the Moon, and other extraneous sources.
               </p>
               <p>
-                The products featured are the 500-meter (VNP46) and the 30-meter Black Marble High Definition (HD) nighttime lights.
-                Here, the Black Marble HD downscales radiances from the 500-meter product to the street level using optical imagery
+                The products featured are the 500-meter (VNP46) and the 30-meter Nightlights High Definition (HD) nighttime lights.
+                Here, the Nightlights HD downscales radiances from the 500-meter product to the street level using optical imagery
                 from Landsat 8, a NASA and USGS (United States Geological Survey) satellite, along with OpenStreetMap ancillary layers.
                 This helps visualize neighborhoods and commercial centers that have less activity – or closures – due to social
                 distancing restrictions.
               </p>
               <p>
-                For more information, please visit the Black Marble website at <a href='https://blackmarble.gsfc.nasa.gov/'>blackmarble.gsfc.nasa.gov</a>.
+                For more information, please visit the Nightlights website at <a href='https://blackmarble.gsfc.nasa.gov/'>blackmarble.gsfc.nasa.gov</a>.
               </p>
             </BMProse>
           </Constrainer>
