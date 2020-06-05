@@ -1,13 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import config from '../../config';
+
 import Prose from '../../styles/type/prose';
 import Constrainer from '../../styles/constrainer';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
 import { Fold } from '../../styles/fold';
+import MediaImage from '../../styles/media-image';
 
 import { glsp } from '../../styles/utils/theme-values';
+
+const { baseUrl } = config;
 
 const BMProse = styled(Prose)`
   grid-row: 1;
@@ -31,6 +36,15 @@ const FactsFold = styled(Fold)`
     grid-column: content-start / content-end;
     grid-row: 2;
     margin-bottom: ${glsp(2)};
+  }
+
+  ${MediaImage} {
+    grid-column: content-2 / content-12;
+    grid-row: 3;
+    figcaption {
+      max-width: 46rem;
+      padding-right: ${glsp(2)};
+    }
   }
 `;
 
@@ -84,6 +98,10 @@ class BMLongForm extends React.Component {
                 about the impacts of COVID-19.
               </p>
             </Prose>
+            <MediaImage
+              src={`${baseUrl}/assets/graphics/content/indicators/BEFORE_hubei_vir_2020019_lrg.jpg`}
+              alt='Image'
+            />
           </Gridder>
         </FactsFold>
 
