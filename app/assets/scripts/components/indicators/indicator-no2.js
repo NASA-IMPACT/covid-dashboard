@@ -1,22 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import config from '../../config';
-
 import Prose from '../../styles/type/prose';
 import Constrainer from '../../styles/constrainer';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
 import { Fold } from '../../styles/fold';
-import MediaImage from '../../styles/media-image';
-
 import {
   IntroLead
 } from '../../styles/datasets';
 
 import { glsp } from '../../styles/utils/theme-values';
-
-const { baseUrl } = config;
 
 const FactsFold = styled(Fold)`
   padding-bottom: ${glsp(6)};
@@ -35,15 +29,6 @@ const FactsFold = styled(Fold)`
     grid-column: content-start / content-end;
     grid-row: 2;
     margin-bottom: ${glsp(2)};
-  }
-
-  ${MediaImage} {
-    grid-column: content-2 / content-12;
-    grid-row: 3;
-    figcaption {
-      max-width: 46rem;
-      padding-right: ${glsp(2)};
-    }
   }
 `;
 
@@ -88,12 +73,6 @@ class NO2LongForm extends React.Component {
                 NASA has been able to observe subsequent rebounds in nitrogen dioxide as the lockdown restrictions ease.
               </p>
             </Prose>
-            <MediaImage
-              src={`${baseUrl}/assets/graphics/content/indicators/2020_NO2_print._w_colorbar_date.jpg`}
-              alt='Image'
-            >
-              NO<sub>2</sub> levels fell by as much as 30% over much of the Northeast U.S. Credit: NASA Scientific Visualization Studio
-            </MediaImage>
           </Gridder>
         </FactsFold>
 
