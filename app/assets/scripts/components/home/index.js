@@ -38,7 +38,6 @@ const IntroActions = styled.div`
   }
 `;
 
-
 const propsToFilter = ['size', 'useIcon', 'variation'];
 const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
 
