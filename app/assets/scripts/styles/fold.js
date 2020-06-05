@@ -4,6 +4,7 @@ import Constrainer from './constrainer';
 
 import { glsp } from './utils/theme-values';
 import Heading from './type/heading';
+import InpageHGroup from './inpage-hgroup';
 
 export const Fold = styled.section`
   padding: ${glsp(3)} 0;
@@ -16,7 +17,9 @@ export const Fold = styled.section`
 `;
 
 export const FoldDetails = styled.div`
-  /* Defined for reference use */
+  ${InpageHGroup} {
+    margin-bottom: ${glsp(2)};
+  }
 `;
 
 export const FoldTitle = styled(Heading)`

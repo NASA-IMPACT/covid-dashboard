@@ -16,18 +16,17 @@ import {
 } from '../../../styles/inpage';
 import MbMap from '../../common/mb-map-explore/mb-map';
 import UhOh from '../../uhoh';
-import LineChart from '../../common/line-chart/chart';
 import DataLayersBlock from '../../common/data-layers-block';
-import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
+import Panel, { PanelHeadline } from '../../common/panel';
 import MapMessage from '../../common/map-message';
 import Timeline from '../../common/timeline';
+import SecPanel from './sec-panel';
+import Heading from '../../../styles/type/heading';
 
 import { themeVal } from '../../../styles/utils/general';
-import { glsp } from '../../../styles/utils/theme-values';
 import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
 import { wrapApiResult, getFromState } from '../../../redux/reduxeed';
 import { showGlobalLoading, hideGlobalLoading } from '../../common/global-loading';
-import { utcDate } from '../../../utils/utils';
 import allMapLayers from '../../common/layers';
 import {
   setLayerState,
@@ -43,12 +42,12 @@ import {
 } from '../../../utils/map-explore-utils';
 
 const layersBySpotlight = {
-  be: ['no2', 'car-count'],
-  du: ['no2'],
-  gh: ['no2'],
-  la: ['no2'],
-  sf: ['no2'],
-  tk: ['no2', 'nightlights']
+  be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
+  du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  la: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  sf: ['no2', 'nightlights-hd', 'nightlights-viirs'],
+  tk: ['no2', 'nightlights-hd', 'nightlights-viirs']
 };
 
 const ExploreCanvas = styled.div`
@@ -72,14 +71,6 @@ const ExploreCarto = styled.section`
 
 const PrimePanel = styled(Panel)`
   width: 18rem;
-`;
-
-const SecPanel = styled(Panel)`
-  width: 24rem;
-`;
-
-const PanelBodyInner = styled.div`
-  padding: ${glsp()};
 `;
 
 class SpotlightAreasSingle extends React.Component {
@@ -160,11 +151,18 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   render () {
-    const { spotlight } = this.props;
+    const { spotlight, indicatorGroups } = this.props;
 
-    if (spotlight.hasError()) return <UhOh />;
+    if (spotlight.hasError() || indicatorGroups.hasError()) return <UhOh />;
 
-    const spotlightData = spotlight.getData();
+    const {
+      label,
+      indicators
+    } = spotlight.getData();
+
+    const indicatorGroupsData = indicatorGroups.isReady()
+      ? indicatorGroups.getData()
+      : null;
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
 
@@ -196,7 +194,7 @@ class SpotlightAreasSingle extends React.Component {
                   onPanelChange={this.resizeMap}
                   headerContent={
                     <PanelHeadline>
-                      <h2>{spotlightData.label}</h2>
+                      <Heading as='h2' size='large'>{label}</Heading>
                     </PanelHeadline>
                   }
                   bodyContent={
@@ -228,42 +226,12 @@ class SpotlightAreasSingle extends React.Component {
                     onSizeChange={this.resizeMap}
                   />
                 </ExploreCarto>
-                <SecPanel
-                  collapsible
-                  direction='right'
-                  onPanelChange={this.resizeMap}
-                  headerContent={
-                    <PanelHeadline>
-                      <PanelTitle>Insights</PanelTitle>
-                    </PanelHeadline>
-                  }
-                  bodyContent={
-                    <PanelBodyInner>
-                      {spotlightData.indicators.length ? spotlightData.indicators.map(ind => {
-                        const xDomain = ind.domain.date.map(utcDate);
-                        const yDomain = ind.domain.indicator;
 
-                        return (
-                          <React.Fragment key={ind.id}>
-                            <h2>{ind.name}</h2>
-                            {ind.description && <p>{ind.description}</p>}
-                            <LineChart
-                              xDomain={xDomain}
-                              yDomain={yDomain}
-                              data={ind.data}
-                              yUnit={ind.units}
-                              // highlightBands={chartData.highlightBands}
-                              noBaseline={ind.data[0].baseline === undefined}
-                              noBaselineConfidence
-                              noIndicatorConfidence
-                            />
-                          </React.Fragment>
-                        );
-                      }) : (
-                        <p>Detailed information for the area being viewed and/or interacted by the user.</p>
-                      )}
-                    </PanelBodyInner>
-                  }
+                <SecPanel
+                  onPanelChange={this.resizeMap}
+                  indicators={indicators}
+                  indicatorGroups={indicatorGroupsData}
+                  selectedDate={activeTimeseriesLayers.length ? this.state.timelineDate : null}
                 />
               </ExploreCanvas>
             </InpageBody>
@@ -278,15 +246,61 @@ SpotlightAreasSingle.propTypes = {
   fetchSpotlightSingle: T.func,
   mapLayers: T.array,
   spotlight: T.object,
+  indicatorGroups: T.object,
   match: T.object
 };
 
 function mapStateToProps (state, props) {
   const { spotlightId } = props.match.params;
   const layersToUse = layersBySpotlight[spotlightId] || [];
+  // Filter by the layers to include &
+  // Replace the {site} property on the layers
+  const spotlightMapLayers = allMapLayers
+    .filter(l => layersToUse.includes(l.id))
+    .map(l => {
+      // This layer requires a special handling.
+      if (l.id === 'nightlights-viirs') {
+        const spotlightName = {
+          be: 'Beijing',
+          gh: 'EUPorts',
+          du: 'EUPorts',
+          la: 'LosAngeles',
+          sf: 'SanFrancisco',
+          tk: 'Tokyo'
+        }[spotlightId];
+
+        return {
+          ...l,
+          domain: l.domain.filter(d => {
+            if (spotlightName === 'Beijing') {
+              const dates = ['2020-03-18'];
+              return !dates.includes(d);
+            } else if (spotlightName === 'EUPorts') {
+              const dates = ['2020-05-05', '2020-05-07', '2020-05-11', '2020-05-13', '2020-05-16', '2020-05-18', '2020-05-19'];
+              return !dates.includes(d);
+            }
+            return true;
+          }),
+          source: {
+            ...l.source,
+            tiles: l.source.tiles.map(t => t.replace('{spotlightName}', spotlightName))
+          }
+        };
+      } else {
+        return {
+          ...l,
+          source: {
+            ...l.source,
+            tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+          }
+        };
+      }
+    });
+
   return {
-    mapLayers: allMapLayers.filter(l => layersToUse.includes(l.id)),
-    spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId]))
+    mapLayers: spotlightMapLayers,
+    spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId])),
+    indicatorGroups: wrapApiResult(state.indicators.groups)
   };
 }
 

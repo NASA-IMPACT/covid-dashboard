@@ -18,7 +18,7 @@ export default {
     const { height } = ctx.getSize();
 
     const xAxis = d3fc.axisBottom(xScale)
-      .tickFormat(d3.timeFormat('%b %y\''));
+      .tickFormat(d3.timeFormat('%b \'%y'));
 
     svg.select('.x.axis')
       .attr('transform', `translate(${left},${height + top + 8})`)

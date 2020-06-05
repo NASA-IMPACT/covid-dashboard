@@ -44,162 +44,168 @@ const chartData = {
     indicator: [6, 21]
   },
   highlightBands: [
-    ['2019-03-01', '2019-05-01'],
-    ['2020-01-01', '2020-02-01']
+    {
+      label: 'Detection',
+      interval: ['2019-12-01', '2019-12-31']
+    },
+    {
+      label: 'Emergency state',
+      interval: ['2020-01-16', '2020-03-15']
+    }
   ],
   data: [
     {
       date: '2019-01-01',
       indicator: 13,
-      cMax: 16,
-      cMin: 10,
+      indicator_conf_high: 16,
+      indicator_conf_low: 10,
       baseline: 27,
-      baselineMax: 32,
-      baselineMin: 23
+      baseline_conf_high: 32,
+      baseline_conf_low: 23
     },
     {
       date: '2019-02-01',
       indicator: 11,
-      cMax: 13,
-      cMin: 9,
+      indicator_conf_high: 13,
+      indicator_conf_low: 9,
       baseline: 25,
-      baselineMax: 29,
-      baselineMin: 22
+      baseline_conf_high: 29,
+      baseline_conf_low: 22
     },
     {
       date: '2019-03-01',
       indicator: 14,
-      cMax: 16,
-      cMin: 12,
+      indicator_conf_high: 16,
+      indicator_conf_low: 12,
       baseline: 28,
-      baselineMax: 32,
-      baselineMin: 25
+      baseline_conf_high: 32,
+      baseline_conf_low: 25
     },
     {
       date: '2019-04-01',
       indicator: 17,
-      cMax: 20,
-      cMin: 14,
+      indicator_conf_high: 20,
+      indicator_conf_low: 14,
       baseline: 31,
-      baselineMax: 36,
-      baselineMin: 27
+      baseline_conf_high: 36,
+      baseline_conf_low: 27
     },
     {
       date: '2019-05-01',
       indicator: 6,
-      cMax: 7,
-      cMin: 5,
+      indicator_conf_high: 7,
+      indicator_conf_low: 5,
       baseline: 20,
-      baselineMax: 23,
-      baselineMin: 19
+      baseline_conf_high: 23,
+      baseline_conf_low: 19
     },
     {
       date: '2019-06-01',
       indicator: 9,
-      cMax: 10,
-      cMin: 8,
+      indicator_conf_high: 10,
+      indicator_conf_low: 8,
       baseline: 23,
-      baselineMax: 26,
-      baselineMin: 21
+      baseline_conf_high: 26,
+      baseline_conf_low: 21
     },
     {
       date: '2019-07-01',
       indicator: 8,
-      cMax: 9,
-      cMin: 8,
+      indicator_conf_high: 9,
+      indicator_conf_low: 8,
       baseline: 22,
-      baselineMax: 25,
-      baselineMin: 21
+      baseline_conf_high: 25,
+      baseline_conf_low: 21
     },
     {
       date: '2019-08-01',
       indicator: 6,
-      cMax: 6,
-      cMin: 6,
+      indicator_conf_high: 6,
+      indicator_conf_low: 6,
       baseline: 20,
-      baselineMax: 22,
-      baselineMin: 19
+      baseline_conf_high: 22,
+      baseline_conf_low: 19
     },
     {
       date: '2019-09-01',
       indicator: 7,
-      cMax: 8,
-      cMin: 5,
+      indicator_conf_high: 8,
+      indicator_conf_low: 5,
       baseline: 21,
-      baselineMax: 24,
-      baselineMin: 19
+      baseline_conf_high: 24,
+      baseline_conf_low: 19
     },
     {
       date: '2019-10-01',
       indicator: 7,
-      cMax: 10,
-      cMin: 6,
+      indicator_conf_high: 10,
+      indicator_conf_low: 6,
       baseline: 21,
-      baselineMax: 26,
-      baselineMin: 19
+      baseline_conf_high: 26,
+      baseline_conf_low: 19
     },
     {
       date: '2019-11-01',
       indicator: 17,
-      cMax: 22,
-      cMin: 15,
+      indicator_conf_high: 22,
+      indicator_conf_low: 15,
       baseline: 31,
-      baselineMax: 38,
-      baselineMin: 28
+      baseline_conf_high: 38,
+      baseline_conf_low: 28
     },
     {
       date: '2019-12-01',
       indicator: 10,
-      cMax: 11,
-      cMin: 9,
+      indicator_conf_high: 11,
+      indicator_conf_low: 9,
       baseline: 24,
-      baselineMax: 27,
-      baselineMin: 22
+      baseline_conf_high: 27,
+      baseline_conf_low: 22
     },
     {
       date: '2020-01-01',
       indicator: 21,
-      cMax: 25,
-      cMin: 15,
+      indicator_conf_high: 25,
+      indicator_conf_low: 15,
       baseline: 35,
-      baselineMax: 41,
-      baselineMin: 28
+      baseline_conf_high: 41,
+      baseline_conf_low: 28
     },
     {
       date: '2020-02-01',
       indicator: 6,
-      cMax: 7,
-      cMin: 5,
+      indicator_conf_high: 7,
+      indicator_conf_low: 5,
       baseline: 20,
-      baselineMax: 23,
-      baselineMin: 19
+      baseline_conf_high: 23,
+      baseline_conf_low: 19
     },
     {
       date: '2020-03-01',
       indicator: 9,
-      cMax: 9,
-      cMin: 6,
+      indicator_conf_high: 9,
+      indicator_conf_low: 6,
       baseline: 23,
-      baselineMax: 25,
-      baselineMin: 19
+      baseline_conf_high: 25,
+      baseline_conf_low: 19
     },
     {
       date: '2020-04-01',
       indicator: 17,
-      cMax: 20,
-      cMin: 16,
+      indicator_conf_high: 20,
+      indicator_conf_low: 16,
       baseline: 31,
-      baselineMax: 36,
-      baselineMin: 29
+      baseline_conf_high: 36,
+      baseline_conf_low: 29
     },
     {
       date: '2020-05-01',
       indicator: 9,
-      cMax: 10,
-      cMin: 7,
+      indicator_conf_high: 10,
+      indicator_conf_low: 7,
       baseline: 23,
-      baselineMax: 26,
-      baselineMin: 20
+      baseline_conf_high: 26,
+      baseline_conf_low: 20
     }
   ]
 };

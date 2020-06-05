@@ -57,7 +57,7 @@ function InpageHGroupCmp ({
 
 InpageHGroupCmp.propTypes = {
   className: T.string,
-  suptitle: T.string.isRequired,
+  suptitle: T.string,
   title: T.string.isRequired,
   dashColor: T.oneOfType([T.string, T.func]),
   size: T.string,

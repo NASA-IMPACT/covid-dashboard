@@ -19,21 +19,19 @@ import {
   EntryNavLink
 } from '../../../styles/hub-pages';
 
-import { wrapApiResult } from '../../../redux/reduxeed';
+import indicatorsList from '../';
 
-class SpotlightAreasHub extends React.Component {
+class IndicatorsHub extends React.Component {
   render () {
-    const { spotlightList } = this.props;
-
-    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
+    const { indicatorsList } = this.props;
 
     return (
-      <App pageTitle='Spotlight areas'>
+      <App pageTitle='Indicators'>
         <Inpage>
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Spotlight areas</InpageTitle>
+                <InpageTitle>Indicators</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
@@ -63,20 +61,19 @@ class SpotlightAreasHub extends React.Component {
               </Prose>
 
               <Heading as='h2' size='large'>
-                Spotlight Areas
+                Indicators
               </Heading>
               <EntriesList>
-                {spotlightAreas &&
-                  spotlightAreas.map((item) => (
-                    <li key={item.id}>
-                      <EntryNavLink
-                        to={`/spotlight/${item.id}`}
-                        title={`View spotlight area ${item.label}`}
-                      >
-                        {item.label}
-                      </EntryNavLink>
-                    </li>
-                  ))}
+                {indicatorsList.map((item) => (
+                  <li key={item.id}>
+                    <EntryNavLink
+                      to={`/indicators/${item.id}`}
+                      title={`View indicator ${item.name}`}
+                    >
+                      {item.name}
+                    </EntryNavLink>
+                  </li>
+                ))}
               </EntriesList>
             </PageConstrainer>
           </InpageBody>
@@ -86,16 +83,16 @@ class SpotlightAreasHub extends React.Component {
   }
 }
 
-SpotlightAreasHub.propTypes = {
-  spotlightList: T.object
+IndicatorsHub.propTypes = {
+  indicatorsList: T.array
 };
 
 function mapStateToProps (state, props) {
   return {
-    spotlightList: wrapApiResult(state.spotlight.list)
+    indicatorsList: indicatorsList.filter(d => !!d.LongForm)
   };
 }
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpotlightAreasHub);
+export default connect(mapStateToProps, mapDispatchToProps)(IndicatorsHub);

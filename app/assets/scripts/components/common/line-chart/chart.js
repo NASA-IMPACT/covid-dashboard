@@ -90,7 +90,7 @@ const ChartWrapper = styled(SizeAwareElement)`
 class DataBrowserChart extends React.Component {
   constructor (props) {
     super(props);
-    this.margin = { top: 16, right: 32, bottom: 80, left: 48 };
+    this.margin = { top: 16, right: 32, bottom: 48, left: 48 };
     // Control whether the chart was rendered.
     // The size aware element fires a onChange event once it is rendered
     // But at that time the chart is not ready yet so we can't update the size.
@@ -270,13 +270,13 @@ class DataBrowserChart extends React.Component {
             {!noIndicator && (
               <>
                 <LegendLabel swatch={themeVal('color.primary')}><span>Indicator {!noIndicatorConfidence && <small>(confidence)</small>}</span></LegendLabel>
-                <dd>{round(doc.indicator)} {!noIndicatorConfidence && <small>({doc.cMax} - {doc.cMin})</small>}</dd>
+                <dd>{round(doc.indicator)} {!noIndicatorConfidence && <small>({doc.indicator_conf_high} - {doc.indicator_conf_low})</small>}</dd>
               </>
             )}
             {!noBaseline && (
               <>
                 <LegendLabel swatch={themeVal('color.base')}><span>Baseline {!noBaselineConfidence && <small>(confidence)</small>}</span></LegendLabel>
-                <dd>{round(doc.baseline)} {!noBaselineConfidence && <small>({doc.baselineMax} - {doc.baselineMin})</small>}</dd>
+                <dd>{round(doc.baseline)} {!noBaselineConfidence && <small>({doc.baseline_conf_high} - {doc.baseline_conf_low})</small>}</dd>
               </>
             )}
           </dl>

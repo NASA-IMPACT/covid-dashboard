@@ -13,6 +13,7 @@ import store from './utils/store';
 import history from './utils/history';
 import config from './config';
 import { fetchSpotlightList } from './redux/spotlight';
+import { fetchIndicatorGroups } from './redux/indicators';
 
 import GlobalStyles from './styles/global';
 import ErrorBoundary from './fatal-error-boundary';
@@ -22,8 +23,10 @@ import SizeAwareElement from './components/common/size-aware-element';
 // Views
 import Home from './components/home';
 import GlobalExplore from './components/global';
+import SpotlightHub from './components/spotlight/hub';
 import SpotlightSingle from './components/spotlight/single';
-import DatasetsSingle from './components/datasets/single';
+import IndicatorsHub from './components/indicators/hub';
+import IndicatorsSingle from './components/indicators/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
 import About from './components/about';
@@ -31,6 +34,7 @@ import MobileMessage from './components/common/mobile-message';
 
 // Load the spotlight areas list.
 store.dispatch(fetchSpotlightList());
+store.dispatch(fetchIndicatorGroups());
 
 const { gaTrackingCode } = config;
 
@@ -98,17 +102,27 @@ class Root extends React.Component {
                     path='/global'
                     component={GlobalExplore}
                   />
+                  <Route
+                    exact
+                    path='/spotlight'
+                    component={SpotlightHub}
+                  />
                   <LargeOnlyRoute
                     exact
                     isLargeUp={isLargeUp}
                     path='/spotlight/:spotlightId'
                     component={SpotlightSingle}
                   />
+                  <Route
+                    exact
+                    path='/indicators'
+                    component={IndicatorsHub}
+                  />
                   <LargeOnlyRoute
                     exact
                     isLargeUp={isLargeUp}
-                    path='/datasets/:datasetId'
-                    component={DatasetsSingle}
+                    path='/indicators/:indicatorId'
+                    component={IndicatorsSingle}
                   />
                   <Route path='/sandbox' component={Sandbox} />
                   <Route path='/about' component={About} />

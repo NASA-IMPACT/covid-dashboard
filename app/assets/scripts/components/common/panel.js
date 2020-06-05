@@ -32,7 +32,7 @@ const PanelHeader = styled.header`
   box-shadow: 0 1px 0 0 ${themeVal('color.baseAlphaB')};
   background: ${_tint(0.02, themeVal('color.surface'))};
   position: relative;
-  z-index: 10;
+  z-index: 100;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;

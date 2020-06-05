@@ -2900,6 +2900,11 @@ css-color-keywords@^1.0.0:
   resolved "https://registry.yarnpkg.com/css-color-keywords/-/css-color-keywords-1.0.0.tgz#fea2616dc676b2962686b3af8dbdbe180b244e05"
   integrity sha1-/qJhbcZ2spYmhrOvjb2+GAskTgU=
 
+css-element-queries@^1.0.2:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/css-element-queries/-/css-element-queries-1.2.3.tgz#e14940b1fcd4bf0da60ea4145d05742d7172e516"
+  integrity sha512-QK9uovYmKTsV2GXWQiMOByVNrLn2qz6m3P7vWpOR4IdD6I3iXoDw5qtgJEN3Xq7gIbdHVKvzHjdAtcl+4Arc4Q==
+
 css-select-base-adapter@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/css-select-base-adapter/-/css-select-base-adapter-0.1.1.tgz#3b2ff4972cc362ab88561507a95408a1432135d7"
@@ -8513,6 +8518,14 @@ raw-body@^2.3.2:
     http-errors "1.7.3"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+react-compare-image@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-compare-image/-/react-compare-image-2.0.4.tgz#d1c6d64cc61852404df538792fb1ee138de38919"
+  integrity sha512-kuYtu+qOF07XhY0/cJCqXgM26yqXRKtqZS9YLNi18Cd9tE27sqDe/LZCxoMTDiPA3gfq8uM82Q56nzkZMWBJhg==
+  dependencies:
+    css-element-queries "^1.0.2"
+    prop-types "^15.7.2"
 
 react-custom-scrollbars@^4.2.1:
   version "4.2.1"

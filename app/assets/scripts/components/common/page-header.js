@@ -15,9 +15,9 @@ import { wrapApiResult } from '../../redux/reduxeed';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
-import datasetsList from '../datasets';
+import indicatorsList from '../indicators';
 
-const { appTitle, appShortTitle, appVersion } = config;
+const { appTitle, appShortTitle, appVersion, baseUrl } = config;
 
 const PageHead = styled.header`
   position: relative;
@@ -62,7 +62,7 @@ const PageTitle = styled.h1`
       content: '';
       height: 48px;
       width: 56px;
-      background: url('/assets/graphics/layout/app-logo-sprites.png');
+      background: url(${`${baseUrl}/assets/graphics/layout/app-logo-sprites.png`});
       background-size: auto 100%;
       background-repeat: none;
       background-position: top right;
@@ -201,6 +201,18 @@ class PageHeader extends React.Component {
                     </Button>
                   }
                 >
+                  <DropMenu role='menu' selectable>
+                    <li>
+                      <DropMenuItem
+                        exact
+                        as={NavLink}
+                        to='/spotlight'
+                        data-dropdown='click.close'
+                      >
+                        About
+                      </DropMenuItem>
+                    </li>
+                  </DropMenu>
                   <DropTitle>Spotlight areas</DropTitle>
                   <DropMenu role='menu' selectable>
                     {spotlightAreas && spotlightAreas.map(ss => (
@@ -224,20 +236,32 @@ class PageHeader extends React.Component {
                   triggerElement={
                     <Button
                       variation='achromic-plain'
-                      title='Explore the datasets'
+                      title='Explore the indicators'
                       useIcon={['chevron-down--small', 'after']}
                     >
-                      <span>Datasets</span>
+                      <span>Indicators</span>
                     </Button>
                   }
                 >
-                  <DropTitle>Datasets</DropTitle>
                   <DropMenu role='menu' selectable>
-                    {datasetsList.filter(d => !!d.LongForm).map(d => (
+                    <li>
+                      <DropMenuItem
+                        exact
+                        as={NavLink}
+                        to='/indicators'
+                        data-dropdown='click.close'
+                      >
+                        About
+                      </DropMenuItem>
+                    </li>
+                  </DropMenu>
+                  <DropTitle>Indicators</DropTitle>
+                  <DropMenu role='menu' selectable>
+                    {indicatorsList.filter(d => !!d.LongForm).map(d => (
                       <li key={d.id}>
                         <DropMenuItem
                           as={NavLink}
-                          to={`/datasets/${d.id}`}
+                          to={`/indicators/${d.id}`}
                           data-dropdown='click.close'
                         >
                           {d.name}

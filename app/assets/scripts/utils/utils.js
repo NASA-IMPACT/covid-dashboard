@@ -1,4 +1,5 @@
 import React from 'react';
+import * as d3 from 'd3';
 
 /**
  * Calculates the integer remainder of a division of a by n, handling negative
@@ -118,3 +119,33 @@ export function filterComponentProps (Comp, filterProps = []) {
     return <Comp ref={ref} {...props} />;
   });
 }
+
+const toDateAccessor = d => utcDate(d.date);
+/**
+ * Returns the closed object to the given date.
+ *
+ * @param {array} data Array of data objects. Each object must have a date property
+ * @param {Date} date The date by which to bisect the array.
+ */
+export const bisectByDate = (data, date, accessor = toDateAccessor) => {
+  // Define bisector function. Is used to find where this date would fin in the
+  // data array
+  const bisect = d3.bisector(d => accessor(d).getTime()).left;
+  const mouseDate = date.getTime();
+  // Returns the index to the current data item.
+  const i = bisect(data, mouseDate);
+
+  if (i === 0) {
+    return data[i];
+  } else if (i === data.length) {
+    return data[i - 1];
+  } else {
+    const docR = data[i];
+    const docL = data[i - 1];
+    const deltaL = mouseDate - accessor(docL).getTime();
+    const deltaR = accessor(docR).getTime() - mouseDate;
+    return deltaL > deltaR
+      ? docR
+      : docL;
+  }
+};
