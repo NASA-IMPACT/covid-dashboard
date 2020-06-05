@@ -10,40 +10,12 @@ import { Fold, FoldDetails } from '../../styles/fold';
 import {
   IntroLead
 } from '../../styles/datasets';
-import MediaImage from '../../styles/media-image';
+import MediaImage, { MediaCompare } from '../../styles/media-image';
 
-import { glsp, _rgba } from '../../styles/utils/theme-values';
-import { themeVal } from '../../styles/utils/general';
+import { glsp } from '../../styles/utils/theme-values';
 import config from '../../config';
 
 const { baseUrl } = config;
-
-const MediaCompare = styled.figure`
-  /* Trying to style a bad structured plugin... */
-  > div {
-    > div:nth-child(3) > div:nth-child(2) {
-      background-color: ${themeVal('color.primary')};
-      width: 3rem;
-      height: 3rem;
-    }
-
-    > div:nth-child(4) > div:nth-child(1),
-    > div:nth-child(5) > div:nth-child(1) {
-      border-radius: ${themeVal('shape.rounded')};
-      background-color: ${_rgba(themeVal('color.baseDark'), 0.64)} !important;
-    }
-  }
-
-  > *:not(:last-child) {
-    margin-bottom: ${glsp()};
-  }
-
-  figcaption {
-    font-size: 0.875rem;
-    line-height: 1.5rem;
-    max-width: 30rem;
-  }
-`;
 
 const IntroFold = styled(Fold)`
   padding-bottom: 0;
