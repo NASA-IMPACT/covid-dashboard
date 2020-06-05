@@ -1,16 +1,67 @@
 import React from 'react';
 import styled from 'styled-components';
+import ReactCompareImage from 'react-compare-image';
 
 import Prose from '../../styles/type/prose';
 import Constrainer from '../../styles/constrainer';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
-import { Fold } from '../../styles/fold';
+import { Fold, FoldDetails } from '../../styles/fold';
 import {
   IntroLead
 } from '../../styles/datasets';
+import MediaImage from '../../styles/media-image';
 
-import { glsp } from '../../styles/utils/theme-values';
+import { glsp, _rgba } from '../../styles/utils/theme-values';
+import { themeVal } from '../../styles/utils/general';
+import config from '../../config';
+
+const { baseUrl } = config;
+
+const MediaCompare = styled.figure`
+  /* Trying to style a bad structured plugin... */
+  > div {
+    > div:nth-child(3) > div:nth-child(2) {
+      background-color: ${themeVal('color.primary')};
+      width: 3rem;
+      height: 3rem;
+    }
+
+    > div:nth-child(4) > div:nth-child(1),
+    > div:nth-child(5) > div:nth-child(1) {
+      border-radius: ${themeVal('shape.rounded')};
+      background-color: ${_rgba(themeVal('color.baseDark'), 0.64)} !important;
+    }
+  }
+
+  > *:not(:last-child) {
+    margin-bottom: ${glsp()};
+  }
+
+  figcaption {
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    max-width: 30rem;
+  }
+`;
+
+const IntroFold = styled(Fold)`
+  padding-bottom: 0;
+
+  ${Gridder} {
+    align-items: center;
+  }
+
+  ${MediaCompare} {
+    grid-column: full-start / content-8;
+    grid-row: 1;
+  }
+
+  ${FoldDetails} {
+    grid-column: content-8 / content-end;
+    text-align: left;
+  }
+`;
 
 const FactsFold = styled(Fold)`
   padding-bottom: ${glsp(6)};
@@ -32,6 +83,36 @@ const FactsFold = styled(Fold)`
   }
 `;
 
+const CreditsFold = styled(FactsFold)`
+  padding-bottom: 0;
+
+  ${Prose} {
+    grid-column: content-start / content-7;
+  }
+`;
+
+const InterpretDataFold = styled(Fold)`
+  padding-bottom: 0;
+
+  ${Gridder} {
+    align-items: center;
+  }
+
+  ${MediaImage} {
+    grid-column: content-start / content-8;
+    grid-row: 1;
+
+    figcaption {
+      max-width: 30rem;
+    }
+  }
+
+  ${FoldDetails} {
+    grid-column: content-8 / content-end;
+    text-align: left;
+  }
+`;
+
 const metadata = {
   id: 'no2',
   name: 'Nitrogen Dioxide',
@@ -50,31 +131,46 @@ class NO2LongForm extends React.Component {
           </Constrainer>
         </Fold>
 
-        <FactsFold>
+        <IntroFold>
           <Gridder>
-            <Prose numColumns={2}>
-              <p>
-                NO<sub>2</sub> is a common air pollutant primarily emitted from the burning of fossil fuels in cars,
-                power plants and industrial facilities. Lower to the ground, NO2 can directly irritate peoples&apos;
-                lungs and contributes to the production of particulate pollution and smog when it reacts with sunlight.
-              </p>
-              <p>
-                During the COVID-19 pandemic, scientists observed considerable decreases in NO<sub>2</sub> levels
-                around the world. These decreases are predominantly associated with changing human behavior in
-                response to the spread of COVID-19. As communities worldwide have implemented lockdown restrictions
-                in an attempt to stem the spread of the virus, the reduction in human transportation activity has
-                resulted in less NO2 emitted into the atmosphere.
-              </p>
-              <p>
-                These changes are particularly apparent over large urban areas and economic corridors, which
-                typically have high levels of automobile traffic, airline flights, and other related activity.
-              </p>
-              <p>
-                NASA has been able to observe subsequent rebounds in nitrogen dioxide as the lockdown restrictions ease.
-              </p>
-            </Prose>
+            <FoldDetails>
+              <Prose>
+                <p>
+                  NO<sub>2</sub> is a common air pollutant primarily emitted from the burning of fossil fuels in cars,
+                  power plants and industrial facilities. Lower to the ground, NO2 can directly irritate peoples&apos;
+                  lungs and contributes to the production of particulate pollution and smog when it reacts with sunlight.
+                </p>
+                <p>
+                  During the COVID-19 pandemic, scientists observed considerable decreases in NO<sub>2</sub> levels
+                  around the world. These decreases are predominantly associated with changing human behavior in
+                  response to the spread of COVID-19. As communities worldwide have implemented lockdown restrictions
+                  in an attempt to stem the spread of the virus, the reduction in human transportation activity has
+                  resulted in less NO2 emitted into the atmosphere.
+                </p>
+                <p>
+                  These changes are particularly apparent over large urban areas and economic corridors, which
+                  typically have high levels of automobile traffic, airline flights, and other related activity.
+                </p>
+                <p>
+                  NASA has been able to observe subsequent rebounds in nitrogen dioxide as the lockdown restrictions ease.
+                </p>
+              </Prose>
+            </FoldDetails>
+            <MediaCompare>
+              <ReactCompareImage
+                leftImage={`${baseUrl}/assets/graphics/content/east_coast_mar_avg.jpg`}
+                leftImageAlt='NO2 over South America'
+                leftImageLabel='March 2015-2019 Avg.'
+                rightImage={`${baseUrl}/assets/graphics/content/east_coast_mar_20.jpg`}
+                rightImageAlt='NO2 over South America'
+                rightImageLabel='March 2020'
+              />
+              <figcaption>
+              NO2 levels fell by as much as 30% over much of the Northeast U.S. Credit: NASA Scientific Visualization Studio
+              </figcaption>
+            </MediaCompare>
           </Gridder>
-        </FactsFold>
+        </IntroFold>
 
         <FactsFold>
           <Gridder>
@@ -96,7 +192,7 @@ class NO2LongForm extends React.Component {
                 by the joint NASA/Royal Netherlands Meteorological Institute (KNMI) <a href='https://aura.gsfc.nasa.gov/omi.html'>Ozone Monitoring Instrument (OMI)</a> aboard
                 the Aura satellite, as well as data collected by the Tropospheric
                 Monitoring Instrument (TROPOMI) aboard the European Commission’s Copernicus
-                Sentinel-5P satellite, built by the European Space Agency.
+                Sentinel-5P satellite, built by the European Space&nbsp;Agency.
               </p>
               <p>
                 OMI, which launched in 2004, is the predecessor to TROPOMI. Although TROPOMI,
@@ -113,43 +209,51 @@ class NO2LongForm extends React.Component {
           </Gridder>
         </FactsFold>
 
-        <FactsFold>
+        <InterpretDataFold>
           <Gridder>
-            <InpageHGroup
-              title='Interpreting the Data'
-              dashColor={metadata.color}
-            />
-            <Prose numColumns={2}>
-              <p>
-                Each spotlight city has a slider for turning nitrogen dioxide data on and off. The darker purple
-                indicates higher levels of nitrogen dioxide associated with increased travel and economic activity,
-                while the lighter blues indicate lower levels of NO2 and decreased activity.
-              </p>
-              <p>
-                Nitrogen dioxide has a relatively short lifetime in the atmosphere. Once it is emitted, it lasts
-                only a few hours before it dissipates, so it does not travel far from its source.
-              </p>
-              <p>
-                Because nitrogen dioxide is primarily emitted from burning fossil fuels, changes in its
-                atmospheric concentration can be related to changes in human activity if the data are properly
-                processed and interpreted.
-              </p>
-              <p>
-                However, care must be taken when interpreting satellite NO 2 data, as the quantity observed by
-                satellite is not exactly the same as the abundance at ground level, and natural variations in
-                weather (e.g., temperature, wind speed, solar intensity) influence the amount of NO 2 in the
-                atmosphere. In addition, the OMI and TROPOMI instruments cannot observe the NO 2
-                abundance underneath clouds. For more information on processing and cautions related to
-                interpreting this data, please <a href='https://airquality.gsfc.nasa.gov/caution-interpretation'>click here</a>.
-              </p>
-              <p>
-                Scientists will be using this data to investigate how travel bans and lockdown orders related to COVID-19 are impacting regional air quality and chemistry.
-              </p>
-            </Prose>
+            <FoldDetails>
+              <InpageHGroup
+                title='Interpreting the Data'
+                dashColor={metadata.color}
+              />
+              <Prose>
+                <p>
+                  Each spotlight city has a slider for turning nitrogen dioxide data on and off. The darker purple
+                  indicates higher levels of nitrogen dioxide associated with increased travel and economic activity,
+                  while the lighter blues indicate lower levels of NO2 and decreased activity.
+                </p>
+                <p>
+                  Nitrogen dioxide has a relatively short lifetime in the atmosphere. Once it is emitted, it lasts
+                  only a few hours before it dissipates, so it does not travel far from its source.
+                </p>
+                <p>
+                  Because nitrogen dioxide is primarily emitted from burning fossil fuels, changes in its
+                  atmospheric concentration can be related to changes in human activity if the data are properly
+                  processed and interpreted.
+                </p>
+                <p>
+                  However, care must be taken when interpreting satellite NO 2 data, as the quantity observed by
+                  satellite is not exactly the same as the abundance at ground level, and natural variations in
+                  weather (e.g., temperature, wind speed, solar intensity) influence the amount of NO 2 in the
+                  atmosphere. In addition, the OMI and TROPOMI instruments cannot observe the NO 2
+                  abundance underneath clouds. For more information on processing and cautions related to
+                  interpreting this data, please <a href='https://airquality.gsfc.nasa.gov/caution-interpretation'>click here</a>.
+                </p>
+                <p>
+                  Scientists will be using this data to investigate how travel bans and lockdown orders related to COVID-19 are impacting regional air quality and chemistry.
+                </p>
+              </Prose>
+            </FoldDetails>
+            <MediaImage
+              src={`${baseUrl}/assets/graphics/content/no2_south_america.png`}
+              alt='NO2 over South America'
+            >
+              NO2 levels over South America from the Ozone Monitoring Instrument. The dark green areas in the northwest indicate areas of no data, most likely associated with cloud cover or snow.
+            </MediaImage>
           </Gridder>
-        </FactsFold>
+        </InterpretDataFold>
 
-        <FactsFold>
+        <CreditsFold>
           <Gridder>
             <InpageHGroup
               title='Credits'
@@ -157,12 +261,11 @@ class NO2LongForm extends React.Component {
             />
             <Prose>
               <p>
-                Nitrogen dioxide data courtesy of NASA Goddard Space Flight Center&apos;s <a href='https://science.gsfc.nasa.gov/earth/acd/'>Atmospheric Chemistry and Dynamics Laboratory</a> using
-                OMI data from the Aura satellite.
+                Nitrogen dioxide data courtesy of NASA Goddard Space Flight Center&apos;s <a href='https://science.gsfc.nasa.gov/earth/acd/'>Atmospheric Chemistry and Dynamics Laboratory</a> using OMI data from the Aura&nbsp;satellite.
               </p>
             </Prose>
           </Gridder>
-        </FactsFold>
+        </CreditsFold>
 
         <FactsFold>
           <Gridder>

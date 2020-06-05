@@ -122,6 +122,7 @@
     "polished": "^3.4.1",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
+    "react-compare-image": "^2.0.4",
     "react-custom-scrollbars": "^4.2.1",
     "react-datepicker": "^2.14.1",
     "react-dom": "^16.9.0",
