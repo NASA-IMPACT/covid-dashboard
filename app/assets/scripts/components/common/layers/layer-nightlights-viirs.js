@@ -11,7 +11,7 @@ export default {
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/BM_500M_DAILY/VNP46A2_V011.{siteCode}.{date}_cog.tif&resampling_method=nearest&bidx=1&rescale=0%2C100&color_map=viridis`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/BM_500M_DAILY/VNP46A2_V011_{spotlightName}_{date}_cog.tif&resampling_method=nearest&bidx=1&rescale=0%2C100&color_map=viridis`
     ]
   },
   exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-hd'],

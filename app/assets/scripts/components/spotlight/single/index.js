@@ -260,19 +260,22 @@ function mapStateToProps (state, props) {
     .map(l => {
       // This layer requires a special handling.
       if (l.id === 'nightlights-viirs') {
-        const siteCode = {
-          be: 'h29v05',
-          gh: 'h18v03',
-          du: 'h18v03',
-          la: 'h06v05',
-          sf: 'h05v05',
-          tk: 'h31v05'
+        const spotlightName = {
+          be: 'Beijing',
+          gh: 'EUPorts',
+          du: 'EUPorts',
+          la: 'LosAngeles',
+          sf: 'SanFrancisco',
+          tk: 'Tokyo'
         }[spotlightId];
 
         return {
           ...l,
           domain: l.domain.filter(d => {
-            if (siteCode === 'h18v03') {
+            if (spotlightName === 'Beijing') {
+              const dates = ['2020-03-18'];
+              return !dates.includes(d);
+            } else if (spotlightName === 'EUPorts') {
               const dates = ['2020-05-05', '2020-05-07', '2020-05-11', '2020-05-13', '2020-05-16', '2020-05-18', '2020-05-19'];
               return !dates.includes(d);
             }
@@ -280,7 +283,7 @@ function mapStateToProps (state, props) {
           }),
           source: {
             ...l.source,
-            tiles: l.source.tiles.map(t => t.replace('{siteCode}', siteCode))
+            tiles: l.source.tiles.map(t => t.replace('{spotlightName}', spotlightName))
           }
         };
       } else {
