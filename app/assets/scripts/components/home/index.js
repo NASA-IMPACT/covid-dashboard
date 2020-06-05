@@ -12,6 +12,7 @@ import {
   InpageTitle,
   InpageBody
 } from '../../styles/inpage';
+import InpageHGroup from '../../styles/inpage-hgroup';
 import {
   PageConstrainer
 } from '../../styles/hub-pages';
@@ -28,6 +29,12 @@ const IntroActions = styled.div`
 
   > * {
     grid-column: auto / span 3;
+  }
+
+  /* stylelint-disable-next-line */
+  ${InpageHGroup} {
+    grid-row: 1;
+    grid-column: content-start / content-7;
   }
 `;
 
@@ -69,7 +76,19 @@ export default class Home extends React.Component {
                   time.
                 </p>
               </Prose>
+              <InpageHGroup
+                title='Explore the site'
+              />
               <IntroActions>
+                <Button
+                  as={CleanNavLink}
+                  size='large'
+                  title='View the global map'
+                  to='/global'
+                  variation='primary-raised-dark'
+                >
+                  Getting Started
+                </Button>
                 <Button
                   as={CleanNavLink}
                   size='large'
@@ -87,15 +106,6 @@ export default class Home extends React.Component {
                   variation='primary-raised-dark'
                 >
                   Spotlight locations
-                </Button>
-                <Button
-                  as={CleanNavLink}
-                  size='large'
-                  title='View the global map'
-                  to='/global'
-                  variation='base-raised-light'
-                >
-                  Global map
                 </Button>
               </IntroActions>
             </PageConstrainer>

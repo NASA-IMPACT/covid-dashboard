@@ -19,7 +19,7 @@ import collecticon from '../../../styles/collecticons';
 import Prose from '../../../styles/type/prose';
 
 const PanelSelf = styled(Panel)`
-  width: 24rem;
+  width: 30rem;
 `;
 
 const BodyScroll = styled(ShadowScrollbar)`
@@ -151,7 +151,7 @@ export default function SecPanel (props) {
                                   </figcaption>
                                 )}
                               </figure>
-                              {ind.prose && <p>{ind.prose}</p>}
+                              {ind.notes && <p>{ind.notes}</p>}
                             </Prose>
                           </section>
                         );
