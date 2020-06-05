@@ -54,24 +54,23 @@ class NO2LongForm extends React.Component {
           <Gridder>
             <Prose numColumns={2}>
               <p>
-                Nitrogen dioxide (NO2) is a common air pollutant primarily emitted from the burning of fossil fuels
-                in cars and power plants. Lower to the ground, nitrogen dioxide can directly irritate peoples’ lungs
-                and contributes to the production of particulate pollution and smog when it reacts with sunlight.
+                NO<sub>2</sub> is a common air pollutant primarily emitted from the burning of fossil fuels in cars,
+                power plants and industrial facilities. Lower to the ground, NO2 can directly irritate peoples&apos;
+                lungs and contributes to the production of particulate pollution and smog when it reacts with sunlight.
               </p>
               <p>
-                During the COVID-19 pandemic, scientists have observed considerable decreases in nitrogen
-                dioxide levels around the world. These decreases are predominantly associated with changing
-                human behavior in response to the spread of COVID-19. As communities worldwide have
-                implemented lockdown restrictions in an attempt to stem the spread of the virus, the reduction in
-                human transportation activity has resulted in less NO 2 being emitted into the atmosphere.
+                During the COVID-19 pandemic, scientists observed considerable decreases in NO<sub>2</sub> levels
+                around the world. These decreases are predominantly associated with changing human behavior in
+                response to the spread of COVID-19. As communities worldwide have implemented lockdown restrictions
+                in an attempt to stem the spread of the virus, the reduction in human transportation activity has
+                resulted in less NO2 emitted into the atmosphere.
               </p>
               <p>
                 These changes are particularly apparent over large urban areas and economic corridors, which
                 typically have high levels of automobile traffic, airline flights, and other related activity.
               </p>
               <p>
-                NASA has been able to observe subsequent rebounds in nitrogen dioxide as the lockdown
-                restrictions ease.
+                NASA has been able to observe subsequent rebounds in nitrogen dioxide as the lockdown restrictions ease.
               </p>
             </Prose>
           </Gridder>
@@ -88,7 +87,7 @@ class NO2LongForm extends React.Component {
                 <a href='https://airquality.gsfc.nasa.gov/'>Ongoing research</a> by
                 scientists in the Atmospheric Chemistry and Dynamics Laboratory at NASA’s
                 Goddard Space Flight Center and <a href='https://science.nasa.gov/earth-science/rrnes-awards'>new research</a> funded
-                by NASA’s Rapid Response and Novel research in the Earth Sciences
+                by NASA&apos;s Rapid Response and Novel research in the Earth Sciences
                 (RRNES) program element seek to better understand the atmospheric effects
                 of the COVID-19 shutdowns.
               </p>
@@ -122,6 +121,11 @@ class NO2LongForm extends React.Component {
             />
             <Prose numColumns={2}>
               <p>
+                Each spotlight city has a slider for turning nitrogen dioxide data on and off. The darker purple
+                indicates higher levels of nitrogen dioxide associated with increased travel and economic activity,
+                while the lighter blues indicate lower levels of NO2 and decreased activity.
+              </p>
+              <p>
                 Nitrogen dioxide has a relatively short lifetime in the atmosphere. Once it is emitted, it lasts
                 only a few hours before it dissipates, so it does not travel far from its source.
               </p>
@@ -137,6 +141,24 @@ class NO2LongForm extends React.Component {
                 atmosphere. In addition, the OMI and TROPOMI instruments cannot observe the NO 2
                 abundance underneath clouds. For more information on processing and cautions related to
                 interpreting this data, please <a href='https://airquality.gsfc.nasa.gov/caution-interpretation'>click here</a>.
+              </p>
+              <p>
+                Scientists will be using this data to investigate how travel bans and lockdown orders related to COVID-19 are impacting regional air quality and chemistry.
+              </p>
+            </Prose>
+          </Gridder>
+        </FactsFold>
+
+        <FactsFold>
+          <Gridder>
+            <InpageHGroup
+              title='Credits'
+              dashColor={metadata.color}
+            />
+            <Prose>
+              <p>
+                Nitrogen dioxide data courtesy of NASA Goddard Space Flight Center&apos;s <a href='https://science.gsfc.nasa.gov/earth/acd/'>Atmospheric Chemistry and Dynamics Laboratory</a> using
+                OMI data from the Aura satellite.
               </p>
             </Prose>
           </Gridder>
