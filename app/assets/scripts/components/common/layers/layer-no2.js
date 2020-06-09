@@ -41,5 +41,5 @@ export default {
       '#050308'
     ]
   },
-  info: 'Acute harm due to NO2 exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.'
+  info: 'Higher nitrogen dioxide (NO2) levels, associated with higher levels of travel and economic activity, are indicated by the darker colors on the map. Lighter colors indicate lower levels of NO2 and less activity.'
 };
