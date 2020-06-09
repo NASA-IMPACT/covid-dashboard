@@ -1,25 +1,25 @@
 import { format, sub } from 'date-fns';
 
-import config from '../../../config';
+// import config from '../../../config';
 
 // Sample ML Data
-import * as sampleData from './ship-2020-03-11T1647.json'
+import * as sampleData from './ship-2020-03-11T1647.json';
 
 export default {
   id: 'sample-ml',
   name: 'Sample ML',
   description: 'Sample ML',
   type: 'vector',
-  /*domain: [
+  /* domain: [
     '2019-03-01',
     '2020-03-01'
-  ],*/
+  ], */
   source: {
     type: 'geojson',
     data: sampleData,
     tiles: []
   },
-  //exclusiveWith: ['gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd'],
+  // exclusiveWith: ['gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd'],
   enabled: false,
   compare: {
     enabled: true,
@@ -42,7 +42,7 @@ export default {
       '#c13b72',
       '#461070',
       '#050308'
-    ]*/
+    ] */
   },
   info: 'Acute harm due to NO2 exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.'
 };
