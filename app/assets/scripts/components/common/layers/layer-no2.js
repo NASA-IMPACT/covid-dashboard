@@ -5,7 +5,7 @@ import config from '../../../config';
 export default {
   id: 'no2',
   name: 'Nitrogen dioxide',
-  description: 'Acute harm due to NO2 exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.',
+  description: 'Acute harm due to NO<sub>2</sub> exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.',
   type: 'raster-timeseries',
   domain: [
     '2019-03-01',
@@ -41,5 +41,5 @@ export default {
       '#050308'
     ]
   },
-  info: 'Acute harm due to NO2 exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.'
+  info: 'Acute harm due to NO<sub>2</sub> exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.'
 };
