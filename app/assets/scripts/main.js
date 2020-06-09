@@ -23,6 +23,7 @@ import SizeAwareElement from './components/common/size-aware-element';
 // Views
 import Home from './components/home';
 import GlobalExplore from './components/global';
+import GetStartedHub from './components/getstarted/hub';
 import SpotlightHub from './components/spotlight/hub';
 import SpotlightSingle from './components/spotlight/single';
 import IndicatorsHub from './components/indicators/hub';
@@ -102,6 +103,12 @@ class Root extends React.Component {
                     path='/global'
                     component={GlobalExplore}
                   />
+                  <Route
+                    exact
+                    path='/getstarted'
+                    component={GetStartedHub}
+                  />
+
                   <Route
                     exact
                     path='/spotlight'
