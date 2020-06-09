@@ -153,5 +153,41 @@ export const layerTypes = {
         );
       }
     }
+  },
+  vector: {
+    hide: (ctx, layerInfo) => {
+      const { mbMap } = ctx;
+      const { id } = layerInfo;
+      if (mbMap.getSource(id)) {
+        mbMap.setLayoutProperty(id, 'visibility', 'none');
+      }
+    },
+    show: (ctx, layerInfo) => {
+      const { mbMap } = ctx;
+      const { id, source } = layerInfo;
+      const { type, data } = source;
+
+      if (mbMap.getSource(id)) {
+        mbMap.setLayoutProperty(id, 'visibility', 'visible');
+      } else {
+        mbMap.addSource(id, {
+          type,
+          data
+        });
+        mbMap.addLayer(
+          {
+            id: id,
+            type: 'fill',
+            source: id,
+            layout: {},
+            paint: {
+              'fill-color': '#FF0000',
+              'fill-opacity': 0.8
+            }
+          },
+          'admin-0-boundary-bg'
+        );
+      }
+    }
   }
 };
