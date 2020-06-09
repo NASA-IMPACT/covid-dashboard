@@ -38,25 +38,15 @@ class IndicatorsHub extends React.Component {
           <InpageBody>
             <PageConstrainer>
               <Prose>
+                <Heading as='h2' size='large'>
+                Understanding the Indicators
+                </Heading>
+
                 <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure
-                  molestias deserunt blanditiis veritatis, porro exercitationem
-                  quaerat pariatur fugit nam iusto cum ullam animi? Velit
-                  voluptatibus provident deserunt, corrupti natus porro.
-                  Expedita repudiandae qui at ab eveniet nihil laborum eligendi
-                  numquam nemo error, fuga, quasi natus debitis. Soluta labore
-                  sed, rem autem alias accusamus dignissimos, nam aut suscipit
-                  voluptas, harum nemo!
+                  Although NASA cannot directly observe COVID-19 from space, we can observe how human actions in response to COVID-19 affect the world around us. We refer to these as indicators.
                 </p>
                 <p>
-                  Porro aliquid sed veritatis cumque maiores adipisci ea et
-                  perspiciatis officia deserunt perferendis assumenda mollitia
-                  ab nihil quas similique aspernatur labore ipsa asperiores, eum
-                  minima repudiandae, at fugiat! Totam, delectus! Ab aut
-                  necessitatibus delectus pariatur eaque eveniet velit
-                  consequuntur nam odio minus. Non est reiciendis, eveniet aut,
-                  ut esse ratione libero temporibus inventore, enim vitae alias
-                  necessitatibus error pariatur in.
+                  This dashboard explores 10 key indicators -- 4 environmental and 6 economic -- that show how the planet is responding to our changing behavior.
                 </p>
               </Prose>
 
