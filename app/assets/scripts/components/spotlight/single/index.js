@@ -289,6 +289,7 @@ function mapStateToProps (state, props) {
       } else {
         return {
           ...l,
+          enabled: l.id === 'nightlights-hd',
           source: {
             ...l.source,
             tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
