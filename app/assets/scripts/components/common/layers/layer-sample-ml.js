@@ -43,6 +43,5 @@ export default {
       '#461070',
       '#050308'
     ] */
-  },
-  info: 'Acute harm due to NO2 exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.'
+  }
 };
