@@ -33,32 +33,21 @@ class SpotlightAreasHub extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Spotlight areas</InpageTitle>
+                <InpageTitle>Spotlight Areas</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
             <PageConstrainer>
               <Prose>
+                <Heading as='h2' size='large'>
+                Explore the Spotlight Areas
+                </Heading>
                 <p>
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure
-                  molestias deserunt blanditiis veritatis, porro exercitationem
-                  quaerat pariatur fugit nam iusto cum ullam animi? Velit
-                  voluptatibus provident deserunt, corrupti natus porro.
-                  Expedita repudiandae qui at ab eveniet nihil laborum eligendi
-                  numquam nemo error, fuga, quasi natus debitis. Soluta labore
-                  sed, rem autem alias accusamus dignissimos, nam aut suscipit
-                  voluptas, harum nemo!
+                  The global trajectory of the virus and different levels of response to its spread have led to regional variations in environmental and economic indicators.
                 </p>
                 <p>
-                  Porro aliquid sed veritatis cumque maiores adipisci ea et
-                  perspiciatis officia deserunt perferendis assumenda mollitia
-                  ab nihil quas similique aspernatur labore ipsa asperiores, eum
-                  minima repudiandae, at fugiat! Totam, delectus! Ab aut
-                  necessitatibus delectus pariatur eaque eveniet velit
-                  consequuntur nam odio minus. Non est reiciendis, eveniet aut,
-                  ut esse ratione libero temporibus inventore, enim vitae alias
-                  necessitatibus error pariatur in.
+                  This dashboard highlights 6 key Spotlight Areas around the world, allowing you to explore how specific locations’ response to COVID-19 have influenced local environmental signals.
                 </p>
               </Prose>
 
