@@ -84,7 +84,7 @@ export default class Home extends React.Component {
                   as={CleanNavLink}
                   size='large'
                   title='View the global map'
-                  to='/global'
+                  to='/getstarted'
                   variation='primary-raised-dark'
                 >
                   Getting Started
