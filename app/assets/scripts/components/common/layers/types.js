@@ -154,38 +154,59 @@ export const layerTypes = {
       }
     }
   },
-  vector: {
+  inference: {
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
-      if (mbMap.getSource(id)) {
-        mbMap.setLayoutProperty(id, 'visibility', 'none');
+
+      const vecId = `${id}-vector`;
+      const rastId = `${id}-raster`;
+      if (mbMap.getSource(vecId)) {
+        mbMap.setLayoutProperty(vecId, 'visibility', 'none');
+      }
+      if (mbMap.getSource(rastId)) {
+        mbMap.setLayoutProperty(rastId, 'visibility', 'none');
       }
     },
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id, source } = layerInfo;
-      const { type, data } = source;
-
-      if (mbMap.getSource(id)) {
-        mbMap.setLayoutProperty(id, 'visibility', 'visible');
+      const vecId = `${id}-vector`;
+      const rastId = `${id}-raster`;
+      const { vector, raster } = source;
+      if (mbMap.getSource(rastId)) {
+        mbMap.setLayoutProperty(rastId, 'visibility', 'visible');
       } else {
-        mbMap.addSource(id, {
-          type,
-          data
+        mbMap.addSource(rastId, raster);
+        mbMap.addLayer(
+          {
+            id: rastId,
+            type: 'raster',
+            source: rastId
+          },
+          'admin-0-boundary-bg'
+        );
+      }
+
+      if (mbMap.getSource(vecId)) {
+        mbMap.setLayoutProperty(vecId, 'visibility', 'visible');
+      } else {
+        mbMap.addSource(vecId, {
+          type: vector.type,
+          data: vector.data
         });
         mbMap.addLayer(
           {
-            id: id,
+            id: vecId,
             type: 'fill',
-            source: id,
+            source: vecId,
             layout: {},
             paint: {
               'fill-color': '#FF0000',
-              'fill-opacity': 0.8
+              'fill-opacity': 0.65
             }
           },
-          'admin-0-boundary-bg'
+          rastId
         );
       }
     }
