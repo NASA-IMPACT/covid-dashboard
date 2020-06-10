@@ -197,7 +197,7 @@ export const layerTypes = {
       const inferPaint = {
         'line-color': '#ff0000',
         'line-opacity': 0.6,
-        'line-width': 1
+        'line-width': 2
       };
 
       toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
