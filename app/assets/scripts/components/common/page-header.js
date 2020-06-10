@@ -204,7 +204,6 @@ const GlobalMenu = styled.ul`
 
   ${Button} {
     width: 100%;
-    margin: 0 ${glsp(0.5)} 0 0;
     text-align: left;
 
     ${media.mediumUp`
