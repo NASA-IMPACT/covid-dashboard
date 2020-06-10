@@ -174,20 +174,6 @@ export const layerTypes = {
       const vecId = `${id}-vector`;
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
-      if (mbMap.getSource(rastId)) {
-        mbMap.setLayoutProperty(rastId, 'visibility', 'visible');
-      } else {
-        mbMap.addSource(rastId, raster);
-        mbMap.addLayer(
-          {
-            id: rastId,
-            type: 'raster',
-            source: rastId
-          },
-          'admin-0-boundary-bg'
-        );
-      }
-
       if (mbMap.getSource(vecId)) {
         mbMap.setLayoutProperty(vecId, 'visibility', 'visible');
       } else {
@@ -206,7 +192,21 @@ export const layerTypes = {
               'fill-opacity': 0.65
             }
           },
-          rastId
+          'admin-0-boundary-bg'
+        );
+      }
+
+      if (mbMap.getSource(rastId)) {
+        mbMap.setLayoutProperty(rastId, 'visibility', 'visible');
+      } else {
+        mbMap.addSource(rastId, raster);
+        mbMap.addLayer(
+          {
+            id: rastId,
+            type: 'raster',
+            source: rastId
+          },
+          vecId
         );
       }
     }
