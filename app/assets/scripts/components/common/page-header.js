@@ -18,7 +18,7 @@ import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
 import indicatorsList from '../indicators';
 
-const { appTitle, appShortTitle, appVersion, baseUrl } = config;
+const { appTitle, appVersion, baseUrl } = config;
 
 const PageHead = styled.header`
   position: relative;
@@ -32,7 +32,7 @@ const PageHead = styled.header`
 
 const PageHeadInner = styled.div`
   display: flex;
-  padding: ${glsp(0.5, 0.5, 0.5, 0.75)};
+  padding: ${glsp(0.5, 0.5, 0.5, 1)};
   align-items: center;
   margin: 0 auto;
   height: 100%;
@@ -117,11 +117,13 @@ const PageTitle = styled.h1`
     font-weight: ${themeVal('type.base.regular')};
     align-self: center;
     letter-spacing: -0.025em;
+    transform: translate(0, 0.125rem);
 
     ${media.mediumUp`
       font-size: 1.25rem;
       line-height: 1.5rem;
       font-weight: ${themeVal('type.base.light')};
+      transform: none;
     `}
   }
 
@@ -196,7 +198,7 @@ class PageHeader extends React.Component {
             <PageTitle>
               <Link to='/' title='Go to welcome page'>
                 <sup><span>NASA - </span>Earthdata</sup>
-                <strong>{useShortTitle ? appShortTitle || 'COVID-19' : appTitle}</strong>
+                <strong>{appTitle}</strong>
                 <sub>{appVersion}</sub>
               </Link>
             </PageTitle>

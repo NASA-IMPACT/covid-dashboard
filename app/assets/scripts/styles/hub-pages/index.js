@@ -51,9 +51,6 @@ export const EntryNavLink = styled(NavLink)`
 `;
 
 export const PageConstrainer = styled(Constrainer)`
-  padding-top: ${glsp(4)};
-  padding-bottom: ${glsp(4)};
-
   ${Prose} {
     max-width: 50rem;
   }
