@@ -11,6 +11,7 @@ import { themeVal } from '../../styles/utils/general';
 import { reveal } from '../../styles/animation';
 import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
+import media from '../../styles/utils/media-queries';
 import { wrapApiResult } from '../../redux/reduxeed';
 
 import Button from '../../styles/button/button';
@@ -31,16 +32,21 @@ const PageHead = styled.header`
 
 const PageHeadInner = styled.div`
   display: flex;
-  padding: ${glsp(0.75)};
+  padding: ${glsp(0.5, 0.5, 0.5, 0.75)};
   align-items: center;
   margin: 0 auto;
   height: 100%;
+
+  ${media.mediumUp`
+    padding: ${glsp(0.75)};
+  `}
 `;
 
 const PageHeadline = styled.div`
   display: flex;
   white-space: nowrap;
   align-items: center;
+  margin-right: ${glsp(1)};
 `;
 
 const PageTitle = styled.h1`
@@ -66,6 +72,11 @@ const PageTitle = styled.h1`
       background-size: auto 100%;
       background-repeat: none;
       background-position: top right;
+      display: none;
+
+      ${media.mediumUp`
+        display: block;
+      `}
     }
 
     &:hover {
@@ -79,13 +90,20 @@ const PageTitle = styled.h1`
 
   sup {
     grid-row: 1;
-    font-size: 0.875rem;
+    font-size: 0.5rem;
+    line-height: 1;
     font-weight: ${themeVal('type.base.extrabold')};
-    line-height: 1rem;
     text-transform: uppercase;
     align-self: end;
     top: inherit;
     vertical-align: inherit;
+    transform: translate(0, -0.125rem);
+
+    ${media.mediumUp`
+      font-size: 0.875rem;
+      line-height: 1rem;
+      transform: none;
+    `}
 
     span {
       ${visuallyHidden()};
@@ -94,11 +112,17 @@ const PageTitle = styled.h1`
 
   strong {
     grid-row: 2;
-    font-size: 1.25rem;
-    line-height: 1.5rem;
-    font-weight: ${themeVal('type.base.light')};
+    font-size: 0.875rem;
+    line-height: 1rem;
+    font-weight: ${themeVal('type.base.regular')};
     align-self: center;
     letter-spacing: -0.025em;
+
+    ${media.mediumUp`
+      font-size: 1.25rem;
+      line-height: 1.5rem;
+      font-weight: ${themeVal('type.base.light')};
+    `}
   }
 
   sub {
@@ -113,14 +137,31 @@ const PageTitle = styled.h1`
     bottom: inherit;
     vertical-align: inherit;
     align-self: center;
+    display: none;
+
+    ${media.mediumUp`
+      display: flex;
+    `}
   }
 `;
 
+const MenuButton = styled(Button)`
+  margin-left: auto;
+
+  ${media.mediumUp`
+    display: none;
+  `}
+`;
+
 const PageNav = styled.nav`
-  display: flex;
+  display: none;
   flex-flow: row nowrap;
   margin: 0 0 0 auto;
-  padding: 0 0 0 ${glsp(1)};
+  padding: 0;
+
+  ${media.mediumUp`
+    display: flex;
+  `}
 `;
 
 const GlobalMenu = styled.ul`
@@ -160,6 +201,17 @@ class PageHeader extends React.Component {
               </Link>
             </PageTitle>
           </PageHeadline>
+          <MenuButton
+            as='a'
+            to='/'
+            exact
+            hideText
+            useIcon='hamburger-menu'
+            variation='achromic-plain'
+            title='View the welcome page'
+          >
+            <span>Welcome</span>
+          </MenuButton>
           <PageNav role='navigation'>
             <GlobalMenu>
               <li>
