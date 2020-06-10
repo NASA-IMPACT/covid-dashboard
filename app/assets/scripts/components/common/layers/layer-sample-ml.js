@@ -36,19 +36,5 @@ export default {
   swatch: {
     color: '#411073',
     name: 'Purple'
-  },
-  legend: {
-    /*
-    type: 'gradient-adjustable',
-    min: 'less',
-    max: 'more',
-    stops: [
-      '#99c5e0',
-      '#f9eaa9',
-      '#f7765d',
-      '#c13b72',
-      '#461070',
-      '#050308'
-    ] */
   }
 };
