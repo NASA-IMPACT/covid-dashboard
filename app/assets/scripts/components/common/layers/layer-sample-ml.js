@@ -1,5 +1,3 @@
-import { format, sub } from 'date-fns';
-
 import config from '../../../config';
 
 // Sample ML Data
@@ -29,11 +27,6 @@ export default {
   },
   exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd'],
   enabled: false,
-  compare: {
-    enabled: false,
-    help: 'Compare with baseline (5 years ago)',
-    mapLabel: date => `${format(sub(date, { years: 5 }), "MMM yy''")} — ${format(date, "MMM yy''")}`
-  },
   swatch: {
     color: '#411073',
     name: 'Purple'
