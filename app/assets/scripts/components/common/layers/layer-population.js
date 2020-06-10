@@ -8,7 +8,8 @@ export default {
       'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GPW_Population_Density_2020/default/2020-05-14T00:00:00Z/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png'
     ]
   },
-  exclusiveWith: ['no2', 'car-count', 'nightlights-viirs', 'nightlights-hd'],
+  exclusiveWith: ['no2', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'sample-ml'
+  ],
   swatch: {
     color: '#F55E2C',
     name: 'Orange'

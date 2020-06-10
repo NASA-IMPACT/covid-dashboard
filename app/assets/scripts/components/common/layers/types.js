@@ -45,6 +45,24 @@ const replaceRasterTiles = (theMap, sourceId, tiles) => {
   theMap.triggerRepaint();
 };
 
+const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
+  if (mbMap.getSource(id)) {
+    mbMap.setLayoutProperty(id, 'visibility', 'visible');
+  } else {
+    mbMap.addSource(id, source);
+    mbMap.addLayer(
+      {
+        id: id,
+        type: type,
+        source: id,
+        layout: {},
+        paint
+      },
+      beforeId
+    );
+  }
+};
+
 export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
@@ -152,6 +170,38 @@ export const layerTypes = {
           'admin-0-boundary-bg'
         );
       }
+    }
+  },
+  inference: {
+    hide: (ctx, layerInfo) => {
+      const { mbMap } = ctx;
+      const { id } = layerInfo;
+
+      const vecId = `${id}-vector`;
+
+      const rastId = `${id}-raster`;
+      if (mbMap.getSource(vecId)) {
+        mbMap.setLayoutProperty(vecId, 'visibility', 'none');
+      }
+      if (mbMap.getSource(rastId)) {
+        mbMap.setLayoutProperty(rastId, 'visibility', 'none');
+      }
+    },
+    show: (ctx, layerInfo) => {
+      const { mbMap } = ctx;
+      const { id, source } = layerInfo;
+      const vecId = `${id}-vector`;
+      const rastId = `${id}-raster`;
+      const { vector, raster } = source;
+
+      const inferPaint = {
+        'line-color': '#ff0000',
+        'line-opacity': 0.6,
+        'line-width': 2
+      };
+
+      toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
+      toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, vecId);
     }
   }
 };
