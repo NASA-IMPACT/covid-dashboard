@@ -25,6 +25,7 @@ const PageHead = styled.header`
   z-index: 20;
   background: ${themeVal('color.link')};
   color: ${themeVal('color.baseLight')};
+  overflow: hidden;
 
   /* Animation */
   animation: ${reveal} 0.32s ease 0s 1;
@@ -72,10 +73,17 @@ const PageTitle = styled.h1`
       background-size: auto 100%;
       background-repeat: none;
       background-position: top right;
-      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.16;
+      transform: scale(2) translate(-0.5rem, -25%);
+      transform-origin: top left;
 
       ${media.mediumUp`
-        display: block;
+        position: static;
+        transform: none;
+        opacity: 1;
       `}
     }
 
