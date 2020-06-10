@@ -1,4 +1,5 @@
 import { format, sub } from 'date-fns';
+import * as turf from '@turf/turf';
 
 const prepDateSource = (source, date, timeUnit = 'month') => {
   const formats = {
@@ -43,6 +44,24 @@ const replaceRasterTiles = (theMap, sourceId, tiles) => {
   theMap.style.sourceCaches[sourceId].update(theMap.transform);
   // Force a repaint, so that the map will be repainted without you having to touch the map
   theMap.triggerRepaint();
+};
+
+const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId, visible) => {
+  if (mbMap.getSource(id)) {
+    mbMap.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+  } else {
+    mbMap.addSource(id, source);
+    mbMap.addLayer(
+      {
+        id: id,
+        type: type,
+        source: id,
+        layout: {},
+        paint
+      },
+      beforeId
+    );
+  }
 };
 
 export const layerTypes = {
@@ -160,6 +179,7 @@ export const layerTypes = {
       const { id } = layerInfo;
 
       const vecId = `${id}-vector`;
+
       const rastId = `${id}-raster`;
       if (mbMap.getSource(vecId)) {
         mbMap.setLayoutProperty(vecId, 'visibility', 'none');
@@ -172,43 +192,36 @@ export const layerTypes = {
       const { mbMap } = ctx;
       const { id, source } = layerInfo;
       const vecId = `${id}-vector`;
+      const outlineId = `${id}-vector-outline`;
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
-      if (mbMap.getSource(vecId)) {
-        mbMap.setLayoutProperty(vecId, 'visibility', 'visible');
-      } else {
-        mbMap.addSource(vecId, {
-          type: vector.type,
-          data: vector.data
-        });
-        mbMap.addLayer(
-          {
-            id: vecId,
-            type: 'fill',
-            source: vecId,
-            layout: {},
-            paint: {
-              'fill-color': '#FF0000',
-              'fill-opacity': 0.65
-            }
-          },
-          'admin-0-boundary-bg'
-        );
-      }
 
-      if (mbMap.getSource(rastId)) {
-        mbMap.setLayoutProperty(rastId, 'visibility', 'visible');
-      } else {
-        mbMap.addSource(rastId, raster);
-        mbMap.addLayer(
-          {
-            id: rastId,
-            type: 'raster',
-            source: rastId
-          },
-          vecId
-        );
-      }
+      const inferPaint = {
+        'line-color': '#dddddd',
+        'line-opacity': 0.6,
+        'line-width': 1
+      };
+
+      const outlineData = {
+        type: 'FeatureCollection',
+        features: vector.data.features.map(ft => turf.transformScale(ft, 5))
+      };
+      const outline = {
+        type: 'geojson',
+        data: outlineData
+      };
+
+      const outlinePaint = {
+        ...inferPaint,
+        'line-color': '#ff0000',
+        'line-width': 2
+      };
+
+      toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
+
+      toggleOrAddLayer(mbMap, outlineId, outline, 'line', outlinePaint, vecId);
+
+      toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, outlineId);
     }
   }
 };

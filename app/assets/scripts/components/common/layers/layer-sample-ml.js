@@ -3,9 +3,8 @@ import { format, sub } from 'date-fns';
 import config from '../../../config';
 
 // Sample ML Data
-//import * as sampleData from './ship-2020-03-11T1647.json';
+// import * as sampleData from './ship-2020-03-11T1647.json';
 import * as sampleData from './ship-2020-03-11T1834.json';
-
 
 export default {
   id: 'sample-ml',
