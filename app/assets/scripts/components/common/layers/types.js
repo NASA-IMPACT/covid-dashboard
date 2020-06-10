@@ -1,5 +1,4 @@
 import { format, sub } from 'date-fns';
-import * as turf from '@turf/turf';
 
 const prepDateSource = (source, date, timeUnit = 'month') => {
   const formats = {
@@ -46,9 +45,9 @@ const replaceRasterTiles = (theMap, sourceId, tiles) => {
   theMap.triggerRepaint();
 };
 
-const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId, visible) => {
+const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
   if (mbMap.getSource(id)) {
-    mbMap.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+    mbMap.setLayoutProperty(id, 'visibility', 'visible');
   } else {
     mbMap.addSource(id, source);
     mbMap.addLayer(
@@ -192,36 +191,17 @@ export const layerTypes = {
       const { mbMap } = ctx;
       const { id, source } = layerInfo;
       const vecId = `${id}-vector`;
-      const outlineId = `${id}-vector-outline`;
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
 
       const inferPaint = {
-        'line-color': '#dddddd',
+        'line-color': '#ff0000',
         'line-opacity': 0.6,
         'line-width': 1
       };
 
-      const outlineData = {
-        type: 'FeatureCollection',
-        features: vector.data.features.map(ft => turf.transformScale(ft, 5))
-      };
-      const outline = {
-        type: 'geojson',
-        data: outlineData
-      };
-
-      const outlinePaint = {
-        ...inferPaint,
-        'line-color': '#ff0000',
-        'line-width': 2
-      };
-
       toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
-
-      toggleOrAddLayer(mbMap, outlineId, outline, 'line', outlinePaint, vecId);
-
-      toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, outlineId);
+      toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, vecId);
     }
   }
 };
