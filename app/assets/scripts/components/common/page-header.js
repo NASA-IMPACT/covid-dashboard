@@ -1,24 +1,28 @@
 import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
+import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
 import config from '../../config';
 
 import { Link, NavLink } from 'react-router-dom';
 import { visuallyHidden } from '../../styles/helpers';
-import { themeVal } from '../../styles/utils/general';
+import { themeVal, stylizeFunction } from '../../styles/utils/general';
 import { reveal } from '../../styles/animation';
 import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
 import { wrapApiResult } from '../../redux/reduxeed';
+import { headingAlt } from '../../styles/type/heading';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
 import indicatorsList from '../indicators';
 
 const { appTitle, appVersion, baseUrl } = config;
+
+const _rgba = stylizeFunction(rgba);
 
 const PageHead = styled.header`
   position: relative;
@@ -163,30 +167,105 @@ const MenuButton = styled(Button)`
   `}
 `;
 
-const PageNav = styled.nav`
+const PageNavLarge = styled.nav`
   display: none;
-  flex-flow: row nowrap;
   margin: 0 0 0 auto;
   padding: 0;
 
   ${media.mediumUp`
     display: flex;
+    flex-flow: row nowrap;
   `}
 `;
 
 const GlobalMenu = styled.ul`
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
   margin: 0;
   list-style: none;
 
+  ${media.mediumUp`
+    display: flex;
+    flex-flow: row nowrap;
+  `}
+
   > * {
-    margin: 0 ${glsp(0.5)} 0 0;
+    margin: 0 0 ${glsp(0.25)} 0;
+
+    ${media.mediumUp`
+      margin: 0 ${glsp(0.5)} 0 0;
+    `}
   }
 
   > *:last-child {
     margin: 0;
   }
+
+  ${Button} {
+    width: 100%;
+    margin: 0 ${glsp(0.5)} 0 0;
+    text-align: left;
+
+    ${media.mediumUp`
+      width: auto;
+      text-align: center;
+    `}
+  }
+`;
+
+const PageNavSmall = styled.nav`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  background: ${themeVal('color.silk')};
+
+  ${media.mediumUp`
+    display: none;
+  `}
+`;
+
+const PageNavSmallInner = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  width: 18rem;
+  height: 100%;
+  background: ${themeVal('color.primary')};
+  color: ${themeVal('color.baseLight')};
+`;
+
+const PageNavSmallHeader = styled.header`
+  display: flex;
+  flex-flow: row nowrap;
+  padding: ${glsp(0.5, 0.5, 0.5, 1)};
+  align-items: center;
+`;
+
+const PageNavSmallTitle = styled.h2`
+  font-size: 1rem;
+  line-height: 2rem;
+  margin: 0;
+`;
+
+const PageNavSmallInnerTitle = styled.h3`
+  ${headingAlt}
+`;
+
+const CloseMenuButton = styled(Button)`
+  margin-left: auto;
+`;
+
+const PageNavSmallBody = styled.div`
+  display: grid;
+  grid-gap: ${glsp(1)};
+  padding: ${glsp()};
+  box-shadow: inset 0 1px 0 0 ${_rgba('#FFFFFF', 0.12)};
+  overflow: auto;
 `;
 
 // See documentation of filterComponentProp as to why this is
@@ -195,7 +274,7 @@ const NavLinkFilter = filterComponentProps(NavLink, propsToFilter);
 
 class PageHeader extends React.Component {
   render () {
-    const { useShortTitle, spotlightList } = this.props;
+    const { spotlightList } = this.props;
 
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
@@ -220,9 +299,118 @@ class PageHeader extends React.Component {
             variation='achromic-plain'
             title='View the welcome page'
           >
-            <span>Welcome</span>
+            <span>View menu</span>
           </MenuButton>
-          <PageNav role='navigation'>
+
+          <PageNavSmall role='navigation'>
+            <PageNavSmallInner>
+              <PageNavSmallHeader>
+                <PageNavSmallTitle>Menu</PageNavSmallTitle>
+                <CloseMenuButton
+                  as='a'
+                  to='/'
+                  exact
+                  hideText
+                  useIcon='xmark'
+                  variation='achromic-plain'
+                  title='Close navigation panel'
+                >
+                  <span>Dismiss menu</span>
+                </CloseMenuButton>
+              </PageNavSmallHeader>
+              <PageNavSmallBody>
+                <GlobalMenu>
+                  <li>
+                    <Button
+                      as={NavLinkFilter}
+                      to='/'
+                      exact
+                      variation='achromic-plain'
+                      title='View the welcome page'
+                    >
+                      <span>Welcome</span>
+                    </Button>
+                  </li>
+                  <li>
+                    <Button
+                      as={NavLinkFilter}
+                      to='/global'
+                      exact
+                      variation='achromic-plain'
+                      title='Explore the global map'
+                    >
+                      <span>Global</span>
+                    </Button>
+                  </li>
+                  <li>
+                    <Button
+                      as={NavLinkFilter}
+                      to='/about'
+                      variation='achromic-plain'
+                      title='View the about page'
+                    >
+                      <span>About</span>
+                    </Button>
+                  </li>
+                </GlobalMenu>
+                <PageNavSmallInnerTitle>Spotlight areas</PageNavSmallInnerTitle>
+                <GlobalMenu>
+                  <li>
+                    <Button
+                      as={NavLinkFilter}
+                      to='/spotlight'
+                      exact
+                      variation='achromic-plain'
+                      title='Explore the Spotlight areas'
+                    >
+                      About
+                    </Button>
+                  </li>
+                  {spotlightAreas && spotlightAreas.map(ss => (
+                    <li key={ss.id}>
+                      <Button
+                        as={NavLinkFilter}
+                        to={`/spotlight/${ss.id}`}
+                        variation='achromic-plain'
+                        title='Explore spotlight area'
+                      >
+                        {ss.label}
+                      </Button>
+                    </li>
+                  ))}
+                </GlobalMenu>
+
+                <PageNavSmallInnerTitle>Indicators</PageNavSmallInnerTitle>
+                <GlobalMenu>
+                  <li>
+                    <Button
+                      as={NavLinkFilter}
+                      to='/indicators'
+                      exact
+                      variation='achromic-plain'
+                      title='Learn about the indicators'
+                    >
+                      About
+                    </Button>
+                  </li>
+                  {indicatorsList.filter(d => !!d.LongForm).map(d => (
+                    <li key={d.id}>
+                      <Button
+                        as={NavLinkFilter}
+                        to={`/indicators/${d.id}`}
+                        variation='achromic-plain'
+                        title='Learn about the indicator'
+                      >
+                        {d.name}
+                      </Button>
+                    </li>
+                  ))}
+                </GlobalMenu>
+              </PageNavSmallBody>
+            </PageNavSmallInner>
+          </PageNavSmall>
+
+          <PageNavLarge role='navigation'>
             <GlobalMenu>
               <li>
                 <Button
@@ -344,7 +532,7 @@ class PageHeader extends React.Component {
                 </Button>
               </li>
             </GlobalMenu>
-          </PageNav>
+          </PageNavLarge>
         </PageHeadInner>
       </PageHead>
     );
@@ -352,7 +540,6 @@ class PageHeader extends React.Component {
 }
 
 PageHeader.propTypes = {
-  useShortTitle: T.bool,
   spotlightList: T.object
 };
 
