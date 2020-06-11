@@ -1,6 +1,6 @@
 import React from 'react';
 import T from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
@@ -223,6 +223,14 @@ const PageNavSmall = styled.nav`
   flex-flow: row nowrap;
   justify-content: flex-end;
   background: ${themeVal('color.silk')};
+  transition: all 0.16s ease 0s;
+  /* opacity: 0;
+  visibility: hidden;
+
+  ${({ revealed }) => revealed && css`
+    opacity: 1;
+    visibility: visible;
+  `} */
 
   ${media.mediumUp`
     display: none;
