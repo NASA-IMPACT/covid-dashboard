@@ -172,7 +172,11 @@ export const layerTypes = {
       }
     }
   },
-  inference: {
+  'inference-timeseries': {
+    update: (ctx, layerInfo, prevProps) => {
+      //update raster source
+      //update vector source
+    },
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;

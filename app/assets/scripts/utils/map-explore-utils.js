@@ -253,6 +253,6 @@ export function toggleLayerRasterTimeseries (layer) {
 export function getActiveTimeseriesLayers () {
   return this.props.mapLayers.filter(
     (l) =>
-      l.type === 'raster-timeseries' && this.state.activeLayers.includes(l.id)
+      l.type.includes('timeseries') && this.state.activeLayers.includes(l.id)
   );
 }

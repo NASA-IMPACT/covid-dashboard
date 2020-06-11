@@ -46,7 +46,7 @@ const layersBySpotlight = {
   du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
   gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
   la: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'sample-ml'],
+  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'ship-detection'],
   tk: ['no2', 'nightlights-hd', 'nightlights-viirs']
 };
 

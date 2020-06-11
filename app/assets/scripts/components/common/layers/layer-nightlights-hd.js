@@ -15,7 +15,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/BMHD_30M_MONTHLY/BMHD_VNP46A2_{spotlightId}_{date}_cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
     ]
   },
-  exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-viirs', 'sample-ml'],
+  exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-viirs', 'ship-detection'],
   swatch: {
     color: '#f2a73a',
     name: 'Gold'
