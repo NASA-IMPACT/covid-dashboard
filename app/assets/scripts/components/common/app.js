@@ -52,7 +52,8 @@ class App extends Component {
 
   resizeListener ({ width }) {
     this.setState({
-      useShortTitle: width < mediaRanges.small[0]
+      useShortTitle: width < mediaRanges.small[0],
+      useSmallPanel: width < mediaRanges.medium[0]
     });
   }
 
@@ -63,7 +64,7 @@ class App extends Component {
     return (
       <Page onChange={this.resizeListener}>
         <MetaTags title={`${title}${appTitle}`} description={appDescription} />
-        <PageHeader useShortTitle={this.state.useShortTitle} />
+        <PageHeader useShortTitle={this.state.useShortTitle} useSmallPanel={this.state.useSmallPanel} />
         <PageBody role='main'>
           {children}
         </PageBody>
