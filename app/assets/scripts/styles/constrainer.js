@@ -13,7 +13,7 @@ const Constrainer = styled.div`
     padding: ${glsp(2)};
   `}
 
-  ${media.mediumUp`
+  ${media.largeUp`
     padding: ${glsp(4, 2)};
   `}
 `;

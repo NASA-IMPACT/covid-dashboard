@@ -102,25 +102,16 @@ class Root extends React.Component {
                     path='/global'
                     component={GlobalExplore}
                   />
-                  <Route
-                    exact
-                    path='/spotlight'
-                    component={SpotlightHub}
-                  />
+                  <Route exact path='/spotlight' component={SpotlightHub} />
                   <LargeOnlyRoute
                     exact
                     isLargeUp={isLargeUp}
                     path='/spotlight/:spotlightId'
                     component={SpotlightSingle}
                   />
+                  <Route exact path='/indicators' component={IndicatorsHub} />
                   <Route
                     exact
-                    path='/indicators'
-                    component={IndicatorsHub}
-                  />
-                  <LargeOnlyRoute
-                    exact
-                    isLargeUp={isLargeUp}
                     path='/indicators/:indicatorId'
                     component={IndicatorsSingle}
                   />
@@ -129,10 +120,7 @@ class Root extends React.Component {
                   <Route path='*' component={UhOh} />
                 </Switch>
                 <GlobalLoading />
-                <ReactTooltip
-                  effect='solid'
-                  className='type-primary'
-                />
+                <ReactTooltip effect='solid' className='type-primary' />
               </SizeAwareElement>
             </ErrorBoundary>
           </ThemeProvider>
