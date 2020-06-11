@@ -54,7 +54,7 @@ class ExpMapSecPanel extends React.Component {
 
     return (
       <div>
-        <Heading as='h2'>NO2 Concentration</Heading>
+        <Heading as='h2'>NO<sub>2</sub> Concentration</Heading>
         <small>molecules/cm<sup>2</sup></small>
         <SimpleLineChart
           xDomain={xDomain}
