@@ -224,13 +224,14 @@ const PageNavSmall = styled.nav`
   justify-content: flex-end;
   background: ${themeVal('color.silk')};
   transition: all 0.16s ease 0s;
-  /* opacity: 0;
+   opacity: 0;
   visibility: hidden;
 
   ${({ revealed }) => revealed && css`
     opacity: 1;
     visibility: visible;
-  `} */
+  `
+  }
 
   ${media.mediumUp`
     display: none;
@@ -279,9 +280,19 @@ const PageNavSmallBody = styled.div`
 const propsToFilter = ['variation', 'size', 'hideText', 'useIcon', 'active'];
 const NavLinkFilter = filterComponentProps(NavLink, propsToFilter);
 
+
+
+
 class PageHeader extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      panelOpen: false
+    };
+  }
+
   render () {
-    const { spotlightList } = this.props;
+    const { spotlightList, useSmallPanel} = this.props;
 
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
@@ -305,14 +316,17 @@ class PageHeader extends React.Component {
             useIcon='hamburger-menu'
             variation='achromic-plain'
             title='View the welcome page'
+            onClick={() => this.setState({ panelOpen: true })}
+
           >
             <span>View menu</span>
           </MenuButton>
 
-          <PageNavSmall role='navigation'>
+          <PageNavSmall role='navigation' revealed={this.state.panelOpen}>
             <PageNavSmallInner>
               <PageNavSmallHeader>
                 <PageNavSmallTitle>Menu</PageNavSmallTitle>
+
                 <CloseMenuButton
                   as='a'
                   to='/'
@@ -321,9 +335,11 @@ class PageHeader extends React.Component {
                   useIcon='xmark'
                   variation='achromic-plain'
                   title='Close navigation panel'
+                  onClick={() => this.setState({ panelOpen: false })}
                 >
                   <span>Dismiss menu</span>
                 </CloseMenuButton>
+
               </PageNavSmallHeader>
               <PageNavSmallBody>
                 <GlobalMenu>
