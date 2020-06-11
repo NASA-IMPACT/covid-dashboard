@@ -214,6 +214,7 @@ const GlobalMenu = styled.ul`
 `;
 
 const PageNavSmall = styled.nav`
+  overflow: hidden;
   position: fixed;
   top: 0;
   right: 0;
@@ -224,18 +225,15 @@ const PageNavSmall = styled.nav`
   justify-content: flex-end;
   background: ${themeVal('color.silk')};
   transition: all 0.16s ease 0s;
-   opacity: 0;
+  opacity: 0;
   visibility: hidden;
 
-  ${({ revealed }) => revealed && css`
-    opacity: 1;
-    visibility: visible;
-  `
-  }
-
-  ${media.mediumUp`
-    display: none;
-  `}
+  ${({ revealed }) =>
+    revealed &&
+    css`
+      opacity: 1;
+      visibility: visible;
+    `}
 `;
 
 const PageNavSmallInner = styled.div`
@@ -245,6 +243,14 @@ const PageNavSmallInner = styled.div`
   height: 100%;
   background: ${themeVal('color.primary')};
   color: ${themeVal('color.baseLight')};
+  transition: all 0.32s ease 0s;
+  transform: translate(100%, 0);
+
+    ${({ revealed }) =>
+      revealed &&
+      css`
+        transform: translate(0, 0);
+      `};
 `;
 
 const PageNavSmallHeader = styled.header`
@@ -299,7 +305,9 @@ class PageHeader extends React.Component {
           <PageHeadline>
             <PageTitle>
               <Link to='/' title='Go to welcome page'>
-                <sup><span>NASA - </span>Earthdata</sup>
+                <sup>
+                  <span>NASA - </span>Earthdata
+                </sup>
                 <strong>{appTitle}</strong>
                 <sub>{appVersion}</sub>
               </Link>
@@ -312,83 +320,83 @@ class PageHeader extends React.Component {
             hideText
             useIcon='hamburger-menu'
             variation='achromic-plain'
-            title='View the welcome page'
+            title='Show menu'
             onClick={() => this.setState({ panelOpen: true })}
-
           >
-            <span>View menu</span>
+            <span>Show menu</span>
           </MenuButton>
 
-          {useSmallPanel
-            ? (
-              <PageNavSmall role='navigation' revealed={this.state.panelOpen}>
-                <PageNavSmallInner>
-                  <PageNavSmallHeader>
-                    <PageNavSmallTitle>Menu</PageNavSmallTitle>
+          {useSmallPanel ? (
+            <PageNavSmall role='navigation' revealed={this.state.panelOpen}>
+              <PageNavSmallInner revealed={this.state.panelOpen}>
+                <PageNavSmallHeader>
+                  <PageNavSmallTitle>Menu</PageNavSmallTitle>
 
-                    <CloseMenuButton
-                      as='a'
-                      to='/'
-                      exact
-                      hideText
-                      useIcon='xmark'
-                      variation='achromic-plain'
-                      title='Close navigation panel'
-                      onClick={() => this.setState({ panelOpen: false })}
-                    >
-                      <span>Dismiss menu</span>
-                    </CloseMenuButton>
-
-                  </PageNavSmallHeader>
-                  <PageNavSmallBody>
-                    <GlobalMenu>
-                      <li>
-                        <Button
-                          as={NavLinkFilter}
-                          to='/'
-                          exact
-                          variation='achromic-plain'
-                          title='View the welcome page'
-                        >
-                          <span>Welcome</span>
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          as={NavLinkFilter}
-                          to='/global'
-                          exact
-                          variation='achromic-plain'
-                          title='Explore the global map'
-                        >
-                          <span>Global</span>
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          as={NavLinkFilter}
-                          to='/about'
-                          variation='achromic-plain'
-                          title='View the about page'
-                        >
-                          <span>About</span>
-                        </Button>
-                      </li>
-                    </GlobalMenu>
-                    <PageNavSmallInnerTitle>Spotlight areas</PageNavSmallInnerTitle>
-                    <GlobalMenu>
-                      <li>
-                        <Button
-                          as={NavLinkFilter}
-                          to='/spotlight'
-                          exact
-                          variation='achromic-plain'
-                          title='Explore the Spotlight areas'
-                        >
-                      About
-                        </Button>
-                      </li>
-                      {spotlightAreas && spotlightAreas.map(ss => (
+                  <CloseMenuButton
+                    as='a'
+                    to='/'
+                    exact
+                    hideText
+                    useIcon='xmark'
+                    variation='achromic-plain'
+                    title='Hide menu'
+                    onClick={() => this.setState({ panelOpen: false })}
+                  >
+                    <span>Hide menu</span>
+                  </CloseMenuButton>
+                </PageNavSmallHeader>
+                <PageNavSmallBody>
+                  <GlobalMenu>
+                    <li>
+                      <Button
+                        as={NavLinkFilter}
+                        to='/'
+                        exact
+                        variation='achromic-plain'
+                        title='View the welcome page'
+                      >
+                        <span>Welcome</span>
+                      </Button>
+                    </li>
+                    <li>
+                      <Button
+                        as={NavLinkFilter}
+                        to='/global'
+                        exact
+                        variation='achromic-plain'
+                        title='Explore the global map'
+                      >
+                        <span>Global</span>
+                      </Button>
+                    </li>
+                    <li>
+                      <Button
+                        as={NavLinkFilter}
+                        to='/about'
+                        variation='achromic-plain'
+                        title='View the about page'
+                      >
+                        <span>About</span>
+                      </Button>
+                    </li>
+                  </GlobalMenu>
+                  <PageNavSmallInnerTitle>
+                    Spotlight areas
+                  </PageNavSmallInnerTitle>
+                  <GlobalMenu>
+                    <li>
+                      <Button
+                        as={NavLinkFilter}
+                        to='/spotlight'
+                        exact
+                        variation='achromic-plain'
+                        title='Explore the Spotlight areas'
+                      >
+                        About
+                      </Button>
+                    </li>
+                    {spotlightAreas &&
+                      spotlightAreas.map((ss) => (
                         <li key={ss.id}>
                           <Button
                             as={NavLinkFilter}
@@ -400,22 +408,24 @@ class PageHeader extends React.Component {
                           </Button>
                         </li>
                       ))}
-                    </GlobalMenu>
+                  </GlobalMenu>
 
-                    <PageNavSmallInnerTitle>Indicators</PageNavSmallInnerTitle>
-                    <GlobalMenu>
-                      <li>
-                        <Button
-                          as={NavLinkFilter}
-                          to='/indicators'
-                          exact
-                          variation='achromic-plain'
-                          title='Learn about the indicators'
-                        >
-                      About
-                        </Button>
-                      </li>
-                      {indicatorsList.filter(d => !!d.LongForm).map(d => (
+                  <PageNavSmallInnerTitle>Indicators</PageNavSmallInnerTitle>
+                  <GlobalMenu>
+                    <li>
+                      <Button
+                        as={NavLinkFilter}
+                        to='/indicators'
+                        exact
+                        variation='achromic-plain'
+                        title='Learn about the indicators'
+                      >
+                        About
+                      </Button>
+                    </li>
+                    {indicatorsList
+                      .filter((d) => !!d.LongForm)
+                      .map((d) => (
                         <li key={d.id}>
                           <Button
                             as={NavLinkFilter}
@@ -427,68 +437,68 @@ class PageHeader extends React.Component {
                           </Button>
                         </li>
                       ))}
-                    </GlobalMenu>
-                  </PageNavSmallBody>
-                </PageNavSmallInner>
-              </PageNavSmall>)
-
-            : (
-              <PageNavLarge role='navigation'>
-                <GlobalMenu>
-                  <li>
-                    <Button
-                      as={NavLinkFilter}
-                      to='/'
-                      exact
-                      hideText
-                      useIcon='house'
-                      variation='achromic-plain'
-                      title='View the welcome page'
-                    >
-                      <span>Welcome</span>
-                    </Button>
-                  </li>
-                  <li>
-                    <Button
-                      as={NavLinkFilter}
-                      to='/global'
-                      exact
-                      variation='achromic-plain'
-                      title='Explore the global map'
-                    >
-                      <span>Global</span>
-                    </Button>
-                  </li>
-                  <li>
-                    <Dropdown
-                      alignment='right'
-                      direction='down'
-                      disabled={!spotlightAreas}
-                      triggerElement={
-                        <Button
-                          variation='achromic-plain'
-                          title='Explore the Spotlight areas'
-                          useIcon={['chevron-down--small', 'after']}
+                  </GlobalMenu>
+                </PageNavSmallBody>
+              </PageNavSmallInner>
+            </PageNavSmall>
+          ) : (
+            <PageNavLarge role='navigation'>
+              <GlobalMenu>
+                <li>
+                  <Button
+                    as={NavLinkFilter}
+                    to='/'
+                    exact
+                    hideText
+                    useIcon='house'
+                    variation='achromic-plain'
+                    title='View the welcome page'
+                  >
+                    <span>Welcome</span>
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    as={NavLinkFilter}
+                    to='/global'
+                    exact
+                    variation='achromic-plain'
+                    title='Explore the global map'
+                  >
+                    <span>Global</span>
+                  </Button>
+                </li>
+                <li>
+                  <Dropdown
+                    alignment='right'
+                    direction='down'
+                    disabled={!spotlightAreas}
+                    triggerElement={
+                      <Button
+                        variation='achromic-plain'
+                        title='Explore the Spotlight areas'
+                        useIcon={['chevron-down--small', 'after']}
+                      >
+                        <span>Spotlight</span>
+                      </Button>
+                    }
+                  >
+                    <DropMenu role='menu' selectable>
+                      <li>
+                        <DropMenuItem
+                          exact
+                          as={NavLink}
+                          to='/spotlight'
+                          data-dropdown='click.close'
                         >
-                          <span>Spotlight</span>
-                        </Button>
-                      }
-                    >
-                      <DropMenu role='menu' selectable>
-                        <li>
-                          <DropMenuItem
-                            exact
-                            as={NavLink}
-                            to='/spotlight'
-                            data-dropdown='click.close'
-                          >
-                        About
-                          </DropMenuItem>
-                        </li>
-                      </DropMenu>
-                      <DropTitle>Spotlight areas</DropTitle>
-                      <DropMenu role='menu' selectable>
-                        {spotlightAreas && spotlightAreas.map(ss => (
+                          About
+                        </DropMenuItem>
+                      </li>
+                    </DropMenu>
+                    <DropTitle>Spotlight areas</DropTitle>
+                    <DropMenu role='menu' selectable>
+                      {spotlightAreas &&
+                        spotlightAreas.map((ss) => (
                           <li key={ss.id}>
                             <DropMenuItem
                               as={NavLink}
@@ -499,38 +509,40 @@ class PageHeader extends React.Component {
                             </DropMenuItem>
                           </li>
                         ))}
-                      </DropMenu>
-                    </Dropdown>
-                  </li>
-                  <li>
-                    <Dropdown
-                      alignment='right'
-                      direction='down'
-                      triggerElement={
-                        <Button
-                          variation='achromic-plain'
-                          title='Explore the indicators'
-                          useIcon={['chevron-down--small', 'after']}
+                    </DropMenu>
+                  </Dropdown>
+                </li>
+                <li>
+                  <Dropdown
+                    alignment='right'
+                    direction='down'
+                    triggerElement={
+                      <Button
+                        variation='achromic-plain'
+                        title='Explore the indicators'
+                        useIcon={['chevron-down--small', 'after']}
+                      >
+                        <span>Indicators</span>
+                      </Button>
+                    }
+                  >
+                    <DropMenu role='menu' selectable>
+                      <li>
+                        <DropMenuItem
+                          exact
+                          as={NavLink}
+                          to='/indicators'
+                          data-dropdown='click.close'
                         >
-                          <span>Indicators</span>
-                        </Button>
-                      }
-                    >
-                      <DropMenu role='menu' selectable>
-                        <li>
-                          <DropMenuItem
-                            exact
-                            as={NavLink}
-                            to='/indicators'
-                            data-dropdown='click.close'
-                          >
-                        About
-                          </DropMenuItem>
-                        </li>
-                      </DropMenu>
-                      <DropTitle>Indicators</DropTitle>
-                      <DropMenu role='menu' selectable>
-                        {indicatorsList.filter(d => !!d.LongForm).map(d => (
+                          About
+                        </DropMenuItem>
+                      </li>
+                    </DropMenu>
+                    <DropTitle>Indicators</DropTitle>
+                    <DropMenu role='menu' selectable>
+                      {indicatorsList
+                        .filter((d) => !!d.LongForm)
+                        .map((d) => (
                           <li key={d.id}>
                             <DropMenuItem
                               as={NavLink}
@@ -541,22 +553,22 @@ class PageHeader extends React.Component {
                             </DropMenuItem>
                           </li>
                         ))}
-                      </DropMenu>
-                    </Dropdown>
-                  </li>
-                  <li>
-                    <Button
-                      as={NavLinkFilter}
-                      to='/about'
-                      variation='achromic-plain'
-                      title='View the about page'
-                    >
-                      <span>About</span>
-                    </Button>
-                  </li>
-                </GlobalMenu>
-              </PageNavLarge>
-            )}
+                    </DropMenu>
+                  </Dropdown>
+                </li>
+                <li>
+                  <Button
+                    as={NavLinkFilter}
+                    to='/about'
+                    variation='achromic-plain'
+                    title='View the about page'
+                  >
+                    <span>About</span>
+                  </Button>
+                </li>
+              </GlobalMenu>
+            </PageNavLarge>
+          )}
         </PageHeadInner>
       </PageHead>
     );
