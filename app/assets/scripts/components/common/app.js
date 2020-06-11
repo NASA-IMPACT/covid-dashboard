@@ -33,6 +33,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      useSmallPanel: false,
       useShortTitle: false
     };
 

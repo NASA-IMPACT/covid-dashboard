@@ -4,6 +4,7 @@ import { normalize, rgba } from 'polished';
 import { themeVal, stylizeFunction } from './utils/general';
 import { collecticonsFont } from './collecticons';
 import { unscrollableY, unscrollableX } from './helpers';
+import media from '../styles/utils/media-queries';
 import mapboxStyles from './vendor/mapbox';
 import reactDatepickerStyles from './vendor/react-datepicker';
 import reactTooltipStyles from './vendor/react-tooltip';
@@ -47,6 +48,12 @@ const baseStyles = css`
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     `}
+
+    ${media.mediumDown`
+      ${unscrollableY()}
+    `}
+
+
   }
 
 

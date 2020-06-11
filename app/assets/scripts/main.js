@@ -81,7 +81,8 @@ class Root extends React.Component {
 
   resizeListener ({ width }) {
     this.setState({
-      isLargeUp: width >= mediaRanges.large[0]
+      isLargeUp: width >= mediaRanges.large[0],
+      isMediumUp: width < mediaRanges.medium[0]
     });
   }
 
@@ -94,7 +95,9 @@ class Root extends React.Component {
           <ThemeProvider theme={theme.main}>
             <ErrorBoundary>
               <SizeAwareElement onChange={this.resizeListener}>
-                <GlobalStyles />
+                <GlobalStyles
+                  isMediumUp={this.state.isMediumUp}
+                />
                 <Switch>
                   <Route exact path='/' component={Home} />
                   <LargeOnlyRoute

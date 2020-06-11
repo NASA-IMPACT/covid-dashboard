@@ -228,8 +228,7 @@ const PageNavSmall = styled.nav`
   opacity: 0;
   visibility: hidden;
 
-  ${({ revealed }) =>
-    revealed &&
+  ${({ revealed }) => revealed &&
     css`
       opacity: 1;
       visibility: visible;
