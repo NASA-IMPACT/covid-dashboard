@@ -1,4 +1,5 @@
 import { format, sub } from 'date-fns';
+import bbox from '@turf/bbox';
 
 const prepDateSource = (source, date, timeUnit = 'month') => {
   const formats = {
@@ -174,8 +175,8 @@ export const layerTypes = {
   },
   'inference-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
-      //update raster source
-      //update vector source
+      // update raster source
+      // update vector source
     },
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
@@ -197,6 +198,7 @@ export const layerTypes = {
       const vecId = `${id}-vector`;
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
+      const bounds = bbox(vector.data);
 
       const inferPaint = {
         'line-color': '#ff0000',
@@ -206,6 +208,7 @@ export const layerTypes = {
 
       toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
       toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, vecId);
+      mbMap.fitBounds(bounds);
     }
   }
 };
