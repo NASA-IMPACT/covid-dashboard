@@ -156,7 +156,7 @@ class PageHeader extends React.Component {
               <Link to='/' title='Go to welcome page'>
                 <sup><span>NASA - </span>Earthdata</sup>
                 <strong>{useShortTitle ? appShortTitle || 'COVID-19' : appTitle}</strong>
-                <sub>{appVersion}</sub>
+                <sub title={appVersion}>beta</sub>
               </Link>
             </PageTitle>
           </PageHeadline>
