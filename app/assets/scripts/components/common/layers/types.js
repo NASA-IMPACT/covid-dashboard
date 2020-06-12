@@ -46,6 +46,10 @@ const replaceRasterTiles = (theMap, sourceId, tiles) => {
   theMap.triggerRepaint();
 };
 
+const replaceVectorData = (theMap, sourceId, data) => {
+  theMap.getSource(sourceId).setData(data);
+};
+
 const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
   if (mbMap.getSource(id)) {
     mbMap.setLayoutProperty(id, 'visibility', 'visible');
@@ -128,7 +132,6 @@ export const layerTypes = {
       const { mbMap, props } = ctx;
       const { id, source } = layerInfo;
       const { date } = props;
-
       if (!date) return;
 
       if (mbMap.getSource(id)) {
@@ -175,8 +178,18 @@ export const layerTypes = {
   },
   'inference-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
-      // update raster source
-      // update vector source
+      const { props, mbMap } = ctx;
+      const { date } = props;
+      const { id, source } = layerInfo;
+      const vecId = `${id}-vector`;
+      const rastId = `${id}-raster`;
+      const { vector, raster } = source;
+
+      const updateDate = date.toISOString().split('T')[0];
+      vector.data = vector.data.replace('{date}', updateDate);
+      raster.tiles = raster.tiles.map(tile => tile.replace('{date}', updateDate));
+      replaceVectorData(mbMap, vecId, vector.data);
+      replaceRasterTiles(mbMap, rastId, raster.tiles);
     },
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
@@ -194,11 +207,10 @@ export const layerTypes = {
     },
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
-      const { id, source } = layerInfo;
+      const { id, source, domain } = layerInfo;
       const vecId = `${id}-vector`;
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
-      const bounds = bbox(vector.data);
 
       const inferPaint = {
         'line-color': '#ff0000',
@@ -206,9 +218,22 @@ export const layerTypes = {
         'line-width': 2
       };
 
+      const initDate = domain[domain.length - 1].replace(/-/g, '_');
+      vector.data = vector.data.replace('{date}', initDate);
+
+      raster.tiles = raster.tiles.map(tile => tile.replace('{date}', initDate));
+
       toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
       toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, vecId);
-      mbMap.fitBounds(bounds);
+
+      fetch(vector.data)
+        .then(res => res.json())
+        .then(geo => {
+          mbMap.fitBounds(bbox(geo));
+        })
+        .catch(err => {
+          throw err;
+        });
     }
   }
 };

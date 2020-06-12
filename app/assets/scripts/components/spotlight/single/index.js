@@ -290,10 +290,22 @@ function mapStateToProps (state, props) {
         return {
           ...l,
           enabled: l.id === 'nightlights-hd',
-          source: {
-            ...l.source,
-            tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
-          }
+          source: l.type === 'inference-timeseries'
+            ? {
+              ...l.source,
+              vector: {
+                ...l.source.vector,
+                data: l.source.vector.data.replace('{spotlightId}', spotlightId)
+              },
+              raster: {
+                ...l.source.raster,
+                tiles: l.source.raster.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+              }
+            }
+            : {
+              ...l.source,
+              tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+            }
         };
       }
     });
