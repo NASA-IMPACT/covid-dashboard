@@ -314,7 +314,7 @@ class PageHeader extends React.Component {
                   <span>NASA - </span>Earthdata
                 </sup>
                 <strong>{appTitle}</strong>
-                <sub>{appVersion}</sub>
+                <sub title={appVersion}>beta</sub>
               </Link>
             </PageTitle>
           </PageHeadline>
