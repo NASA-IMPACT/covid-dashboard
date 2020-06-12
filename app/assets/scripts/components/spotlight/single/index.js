@@ -45,9 +45,26 @@ const layersBySpotlight = {
   be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
   du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
   gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  la: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'ship-detection'],
+  la: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection'],
+  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection'],
   tk: ['no2', 'nightlights-hd', 'nightlights-viirs']
+};
+
+const layerPropsBySpotlight = {
+  la: {
+    'inference-timeseries': {
+      domain: ['2020-01-02', '2020-02-13'],
+      mlTypes: ['multiple'],
+      rasterProvider: 'planet_mosaic'
+    }
+  },
+  sf: {
+    'inference-timeseries': {
+      domain: ['2020-03-11'],
+      mlTypes: ['ship'],
+      rasterProvider: 'planet'
+    }
+  }
 };
 
 const ExploreCanvas = styled.div`
@@ -253,6 +270,7 @@ SpotlightAreasSingle.propTypes = {
 function mapStateToProps (state, props) {
   const { spotlightId } = props.match.params;
   const layersToUse = layersBySpotlight[spotlightId] || [];
+  const layerProps = layerPropsBySpotlight[spotlightId];
   // Filter by the layers to include &
   // Replace the {site} property on the layers
   const spotlightMapLayers = allMapLayers
@@ -289,6 +307,7 @@ function mapStateToProps (state, props) {
       } else {
         return {
           ...l,
+          domain: layerProps[l.type] ? layerProps[l.type].domain : l.domain,
           enabled: l.id === 'nightlights-hd',
           source: l.type === 'inference-timeseries'
             ? {
@@ -296,10 +315,15 @@ function mapStateToProps (state, props) {
               vector: {
                 ...l.source.vector,
                 data: l.source.vector.data.replace('{spotlightId}', spotlightId)
+                  .replace('{mlType}', layerProps[l.type].mlTypes[0])
+
               },
               raster: {
                 ...l.source.raster,
-                tiles: l.source.raster.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+                tiles: l.source.raster.tiles
+                  .map(t => t.replace('{spotlightId}', spotlightId)
+                    .replace('{provider}', layerProps[l.type].rasterProvider)
+                  )
               }
             }
             : {
