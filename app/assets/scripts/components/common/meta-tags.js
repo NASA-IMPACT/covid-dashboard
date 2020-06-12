@@ -13,6 +13,12 @@ const MetaTags = ({ title, description, children }) => {
 
       {/* Twitter */}
       <meta name='twitter:card' content='summary' />
+      <meta name='twitter:site' content='' />
+      <meta name='twitter:title' content={title} />
+      {description ? (
+        <meta name='twitter:description' content={description} />
+      ) : null}
+      <meta name='twitter:image:src' content={`${baseUrl}/assets/graphics/meta/default-meta-image.png`} />
 
       {/* Open Graph */}
       <meta property='og:type' content='website' />
