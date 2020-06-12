@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Route, Switch, NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { glsp } from '../../styles/utils/theme-values';
 
 import App from '../common/app';
 import UhOh from '../uhoh';
@@ -11,9 +14,9 @@ import {
   InpageHeadline,
   InpageTitle,
   InpageToolbar,
-  InpageBody,
-  InpageBodyInner
+  InpageBody
 } from '../../styles/inpage';
+import Constrainer from '../../styles/constrainer';
 import Prose from '../../styles/type/prose';
 import Button from '../../styles/button/button';
 import ButtonGroup from '../../styles/button/group';
@@ -24,6 +27,12 @@ import ColorsExample from './colors';
 import LineChartExample from './line-chart';
 
 import config from '../../config';
+
+const PageConstrainer = styled(Constrainer)`
+  > *:not(:last-child) {
+    margin-bottom: ${glsp(2)};
+  }
+`;
 
 // How to add a new sandbox page.
 // 1) Create an example component with the code inside the sandbox folder.
@@ -92,7 +101,7 @@ export default class Sandbox extends React.Component {
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
-            <InpageBodyInner>
+            <PageConstrainer>
               <Prose>
                 <Switch>
                   {sandboxPages.map((p) => (
@@ -105,7 +114,7 @@ export default class Sandbox extends React.Component {
                   ))}
                 </Switch>
               </Prose>
-            </InpageBodyInner>
+            </PageConstrainer>
           </InpageBody>
         </Inpage>
       </App>
