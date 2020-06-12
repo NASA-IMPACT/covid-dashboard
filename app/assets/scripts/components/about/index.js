@@ -16,9 +16,6 @@ import Prose from '../../styles/type/prose';
 import { glsp } from '../../styles/utils/theme-values';
 
 const PageConstrainer = styled(Constrainer)`
-  padding-top: ${glsp(4)};
-  padding-bottom: ${glsp(4)};
-
   ${Prose} {
     max-width: 50rem;
   }

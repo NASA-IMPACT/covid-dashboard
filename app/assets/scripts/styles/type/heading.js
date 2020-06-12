@@ -61,7 +61,8 @@ export const Subheading = styled.h2`
 `;
 
 export const headingAlt = () => css`
-  color: ${_rgba(themeVal('type.base.color'), 0.64)};
+  opacity: 0.64;
+  color: inherit;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-feature-settings: "pnum" 0; /* Use proportional numbers */
