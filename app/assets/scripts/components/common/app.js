@@ -16,7 +16,7 @@ const { appTitle, appDescription } = config;
 
 const Page = styled(SizeAwareElement)`
   display: grid;
-  grid-template-rows: minmax(3rem, min-content) auto 0;
+  grid-template-rows: minmax(2rem, min-content) 1fr auto;
   min-height: 100vh;
 `;
 
@@ -65,10 +65,11 @@ class App extends Component {
     return (
       <Page onChange={this.resizeListener}>
         <MetaTags title={`${title}${appTitle}`} description={appDescription} />
-        <PageHeader useShortTitle={this.state.useShortTitle} useSmallPanel={this.state.useSmallPanel} />
-        <PageBody role='main'>
-          {children}
-        </PageBody>
+        <PageHeader
+          useShortTitle={this.state.useShortTitle}
+          useSmallPanel={this.state.useSmallPanel}
+        />
+        <PageBody role='main'>{children}</PageBody>
         <PageFooter />
       </Page>
     );
