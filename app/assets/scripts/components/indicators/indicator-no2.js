@@ -109,7 +109,7 @@ class NO2LongForm extends React.Component {
               <Prose>
                 <p>
                   NO<sub>2</sub> is a common air pollutant primarily emitted from the burning of fossil fuels in cars,
-                  power plants and industrial facilities. Lower to the ground, NO2 can directly irritate peoples&apos;
+                  power plants and industrial facilities. Lower to the ground, NO<sub>2</sub> can directly irritate peoples&apos;
                   lungs and contributes to the production of particulate pollution and smog when it reacts with sunlight.
                 </p>
                 <p>
@@ -117,7 +117,7 @@ class NO2LongForm extends React.Component {
                   around the world. These decreases are predominantly associated with changing human behavior in
                   response to the spread of COVID-19. As communities worldwide have implemented lockdown restrictions
                   in an attempt to stem the spread of the virus, the reduction in human transportation activity has
-                  resulted in less NO2 emitted into the atmosphere.
+                  resulted in less NO<sub>2</sub> emitted into the atmosphere.
                 </p>
                 <p>
                   These changes are particularly apparent over large urban areas and economic corridors, which
@@ -138,7 +138,7 @@ class NO2LongForm extends React.Component {
                 rightImageLabel='March 2020'
               />
               <figcaption>
-              NO2 levels fell by as much as 30% over much of the Northeast U.S. Credit: NASA Scientific Visualization Studio
+                NO<sub>2</sub> levels fell by as much as 30% over much of the Northeast U.S. Credit: NASA Scientific Visualization Studio
               </figcaption>
             </MediaCompare>
           </Gridder>
@@ -192,7 +192,7 @@ class NO2LongForm extends React.Component {
                 <p>
                   Each spotlight city has a slider for turning nitrogen dioxide data on and off. The darker purple
                   indicates higher levels of nitrogen dioxide associated with increased travel and economic activity,
-                  while the lighter blues indicate lower levels of NO2 and decreased activity.
+                  while the lighter blues indicate lower levels of NO<sub>2</sub> and decreased activity.
                 </p>
                 <p>
                   Nitrogen dioxide has a relatively short lifetime in the atmosphere. Once it is emitted, it lasts
@@ -220,7 +220,7 @@ class NO2LongForm extends React.Component {
               src={`${baseUrl}/assets/graphics/content/no2_south_america.png`}
               alt='NO2 over South America'
             >
-              NO2 levels over South America from the Ozone Monitoring Instrument. The dark green areas in the northwest indicate areas of no data, most likely associated with cloud cover or snow.
+              NO<sub>2</sub> levels over South America from the Ozone Monitoring Instrument. The dark green areas in the northwest indicate areas of no data, most likely associated with cloud cover or snow.
             </MediaImage>
           </Gridder>
         </InterpretDataFold>
