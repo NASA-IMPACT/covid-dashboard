@@ -8,7 +8,6 @@ import { themeVal } from '../../styles/utils/general';
 import collecticon from '../../styles/collecticons';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
-import { visuallyHidden } from '../../styles/helpers';
 import { headingAlt } from '../../styles/type/heading';
 import Button from '../../styles/button/button';
 
