@@ -15,7 +15,7 @@ const { appTitle } = config;
 
 const PageFoot = styled.footer`
   position: relative;
-  z-index: 20;
+  z-index: 18;
   background: ${themeVal('color.link')};
   color: ${themeVal('color.baseLight')};
 
