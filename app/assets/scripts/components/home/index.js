@@ -22,13 +22,12 @@ import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
 
 const IntroActions = styled.div`
-  display: grid;
-  grid-gap: ${glsp()};
-  grid-template-columns: repeat(12, 1fr);
-  padding: ${glsp(1, 0)};
+  display: flex;
+  flex-flow: row wrap;
 
   > * {
-    grid-column: auto / span 3;
+    margin: ${glsp(0.5, 1, 0.5, 0)};
+    min-width: 12rem;
   }
 
   /* stylelint-disable-next-line */

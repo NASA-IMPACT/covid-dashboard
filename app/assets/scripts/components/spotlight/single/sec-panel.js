@@ -132,9 +132,9 @@ export default function SecPanel (props) {
                                   yUnit={ind.units}
                                   selectedDate={selectedDate}
                                   highlightBands={
-                                    ind.highlightBands &&
-                                    ind.highlightBands.length
-                                      ? ind.highlightBands
+                                    ind.highlight_bands &&
+                                    ind.highlight_bands.length
+                                      ? ind.highlight_bands
                                       : null
                                   }
                                   noBaseline={

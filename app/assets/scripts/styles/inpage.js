@@ -5,6 +5,7 @@ import { visuallyHidden } from './helpers';
 import { themeVal, stylizeFunction } from './utils/general';
 
 import { glsp } from './utils/theme-values';
+import media from './utils/media-queries';
 
 import Constrainer from './constrainer';
 
@@ -46,10 +47,24 @@ export const InpageHeader = styled.header`
 
 export const InpageHeaderInner = styled(Constrainer)`
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-gap: ${glsp(4)} ${glsp(2)};
-  padding-top: ${glsp(4)};
-  padding-bottom: ${glsp(4)};
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: ${glsp(1)};
+  padding-top: ${glsp(2)};
+  padding-bottom: ${glsp(2)};
+
+  ${media.mediumUp`
+    padding-top: ${glsp(3)};
+    padding-bottom: ${glsp(3)};
+    grid-gap: ${glsp(2)};
+    grid-template-columns: repeat(8, 1fr);
+  `}
+
+  ${media.largeUp`
+    padding-top: ${glsp(4)};
+    padding-bottom: ${glsp(4)};
+    grid-gap: ${glsp(4)} ${glsp(2)};
+    grid-template-columns: repeat(12, 1fr);
+  `}
 `;
 
 export const InpageHeadline = styled.div`
@@ -57,7 +72,15 @@ export const InpageHeadline = styled.div`
   flex-flow: column;
   min-width: 0;
   grid-row: 1;
-  grid-column: span 8;
+  grid-column: span 4;
+
+  ${media.mediumUp`
+    grid-column: span 8;
+  `}
+
+  ${media.largeUp`
+    grid-column: span 8;
+  `}
 
   > *:last-child {
     margin-bottom: 0;
@@ -68,16 +91,36 @@ export const InpageToolbar = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  grid-row: 1;
-  grid-column: 9 / span 4;
+  grid-row: 2;
+  grid-column: 1;
+
+  ${media.mediumUp`
+    grid-column: span 8;
+  `}
+
+  ${media.largeUp`
+    grid-row: 1;
+    grid-column: 9 / span 4;
+    justify-items: end;
+  `}
 `;
 
 export const InpageTitle = styled.h1`
-  font-size: 3rem;
-  line-height: 3.5rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
   font-weight: ${themeVal('type.base.light')};
   letter-spacing: -0.025em;
   margin: 0 0 0 -0.125rem;
+
+  ${media.mediumUp`
+    font-size: 2.5rem;
+    line-height: 3rem;
+  `}
+
+  ${media.largeUp`
+    font-size: 3rem;
+    line-height: 3.5rem;
+  `}
 `;
 
 export const InpageSubtitle = styled.p`
@@ -90,9 +133,4 @@ export const InpageSubtitle = styled.p`
 
 export const InpageBody = styled.div`
   background: transparent;
-`;
-
-export const InpageBodyInner = styled.div`
-  padding: 0 ${glsp(4)} ${glsp(4)} ${glsp(4)} ${glsp(4)};
-  max-width: ${themeVal('layout.max')};
 `;
