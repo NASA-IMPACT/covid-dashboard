@@ -42,6 +42,8 @@ const IntroCopy = styled.div`
   width: 100%;
   max-width: 16rem;
   overflow-y: auto;
+  display: grid;
+  grid-gap: ${glsp()} 0;
 
   ${media.smallUp`
     max-width: 24rem;
@@ -62,7 +64,7 @@ const IntroCopy = styled.div`
 `;
 
 const IntroTitle = styled.h1`
-  margin: 0 0 ${glsp()} 0;
+  margin: 0;
 
   small {
     ${headingAlt()}
