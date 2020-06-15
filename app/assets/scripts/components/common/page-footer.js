@@ -17,6 +17,8 @@ const PageFoot = styled.footer`
   z-index: 18;
   background: ${themeVal('color.link')};
   color: ${themeVal('color.baseLight')};
+  min-height: 0;
+  overflow: hidden;
 
   a,
   a:visited {
