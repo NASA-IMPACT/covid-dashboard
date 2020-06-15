@@ -4,10 +4,10 @@ import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
 import { themeVal, stylizeFunction } from '../../styles/utils/general';
-import collecticon from '../../styles/collecticons';
-import { visuallyHidden } from '../../styles/helpers';
+// import collecticon from '../../styles/collecticons';
+// import { visuallyHidden } from '../../styles/helpers';
 
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import App from '../common/app';
 import Button from '../../styles/button/button';
@@ -25,9 +25,11 @@ import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../redux/
 
 import { headingAlt } from '../../styles/type/heading';
 
-import { filterComponentProps } from '../../utils/utils';
+// import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
+
+import stories from './stories';
 
 const _rgba = stylizeFunction(rgba);
 
@@ -132,6 +134,7 @@ const IntroStats = styled.div`
   }
 `;
 
+/*
 const IntroMedia = styled.figure`
   position: absolute;
   height: 100%;
@@ -149,6 +152,7 @@ const IntroMedia = styled.figure`
     font-size: 48rem;
   }
 `;
+*/
 
 const IntroStories = styled.section`
   background: ${themeVal('color.primary')};
@@ -178,20 +182,54 @@ const StoryProse = styled(Prose)`
   grid-gap: ${glsp()} 0;
 `;
 
-const StoryActions = styled.div`
+const StoryActions = styled.div``;
+
+const Previous = styled(Button)`
+  position: fixed;
+  top: 50%;
+  left: 0;
+`;
+const Next = styled(Button)`
+  position: fixed;
+  top: 50%;
+  right: 0;
 
 `;
 
-const propsToFilter = ['size', 'useIcon', 'variation'];
-const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
+// const propsToFilter = ['size', 'useIcon', 'variation'];
+// const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
 
 class Home extends React.Component {
   constructor (props) {
     super(props);
     this.mapRef = React.createRef();
+    this.state = {
+      storyIndex: 0
+    };
+
+    this.prevStory = this.prevStory.bind(this);
+    this.nextStory = this.nextStory.bind(this);
+  }
+
+  prevStory () {
+    this.setState(prevState => {
+      return ({
+        storyIndex: prevState.storyIndex - 1
+      });
+    });
+  }
+
+  nextStory () {
+    this.setState(prevState => {
+      return ({
+        storyIndex: prevState.storyIndex + 1
+      });
+    });
   }
 
   render () {
+    const { storyIndex } = this.state;
+    const currentStory = stories[storyIndex];
     return (
       <App pageTitle='Home' hideFooter>
         <Inpage isMapCentric>
@@ -230,9 +268,9 @@ class Home extends React.Component {
                 <IntroStories>
                   <IntroStoriesTitle>Did you know?</IntroStoriesTitle>
                   <Story>
-                    <StoryTitle>The rising of nitrogen dioxide levels</StoryTitle>
+                    <StoryTitle>{currentStory.title}</StoryTitle>
                     <StoryProse>
-                      <p>Since the onset of COVID-19, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in Los Angeles.</p>
+                      <p>{currentStory.prose}</p>
                     </StoryProse>
                     <StoryActions>
                       <Button
@@ -254,15 +292,33 @@ class Home extends React.Component {
               */}
               <MbMap
                 ref={this.mbMapRef}
-                onAction={() => { 
-               
-                  this.props.fetchSpotlightSingle('sf')
+                onAction={() => {
                 }}
                 layers={[]}
                 activeLayers={[]}
                 // date={this.state.timelineDate}
                 aoiState={null}
                 comparing={false}
+              />
+              <Previous
+                as='a'
+                title='Previous story'
+                disabled={storyIndex === 0}
+                to='/'
+                variation='base-raised-light'
+                useIcon={['chevron-left--small', 'after']}
+                hideText
+                onClick={this.prevStory}
+              />
+              <Next
+                as='a'
+                title='Previous story'
+                to='/'
+                disabled={storyIndex === stories.length - 1}
+                variation='base-raised-light'
+                useIcon={['chevron-right--small', 'after']}
+                hideText
+                onClick={this.nextStory}
               />
 
             </Intro>
