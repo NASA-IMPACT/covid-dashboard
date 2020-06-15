@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
+import { connect } from 'react-redux';
 
 import { themeVal, stylizeFunction } from '../../styles/utils/general';
 import collecticon from '../../styles/collecticons';
@@ -19,6 +20,9 @@ import {
   InpageBody
 } from '../../styles/inpage';
 import Prose from '../../styles/type/prose';
+import MbMap from '../common/mb-map-explore/mb-map';
+import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../redux/spotlight';
+
 import { headingAlt } from '../../styles/type/heading';
 
 import { filterComponentProps } from '../../utils/utils';
@@ -181,8 +185,13 @@ const StoryActions = styled.div`
 const propsToFilter = ['size', 'useIcon', 'variation'];
 const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
 
-export default class Home extends React.Component {
-  render() {
+class Home extends React.Component {
+  constructor (props) {
+    super(props);
+    this.mapRef = React.createRef();
+  }
+
+  render () {
     return (
       <App pageTitle='Home' hideFooter>
         <Inpage isMapCentric>
@@ -239,9 +248,23 @@ export default class Home extends React.Component {
                   </Story>
                 </IntroStories>
               </IntroCopy>
+              {/*
               <IntroMedia>
-                <p>A map will appear here.</p>
               </IntroMedia>
+              */}
+              <MbMap
+                ref={this.mbMapRef}
+                onAction={() => { 
+               
+                  this.props.fetchSpotlightSingle('sf')
+                }}
+                layers={[]}
+                activeLayers={[]}
+                // date={this.state.timelineDate}
+                aoiState={null}
+                comparing={false}
+              />
+
             </Intro>
           </InpageBody>
         </Inpage>
@@ -249,3 +272,17 @@ export default class Home extends React.Component {
     );
   }
 }
+
+Home.propTypes = {
+};
+
+function mapStateToProps (state, props) {
+  return {
+  };
+}
+
+const mapDispatchToProps = {
+  fetchSpotlightSingle: fetchSpotlightSingleAction
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
