@@ -18,6 +18,7 @@ import { headingAlt } from '../../styles/type/heading';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
+import Share from './share';
 import indicatorsList from '../indicators';
 
 const { appTitle, appVersion, baseUrl } = config;
@@ -574,6 +575,7 @@ class PageHeader extends React.Component {
                     <span>About</span>
                   </Button>
                 </li>
+                <li><Share /></li>
               </GlobalMenu>
             </PageNavLarge>
           )}
