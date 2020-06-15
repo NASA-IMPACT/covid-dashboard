@@ -208,8 +208,7 @@ class Home extends React.Component {
     this.mbMapRef = React.createRef();
     this.state = {
       storyIndex: 0,
-      mapLoaded: false,
-      spotlightData: null
+      mapLoaded: false
     };
 
     this.prevStory = this.prevStory.bind(this);
@@ -218,15 +217,18 @@ class Home extends React.Component {
   }
 
   componentDidMount (prevProps, prevState) {
-    this.requestSpotlight()
+    this.requestSpotlight();
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { mapLoaded, storyIndex, spotlightData } = this.state;
+    const { mapLoaded, storyIndex } = this.state;
+    const { spotlight } = this.props;
     if (mapLoaded) {
-      if (spotlightData !== prevState.spotlightData) {
-        console.log(spotlightData)
-        this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
+      if (spotlight !== prevProps.spotlight) {
+        const spotlightData = spotlight[stories[storyIndex].spotlightId].getData();
+        if (spotlightData.bounding_box) {
+          this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
+        }
       }
     }
   }
@@ -234,9 +236,10 @@ class Home extends React.Component {
   async requestSpotlight () {
     // showGlobalLoading();
     const req = await this.props.fetchSpotlightSingle(stories[this.state.storyIndex].spotlightId);
+    /*
     this.setState({
       spotlightData: req.data
-    })
+    }) */
 
     // hideGlobalLoading();
   }
@@ -244,7 +247,7 @@ class Home extends React.Component {
   async onMapAction (action, payload) {
     switch (action) {
       case 'map.loaded': {
-        this.setState({ mapLoaded: true, storyIndex: 0}, this.requestSpotlight);
+        this.setState({ mapLoaded: true }, this.requestSpotlight);
         break;
       }
     }
@@ -373,7 +376,17 @@ Home.propTypes = {
 };
 
 function mapStateToProps (state, props) {
-  return {};
+  const spotlight = Object.keys(state.spotlight.single).reduce((accum, key) => {
+    return (
+      {
+        ...accum,
+        [key]: wrapApiResult(getFromState(state, ['spotlight', 'single', key]))
+      }
+    );
+  }, {});
+  return {
+    spotlight
+  };
 }
 
 const mapDispatchToProps = {
