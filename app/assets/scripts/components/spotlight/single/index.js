@@ -176,7 +176,7 @@ class SpotlightAreasSingle extends React.Component {
       : '';
 
     return (
-      <App>
+      <App hideFooter>
         <Inpage isMapCentric>
           <InpageHeader>
             <InpageHeaderInner>
