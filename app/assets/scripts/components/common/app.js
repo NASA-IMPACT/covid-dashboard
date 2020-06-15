@@ -16,7 +16,7 @@ const { appTitle, appDescription } = config;
 
 const Page = styled(SizeAwareElement)`
   display: grid;
-  grid-template-rows: minmax(3rem, min-content) auto 0;
+  grid-template-rows: minmax(2rem, min-content) 1fr ${({ hideFooter }) => hideFooter ? 0 : 'auto'};
   min-height: 100vh;
 `;
 
@@ -59,16 +59,17 @@ class App extends Component {
   }
 
   render () {
-    const { pageTitle, children } = this.props;
+    const { pageTitle, hideFooter, children } = this.props;
     const title = pageTitle ? `${pageTitle} — ` : '';
 
     return (
-      <Page onChange={this.resizeListener}>
+      <Page onChange={this.resizeListener} hideFooter={hideFooter}>
         <MetaTags title={`${title}${appTitle}`} description={appDescription} />
-        <PageHeader useShortTitle={this.state.useShortTitle} useSmallPanel={this.state.useSmallPanel} />
-        <PageBody role='main'>
-          {children}
-        </PageBody>
+        <PageHeader
+          useShortTitle={this.state.useShortTitle}
+          useSmallPanel={this.state.useSmallPanel}
+        />
+        <PageBody role='main'>{children}</PageBody>
         <PageFooter />
       </Page>
     );
@@ -77,6 +78,7 @@ class App extends Component {
 
 App.propTypes = {
   pageTitle: T.string,
+  hideFooter: T.bool,
   children: T.node,
   location: T.object
 };
