@@ -147,8 +147,10 @@ const IntroMedia = styled.figure`
 `;
 
 const IntroStories = styled.section`
-  padding-top: ${glsp()};
-  box-shadow: 0 -1px 0 0 ${themeVal('color.baseAlphaB')};
+  background: ${themeVal('color.primary')};
+  border-radius: ${themeVal('shape.rounded')};
+  padding: ${glsp()};
+  color: ${themeVal('color.surface')};
 `;
 
 const IntroStoriesTitle = styled.h1`
@@ -219,7 +221,7 @@ export default class Home extends React.Component {
                 <IntroStories>
                   <IntroStoriesTitle>Did you know?</IntroStoriesTitle>
                   <Story>
-                    <StoryTitle>The raising of Nitrogen Dioxide</StoryTitle>
+                    <StoryTitle>The rising of nitrogen dioxide levels</StoryTitle>
                     <StoryProse>
                       <p>Since the onset of COVID-19, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in Los Angeles.</p>
                     </StoryProse>
@@ -228,7 +230,7 @@ export default class Home extends React.Component {
                         as='a'
                         title='View the global map'
                         to='/'
-                        variation='primary-raised-dark'
+                        variation='base-raised-light'
                         useIcon={['chevron-right--small', 'after']}
                       >
                         Learn more
