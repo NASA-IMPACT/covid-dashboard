@@ -12,13 +12,27 @@ import Dropdown, {
   DropMenuItem
 } from './dropdown';
 import Form from '../../styles/form/form';
-import { FormGroup } from '../../styles/form/group';
 import FormInput from '../../styles/form/input';
 import collecticon from '../../styles/collecticons';
 
 const ShareIconMenu = styled(DropMenuItem)`
   :before {
     ${({ useIcon }) => collecticon(useIcon)}
+  }
+`;
+
+const FormInputGroup = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto;
+
+  > :first-child:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > :last-child:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 `;
 
@@ -107,7 +121,7 @@ class CopyField extends React.Component {
     const val = this.state.copiedMsg ? 'Copied!' : this.props.value;
     return (
       <Form action='#' className='form'>
-        <div>
+        <FormInputGroup>
           <FormInput
             id='site-url'
             name='site-url'
@@ -128,7 +142,7 @@ class CopyField extends React.Component {
           >
             <span>Copy to clipboard</span>
           </Button>
-        </div>
+        </FormInputGroup>
       </Form>
     );
   }
