@@ -5,7 +5,6 @@ import config from '../../config';
 
 import { Link } from 'react-router-dom';
 import { themeVal } from '../../styles/utils/general';
-import collecticon from '../../styles/collecticons';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
 import { headingAlt } from '../../styles/type/heading';
@@ -113,18 +112,6 @@ const InfoList = styled.dl`
   }
 `;
 
-const CreditsContactButton = styled(Button)`
-  &::before {
-    ${collecticon('envelope')}
-  }
-`;
-
-const CreditsGitHubButton = styled(Button)`
-  &::before {
-    ${collecticon('brand-github')}
-  }
-`;
-
 const PageFooter = props => {
   return (
     <PageFoot role='contentinfo'>
@@ -133,27 +120,29 @@ const PageFooter = props => {
           <InfoList>
             <dt>Technical contact</dt>
             <dd>
-              <CreditsContactButton
+              <Button
                 as='a'
                 href='mailto:manil.maskey@nasa.gov'
                 title='Get in touch'
                 variation='base-plain'
                 size='small'
+                useIcon='envelope'
               >
                 Manil Maskey
-              </CreditsContactButton>
+              </Button>
             </dd>
             <dt>Open source code</dt>
             <dd>
-              <CreditsGitHubButton
+              <Button
                 as='a'
                 href='https://github.com/NASA-IMPACT/covid-dashboard'
                 title='Explore the code'
                 variation='base-plain'
                 size='small'
+                useIcon='brand-github'
               >
                 GitHub
-              </CreditsGitHubButton>
+              </Button>
             </dd>
           </InfoList>
           <Colophon>
