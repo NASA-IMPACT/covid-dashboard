@@ -1,5 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import T from 'prop-types';
+
 import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
@@ -22,6 +24,7 @@ import {
 import Prose from '../../styles/type/prose';
 import MbMap from '../common/mb-map-explore/mb-map';
 import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../redux/spotlight';
+import { wrapApiResult, getFromState } from '../../redux/reduxeed';
 
 import { headingAlt } from '../../styles/type/heading';
 
@@ -202,13 +205,49 @@ const Next = styled(Button)`
 class Home extends React.Component {
   constructor (props) {
     super(props);
-    this.mapRef = React.createRef();
+    this.mbMapRef = React.createRef();
     this.state = {
-      storyIndex: 0
+      storyIndex: 0,
+      mapLoaded: false,
+      spotlightData: null
     };
 
     this.prevStory = this.prevStory.bind(this);
     this.nextStory = this.nextStory.bind(this);
+    this.onMapAction = this.onMapAction.bind(this);
+  }
+
+  componentDidMount (prevProps, prevState) {
+    this.requestSpotlight()
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    const { mapLoaded, storyIndex, spotlightData } = this.state;
+    if (mapLoaded) {
+      if (spotlightData !== prevState.spotlightData) {
+        console.log(spotlightData)
+        this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
+      }
+    }
+  }
+
+  async requestSpotlight () {
+    // showGlobalLoading();
+    const req = await this.props.fetchSpotlightSingle(stories[this.state.storyIndex].spotlightId);
+    this.setState({
+      spotlightData: req.data
+    })
+
+    // hideGlobalLoading();
+  }
+
+  async onMapAction (action, payload) {
+    switch (action) {
+      case 'map.loaded': {
+        this.setState({ mapLoaded: true, storyIndex: 0}, this.requestSpotlight);
+        break;
+      }
+    }
   }
 
   prevStory () {
@@ -216,7 +255,7 @@ class Home extends React.Component {
       return ({
         storyIndex: prevState.storyIndex - 1
       });
-    });
+    }, this.requestSpotlight);
   }
 
   nextStory () {
@@ -224,7 +263,7 @@ class Home extends React.Component {
       return ({
         storyIndex: prevState.storyIndex + 1
       });
-    });
+    }, this.requestSpotlight);
   }
 
   render () {
@@ -292,8 +331,7 @@ class Home extends React.Component {
               */}
               <MbMap
                 ref={this.mbMapRef}
-                onAction={() => {
-                }}
+                onAction={this.onMapAction}
                 layers={[]}
                 activeLayers={[]}
                 // date={this.state.timelineDate}
@@ -330,11 +368,12 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
+  fetchSpotlightSingle: T.func,
+  spotlight: T.object
 };
 
 function mapStateToProps (state, props) {
-  return {
-  };
+  return {};
 }
 
 const mapDispatchToProps = {
