@@ -18,6 +18,7 @@ import { headingAlt } from '../../styles/type/heading';
 
 import Button from '../../styles/button/button';
 import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
+import Share from './share';
 import indicatorsList from '../indicators';
 
 const { appTitle, appVersion, baseUrl } = config;
@@ -51,7 +52,8 @@ const PageHeadline = styled.div`
   display: flex;
   white-space: nowrap;
   align-items: center;
-  margin-right: ${glsp(1)};
+  padding-right: ${glsp()};
+  margin-right: auto;
 `;
 
 const PageTitle = styled.h1`
@@ -159,18 +161,11 @@ const PageTitle = styled.h1`
   }
 `;
 
-const MenuButton = styled(Button)`
-  margin-left: auto;
-
-  ${media.mediumUp`
-    display: none;
-  `}
-`;
-
 const PageNavLarge = styled.nav`
   display: none;
-  margin: 0 0 0 auto;
+  margin: 0;
   padding: 0;
+  order: 2;
 
   ${media.mediumUp`
     display: flex;
@@ -251,11 +246,11 @@ const PageNavSmallInner = styled.div`
   transition: all 0.32s ease 0s;
   transform: translate(100%, 0);
 
-    ${({ revealed }) =>
-      revealed &&
-      css`
-        transform: translate(0, 0);
-      `};
+  ${({ revealed }) =>
+    revealed &&
+    css`
+      transform: translate(0, 0);
+    `};
 `;
 
 const PageNavSmallHeader = styled.header`
@@ -268,15 +263,11 @@ const PageNavSmallHeader = styled.header`
 const PageNavSmallTitle = styled.h2`
   font-size: 1rem;
   line-height: 2rem;
-  margin: 0;
+  margin: 0 auto 0 0;
 `;
 
 const PageNavSmallInnerTitle = styled.h3`
   ${headingAlt}
-`;
-
-const CloseMenuButton = styled(Button)`
-  margin-left: auto;
 `;
 
 const PageNavSmallBody = styled.div`
@@ -318,28 +309,28 @@ class PageHeader extends React.Component {
               </Link>
             </PageTitle>
           </PageHeadline>
-          <MenuButton
-            as='a'
-            to='/'
-            exact
-            hideText
-            useIcon='hamburger-menu'
-            variation='achromic-plain'
-            title='Show menu'
-            onClick={() => this.setState({ panelOpen: true })}
-          >
-            <span>Show menu</span>
-          </MenuButton>
 
           {useSmallPanel ? (
             <>
+              <Share />
+              <Button
+                as='a'
+                to='/'
+                exact
+                hideText
+                useIcon='hamburger-menu'
+                variation='achromic-plain'
+                title='Show menu'
+                onClick={() => this.setState({ panelOpen: true })}
+              >
+                <span>Show menu</span>
+              </Button>
               {this.state.panelOpen && <PageNavSmallGlobalStyle />}
               <PageNavSmall role='navigation' revealed={this.state.panelOpen}>
                 <PageNavSmallInner revealed={this.state.panelOpen}>
                   <PageNavSmallHeader>
                     <PageNavSmallTitle>Menu</PageNavSmallTitle>
-
-                    <CloseMenuButton
+                    <Button
                       as='a'
                       to='/'
                       exact
@@ -350,7 +341,7 @@ class PageHeader extends React.Component {
                       onClick={() => this.setState({ panelOpen: false })}
                     >
                       <span>Hide menu</span>
-                    </CloseMenuButton>
+                    </Button>
                   </PageNavSmallHeader>
                   <PageNavSmallBody>
                     <GlobalMenu>
@@ -573,6 +564,9 @@ class PageHeader extends React.Component {
                   >
                     <span>About</span>
                   </Button>
+                </li>
+                <li>
+                  <Share />
                 </li>
               </GlobalMenu>
             </PageNavLarge>
