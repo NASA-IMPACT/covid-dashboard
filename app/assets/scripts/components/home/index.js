@@ -1,10 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { rgba } from 'polished';
 
-import { themeVal } from '../../styles/utils/general';
+import { themeVal, stylizeFunction } from '../../styles/utils/general';
 import collecticon from '../../styles/collecticons';
 import { visuallyHidden } from '../../styles/helpers';
+
+import { Link, NavLink } from 'react-router-dom';
 
 import App from '../common/app';
 import Button from '../../styles/button/button';
@@ -16,13 +18,14 @@ import {
   InpageTitle,
   InpageBody
 } from '../../styles/inpage';
-import InpageHGroup from '../../styles/inpage-hgroup';
 import Prose from '../../styles/type/prose';
 import { headingAlt } from '../../styles/type/heading';
 
 import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
+
+const _rgba = stylizeFunction(rgba);
 
 const Intro = styled.section`
   position: relative;
@@ -35,7 +38,6 @@ const IntroCopy = styled.div`
   top: ${glsp()};
   left: ${glsp()};
   z-index: 10;
-  background: ${themeVal('color.surface')};
   padding: ${glsp()};
   border-radius: ${themeVal('shape.rounded')};
   max-height: calc(100% - ${glsp(2)});
@@ -44,6 +46,15 @@ const IntroCopy = styled.div`
   overflow-y: auto;
   display: grid;
   grid-gap: ${glsp()} 0;
+
+  ${() => CSS.supports('backdrop-filter', 'blur(0.5rem)')
+    ? css`
+        background: ${_rgba(themeVal('color.surface'), 0.48)};
+        backdrop-filter: blur(0.5rem);
+      ` : css`
+        background: ${_rgba(themeVal('color.surface'), 0.80)};
+      `
+  }
 
   ${media.smallUp`
     max-width: 24rem;
@@ -59,7 +70,7 @@ const IntroCopy = styled.div`
 
   ${media.largeUp`
     max-height: calc(100% - ${glsp(6)});
-    max-width: 44rem;
+    max-width: 36rem;
   `}
 `;
 
@@ -88,19 +99,32 @@ const IntroProse = styled(Prose)`
   background: transparent;
 `;
 
-const IntroActions = styled.div`
-  display: flex;
-  flex-flow: row wrap;
+const IntroStats = styled.div`
+  display: grid;
+  grid-auto-columns: min-content;
+  grid-auto-rows: auto;
+  grid-auto-flow: column;
+  grid-gap: ${glsp(0.25, 1.5)};
+  align-items: end;
 
-  > * {
-    margin: ${glsp(0.5, 1, 0.5, 0)};
-    min-width: 12rem;
+  * {
+    line-height: 1;
+    margin: 0;
   }
 
-  /* stylelint-disable-next-line */
-  ${InpageHGroup} {
+  dt {
+    ${headingAlt}
+    font-size: 0.75rem;
+    line-height: 1;
     grid-row: 1;
-    grid-column: content-start / content-7;
+  }
+
+  dd {
+    font-family: ${themeVal('type.base.family')};
+    font-weight: ${themeVal('type.heading.weight')};
+    font-size: 3rem;
+    line-height: 1;
+    grid-row: 2;
   }
 `;
 
@@ -122,11 +146,41 @@ const IntroMedia = styled.figure`
   }
 `;
 
+const IntroStories = styled.section`
+  padding-top: ${glsp()};
+  box-shadow: 0 -1px 0 0 ${themeVal('color.baseAlphaB')};
+`;
+
+const IntroStoriesTitle = styled.h1`
+  ${headingAlt()}
+  margin: 0;
+`;
+
+const Story = styled.article`
+  display: grid;
+  grid-gap: ${glsp()} 0;
+`;
+
+const StoryTitle = styled.h1`
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  margin: 0;
+`;
+
+const StoryProse = styled(Prose)`
+  display: grid;
+  grid-gap: ${glsp()} 0;
+`;
+
+const StoryActions = styled.div`
+
+`;
+
 const propsToFilter = ['size', 'useIcon', 'variation'];
 const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
 
 export default class Home extends React.Component {
-  render () {
+  render() {
     return (
       <App pageTitle='Home' hideFooter>
         <Inpage isMapCentric>
@@ -146,20 +200,7 @@ export default class Home extends React.Component {
                 </IntroTitle>
                 <IntroProse>
                   <p>
-                    As communities around the world have changed their behavior
-                    in response to the spread of COVID-19, NASA satellites have
-                    observed associated changes in the environment.
-                  </p>
-                  <p>
-                    The NASA COVID-19 data dashboard can be used to explore
-                    these changes on a global scale. Powered by publicly
-                    available NASA Earth observing data, the dashboard
-                    highlights 10 key indicators – 4 environmental and 6
-                    economic – that show how the planet is responding to our
-                    changing behavior in response to COVID-19.
-                  </p>
-                  <p>
-                    Use the dashboard to interact with real NASA data and
+                    Interact with real NASA data and
                     investigate how social distancing measures and regional
                     shelter-in-place guidelines have affected Earth’s air, land,
                     and water. Explore individual &apos;Spotlight Areas&apos; to
@@ -167,37 +208,35 @@ export default class Home extends React.Component {
                     changed through time.
                   </p>
                 </IntroProse>
-                <IntroActions>
-                  <Button
-                    as={CleanNavLink}
-                    size='large'
-                    title='View the global map'
-                    to='/getstarted'
-                    variation='primary-raised-dark'
-                  >
-                    Getting Started
-                  </Button>
-                  <Button
-                    as={CleanNavLink}
-                    size='large'
-                    title='View the Indicators'
-                    to='/indicators'
-                    variation='primary-raised-dark'
-                  >
-                    Indicators
-                  </Button>
-                  <Button
-                    as={CleanNavLink}
-                    size='large'
-                    title='View the Spotlight locations'
-                    to='/spotlight'
-                    variation='primary-raised-dark'
-                  >
-                    Spotlight locations
-                  </Button>
-                </IntroActions>
+                <IntroStats>
+                  <dt>Locations</dt>
+                  <dd><Link to='/spotlight' title='Explore the spotlight areas'>06</Link></dd>
+                  <dt>Indicators</dt>
+                  <dd><Link to='/indicators' title='Learn about the indicators'>20</Link></dd>
+                  <dt>Stories</dt>
+                  <dd><Link to='' title='Dive into the stories'>04</Link></dd>
+                </IntroStats>
+                <IntroStories>
+                  <IntroStoriesTitle>Did you know?</IntroStoriesTitle>
+                  <Story>
+                    <StoryTitle>The raising of Nitrogen Dioxide</StoryTitle>
+                    <StoryProse>
+                      <p>Since the onset of COVID-19, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in Los Angeles.</p>
+                    </StoryProse>
+                    <StoryActions>
+                      <Button
+                        as='a'
+                        title='View the global map'
+                        to='/'
+                        variation='primary-raised-dark'
+                        useIcon={['chevron-right--small', 'after']}
+                      >
+                        Learn more
+                      </Button>
+                    </StoryActions>
+                  </Story>
+                </IntroStories>
               </IntroCopy>
-
               <IntroMedia>
                 <p>A map will appear here.</p>
               </IntroMedia>
