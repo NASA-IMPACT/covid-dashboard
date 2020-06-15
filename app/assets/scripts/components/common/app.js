@@ -14,7 +14,7 @@ import { mediaRanges } from '../../styles/theme/theme';
 
 const { appTitle, appDescription } = config;
 
-const Page = styled(SizeAwareElement)`
+const Page = styled.div`
   display: grid;
   grid-template-rows: minmax(2rem, min-content) 1fr ${({ hideFooter }) => hideFooter ? 0 : 'auto'};
   min-height: 100vh;
@@ -63,7 +63,11 @@ class App extends Component {
     const title = pageTitle ? `${pageTitle} — ` : '';
 
     return (
-      <Page onChange={this.resizeListener} hideFooter={hideFooter}>
+      <SizeAwareElement
+        element={Page}
+        onChange={this.resizeListener}
+        hideFooter={hideFooter}
+      >
         <MetaTags title={`${title}${appTitle}`} description={appDescription} />
         <PageHeader
           useShortTitle={this.state.useShortTitle}
@@ -71,7 +75,7 @@ class App extends Component {
         />
         <PageBody role='main'>{children}</PageBody>
         <PageFooter />
-      </Page>
+      </SizeAwareElement>
     );
   }
 }
