@@ -1,15 +1,16 @@
 import { format, sub } from 'date-fns';
 import bbox from '@turf/bbox';
+import { utcDate } from '../../../utils/utils';
+
+const dateFormats = {
+  month: 'yyyyMM',
+  day: 'yyyy_MM_dd'
+};
 
 const prepDateSource = (source, date, timeUnit = 'month') => {
-  const formats = {
-    month: 'yyyyMM',
-    day: 'yyyy_MM_dd'
-  };
-
   return {
     ...source,
-    tiles: source.tiles.map((t) => t.replace('{date}', format(date, formats[timeUnit])))
+    tiles: source.tiles.map((t) => t.replace('{date}', format(date, dateFormats[timeUnit])))
   };
 };
 
@@ -185,9 +186,11 @@ export const layerTypes = {
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
 
-      const updateDate = date.toISOString().split('T')[0];
-      vector.data = vector.data.replace('{date}', updateDate);
-      raster.tiles = raster.tiles.map(tile => tile.replace('{date}', updateDate));
+      /// const updateDate = date.toISOString().split('T')[0];
+      const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
+
+      vector.data = vector.data.replace('{date}', formatDate);
+      raster.tiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
       replaceVectorData(mbMap, vecId, vector.data);
       replaceRasterTiles(mbMap, rastId, raster.tiles);
     },
@@ -217,11 +220,9 @@ export const layerTypes = {
         'line-opacity': 0.6,
         'line-width': 2
       };
-
-      const initDate = domain[domain.length - 1].replace(/-/g, '_');
-      vector.data = vector.data.replace('{date}', initDate);
-
-      raster.tiles = raster.tiles.map(tile => tile.replace('{date}', initDate));
+      const formatDate = format(utcDate(domain[domain.length - 1]), dateFormats[layerInfo.timeUnit]);
+      vector.data = vector.data.replace('{date}', formatDate);
+      raster.tiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
 
       toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
       toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, vecId);

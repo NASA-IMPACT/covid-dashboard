@@ -26,5 +26,7 @@ export default {
   swatch: {
     color: '#411073',
     name: 'Purple'
-  }
+  },
+  timeUnit: 'day'
+
 };

@@ -304,32 +304,35 @@ function mapStateToProps (state, props) {
             tiles: l.source.tiles.map(t => t.replace('{spotlightName}', spotlightName))
           }
         };
+      } else if (l.type === 'inference-timeseries') {
+        return {
+          ...l,
+          domain: layerProps[l.type].domain,
+          source: {
+            ...l.source,
+            vector: {
+              ...l.source.vector,
+              data: l.source.vector.data.replace('{spotlightId}', spotlightId)
+                .replace('{mlType}', layerProps[l.type].mlTypes[0])
+            },
+            raster: {
+              ...l.source.raster,
+              tiles: l.source.raster.tiles
+                .map(t => t.replace('{spotlightId}', spotlightId)
+                  .replace('{provider}', layerProps[l.type].rasterProvider)
+                )
+            }
+          }
+        };
       } else {
         return {
           ...l,
-          domain: layerProps[l.type] ? layerProps[l.type].domain : l.domain,
+          domain: l.domain,
           enabled: l.id === 'nightlights-hd',
-          source: l.type === 'inference-timeseries'
-            ? {
-              ...l.source,
-              vector: {
-                ...l.source.vector,
-                data: l.source.vector.data.replace('{spotlightId}', spotlightId)
-                  .replace('{mlType}', layerProps[l.type].mlTypes[0])
-
-              },
-              raster: {
-                ...l.source.raster,
-                tiles: l.source.raster.tiles
-                  .map(t => t.replace('{spotlightId}', spotlightId)
-                    .replace('{provider}', layerProps[l.type].rasterProvider)
-                  )
-              }
-            }
-            : {
-              ...l.source,
-              tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
-            }
+          source: {
+            ...l.source,
+            tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+          }
         };
       }
     });
