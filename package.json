@@ -10,7 +10,7 @@
     "name": "Development Seed",
     "url": "https://developmentseed.org"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/NASA-IMPACT/covid-dashboard/issues"
   },
