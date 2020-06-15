@@ -126,7 +126,7 @@ const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
 export default class Home extends React.Component {
   render () {
     return (
-      <App pageTitle='Home'>
+      <App pageTitle='Home' hideFooter>
         <Inpage isMapCentric>
           <InpageHeader>
             <InpageHeaderInner>
