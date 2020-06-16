@@ -40,6 +40,7 @@ import {
   toggleLayerRasterTimeseries,
   getActiveTimeseriesLayers
 } from '../../../utils/map-explore-utils';
+import ExploreNavigation from '../../common/explore-navigation';
 
 const layersBySpotlight = {
   be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
@@ -151,14 +152,15 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   render () {
-    const { spotlight, indicatorGroups } = this.props;
+    const { spotlight, spotlightList, indicatorGroups } = this.props;
 
     if (spotlight.hasError() || indicatorGroups.hasError()) return <UhOh />;
 
     const {
-      label,
       indicators
     } = spotlight.getData();
+
+    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
     const indicatorGroupsData = indicatorGroups.isReady()
       ? indicatorGroups.getData()
@@ -194,15 +196,20 @@ class SpotlightAreasSingle extends React.Component {
                   onPanelChange={this.resizeMap}
                   headerContent={
                     <PanelHeadline>
-                      <Heading as='h2' size='large'>{label}</Heading>
+                      <Heading as='h2' size='large'>Explore</Heading>
                     </PanelHeadline>
                   }
                   bodyContent={
-                    <DataLayersBlock
-                      layers={layers}
-                      mapLoaded={this.state.mapLoaded}
-                      onAction={this.onPanelAction}
-                    />
+                    <>
+                      <ExploreNavigation
+                        spotlights={spotlightAreas || []}
+                      />
+                      <DataLayersBlock
+                        layers={layers}
+                        mapLoaded={this.state.mapLoaded}
+                        onAction={this.onPanelAction}
+                      />
+                    </>
                   }
                 />
                 <ExploreCarto>
@@ -246,6 +253,7 @@ SpotlightAreasSingle.propTypes = {
   fetchSpotlightSingle: T.func,
   mapLayers: T.array,
   spotlight: T.object,
+  spotlightList: T.object,
   indicatorGroups: T.object,
   match: T.object
 };
@@ -300,6 +308,7 @@ function mapStateToProps (state, props) {
 
   return {
     mapLayers: spotlightMapLayers,
+    spotlightList: wrapApiResult(state.spotlight.list),
     spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId])),
     indicatorGroups: wrapApiResult(state.indicators.groups)
   };

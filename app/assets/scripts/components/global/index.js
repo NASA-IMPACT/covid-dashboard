@@ -282,6 +282,7 @@ class GlobalExplore extends React.Component {
   }
 
   render () {
+    const { spotlightList } = this.props;
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
 
@@ -312,6 +313,7 @@ class GlobalExplore extends React.Component {
                 aoiState={this.state.aoi}
                 onAction={this.onPanelAction}
                 onPanelChange={this.resizeMap}
+                spotlightList={spotlightList}
               />
               <ExploreCarto>
                 <MapMessage active={this.state.aoi.drawing}>
@@ -355,7 +357,8 @@ GlobalExplore.propTypes = {
   fetchCogTimeData: T.func,
   invalidateCogTimeData: T.func,
   mapLayers: T.array,
-  cogTimeData: T.object
+  cogTimeData: T.object,
+  spotlightList: T.object
 };
 
 function mapStateToProps (state, props) {
@@ -365,6 +368,7 @@ function mapStateToProps (state, props) {
   ];
 
   return {
+    spotlightList: wrapApiResult(state.spotlight.list),
     mapLayers: allMapLayers.filter(l => layersToUse.includes(l.id)),
     cogTimeData: wrapApiResult(state.cogTimeData, true)
   };
