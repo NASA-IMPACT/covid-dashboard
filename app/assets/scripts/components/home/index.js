@@ -27,12 +27,19 @@ import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../redux/
 import { wrapApiResult, getFromState } from '../../redux/reduxeed';
 
 import { headingAlt } from '../../styles/type/heading';
+import {
+  getLayersWithState,
+  getInitialMapExploreState,
+  toggleLayerRasterTimeseries
+
+} from '../../utils/map-explore-utils';
 
 // import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
 
 import stories from './stories';
+import allMapLayers from '../common/layers';
 
 const _rgba = stylizeFunction(rgba);
 
@@ -201,6 +208,46 @@ const Next = styled(Button)`
 
 // const propsToFilter = ['size', 'useIcon', 'variation'];
 // const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
+//
+const formatLayer = (layer, spotlightId) => {
+  if (layer.id === 'nightlights-viirs') {
+    const spotlightName = {
+      be: 'Beijing',
+      gh: 'EUPorts',
+      du: 'EUPorts',
+      la: 'LosAngeles',
+      sf: 'SanFrancisco',
+      tk: 'Tokyo'
+    }[spotlightId];
+
+    return {
+      ...layer,
+      domain: layer.domain.filter(d => {
+        if (spotlightName === 'Beijing') {
+          const dates = ['2020-03-18'];
+          return !dates.includes(d);
+        } else if (spotlightName === 'EUPorts') {
+          const dates = ['2020-05-05', '2020-05-07', '2020-05-11', '2020-05-13', '2020-05-16', '2020-05-18', '2020-05-19'];
+          return !dates.includes(d);
+        }
+        return true;
+      }),
+      source: {
+        ...layer.source,
+        tiles: layer.source.tiles.map(t => t.replace('{spotlightName}', spotlightName))
+      }
+    };
+  } else {
+    return {
+      ...layer,
+      enabled: layer.id === 'nightlights-hd',
+      source: {
+        ...layer.source,
+        tiles: layer.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
+      }
+    };
+  }
+};
 
 class Home extends React.Component {
   constructor (props) {
@@ -208,12 +255,16 @@ class Home extends React.Component {
     this.mbMapRef = React.createRef();
     this.state = {
       storyIndex: 0,
-      mapLoaded: false
+      mapLoaded: false,
+      activeLayers: [],
+      mapLayers: [],
+      ...getInitialMapExploreState()
     };
 
     this.prevStory = this.prevStory.bind(this);
     this.nextStory = this.nextStory.bind(this);
     this.onMapAction = this.onMapAction.bind(this);
+    this.getLayersWithState = getLayersWithState.bind(this);
   }
 
   componentDidMount (prevProps, prevState) {
@@ -221,16 +272,32 @@ class Home extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { mapLoaded, storyIndex } = this.state;
+    console.log(this.state)
+    const { mapLoaded, storyIndex, mapLayers } = this.state;
     const { spotlight } = this.props;
     if (mapLoaded) {
       if (spotlight !== prevProps.spotlight) {
         const spotlightData = spotlight[stories[storyIndex].spotlightId].getData();
         if (spotlightData.bounding_box) {
+          const storyLayers = stories[storyIndex].layers;
           this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
+          this.setState({
+            activeLayers: storyLayers,
+            mapLayers: allMapLayers.filter(layer => storyLayers.includes(layer.id))
+              .map(layer => { return ({ ...formatLayer(layer, stories[storyIndex].spotlightId), enabled: true }); })
+          });
         }
       }
     }
+  }
+
+  async toggleLayer (layer) {
+    const layerId = layer.id;
+
+    if (layer.type === 'raster-timeseries') {
+      toggleLayerRasterTimeseries.call(this, layer);
+    }
+
   }
 
   async requestSpotlight () {
@@ -263,8 +330,9 @@ class Home extends React.Component {
   }
 
   render () {
-    const { storyIndex } = this.state;
+    const { storyIndex, mapLayers, activeLayers } = this.state;
     const currentStory = stories[storyIndex];
+    // const layers = this.getLayersWithState();
     return (
       <App pageTitle='Home' hideFooter>
         <Inpage isMapCentric>
@@ -328,9 +396,9 @@ class Home extends React.Component {
               <MbMap
                 ref={this.mbMapRef}
                 onAction={this.onMapAction}
-                layers={[]}
-                activeLayers={[]}
-                // date={this.state.timelineDate}
+                layers={mapLayers}
+                activeLayers={activeLayers}
+                date={new Date('03/01/20')}
                 aoiState={null}
                 comparing={false}
                 disableControls
