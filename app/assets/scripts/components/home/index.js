@@ -234,14 +234,7 @@ class Home extends React.Component {
   }
 
   async requestSpotlight () {
-    // showGlobalLoading();
-    const req = await this.props.fetchSpotlightSingle(stories[this.state.storyIndex].spotlightId);
-    /*
-    this.setState({
-      spotlightData: req.data
-    }) */
-
-    // hideGlobalLoading();
+    await this.props.fetchSpotlightSingle(stories[this.state.storyIndex].spotlightId);
   }
 
   async onMapAction (action, payload) {
