@@ -30,7 +30,7 @@ import {
   invalidateCogTimeData as invalidateCogTimeDataAction
 } from '../../redux/cog-time-data';
 import { utcDate } from '../../utils/utils';
-import allMapLayers from '../common/layers';
+import { getGlobalLayers } from '../common/layers';
 import {
   setLayerState,
   getLayerState,
@@ -404,11 +404,9 @@ GlobalExplore.propTypes = {
 };
 
 function mapStateToProps (state, props) {
-  const layersToUse = ['no2', 'gibs-population'];
-
   return {
     spotlightList: wrapApiResult(state.spotlight.list),
-    mapLayers: allMapLayers.filter((l) => layersToUse.includes(l.id)),
+    mapLayers: getGlobalLayers(),
     cogTimeData: wrapApiResult(state.cogTimeData, true)
   };
 }

@@ -17,7 +17,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_{date}_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1e16&color_map=custom_no2&color_formula=gamma r {gamma}`
     ]
   },
-  exclusiveWith: ['gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'sample-ml'],
+  exclusiveWith: ['gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multiple'],
   enabled: true,
   compare: {
     enabled: true,

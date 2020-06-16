@@ -233,7 +233,7 @@ export async function handleMapAction (action, payload) {
           // compare enabled by default.
           // However if the comparison is already enabled, there's no need to
           // enable it again.
-          const enableCompare = isComparing === undefined && l.compare.enabled;
+          const enableCompare = isComparing === undefined && get(l, 'compare.enabled');
           if (enableCompare) {
             toggleLayerCompare.call(this, l);
           }
@@ -305,7 +305,7 @@ export async function toggleLayerCommon (layer, cb) {
   const layerId = layer.id;
   const isEnabled = this.state.activeLayers.includes(layerId);
 
-  if (layer.type === 'raster-timeseries') {
+  if (layer.type === 'raster-timeseries' || layer.type === 'inference-timeseries') {
     toggleLayerRasterTimeseries.call(this, layer);
   }
 
@@ -411,6 +411,6 @@ export function toggleLayerRasterTimeseries (layer) {
 export function getActiveTimeseriesLayers () {
   return this.props.mapLayers.filter(
     (l) =>
-      l.type === 'raster-timeseries' && this.state.activeLayers.includes(l.id)
+      l.type.includes('timeseries') && this.state.activeLayers.includes(l.id)
   );
 }
