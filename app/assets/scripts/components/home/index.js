@@ -30,8 +30,11 @@ import { headingAlt } from '../../styles/type/heading';
 import {
   getLayersWithState,
   getInitialMapExploreState,
-  toggleLayerRasterTimeseries
-
+  getLayerState,
+  setLayerState,
+  toggleLayerCommon,
+  resizeMap,
+  getActiveTimeseriesLayers
 } from '../../utils/map-explore-utils';
 
 // import { filterComponentProps } from '../../utils/utils';
@@ -39,7 +42,7 @@ import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
 
 import stories from './stories';
-import allMapLayers from '../common/layers';
+import { getSpotlightLayers } from '../common/layers';
 
 const _rgba = stylizeFunction(rgba);
 
@@ -209,45 +212,6 @@ const Next = styled(Button)`
 // const propsToFilter = ['size', 'useIcon', 'variation'];
 // const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
 //
-const formatLayer = (layer, spotlightId) => {
-  if (layer.id === 'nightlights-viirs') {
-    const spotlightName = {
-      be: 'Beijing',
-      gh: 'EUPorts',
-      du: 'EUPorts',
-      la: 'LosAngeles',
-      sf: 'SanFrancisco',
-      tk: 'Tokyo'
-    }[spotlightId];
-
-    return {
-      ...layer,
-      domain: layer.domain.filter(d => {
-        if (spotlightName === 'Beijing') {
-          const dates = ['2020-03-18'];
-          return !dates.includes(d);
-        } else if (spotlightName === 'EUPorts') {
-          const dates = ['2020-05-05', '2020-05-07', '2020-05-11', '2020-05-13', '2020-05-16', '2020-05-18', '2020-05-19'];
-          return !dates.includes(d);
-        }
-        return true;
-      }),
-      source: {
-        ...layer.source,
-        tiles: layer.source.tiles.map(t => t.replace('{spotlightName}', spotlightName))
-      }
-    };
-  } else {
-    return {
-      ...layer,
-      enabled: layer.id === 'nightlights-hd',
-      source: {
-        ...layer.source,
-        tiles: layer.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
-      }
-    };
-  }
-};
 
 class Home extends React.Component {
   constructor (props) {
@@ -256,7 +220,7 @@ class Home extends React.Component {
     this.state = {
       storyIndex: 0,
       mapLoaded: false,
-      activeLayers: [],
+      storyLayers: [],
       mapLayers: [],
       ...getInitialMapExploreState()
     };
@@ -265,6 +229,11 @@ class Home extends React.Component {
     this.nextStory = this.nextStory.bind(this);
     this.onMapAction = this.onMapAction.bind(this);
     this.getLayersWithState = getLayersWithState.bind(this);
+    this.getLayerState = getLayerState.bind(this);
+    this.setLayerState = setLayerState.bind(this);
+    this.getActiveTimeseriesLayers = getActiveTimeseriesLayers.bind(this);
+    this.resizeMap = resizeMap.bind(this);
+
   }
 
   componentDidMount (prevProps, prevState) {
@@ -272,32 +241,39 @@ class Home extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    const { mapLoaded, storyIndex } = this.state;
     console.log(this.state)
-    const { mapLoaded, storyIndex, mapLayers } = this.state;
     const { spotlight } = this.props;
+    const { spotlightId, layers } = stories[storyIndex];
     if (mapLoaded) {
       if (spotlight !== prevProps.spotlight) {
-        const spotlightData = spotlight[stories[storyIndex].spotlightId].getData();
+        const spotlightData = spotlight[spotlightId].getData();
         if (spotlightData.bounding_box) {
-          const storyLayers = stories[storyIndex].layers;
+          const storyLayers = layers;
+          console.log(storyLayers)
+          const spotlightLayers = getSpotlightLayers(spotlightId)
+            //.filter(layer => layer.id === 'no2')
+            .map(layer => ({...layer, enabled: storyLayers.includes(layer.id)}));
           this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
           this.setState({
-            activeLayers: storyLayers,
-            mapLayers: allMapLayers.filter(layer => storyLayers.includes(layer.id))
-              .map(layer => { return ({ ...formatLayer(layer, stories[storyIndex].spotlightId), enabled: true }); })
+            storyLayers,
+            mapLayers: spotlightLayers
+          }, () => {
+          for (const l of spotlightLayers) {
+            if (l.enabled && !this.state.activeLayers.includes(l.id)){
+              this.toggleLayer(l);
+            }
+
+          }
           });
+
         }
       }
     }
   }
 
   async toggleLayer (layer) {
-    const layerId = layer.id;
-
-    if (layer.type === 'raster-timeseries') {
-      toggleLayerRasterTimeseries.call(this, layer);
-    }
-
+    toggleLayerCommon.call(this, layer);
   }
 
   async requestSpotlight () {
@@ -330,9 +306,9 @@ class Home extends React.Component {
   }
 
   render () {
-    const { storyIndex, mapLayers, activeLayers } = this.state;
+    const { storyIndex, mapLayers, storyLayers} = this.state;
     const currentStory = stories[storyIndex];
-    // const layers = this.getLayersWithState();
+     const layers = this.getLayersWithState(mapLayers);
     return (
       <App pageTitle='Home' hideFooter>
         <Inpage isMapCentric>
@@ -396,8 +372,8 @@ class Home extends React.Component {
               <MbMap
                 ref={this.mbMapRef}
                 onAction={this.onMapAction}
-                layers={mapLayers}
-                activeLayers={activeLayers}
+                layers={layers}
+                activeLayers={this.state.activeLayers}
                 date={new Date('03/01/20')}
                 aoiState={null}
                 comparing={false}
