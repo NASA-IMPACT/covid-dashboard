@@ -309,7 +309,7 @@ class Home extends React.Component {
                     </StoryProse>
                     <StoryActions>
                       <Button
-                        as='a'
+                        element='a'
                         title='View the global map'
                         to='/'
                         variation='base-raised-light'
