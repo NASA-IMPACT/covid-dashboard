@@ -14,6 +14,8 @@ import Heading from '../../styles/type/heading';
 import FilterAoi from './filter-aoi';
 import ExploreNavigation from '../common/explore-navigation';
 
+import { isLargeViewport } from '../../styles/utils/media-queries';
+
 const PrimePanel = styled(Panel)`
   width: 18rem;
 `;
@@ -36,6 +38,7 @@ class ExpMapPrimePanel extends React.Component {
         collapsible
         direction='left'
         onPanelChange={onPanelChange}
+        initialState={isLargeViewport()}
         headerContent={(
           <PanelHeadline>
             <Heading as='h2' size='large'>Explore</Heading>

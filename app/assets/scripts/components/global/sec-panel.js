@@ -13,6 +13,7 @@ import ShadowScrollbar from '../common/shadow-scrollbar';
 
 import { glsp } from '../../styles/utils/theme-values';
 import { utcDate } from '../../utils/utils';
+import { isLargeViewport } from '../../styles/utils/media-queries';
 
 const BodyScroll = styled(ShadowScrollbar)`
   flex: 1;
@@ -71,6 +72,7 @@ class ExpMapSecPanel extends React.Component {
         collapsible
         direction='right'
         onPanelChange={this.props.onPanelChange}
+        initialState={isLargeViewport()}
         headerContent={
           <PanelHeadline>
             <PanelTitle>Insights</PanelTitle>

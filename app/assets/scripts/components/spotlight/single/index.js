@@ -45,6 +45,7 @@ import {
   toggleLayerCommon
 } from '../../../utils/map-explore-utils';
 import QsState from '../../../utils/qs-state';
+import { isLargeViewport } from '../../../styles/utils/media-queries';
 
 const layersBySpotlight = {
   be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
@@ -209,6 +210,7 @@ class SpotlightAreasSingle extends React.Component {
                   collapsible
                   direction='left'
                   onPanelChange={this.resizeMap}
+                  initialState={isLargeViewport()}
                   headerContent={
                     <PanelHeadline>
                       <Heading as='h2' size='large'>
