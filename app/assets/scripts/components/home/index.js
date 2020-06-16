@@ -350,7 +350,7 @@ class Home extends React.Component {
                 to='/'
                 disabled={storyIndex === stories.length - 1}
                 variation='base-raised-light'
-                useIcon={['chevron-right--small', 'after']}
+                useIcon='chevron-right--small'
                 hideText
                 onClick={this.nextStory}
               />
