@@ -78,3 +78,7 @@ You can use (${label}${range[0] === null ? 'Down' : 'Up'}) instead.
 }, {});
 
 export default media;
+
+export function isLargeViewport () {
+  return document.body.clientWidth >= mediaRanges.large[0];
+}
