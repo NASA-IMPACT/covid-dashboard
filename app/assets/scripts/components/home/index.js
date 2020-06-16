@@ -333,6 +333,7 @@ class Home extends React.Component {
                 // date={this.state.timelineDate}
                 aoiState={null}
                 comparing={false}
+                disableControls
               />
               <Previous
                 as='a'

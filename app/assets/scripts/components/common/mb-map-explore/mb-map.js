@@ -205,13 +205,15 @@ class MbMap extends React.Component {
     this.mbMap.touchZoomRotate.disableRotation();
 
     // Add zoom controls.
-    this.mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    if (!this.props.disableControls) {
+      this.mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+      // Remove compass.
+      document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+    }
 
     // Style attribution
     this.mbMap.addControl(new mapboxgl.AttributionControl({ compact: true }));
-
-    // Remove compass.
-    document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
 
     // Setup the AIO drawing functions.
     if (this.props.aoiState) {
@@ -266,7 +268,8 @@ MbMap.propTypes = {
   aoiState: T.object,
   comparing: T.bool,
   activeLayers: T.array,
-  layers: T.array
+  layers: T.array,
+  disableControls: T.bool
 };
 
 export default withTheme(MbMap);
