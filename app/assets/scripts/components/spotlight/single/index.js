@@ -31,7 +31,7 @@ import {
   showGlobalLoading,
   hideGlobalLoading
 } from '../../common/global-loading';
-import allMapLayers from '../../common/layers';
+import { getSpotlightLayers } from '../../common/layers';
 import {
   setLayerState,
   getLayerState,
@@ -46,32 +46,6 @@ import {
 } from '../../../utils/map-explore-utils';
 import QsState from '../../../utils/qs-state';
 import { isLargeViewport } from '../../../styles/utils/media-queries';
-
-const layersBySpotlight = {
-  be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
-  du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  la: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection'],
-  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection'],
-  tk: ['no2', 'nightlights-hd', 'nightlights-viirs']
-};
-
-const layerPropsBySpotlight = {
-  la: {
-    'inference-timeseries': {
-      domain: ['2020-01-02', '2020-02-13'],
-      mlTypes: ['multiple'],
-      rasterProvider: 'planet_mosaic'
-    }
-  },
-  sf: {
-    'inference-timeseries': {
-      domain: ['2020-03-11'],
-      mlTypes: ['ship'],
-      rasterProvider: 'planet'
-    }
-  }
-};
 
 const ExploreCanvas = styled.div`
   display: grid;
@@ -300,87 +274,9 @@ SpotlightAreasSingle.propTypes = {
 
 function mapStateToProps (state, props) {
   const { spotlightId } = props.match.params;
-  const layersToUse = layersBySpotlight[spotlightId] || [];
-  const layerProps = layerPropsBySpotlight[spotlightId];
-  // Filter by the layers to include &
-  // Replace the {site} property on the layers
-  const spotlightMapLayers = allMapLayers
-    .filter((l) => layersToUse.includes(l.id))
-    .map((l) => {
-      // This layer requires a special handling.
-      if (l.id === 'nightlights-viirs') {
-        const spotlightName = {
-          be: 'Beijing',
-          gh: 'EUPorts',
-          du: 'EUPorts',
-          la: 'LosAngeles',
-          sf: 'SanFrancisco',
-          tk: 'Tokyo'
-        }[spotlightId];
-
-        return {
-          ...l,
-          domain: l.domain.filter((d) => {
-            if (spotlightName === 'Beijing') {
-              const dates = ['2020-03-18'];
-              return !dates.includes(d);
-            } else if (spotlightName === 'EUPorts') {
-              const dates = [
-                '2020-05-05',
-                '2020-05-07',
-                '2020-05-11',
-                '2020-05-13',
-                '2020-05-16',
-                '2020-05-18',
-                '2020-05-19'
-              ];
-              return !dates.includes(d);
-            }
-            return true;
-          }),
-          source: {
-            ...l.source,
-            tiles: l.source.tiles.map((t) =>
-              t.replace('{spotlightName}', spotlightName)
-            )
-          }
-        };
-      } else if (l.type === 'inference-timeseries') {
-        return {
-          ...l,
-          domain: layerProps[l.type].domain,
-          source: {
-            ...l.source,
-            vector: {
-              ...l.source.vector,
-              data: l.source.vector.data.replace('{spotlightId}', spotlightId)
-                .replace('{mlType}', layerProps[l.type].mlTypes[0])
-            },
-            raster: {
-              ...l.source.raster,
-              tiles: l.source.raster.tiles
-                .map(t => t.replace('{spotlightId}', spotlightId)
-                  .replace('{provider}', layerProps[l.type].rasterProvider)
-                )
-            }
-          }
-        };
-      } else {
-        return {
-          ...l,
-          domain: l.domain,
-          source: {
-            ...l.source,
-            tiles: l.source.tiles.map((t) =>
-              t.replace('{spotlightId}', spotlightId)
-            )
-          }
-        };
-      }
-    });
 
   return {
-    mapLayers: spotlightMapLayers,
+    mapLayers: getSpotlightLayers(spotlightId),
     spotlightList: wrapApiResult(state.spotlight.list),
     spotlight: wrapApiResult(
       getFromState(state, ['spotlight', 'single', spotlightId])

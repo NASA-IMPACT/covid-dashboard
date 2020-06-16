@@ -305,7 +305,7 @@ export async function toggleLayerCommon (layer, cb) {
   const layerId = layer.id;
   const isEnabled = this.state.activeLayers.includes(layerId);
 
-  if (layer.type === 'raster-timeseries') {
+  if (layer.type === 'raster-timeseries' || layer.type === 'inference-timeseries') {
     toggleLayerRasterTimeseries.call(this, layer);
   }
 
