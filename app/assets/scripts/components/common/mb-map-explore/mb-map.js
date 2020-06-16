@@ -8,10 +8,11 @@ import config from '../../../config';
 import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
+import { round } from '../../../utils/format';
 
 const {
   center,
-  zoom,
+  zoom: defaultZoom,
   minZoom,
   maxZoom,
   styleUrl
@@ -178,10 +179,16 @@ class MbMap extends React.Component {
   }
 
   initMap () {
+    const { lng, lat, zoom } = this.props.position || {
+      lng: center[0],
+      lat: center[1],
+      zoom: defaultZoom
+    };
+
     this.mbMap = new mapboxgl.Map({
       attributionControl: false,
       container: this.mapContainer,
-      center: center,
+      center: [lng, lat],
       zoom: zoom || 5,
       minZoom: minZoom || 4,
       maxZoom: maxZoom || 9,
@@ -224,6 +231,14 @@ class MbMap extends React.Component {
         });
       }
     });
+
+    this.mbMap.on('moveend', () => {
+      this.props.onAction('map.move', {
+        lng: round(this.mbMap.getCenter().lng, 4),
+        lat: round(this.mbMap.getCenter().lat, 4),
+        zoom: round(this.mbMap.getZoom(), 2)
+      });
+    });
   }
 
   render () {
@@ -247,6 +262,7 @@ class MbMap extends React.Component {
 MbMap.propTypes = {
   onAction: T.func,
   theme: T.object,
+  position: T.object,
   aoiState: T.object,
   comparing: T.bool,
   activeLayers: T.array,

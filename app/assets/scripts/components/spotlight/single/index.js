@@ -152,7 +152,7 @@ class SpotlightAreasSingle extends React.Component {
     // Extend the map.loaded action
     switch (action) {
       case 'map.loaded':
-        {
+        if (this.state.mapPos === null) {
           const spotlightData = this.props.spotlight.getData();
           this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
         }
@@ -233,6 +233,7 @@ class SpotlightAreasSingle extends React.Component {
                   </MapMessage>
                   <MbMap
                     ref={this.mbMapRef}
+                    position={this.state.mapPos}
                     onAction={this.onMapAction}
                     layers={layers}
                     activeLayers={this.state.activeLayers}

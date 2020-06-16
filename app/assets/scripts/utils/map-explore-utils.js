@@ -1,7 +1,7 @@
 import get from 'lodash.get';
+import { isWithinInterval, isEqual, format } from 'date-fns';
 
 import { utcDate } from './utils';
-import { isWithinInterval, isEqual, format } from 'date-fns';
 
 /*
   The function exported by this file are to be understood as mixins for any
@@ -25,12 +25,27 @@ export function getInitialMapExploreState () {
       // }
     },
     timelineDate: null,
-    mapLoaded: false
+    mapLoaded: false,
+    mapPos: null
   };
 }
 
 export function getCommonQsState () {
   return {
+    map: {
+      accessor: 'mapPos',
+      default: null,
+      hydrator: (v) => {
+        if (!v) return null;
+        const [lng, lat, zoom] = v.split(',').map(Number);
+        return { lng, lat, zoom };
+      },
+      dehydrator: (v) => {
+        if (!v) return null;
+        const { lng, lat, zoom } = v;
+        return [lng, lat, zoom].join(',');
+      }
+    },
     layers: {
       accessor: 'activeLayers',
       default: [],
@@ -224,6 +239,11 @@ export async function handleMapAction (action, payload) {
           }
         }
       }
+      break;
+    case 'map.move':
+      this.setState({ mapPos: payload }, () => {
+        this.updateUrlQS();
+      });
       break;
     default:
       return false;

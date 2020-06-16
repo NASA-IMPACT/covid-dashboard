@@ -363,6 +363,7 @@ class GlobalExplore extends React.Component {
                 </MapMessage>
                 <MbMap
                   ref={this.mbMapRef}
+                  position={this.state.mapPos}
                   onAction={this.onMapAction}
                   layers={layers}
                   activeLayers={this.state.activeLayers}
