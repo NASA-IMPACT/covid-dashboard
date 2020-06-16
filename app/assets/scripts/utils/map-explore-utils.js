@@ -138,7 +138,7 @@ export function getLayerState (id, prop) {
  */
 export function getLayersWithState (layers) {
   const { activeLayers, layersState } = this.state;
-  const mapLayers = layers? layers : this.props.mapLayers
+  const mapLayers = layers || this.props.mapLayers;
   return mapLayers.map((l) => {
     // Get additional propertied from the layerData array.
     const extra = layersState[l.id] || {};

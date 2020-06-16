@@ -24,7 +24,7 @@ import {
 import Prose from '../../styles/type/prose';
 import MbMap from '../common/mb-map-explore/mb-map';
 import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../redux/spotlight';
-import { wrapApiResult, getFromState } from '../../redux/reduxeed';
+import { wrapApiResult } from '../../redux/reduxeed';
 
 import { headingAlt } from '../../styles/type/heading';
 import {
@@ -220,7 +220,6 @@ class Home extends React.Component {
     this.state = {
       storyIndex: 0,
       mapLoaded: false,
-      storyLayers: [],
       mapLayers: [],
       ...getInitialMapExploreState()
     };
@@ -233,7 +232,6 @@ class Home extends React.Component {
     this.setLayerState = setLayerState.bind(this);
     this.getActiveTimeseriesLayers = getActiveTimeseriesLayers.bind(this);
     this.resizeMap = resizeMap.bind(this);
-
   }
 
   componentDidMount (prevProps, prevState) {
@@ -242,7 +240,6 @@ class Home extends React.Component {
 
   componentDidUpdate (prevProps, prevState) {
     const { mapLoaded, storyIndex } = this.state;
-    console.log(this.state)
     const { spotlight } = this.props;
     const { spotlightId, layers } = stories[storyIndex];
     if (mapLoaded) {
@@ -250,23 +247,18 @@ class Home extends React.Component {
         const spotlightData = spotlight[spotlightId].getData();
         if (spotlightData.bounding_box) {
           const storyLayers = layers;
-          console.log(storyLayers)
           const spotlightLayers = getSpotlightLayers(spotlightId)
-            //.filter(layer => layer.id === 'no2')
-            .map(layer => ({...layer, enabled: storyLayers.includes(layer.id)}));
+            .map(layer => ({ ...layer, enabled: storyLayers.includes(layer.id) }));
           this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
           this.setState({
-            storyLayers,
             mapLayers: spotlightLayers
           }, () => {
-          for (const l of spotlightLayers) {
-            if (l.enabled && !this.state.activeLayers.includes(l.id)){
-              this.toggleLayer(l);
+            for (const l of spotlightLayers) {
+              if (l.enabled && !this.state.activeLayers.includes(l.id)) {
+                this.toggleLayer(l);
+              }
             }
-
-          }
           });
-
         }
       }
     }
@@ -306,9 +298,9 @@ class Home extends React.Component {
   }
 
   render () {
-    const { storyIndex, mapLayers, storyLayers} = this.state;
+    const { storyIndex, mapLayers } = this.state;
     const currentStory = stories[storyIndex];
-     const layers = this.getLayersWithState(mapLayers);
+    const layers = this.getLayersWithState(mapLayers);
     return (
       <App pageTitle='Home' hideFooter>
         <Inpage isMapCentric>
@@ -388,7 +380,9 @@ class Home extends React.Component {
                 useIcon='chevron-left--small'
                 hideText
                 onClick={this.prevStory}
-              />
+              >
+                Previous
+              </Previous>
               <Next
                 element='a'
                 title='Previous story'
@@ -398,7 +392,9 @@ class Home extends React.Component {
                 useIcon='chevron-right--small'
                 hideText
                 onClick={this.nextStory}
-              />
+              >
+                Next
+              </Next>
 
             </Intro>
           </InpageBody>

@@ -153,7 +153,6 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   async toggleLayer (layer) {
-    console.log('toggle')
     toggleLayerCommon.call(this, layer, () => {
       this.updateUrlQS();
     });
