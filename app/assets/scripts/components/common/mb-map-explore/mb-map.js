@@ -8,10 +8,11 @@ import config from '../../../config';
 import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
+import { round } from '../../../utils/format';
 
 const {
   center,
-  zoom,
+  zoom: defaultZoom,
   minZoom,
   maxZoom,
   styleUrl
@@ -81,35 +82,7 @@ class MbMap extends React.Component {
     // Compare Maps
     if (comparing !== prevProps.comparing) {
       if (comparing) {
-        this.mbMap.resize();
-        this.mbMapComparing = new mapboxgl.Map({
-          attributionControl: false,
-          container: this.mapContainerComparing,
-          center: this.mbMap.getCenter(),
-          zoom: this.mbMap.getZoom(),
-          minZoom: minZoom || 4,
-          maxZoom: maxZoom || 9,
-          style: styleUrl,
-          pitchWithRotate: false,
-          dragRotate: false,
-          logoPosition: 'bottom-left'
-        });
-
-        // Add zoom controls.
-        this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
-
-        // Style attribution.
-        this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
-
-        // Remove compass.
-        document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
-
-        this.mbMapComparing.once('load', () => {
-          this.mbMapComparingLoaded = true;
-          this.updateActiveLayers(prevProps);
-        });
-
-        this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
+        this.enableCompare(prevProps);
       } else {
         if (this.compareControl) {
           this.compareControl.remove();
@@ -163,6 +136,38 @@ class MbMap extends React.Component {
     }
   }
 
+  enableCompare (prevProps) {
+    this.mbMap.resize();
+    this.mbMapComparing = new mapboxgl.Map({
+      attributionControl: false,
+      container: this.mapContainerComparing,
+      center: this.mbMap.getCenter(),
+      zoom: this.mbMap.getZoom(),
+      minZoom: minZoom || 4,
+      maxZoom: maxZoom || 9,
+      style: styleUrl,
+      pitchWithRotate: false,
+      dragRotate: false,
+      logoPosition: 'bottom-left'
+    });
+
+    // Add zoom controls.
+    this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    // Style attribution.
+    this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
+
+    // Remove compass.
+    document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
+    this.mbMapComparing.once('load', () => {
+      this.mbMapComparingLoaded = true;
+      this.updateActiveLayers(prevProps);
+    });
+
+    this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
+  }
+
   updateActiveLayers (prevProps) {
     this.props.activeLayers.forEach((layerId) => {
       const layerInfo = this.props.layers.find((l) => l.id === layerId);
@@ -174,10 +179,16 @@ class MbMap extends React.Component {
   }
 
   initMap () {
+    const { lng, lat, zoom } = this.props.position || {
+      lng: center[0],
+      lat: center[1],
+      zoom: defaultZoom
+    };
+
     this.mbMap = new mapboxgl.Map({
       attributionControl: false,
       container: this.mapContainer,
-      center: center,
+      center: [lng, lat],
       zoom: zoom || 5,
       minZoom: minZoom || 4,
       maxZoom: maxZoom || 9,
@@ -211,6 +222,22 @@ class MbMap extends React.Component {
 
     this.mbMap.on('load', () => {
       this.props.onAction('map.loaded');
+
+      if (this.props.comparing) {
+        // Fake previous props to simulate the enabling of the compare option.
+        this.enableCompare({
+          ...this.props,
+          comparing: false
+        });
+      }
+    });
+
+    this.mbMap.on('moveend', () => {
+      this.props.onAction('map.move', {
+        lng: round(this.mbMap.getCenter().lng, 4),
+        lat: round(this.mbMap.getCenter().lat, 4),
+        zoom: round(this.mbMap.getZoom(), 2)
+      });
     });
   }
 
@@ -235,6 +262,7 @@ class MbMap extends React.Component {
 MbMap.propTypes = {
   onAction: T.func,
   theme: T.object,
+  position: T.object,
   aoiState: T.object,
   comparing: T.bool,
   activeLayers: T.array,

@@ -12,11 +12,12 @@ import {
 } from '../../common/panel-block';
 import { Accordion, AccordionFold } from '../../common/accordion';
 import Heading from '../../../styles/type/heading';
+import Prose from '../../../styles/type/prose';
 
 import { glsp } from '../../../styles/utils/theme-values';
 import { utcDate } from '../../../utils/utils';
 import collecticon from '../../../styles/collecticons';
-import Prose from '../../../styles/type/prose';
+import { isLargeViewport } from '../../../styles/utils/media-queries';
 
 const PanelSelf = styled(Panel)`
   width: 30rem;
@@ -80,6 +81,7 @@ export default function SecPanel (props) {
       collapsible
       direction='right'
       onPanelChange={onPanelChange}
+      initialState={isLargeViewport()}
       headerContent={
         <PanelHeadline>
           <PanelTitle>Insights</PanelTitle>
@@ -132,9 +134,9 @@ export default function SecPanel (props) {
                                   yUnit={ind.units}
                                   selectedDate={selectedDate}
                                   highlightBands={
-                                    ind.highlightBands &&
-                                    ind.highlightBands.length
-                                      ? ind.highlightBands
+                                    ind.highlight_bands &&
+                                    ind.highlight_bands.length
+                                      ? ind.highlight_bands
                                       : null
                                   }
                                   noBaseline={
