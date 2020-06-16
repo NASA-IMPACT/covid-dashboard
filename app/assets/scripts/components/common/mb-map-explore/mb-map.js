@@ -81,35 +81,7 @@ class MbMap extends React.Component {
     // Compare Maps
     if (comparing !== prevProps.comparing) {
       if (comparing) {
-        this.mbMap.resize();
-        this.mbMapComparing = new mapboxgl.Map({
-          attributionControl: false,
-          container: this.mapContainerComparing,
-          center: this.mbMap.getCenter(),
-          zoom: this.mbMap.getZoom(),
-          minZoom: minZoom || 4,
-          maxZoom: maxZoom || 9,
-          style: styleUrl,
-          pitchWithRotate: false,
-          dragRotate: false,
-          logoPosition: 'bottom-left'
-        });
-
-        // Add zoom controls.
-        this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
-
-        // Style attribution.
-        this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
-
-        // Remove compass.
-        document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
-
-        this.mbMapComparing.once('load', () => {
-          this.mbMapComparingLoaded = true;
-          this.updateActiveLayers(prevProps);
-        });
-
-        this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
+        this.enableCompare(prevProps);
       } else {
         if (this.compareControl) {
           this.compareControl.remove();
@@ -163,6 +135,38 @@ class MbMap extends React.Component {
     }
   }
 
+  enableCompare (prevProps) {
+    this.mbMap.resize();
+    this.mbMapComparing = new mapboxgl.Map({
+      attributionControl: false,
+      container: this.mapContainerComparing,
+      center: this.mbMap.getCenter(),
+      zoom: this.mbMap.getZoom(),
+      minZoom: minZoom || 4,
+      maxZoom: maxZoom || 9,
+      style: styleUrl,
+      pitchWithRotate: false,
+      dragRotate: false,
+      logoPosition: 'bottom-left'
+    });
+
+    // Add zoom controls.
+    this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    // Style attribution.
+    this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
+
+    // Remove compass.
+    document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
+    this.mbMapComparing.once('load', () => {
+      this.mbMapComparingLoaded = true;
+      this.updateActiveLayers(prevProps);
+    });
+
+    this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
+  }
+
   updateActiveLayers (prevProps) {
     this.props.activeLayers.forEach((layerId) => {
       const layerInfo = this.props.layers.find((l) => l.id === layerId);
@@ -211,6 +215,14 @@ class MbMap extends React.Component {
 
     this.mbMap.on('load', () => {
       this.props.onAction('map.loaded');
+
+      if (this.props.comparing) {
+        // Fake previous props to simulate the enabling of the compare option.
+        this.enableCompare({
+          ...this.props,
+          comparing: false
+        });
+      }
     });
   }
 
