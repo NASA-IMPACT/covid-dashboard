@@ -341,7 +341,7 @@ class Home extends React.Component {
                 disabled={storyIndex === 0}
                 to='/'
                 variation='base-raised-light'
-                useIcon={['chevron-left--small', 'after']}
+                useIcon='chevron-left--small'
                 hideText
                 onClick={this.prevStory}
               />
