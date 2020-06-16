@@ -335,7 +335,7 @@ class Home extends React.Component {
                 comparing={false}
               />
               <Previous
-                as='a'
+                element='a'
                 title='Previous story'
                 disabled={storyIndex === 0}
                 to='/'
