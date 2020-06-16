@@ -336,7 +336,7 @@ class Home extends React.Component {
                 disableControls
               />
               <Previous
-                as='a'
+                element='a'
                 title='Previous story'
                 disabled={storyIndex === 0}
                 to='/'
