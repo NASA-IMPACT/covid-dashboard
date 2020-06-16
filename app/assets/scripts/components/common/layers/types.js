@@ -1,5 +1,6 @@
 import { format, sub } from 'date-fns';
 import bbox from '@turf/bbox';
+
 import { utcDate } from '../../../utils/utils';
 
 const dateFormats = {
@@ -186,13 +187,12 @@ export const layerTypes = {
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
 
-      /// const updateDate = date.toISOString().split('T')[0];
       const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
+      const vectorData = vector.data.replace('{date}', formatDate);
+      const rasterTiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
 
-      vector.data = vector.data.replace('{date}', formatDate);
-      raster.tiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
-      replaceVectorData(mbMap, vecId, vector.data);
-      replaceRasterTiles(mbMap, rastId, raster.tiles);
+      replaceVectorData(mbMap, vecId, vectorData);
+      replaceRasterTiles(mbMap, rastId, rasterTiles);
     },
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
@@ -221,13 +221,19 @@ export const layerTypes = {
         'line-width': 2
       };
       const formatDate = format(utcDate(domain[domain.length - 1]), dateFormats[layerInfo.timeUnit]);
-      vector.data = vector.data.replace('{date}', formatDate);
-      raster.tiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
+      const vectorL = {
+        ...vector,
+        data: vector.data.replace('{date}', formatDate)
+      };
+      const rasterL = {
+        ...raster,
+        tiles: raster.tiles.map(tile => tile.replace('{date}', formatDate))
+      };
 
-      toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
-      toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, vecId);
+      toggleOrAddLayer(mbMap, vecId, vectorL, 'line', inferPaint, 'admin-0-boundary-bg');
+      toggleOrAddLayer(mbMap, rastId, rasterL, 'raster', {}, vecId);
 
-      fetch(vector.data)
+      fetch(vectorL.data)
         .then(res => res.json())
         .then(geo => {
           mbMap.fitBounds(bbox(geo));
