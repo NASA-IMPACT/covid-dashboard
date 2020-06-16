@@ -233,7 +233,7 @@ export async function handleMapAction (action, payload) {
           // compare enabled by default.
           // However if the comparison is already enabled, there's no need to
           // enable it again.
-          const enableCompare = isComparing === undefined && l.compare.enabled;
+          const enableCompare = isComparing === undefined && get(l, 'compare.enabled');
           if (enableCompare) {
             toggleLayerCompare.call(this, l);
           }
