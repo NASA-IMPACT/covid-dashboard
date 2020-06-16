@@ -369,16 +369,8 @@ Home.propTypes = {
 };
 
 function mapStateToProps (state, props) {
-  const spotlight = Object.keys(state.spotlight.single).reduce((accum, key) => {
-    return (
-      {
-        ...accum,
-        [key]: wrapApiResult(getFromState(state, ['spotlight', 'single', key]))
-      }
-    );
-  }, {});
   return {
-    spotlight
+    spotlight: wrapApiResult(state.spotlight.single, true)
   };
 }
 
