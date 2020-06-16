@@ -97,29 +97,23 @@ class Root extends React.Component {
                 <GlobalStyles />
                 <Switch>
                   <Route exact path='/' component={Home} />
-
                   <Route
                     exact
                     path='/getstarted'
                     component={GetStartedHub}
                   />
-
                   <Route
                     exact
                     path='/explore'
                     component={SpotlightHub}
                   />
-
-                  <LargeOnlyRoute
-                    isLargeUp={isLargeUp}
+                  <Route
                     exact
                     path='/explore/global'
                     component={GlobalExplore}
                   />
-
-                  <LargeOnlyRoute
+                  <Route
                     exact
-                    isLargeUp={isLargeUp}
                     path='/explore/:spotlightId'
                     component={SpotlightSingle}
                   />
