@@ -16,8 +16,25 @@ export default {
     const { svg, xScale } = ctx;
     const { left, top } = ctx.margin;
     const { height } = ctx.getSize();
+    const { timeUnit } = ctx.props;
+
+    /**
+     * Set a tick interval from timeUnit, default is every one month.
+     */
+    let tickInterval;
+    switch (timeUnit) {
+      case 'day':
+        tickInterval = d3.timeDay.every(1);
+        break;
+      case 'year':
+        tickInterval = d3.timeYear.every(1);
+        break;
+      default:
+        tickInterval = d3.timeMonth.every(1);
+    }
 
     const xAxis = d3fc.axisBottom(xScale)
+      .ticks(tickInterval)
       .tickFormat(d3.timeFormat('%b \'%y'));
 
     svg.select('.x.axis')
