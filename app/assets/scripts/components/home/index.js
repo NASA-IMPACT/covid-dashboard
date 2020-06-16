@@ -346,7 +346,7 @@ class Home extends React.Component {
                 onClick={this.prevStory}
               />
               <Next
-                as='a'
+                element='a'
                 title='Previous story'
                 to='/'
                 disabled={storyIndex === stories.length - 1}
