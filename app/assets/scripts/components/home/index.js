@@ -344,6 +344,7 @@ class Home extends React.Component {
                       <Button
                         element='a'
                         title='Explore the data'
+                        href={currentStory.link}
                         to={currentStory.link}
                         variation='base-raised-light'
                         useIcon={['chevron-right--small', 'after']}
