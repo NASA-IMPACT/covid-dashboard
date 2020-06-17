@@ -54,6 +54,14 @@ const PopoverSelf = styled.article`
   padding: ${glsp(0.25, 0.5)};
   transform: translate(-50%, -100%);
   margin-top: -0.5rem;
+  white-space: nowrap;
+
+  ${({ direction }) => direction === 'left' && css`
+    transform: translate(-100%, -100%);
+  `}
+  ${({ direction }) => direction === 'right' && css`
+    transform: translate(0, -100%);
+  `}
 `;
 
 export default function Popover ({

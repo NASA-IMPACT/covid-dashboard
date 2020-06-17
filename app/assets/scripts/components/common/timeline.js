@@ -6,6 +6,7 @@ import { add, sub, format, isSameMonth, isSameDay } from 'date-fns';
 import Button from '../../styles/button/button';
 import ButtonGroup from '../../styles/button/group';
 import DataBrowserChart from './data-browser/chart';
+import ShadowScrollbar from './shadow-scrollbar';
 
 import { panelSkin } from '../../styles/skins';
 import { glsp } from '../../styles/utils/theme-values';
@@ -65,6 +66,7 @@ const ExploreDataBrowser = styled.section`
   position: relative;
   display: flex;
   flex-flow: column;
+  min-width: 0;
 `;
 
 const ExploreDataBrowserHeader = styled.header`
@@ -93,7 +95,8 @@ const TimelineExpanderButton = styled(Button)`
 `;
 
 const ExploreDataBrowserBody = styled.div`
-  height: auto;
+  display: flex;
+  height: 6rem;
   max-height: 0;
   opacity: 0;
   overflow: hidden;
@@ -124,6 +127,11 @@ const ExploreDataBrowserActions = styled.div`
 
 const CurrentDate = styled.p`
   font-weight: ${themeVal('type.base.bold')};
+`;
+
+export const DataBrowserBodyScroll = styled(ShadowScrollbar)`
+  flex: 1;
+  z-index: 1;
 `;
 
 class Timeline extends React.Component {
@@ -176,12 +184,6 @@ class Timeline extends React.Component {
             </ExploreDataBrowserTitle>
           </ExploreDataBrowserHeadline>
           <ExploreDataBrowserActions>
-            {/* <DatePicker
-              dateState={date}
-              dateDomain={dateDomain}
-              onChange={(selectedDate) =>
-                onAction('date.set', { date: selectedDate })}
-            /> */}
             <CurrentDate>
               {date ? formatDate(date, timeUnit) : 'Select date'}
             </CurrentDate>
@@ -214,13 +216,15 @@ class Timeline extends React.Component {
           </ExploreDataBrowserActions>
         </ExploreDataBrowserHeader>
         <ExploreDataBrowserBody isExpanded={this.state.isExpanded}>
-          <DataBrowserChart
-            selectedDate={date}
-            timeUnit={timeUnit}
-            onAction={onAction}
-            xDomain={dateDomain}
-            swatch={swatch}
-          />
+          <DataBrowserBodyScroll>
+            <DataBrowserChart
+              selectedDate={date}
+              timeUnit={timeUnit}
+              onAction={onAction}
+              xDomain={dateDomain}
+              swatch={swatch}
+            />
+          </DataBrowserBodyScroll>
         </ExploreDataBrowserBody>
       </ExploreDataBrowser>
     );

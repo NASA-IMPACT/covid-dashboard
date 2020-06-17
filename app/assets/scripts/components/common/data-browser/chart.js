@@ -24,6 +24,7 @@ const _rgba = stylizeFunction(rgba);
 
 const ChartWrapper = styled(SizeAwareElement)`
   flex-grow: 1;
+  min-width: 50rem;
 
   svg {
     display: block;
@@ -205,6 +206,7 @@ class DataBrowserChart extends React.Component {
     const matrix = this.dataCanvas.node().getScreenCTM()
       .translate(xPos, 0);
 
+    const popoverWidth = 160;
     const posY = matrix.f;
     const posX = matrix.e;
 
@@ -212,6 +214,12 @@ class DataBrowserChart extends React.Component {
       left: posX + 'px',
       top: posY + 'px'
     };
+
+    const direction = posX - popoverWidth / 2 < 0
+      ? 'right'
+      : posX + popoverWidth / 2 > document.body.clientWidth
+        ? 'left'
+        : 'none';
 
     return createPortal((
       <CSSTransition
@@ -221,7 +229,7 @@ class DataBrowserChart extends React.Component {
         classNames='pop-chart'
         timeout={{ enter: 300, exit: 300 }}
       >
-        <Popover style={style}>
+        <Popover style={style} direction={direction}>
           {formatDate(xPosDate, this.props.timeUnit)}
         </Popover>
       </CSSTransition>
