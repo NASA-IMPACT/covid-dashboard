@@ -395,6 +395,7 @@ class GlobalExplore extends React.Component {
                   aoiState={this.state.aoi}
                   comparing={isComparing}
                   enableLocateUser
+                  spotlightList={spotlightList}
                 />
                 <Timeline
                   isActive={!!activeTimeseriesLayers.length}

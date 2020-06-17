@@ -69,6 +69,11 @@ class MbMap extends React.Component {
     this.mapContainer = null;
     this.mbMap = null;
     this.mbDraw = null;
+
+    this.state = {
+      mbMapSpotlightsLoaded: false,
+      mbMapComparingSpotlightsLoaded: false
+    };
   }
 
   componentDidMount () {
@@ -77,7 +82,7 @@ class MbMap extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { activeLayers, comparing } = this.props;
+    const { activeLayers, comparing, spotlightList } = this.props;
 
     // Compare Maps
     if (comparing !== prevProps.comparing) {
@@ -155,6 +160,61 @@ class MbMap extends React.Component {
     if (this.mbDraw) {
       this.mbDraw.update(prevProps.aoiState, this.props.aoiState);
     }
+
+    // If spotlightList is active and was made available, add it to the map
+    if (
+      spotlightList &&
+      spotlightList.isReady() &&
+      !prevProps.spotlightList.isReady()
+    ) {
+      this.updateSpotlights();
+    }
+  }
+
+  /**
+   * Adds spotlight markers to mbMap and mbMapComparing. This functions uses
+   * component state to control spotlights loading state, because maps will
+   * finish loading at different times.
+   */
+  updateSpotlights () {
+    // Check if spotlights are available
+    const { spotlightList } = this.props;
+    if (!spotlightList && !spotlightList.isReady()) return;
+
+    // Get spotlights from API data
+    const spotlights = spotlightList.getData();
+
+    // Define a common function to add markers
+    const addMarker = (spotlight, map) => {
+      new mapboxgl.Marker().setLngLat(spotlight.center).addTo(map);
+    };
+
+    // As the maps load separately, use component state to verify if they
+    // already loaded the markers
+    const {
+      mbMapSpotlightsLoaded,
+      mbMapComparingSpotlightsLoaded
+    } = this.state;
+
+    // Add markers to mbMap, if not done yet
+    if (this.mbMap && !mbMapSpotlightsLoaded) {
+      spotlights.forEach((s) => {
+        addMarker(s, this.mbMap);
+      });
+      this.setState({
+        mbMapSpotlightsLoaded: true
+      });
+    }
+
+    // Add markers to mbMapComparing, if not done yet
+    if (this.mbMapComparing && !mbMapComparingSpotlightsLoaded) {
+      spotlights.forEach((s) => {
+        addMarker(s, this.mbMapComparing);
+      });
+      this.setState({
+        mbMapComparingSpotlightsLoaded: true
+      });
+    }
   }
 
   enableCompare (prevProps) {
@@ -193,6 +253,7 @@ class MbMap extends React.Component {
     this.mbMapComparing.once('load', () => {
       this.mbMapComparingLoaded = true;
       this.updateActiveLayers(prevProps);
+      this.updateSpotlights();
     });
 
     this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
@@ -272,6 +333,12 @@ class MbMap extends React.Component {
           comparing: false
         });
       }
+
+      // If spotlight list is available on map mount, add it to the map
+      const { spotlightList } = this.props;
+      if (spotlightList && spotlightList.isReady()) {
+        this.updateSpotlights(spotlightList.getData());
+      }
     });
 
     this.mbMap.on('moveend', (e) => {
@@ -313,7 +380,8 @@ MbMap.propTypes = {
   activeLayers: T.array,
   layers: T.array,
   enableLocateUser: T.bool,
-  disableControls: T.bool
+  disableControls: T.bool,
+  spotlightList: T.object
 };
 
 export default withTheme(MbMap);
