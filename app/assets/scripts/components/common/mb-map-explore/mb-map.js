@@ -154,6 +154,15 @@ class MbMap extends React.Component {
     // Add zoom controls.
     this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
+    if (this.props.enableLocateUser) {
+      this.mbMapComparing.addControl(new mapboxgl.GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true
+        },
+        trackUserLocation: true
+      }), 'top-left');
+    }
+
     // Style attribution.
     this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
 
@@ -206,6 +215,14 @@ class MbMap extends React.Component {
 
     // Add zoom controls.
     this.mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    if (this.props.enableLocateUser) {
+      this.mbMap.addControl(new mapboxgl.GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true
+        },
+        trackUserLocation: true
+      }), 'top-left');
+    }
 
     // Style attribution
     this.mbMap.addControl(new mapboxgl.AttributionControl({ compact: true }));
@@ -266,7 +283,8 @@ MbMap.propTypes = {
   aoiState: T.object,
   comparing: T.bool,
   activeLayers: T.array,
-  layers: T.array
+  layers: T.array,
+  enableLocateUser: T.bool
 };
 
 export default withTheme(MbMap);
