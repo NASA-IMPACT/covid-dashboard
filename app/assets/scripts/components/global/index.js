@@ -370,6 +370,7 @@ class GlobalExplore extends React.Component {
                   date={this.state.timelineDate}
                   aoiState={this.state.aoi}
                   comparing={isComparing}
+                  enableLocateUser
                 />
                 <Timeline
                   isActive={!!activeTimeseriesLayers.length}
