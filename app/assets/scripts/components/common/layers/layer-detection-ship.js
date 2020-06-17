@@ -20,7 +20,7 @@ export default {
       ]
     }
   },
-  exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-multi'],
+  exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: false,
   swatch: {
     color: '#411073',

@@ -1,4 +1,7 @@
 import get from 'lodash.get';
+import { eachWeekOfInterval, format } from 'date-fns';
+
+import { utcDate } from '../../../utils/utils';
 
 import no2 from './layer-no2';
 import population from './layer-population';
@@ -7,6 +10,8 @@ import nightlightsViirs from './layer-nightlights-viirs';
 import nightlightsHd from './layer-nightlights-hd';
 import detectionShip from './layer-detection-ship';
 import detectionMulti from './layer-detection-multiple';
+import waterChlorophyll from './layer-water-chlorophyll';
+import waterSpm from './layer-water-spm';
 
 const layers = [
   no2,
@@ -15,7 +20,9 @@ const layers = [
   nightlightsViirs,
   nightlightsHd,
   detectionShip,
-  detectionMulti
+  detectionMulti,
+  waterChlorophyll,
+  waterSpm
 ];
 
 export default layers;
@@ -25,8 +32,9 @@ const layersBySpotlight = {
   du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
   gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
   la: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection-multi'],
-  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection-ship'],
-  tk: ['no2', 'nightlights-hd', 'nightlights-viirs']
+  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm'],
+  tk: ['no2', 'nightlights-hd', 'nightlights-viirs', 'water-chlorophyll'],
+  ny: ['water-chlorophyll']
 };
 
 const layerOverridesBySpotlight = {
@@ -51,10 +59,40 @@ const layerOverridesBySpotlight = {
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
         domain: ['2020-03-11']
-      })
+      }),
+    'water-chlorophyll': (l, spotlightId) => {
+      return {
+        ...l,
+        domain: ['2020-03-02', '2020-04-03', '2020-04-19', '2020-05-04', '2020-05-05', '2020-05-19', '2020-05-21', '2020-05-24']
+      };
+    }
   },
   tk: {
-    'nightlights-viirs': handleNightlightsViirs
+    'nightlights-viirs': handleNightlightsViirs,
+    'water-chlorophyll': (l, spotlightId) => {
+      // Generate dates - weekly on wednesday.
+      const dates = eachWeekOfInterval({
+        start: utcDate('2017-12-27'),
+        end: utcDate('2020-06-10')
+      }, { weekStartsOn: 3 });
+
+      return {
+        ...l,
+        domain: dates.map(d => format(d, 'yyyy-MM-dd')),
+        source: {
+          ...l.source,
+          tiles: l.source.tiles.map(t => t.replace('&rescale=-100%2C100', ''))
+        }
+      };
+    }
+  },
+  ny: {
+    'water-chlorophyll': (l, spotlightId) => {
+      return {
+        ...l,
+        domain: ['2020-01-01', '2020-01-08', '2020-01-15', '2020-01-22', '2020-01-29', '2020-02-05', '2020-02-12', '2020-02-19', '2020-02-26', '2020-03-04', '2020-03-11', '2020-03-18', '2020-03-25', '2020-04-01', '2020-04-08', '2020-04-15', '2020-04-22', '2020-04-29', '2020-05-06', '2020-05-13', '2020-05-20', '2020-05-27', '2020-06-03']
+      };
+    }
   }
 };
 
