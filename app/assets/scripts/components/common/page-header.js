@@ -272,10 +272,14 @@ const PageNavSmallInnerTitle = styled.h3`
 
 const PageNavSmallBody = styled.div`
   display: grid;
-  grid-gap: ${glsp(1)};
+  grid-gap: ${glsp()};
   padding: ${glsp()};
   box-shadow: inset 0 1px 0 0 ${_rgba('#FFFFFF', 0.12)};
   overflow: auto;
+
+  > *:last-child {
+    padding-bottom: ${glsp()};
+  }
 `;
 
 // See documentation of filterComponentProp as to why this is
