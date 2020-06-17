@@ -15,24 +15,28 @@ export function fetchCogTimeData (id, timeframe, area) {
   return async function (dispatch) {
     dispatch(cogTimeDataActions.request(id));
 
-    const { start, end } = timeframe;
+    const { start, end, dateFormat } = timeframe;
     const months = eachMonthOfInterval({ start, end });
     const url = `${config.api}/timelapse`;
 
     const requests = months.map(async date => {
-      const reqDate = format(date, 'yyyyMM');
+      const reqDate = format(date, dateFormat);
 
       try {
         const { body } = await fetchJSON(url, {
           method: 'POST',
           body: JSON.stringify({
+            type: id,
             month: reqDate,
             geojson: area
           })
         });
+        const v = id === 'co2'
+          ? body.mean < 0 ? null : body.mean * 1000000
+          : body.mean < 0 ? null : body.mean;
         return {
           date: date.toISOString(),
-          value: body.mean < 0 ? null : body.mean
+          value: v
         };
       } catch (e) {
         return {

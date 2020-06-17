@@ -116,6 +116,19 @@ const ExploreCarto = styled.section`
   overflow: hidden;
 `;
 
+const cogLayers = {
+  no2: {
+    title: <>NO<sub>2</sub> Concentration</>,
+    unit: <>molecules/cm<sup>2</sup></>,
+    dateFormat: 'yyyyMM'
+  },
+  co2: {
+    title: <>CO<sub>2</sub> Concentration</>,
+    unit: 'ppm',
+    dateFormat: 'yyyy_MM_dd'
+  }
+};
+
 class GlobalExplore extends React.Component {
   constructor (props) {
     super(props);
@@ -206,21 +219,25 @@ class GlobalExplore extends React.Component {
     const {
       aoi: { feature }
     } = this.state;
-    const activeLayers = this.getActiveTimeseriesLayers();
+    const activeLayers = this.getActiveTimeseriesLayers()
+      .filter(l => !!cogLayers[l.id]);
 
     if (!feature || !activeLayers.length) return;
 
     showGlobalLoading();
-    // TODO: Change from hardcoded cog type and date
-    const end = utcDate('2020-03-01');
-    await this.props.fetchCogTimeData(
-      'no2',
-      {
-        start: sub(end, { months: 11 }),
-        end
-      },
-      feature
-    );
+    await Promise.all(activeLayers.map(l => {
+      const cogLayerSettings = cogLayers[l.id];
+      const end = utcDate(l.domain[l.domain.length - 1]);
+      return this.props.fetchCogTimeData(
+        l.id,
+        {
+          start: sub(end, { months: 11 }),
+          end,
+          dateFormat: cogLayerSettings.dateFormat
+        },
+        feature
+      );
+    }));
     hideGlobalLoading();
   }
 
@@ -338,6 +355,8 @@ class GlobalExplore extends React.Component {
     const { spotlightList } = this.props;
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
+    const activeCogTimeseriesLayers = activeTimeseriesLayers
+      .filter(l => !!cogLayers[l.id]);
 
     // Check if there's any layer that's comparing.
     const comparingLayer = find(layers, 'comparing');
@@ -408,7 +427,8 @@ class GlobalExplore extends React.Component {
               <ExpMapSecPanel
                 aoiFeature={this.state.aoi.feature}
                 cogTimeData={this.props.cogTimeData}
-                layers={activeTimeseriesLayers}
+                cogLayersSettings={cogLayers}
+                layers={activeCogTimeseriesLayers}
                 onPanelChange={({ revealed }) => {
                   this.resizeMap();
                   this.onPanelChange('panelSec', revealed);
