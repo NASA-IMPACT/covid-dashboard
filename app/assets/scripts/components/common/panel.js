@@ -7,6 +7,7 @@ import { tint } from 'polished';
 import { headingAlt } from '../../styles/type/heading';
 import { panelSkin } from '../../styles/skins';
 import { glsp } from '../../styles/utils/theme-values';
+import media from '../../styles/utils/media-queries';
 
 import Button from '../../styles/button/button';
 
@@ -16,15 +17,20 @@ export const PanelSelf = styled.section`
   position: relative;
   display: flex;
   flex-flow: column nowrap;
-  width: 16rem;
-  height: 100%;
   max-width: 0;
+  width: 100vw;
+  height: 100%;
   z-index: 10;
-  transition: all 0.16s ease 0s;
+  transition: all 0.16s ease 0s,
 
   ${({ revealed }) => revealed && css`
     ${panelSkin()}
     max-width: 100vw;
+    z-index: 15;
+
+    ${media.largeUp`
+      width: 16rem;
+    `}
   `}
 `;
 
@@ -77,7 +83,7 @@ const PanelBody = styled.div`
     max-width: 100vw;
     opacity: 1;
     overflow: visible;
-  `} 
+  `}
 `;
 
 const PanelOffsetActions = styled.div`
@@ -85,13 +91,28 @@ const PanelOffsetActions = styled.div`
   position: absolute;
   top: ${glsp(0.5)};
   border-radius: ${themeVal('shape.rounded')};
+  transform: translate(0, 0);
+  z-index: 120;
 
   ${({ direction }) => direction === 'right' && css`
     right: calc(100% + ${glsp(0.5)}); /* stylelint-disable-line */
+
+    ${media.mediumDown`
+      ${({ revealed }) => revealed && css`
+        right: ${glsp(0.5)};
+      `}
+    `}
   `}
 
   ${({ direction }) => direction === 'left' && css`
     left: calc(100% + ${glsp(0.5)}); /* stylelint-disable-line */
+
+    ${media.mediumDown`
+      ${({ revealed }) => revealed && css`
+        left: calc(100% - ${glsp(0.5)});
+        transform: translate(-100%, 0);
+      `}
+    `}
   `}
 `;
 
@@ -153,7 +174,7 @@ class Panel extends React.Component {
         {header}
         <PanelBody revealed={revealed}>{bodyContent}</PanelBody>
         {collapsible && (
-          <PanelOffsetActions direction={direction}>
+          <PanelOffsetActions revealed={revealed} direction={direction}>
             <Button
               variation='base-plain'
               useIcon={icon}
