@@ -155,7 +155,7 @@ class MbMap extends React.Component {
     this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     if (this.props.enableLocateUser) {
-      this.mbMap.addControl(new mapboxgl.GeolocateControl({
+      this.mbMapComparing.addControl(new mapboxgl.GeolocateControl({
         positionOptions: {
           enableHighAccuracy: true
         },
