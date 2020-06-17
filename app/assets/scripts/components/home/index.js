@@ -343,8 +343,8 @@ class Home extends React.Component {
                     <StoryActions>
                       <Button
                         element='a'
-                        title='View the global map'
-                        to='/'
+                        title='Explore the data'
+                        to={currentStory.link}
                         variation='base-raised-light'
                         useIcon={['chevron-right--small', 'after']}
                       >
