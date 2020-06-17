@@ -174,6 +174,10 @@ const IntroStoriesTitle = styled.h1`
 const IntroStoriesToolbar = styled.div`
   display: flex;
   flex-flow: row nowrap;
+
+  > * {
+    vertical-align: top;
+  }
 `;
 
 const Story = styled.article`
@@ -192,7 +196,13 @@ const StoryProse = styled(Prose)`
   grid-gap: ${glsp()} 0;
 `;
 
-const StoryActions = styled.div``;
+const StoryActions = styled.div`
+  display: flex;
+
+  > * {
+    vertical-align: top;
+  }
+`;
 
 class Home extends React.Component {
   constructor (props) {
@@ -355,7 +365,7 @@ class Home extends React.Component {
                         title='Explore the data'
                         href={currentStory.link}
                         to={currentStory.link}
-                        variation='base-raised-light'
+                        variation='achromic-plain'
                         useIcon={['chevron-right--small', 'after']}
                       >
                         Learn more
