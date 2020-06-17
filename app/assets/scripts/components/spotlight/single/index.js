@@ -45,7 +45,7 @@ import {
   toggleLayerCommon
 } from '../../../utils/map-explore-utils';
 import QsState from '../../../utils/qs-state';
-import { isLargeViewport } from '../../../styles/utils/media-queries';
+import media, { isLargeViewport } from '../../../styles/utils/media-queries';
 
 const layersBySpotlight = {
   be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
@@ -62,6 +62,18 @@ const ExploreCanvas = styled.div`
   grid-template-columns: min-content 1fr min-content;
   overflow: hidden;
 
+  ${media.mediumDown`
+    ${({ panelPrime, panelSec }) => {
+      if (panelPrime && !panelSec) {
+        return 'grid-template-columns: min-content 0 0;';
+      }
+
+      if (!panelPrime && panelSec) {
+        return 'grid-template-columns: 0 0 min-content;';
+      }
+    }}
+  `}
+
   > * {
     grid-row: 1;
   }
@@ -73,10 +85,14 @@ const ExploreCarto = styled.section`
   background: ${themeVal('color.baseAlphaA')};
   display: grid;
   grid-template-rows: 1fr auto;
+  min-width: 0;
+  overflow: hidden;
 `;
 
 const PrimePanel = styled(Panel)`
-  width: 18rem;
+  ${media.largeUp`
+    width: 18rem;
+  `}
 `;
 
 class SpotlightAreasSingle extends React.Component {
@@ -113,7 +129,9 @@ class SpotlightAreasSingle extends React.Component {
     this.state = {
       ...getInitialMapExploreState(),
       ...urlState,
-      _urlActiveLayers: activeLayers
+      _urlActiveLayers: activeLayers,
+      panelPrime: false,
+      panelSec: false
     };
   }
 
@@ -128,6 +146,10 @@ class SpotlightAreasSingle extends React.Component {
       // Reset state on page change.
       this.setState(getInitialMapExploreState());
     }
+  }
+
+  onPanelChange (panel, revealed) {
+    this.setState({ [panel]: revealed });
   }
 
   updateUrlQS () {
@@ -205,11 +227,14 @@ class SpotlightAreasSingle extends React.Component {
           </InpageHeader>
           {spotlight.isReady() && (
             <InpageBody>
-              <ExploreCanvas>
+              <ExploreCanvas panelPrime={this.state.panelPrime} panelSec={this.state.panelSec}>
                 <PrimePanel
                   collapsible
                   direction='left'
-                  onPanelChange={this.resizeMap}
+                  onPanelChange={({ revealed }) => {
+                    this.resizeMap();
+                    this.onPanelChange('panelPrime', revealed);
+                  }}
                   initialState={isLargeViewport()}
                   headerContent={
                     <PanelHeadline>
@@ -253,7 +278,10 @@ class SpotlightAreasSingle extends React.Component {
                 </ExploreCarto>
 
                 <SecPanel
-                  onPanelChange={this.resizeMap}
+                  onPanelChange={({ revealed }) => {
+                    this.resizeMap();
+                    this.onPanelChange('panelSec', revealed);
+                  }}
                   indicators={indicators}
                   indicatorGroups={indicatorGroupsData}
                   selectedDate={
