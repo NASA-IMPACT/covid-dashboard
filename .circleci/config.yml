@@ -65,6 +65,24 @@ jobs:
           root: ~/repo
           paths:
               - dist/*
+  prod-build:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - run:
+          name: Build app
+          command: |
+            BASEURL="https://earthdata.nasa.gov/covid19" yarn build
+            cd dist
+            mkdir covid19
+            mv assets covid19/assets
+            cp index.html covid19
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+              - dist/*
   deploy:
     <<: *base_def
     steps:
@@ -80,7 +98,7 @@ jobs:
             --cache-control "max-age=86400"
           from: /workspace/dist
           overwrite: true
-          to: 's3://covid-eo-frontend'
+          to: 's3://covid-eo'
 
 workflows:
   version: 2
@@ -98,12 +116,18 @@ workflows:
             - prepare
           filters:
             branches:
-              ignore: develop
-      - deploy:
+              ignore: master
+      - prod-build:
           requires:
             - lint
             - test
             - build
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - prod-build
           filters:
             branches:
               only: master
