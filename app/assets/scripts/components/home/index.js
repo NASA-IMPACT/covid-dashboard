@@ -59,7 +59,7 @@ const IntroCopy = styled.div`
   border-radius: ${themeVal('shape.rounded')};
   max-height: calc(100% - ${glsp(2)});
   width: 100%;
-  max-width: 16rem;
+  max-width: 18rem;
   overflow-y: auto;
   display: grid;
   grid-gap: ${glsp()} 0;
