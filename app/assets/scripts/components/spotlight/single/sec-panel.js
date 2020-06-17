@@ -17,10 +17,12 @@ import Prose from '../../../styles/type/prose';
 import { glsp } from '../../../styles/utils/theme-values';
 import { utcDate } from '../../../utils/utils';
 import collecticon from '../../../styles/collecticons';
-import { isLargeViewport } from '../../../styles/utils/media-queries';
+import media, { isLargeViewport } from '../../../styles/utils/media-queries';
 
 const PanelSelf = styled(Panel)`
-  width: 30rem;
+  ${media.largeUp`
+    width: 30rem;
+  `}
 `;
 
 const BodyScroll = styled(ShadowScrollbar)`

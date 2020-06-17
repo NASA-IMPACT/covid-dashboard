@@ -14,10 +14,12 @@ import Heading from '../../styles/type/heading';
 import FilterAoi from './filter-aoi';
 import ExploreNavigation from '../common/explore-navigation';
 
-import { isLargeViewport } from '../../styles/utils/media-queries';
+import media, { isLargeViewport } from '../../styles/utils/media-queries';
 
 const PrimePanel = styled(Panel)`
-  width: 18rem;
+  ${media.largeUp`
+    width: 18rem;
+  `}
 `;
 
 class ExpMapPrimePanel extends React.Component {

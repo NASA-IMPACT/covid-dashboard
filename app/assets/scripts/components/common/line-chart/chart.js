@@ -239,6 +239,8 @@ class DataBrowserChart extends React.Component {
     const xPos = this.xScale(docDate);
 
     const matrix = this.dataCanvas.node().getScreenCTM();
+    if (!matrix) return;
+
     const translatedMatrix = matrix.translate(xPos, 0);
 
     const popoverWidth = 160;
