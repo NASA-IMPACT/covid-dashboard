@@ -76,6 +76,7 @@ class DataBrowserChart extends React.Component {
     this.dataCanvas = null;
 
     this.resizeListener = this.resizeListener.bind(this);
+    this.getXDomain = this.getXDomain.bind(this);
 
     this.state = {
       bisecting: false,
@@ -132,6 +133,14 @@ class DataBrowserChart extends React.Component {
     };
   }
 
+  getXDomain () {
+    const { props } = this;
+    return [
+      props.xDomain[0],
+      props.xDomain[props.xDomain.length - 1]
+    ];
+  }
+
   initChart () {
     const { top, left } = this.margin;
     const containerEl = this.container.elRef.current;
@@ -151,7 +160,6 @@ class DataBrowserChart extends React.Component {
 
     // Axis.
     xaxisLayer.init(this);
-    // yaxisLayer.init(this);
 
     // dataPointsLayer.init(this);
     dataExtentLayer.init(this);
@@ -161,24 +169,14 @@ class DataBrowserChart extends React.Component {
   updateChart () {
     const { top, bottom, right, left } = this.margin;
     const { width, height } = this.getSize();
-    const { svg, dataCanvas, props } = this;
+    const { svg, dataCanvas, getXDomain } = this;
 
     // ---------------------------------------------------
     // Functions
-    const xDomain = [
-      props.xDomain[0],
-      props.xDomain[props.xDomain.length - 1]
-    ];
-
     this.xScale = d3
       .scaleTime()
-      .domain(xDomain)
+      .domain(getXDomain())
       .range([0, width]);
-
-    // this.yScale = d3
-    //   .scaleLinear()
-    //   .domain(props.yDomain)
-    //   .range([height, 10]);
 
     // ---------------------------------------------------
     // Size updates
@@ -195,7 +193,6 @@ class DataBrowserChart extends React.Component {
 
     // Axis.
     xaxisLayer.update(this);
-    // yaxisLayer.update(this);
   }
 
   renderPopover () {
