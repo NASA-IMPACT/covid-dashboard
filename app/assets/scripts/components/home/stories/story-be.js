@@ -1,6 +1,6 @@
 export default {
   spotlightId: 'be',
   title: 'The drop in CO2 emission',
-  prose: 'Since the onset of COVID-19, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in Beijing',
+  prose: 'San Francisco experienced an estimated reduction of 22% in nitrogen dioxide levels before and after quarantine restrictions.',
   layers: ['nightlights-hd']
 };

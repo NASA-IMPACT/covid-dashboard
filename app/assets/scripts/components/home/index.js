@@ -320,21 +320,18 @@ class Home extends React.Component {
                 </IntroTitle>
                 <IntroProse>
                   <p>
-                    Interact with real NASA data and
-                    investigate how social distancing measures and regional
-                    shelter-in-place guidelines have affected Earth’s air, land,
-                    and water. Explore individual &apos;Spotlight Areas&apos; to
-                    see how the indicators in each specific location have
-                    changed through time.
+                    As communities around the world have changed their behavior in response
+                    to the spread of COVID-19, NASA satellites have observed changes in the
+                    environment. This experimental dashboard reflects a rapid response to
+                    COVID-19 that is currently underway and will continue to evolve as more
+                    data becomes available. <Link to='/about' title='Read more on the about page'>Read more...</Link>
                   </p>
                 </IntroProse>
                 <IntroStats>
                   <dt>Locations</dt>
-                  <dd><Link to='/spotlight' title='Explore the spotlight areas'>06</Link></dd>
+                  <dd><Link to='/spotlight' title='Explore the spotlight areas'>07</Link></dd>
                   <dt>Indicators</dt>
-                  <dd><Link to='/indicators' title='Learn about the indicators'>20</Link></dd>
-                  <dt>Stories</dt>
-                  <dd><Link to='' title='Dive into the stories'>04</Link></dd>
+                  <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
                 </IntroStats>
                 <IntroStories>
                   <IntroStoriesTitle>Did you know?</IntroStoriesTitle>

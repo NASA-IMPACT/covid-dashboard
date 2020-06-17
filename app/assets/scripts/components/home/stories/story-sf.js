@@ -1,6 +1,6 @@
 export default {
   spotlightId: 'sf',
-  title: 'The rising of nitrogen dioxide levels',
-  prose: 'Since the onset of COVID-19, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in San Francisco',
+  title: '22% reduction in NO2',
+  prose: 'San Francisco experienced an estimated reduction of 22% in nitrogen dioxide levels before and after quarantine restrictions.',
   layers: ['no2']
 };
