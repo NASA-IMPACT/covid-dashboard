@@ -4,6 +4,8 @@ import { eachWeekOfInterval, format } from 'date-fns';
 import { utcDate } from '../../../utils/utils';
 
 import no2 from './layer-no2';
+import co2 from './layer-co2';
+import co2Diff from './layer-co2-diff';
 import population from './layer-population';
 import carCount from './layer-car-count';
 import nightlightsViirs from './layer-nightlights-viirs';
@@ -15,6 +17,8 @@ import waterSpm from './layer-water-spm';
 
 const layers = [
   no2,
+  co2,
+  co2Diff,
   population,
   carCount,
   nightlightsViirs,
@@ -28,13 +32,13 @@ const layers = [
 export default layers;
 
 const layersBySpotlight = {
-  be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
-  du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  la: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection-multi'],
-  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm'],
-  tk: ['no2', 'nightlights-hd', 'nightlights-viirs', 'water-chlorophyll'],
-  ny: ['water-chlorophyll']
+  be: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
+  du: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
+  gh: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
+  la: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-multi'],
+  sf: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm'],
+  tk: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'water-chlorophyll'],
+  ny: ['co2', 'co2-diff', 'water-chlorophyll']
 };
 
 const layerOverridesBySpotlight = {
@@ -115,7 +119,7 @@ export function getSpotlightLayers (spotlightId) {
 }
 
 export function getGlobalLayers () {
-  const layersToUse = ['no2', 'gibs-population'];
+  const layersToUse = ['no2', 'co2', 'co2-diff', 'gibs-population'];
   return layers.filter((l) => layersToUse.includes(l.id));
 }
 

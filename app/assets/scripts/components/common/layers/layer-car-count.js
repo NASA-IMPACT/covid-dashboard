@@ -12,7 +12,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/ALOS_SAMPLE/alos2-s1-beijing_{date}.tif&resampling_method=nearest&bidx=1&rescale=1%2C65536`
     ]
   },
-  exclusiveWith: ['no2', 'gibs-population', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
+  exclusiveWith: ['no2', 'co2-diff', 'co2', 'gibs-population', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   swatch: {
     color: '#666666',
     name: 'Grey'
