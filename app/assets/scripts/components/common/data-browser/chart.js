@@ -134,10 +134,10 @@ class DataBrowserChart extends React.Component {
   }
 
   getXDomain () {
-    const { props } = this;
+    const { xDomain } = this.props;
     return [
-      props.xDomain[0],
-      props.xDomain[props.xDomain.length - 1]
+      xDomain[0],
+      xDomain[xDomain.length - 1]
     ];
   }
 
