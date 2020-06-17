@@ -366,7 +366,7 @@ class PageHeader extends React.Component {
                       </li>
                     </GlobalMenu>
                     <PageNavSmallInnerTitle>
-                    Explore
+                      Explore
                     </PageNavSmallInnerTitle>
                     <GlobalMenu>
                       <li>
@@ -388,7 +388,7 @@ class PageHeader extends React.Component {
                           variation='achromic-plain'
                           title='Explore the global map'
                         >
-                        Global
+                          Global
                         </Button>
                       </li>
                       {spotlightAreas &&
@@ -416,7 +416,7 @@ class PageHeader extends React.Component {
                           variation='achromic-plain'
                           title='Learn about the indicators'
                         >
-                        About
+                          About
                         </Button>
                       </li>
                       {indicatorsList
@@ -469,19 +469,7 @@ class PageHeader extends React.Component {
                       </Button>
                     }
                   >
-                    <DropMenu role='menu' selectable>
-                      <li>
-                        <DropMenuItem
-                          as={NavLink}
-                          exact
-                          to='/explore'
-                          title='Explore the data'
-                          data-dropdown='click.close'
-                        >
-                          About
-                        </DropMenuItem>
-                      </li>
-                    </DropMenu>
+                    <DropTitle>Explore</DropTitle>
                     <DropMenu role='menu' selectable>
                       <li>
                         <DropMenuItem
@@ -508,6 +496,19 @@ class PageHeader extends React.Component {
                           </li>
                         ))}
                     </DropMenu>
+                    <DropMenu role='menu' selectable>
+                      <li>
+                        <DropMenuItem
+                          as={NavLink}
+                          exact
+                          to='/explore'
+                          title='Learn more'
+                          data-dropdown='click.close'
+                        >
+                          About
+                        </DropMenuItem>
+                      </li>
+                    </DropMenu>
                   </Dropdown>
                 </li>
                 <li>
@@ -524,18 +525,6 @@ class PageHeader extends React.Component {
                       </Button>
                     }
                   >
-                    <DropMenu role='menu' selectable>
-                      <li>
-                        <DropMenuItem
-                          as={NavLink}
-                          exact
-                          to='/indicators'
-                          data-dropdown='click.close'
-                        >
-                          About
-                        </DropMenuItem>
-                      </li>
-                    </DropMenu>
                     <DropTitle>Indicators</DropTitle>
                     <DropMenu role='menu' selectable>
                       {indicatorsList
@@ -546,11 +535,25 @@ class PageHeader extends React.Component {
                               as={NavLink}
                               to={`/indicators/${d.id}`}
                               data-dropdown='click.close'
+                              title={`Learn about ${d.name}`}
                             >
                               {d.name}
                             </DropMenuItem>
                           </li>
                         ))}
+                    </DropMenu>
+                    <DropMenu role='menu' selectable>
+                      <li>
+                        <DropMenuItem
+                          as={NavLink}
+                          exact
+                          to='/indicators'
+                          data-dropdown='click.close'
+                          title='Learn more'
+                        >
+                          About
+                        </DropMenuItem>
+                      </li>
                     </DropMenu>
                   </Dropdown>
                 </li>
@@ -559,7 +562,7 @@ class PageHeader extends React.Component {
                     element={NavLinkFilter}
                     to='/about'
                     variation='achromic-plain'
-                    title='View the about page'
+                    title='Learn more'
                   >
                     About
                   </Button>
