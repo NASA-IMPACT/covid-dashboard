@@ -6,8 +6,6 @@ import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
 import { themeVal, stylizeFunction } from '../../styles/utils/general';
-// import collecticon from '../../styles/collecticons';
-// import { visuallyHidden } from '../../styles/helpers';
 
 import { Link } from 'react-router-dom';
 
@@ -147,25 +145,12 @@ const IntroStats = styled.div`
   }
 `;
 
-/*
 const IntroMedia = styled.figure`
   position: absolute;
   height: 100%;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  > * {
-    ${visuallyHidden()}
-  }
-
-  &::before {
-    ${collecticon('map')}
-    opacity: 0.08;
-    font-size: 48rem;
-  }
+  z-index: 2;
 `;
-*/
 
 const IntroStories = styled.section`
   background: ${themeVal('color.primary')};
@@ -174,9 +159,21 @@ const IntroStories = styled.section`
   color: ${themeVal('color.surface')};
 `;
 
+const IntroStoriesHeader = styled.header`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+`;
+
 const IntroStoriesTitle = styled.h1`
   ${headingAlt()}
-  margin: 0;
+  margin: 0 auto 0 0;
+  padding-right: ${glsp()};
+`;
+
+const IntroStoriesToolbar = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
 `;
 
 const Story = styled.article`
@@ -196,22 +193,6 @@ const StoryProse = styled(Prose)`
 `;
 
 const StoryActions = styled.div``;
-
-const Previous = styled(Button)`
-  position: fixed;
-  top: 50%;
-  left: 0;
-`;
-const Next = styled(Button)`
-  position: fixed;
-  top: 50%;
-  right: 0;
-
-`;
-
-// const propsToFilter = ['size', 'useIcon', 'variation'];
-// const CleanNavLink = filterComponentProps(NavLink, propsToFilter);
-//
 
 class Home extends React.Component {
   constructor (props) {
@@ -334,7 +315,35 @@ class Home extends React.Component {
                   <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
                 </IntroStats>
                 <IntroStories>
-                  <IntroStoriesTitle>Did you know?</IntroStoriesTitle>
+                  <IntroStoriesHeader>
+                    <IntroStoriesTitle>Did you know?</IntroStoriesTitle>
+                    <IntroStoriesToolbar>
+                      <Button
+                        element='a'
+                        title='View previous story'
+                        disabled={storyIndex === 0}
+                        to='/'
+                        variation='achromic-plain'
+                        useIcon='chevron-left'
+                        hideText
+                        onClick={this.prevStory}
+                      >
+                        Previous
+                      </Button>
+                      <Button
+                        element='a'
+                        title='View next story'
+                        to='/'
+                        disabled={storyIndex === stories.length - 1}
+                        variation='achromic-plain'
+                        useIcon='chevron-right'
+                        hideText
+                        onClick={this.nextStory}
+                      >
+                        Next
+                      </Button>
+                    </IntroStoriesToolbar>
+                  </IntroStoriesHeader>
                   <Story>
                     <StoryTitle>{currentStory.title}</StoryTitle>
                     <StoryProse>
@@ -355,45 +364,18 @@ class Home extends React.Component {
                   </Story>
                 </IntroStories>
               </IntroCopy>
-              {/*
               <IntroMedia>
+                <MbMap
+                  ref={this.mbMapRef}
+                  onAction={this.onMapAction}
+                  layers={layers}
+                  activeLayers={this.state.activeLayers}
+                  date={new Date('03/01/20')}
+                  aoiState={null}
+                  comparing={false}
+                  disableControls
+                />
               </IntroMedia>
-              */}
-              <MbMap
-                ref={this.mbMapRef}
-                onAction={this.onMapAction}
-                layers={layers}
-                activeLayers={this.state.activeLayers}
-                date={new Date('03/01/20')}
-                aoiState={null}
-                comparing={false}
-                disableControls
-              />
-              <Previous
-                element='a'
-                title='Previous story'
-                disabled={storyIndex === 0}
-                to='/'
-                variation='base-raised-light'
-                useIcon='chevron-left--small'
-                hideText
-                onClick={this.prevStory}
-              >
-                Previous
-              </Previous>
-              <Next
-                element='a'
-                title='Previous story'
-                to='/'
-                disabled={storyIndex === stories.length - 1}
-                variation='base-raised-light'
-                useIcon='chevron-right--small'
-                hideText
-                onClick={this.nextStory}
-              >
-                Next
-              </Next>
-
             </Intro>
           </InpageBody>
         </Inpage>
