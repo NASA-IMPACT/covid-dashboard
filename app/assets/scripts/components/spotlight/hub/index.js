@@ -16,7 +16,9 @@ import Heading from '../../../styles/type/heading';
 import {
   PageConstrainer,
   EntriesList,
-  EntryNavLink
+  EntryNavLink,
+  EntryNavLinkTitle,
+  EntryNavLinkMedia
 } from '../../../styles/hub-pages';
 
 import { wrapApiResult } from '../../../redux/reduxeed';
@@ -62,7 +64,10 @@ class SpotlightAreasHub extends React.Component {
                         to={`/spotlight/${item.id}`}
                         title={`View spotlight area ${item.label}`}
                       >
-                        {item.label}
+                        <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
+                        <EntryNavLinkMedia>
+                          <img src='https://loremflickr.com/960/480' width='960' height='480' alt='Area thumbnail' />
+                        </EntryNavLinkMedia>
                       </EntryNavLink>
                     </li>
                   ))}

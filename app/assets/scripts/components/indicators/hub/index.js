@@ -16,7 +16,9 @@ import Heading from '../../../styles/type/heading';
 import {
   PageConstrainer,
   EntriesList,
-  EntryNavLink
+  EntryNavLink,
+  EntryNavLinkTitle,
+  EntryNavLinkMedia
 } from '../../../styles/hub-pages';
 
 import indicatorsList from '../';
@@ -53,6 +55,7 @@ class IndicatorsHub extends React.Component {
               <Heading as='h2' size='large'>
                 Indicators
               </Heading>
+
               <EntriesList>
                 {indicatorsList.map((item) => (
                   <li key={item.id}>
@@ -60,7 +63,10 @@ class IndicatorsHub extends React.Component {
                       to={`/indicators/${item.id}`}
                       title={`View indicator ${item.name}`}
                     >
-                      {item.name}
+                      <EntryNavLinkTitle>{item.name}</EntryNavLinkTitle>
+                      <EntryNavLinkMedia>
+                        <img src='https://loremflickr.com/960/480' width='960' height='480' alt='Indicator thumbnail' />
+                      </EntryNavLinkMedia>
                     </EntryNavLink>
                   </li>
                 ))}
