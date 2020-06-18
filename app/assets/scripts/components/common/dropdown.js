@@ -8,7 +8,7 @@ import { rgba, tint } from 'polished';
 import { themeVal, stylizeFunction } from '../../styles/utils/general';
 import { divide, multiply } from '../../styles/utils/math';
 import { headingAlt } from '../../styles/type/heading';
-import { stackSkin } from '../../styles/skins';
+import { surfaceElevatedD } from '../../styles/skins';
 import collecticon from '../../styles/collecticons';
 
 const _rgba = stylizeFunction(rgba);
@@ -366,7 +366,7 @@ const transitions = {
 };
 
 const DropContent = styled.div`
-  ${stackSkin()}
+  ${surfaceElevatedD()}
   color: ${themeVal('type.base.color')};
   border-radius: ${themeVal('shape.rounded')};
   position: relative;
