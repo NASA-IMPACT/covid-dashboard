@@ -285,7 +285,7 @@ MBPopoverInner.propTypes = {
   closeOnClick: T.bool,
   closeOnMove: T.bool,
   closeButton: T.bool,
-  title: T.string,
+  title: T.node,
   subtitle: T.string,
   suptitle: T.string,
   offset: T.array,
