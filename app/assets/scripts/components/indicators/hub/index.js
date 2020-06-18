@@ -24,6 +24,9 @@ import {
 
 import indicatorsList from '../';
 
+import config from '../../../config';
+const { baseUrl } = config;
+
 const metadata = {
   color: '#2276AC'
 };
@@ -72,7 +75,7 @@ class IndicatorsHub extends React.Component {
                       >
                         <EntryNavLinkTitle>{item.name}</EntryNavLinkTitle>
                         <EntryNavLinkMedia>
-                          <img src='https://loremflickr.com/960/480' width='960' height='480' alt='Indicator thumbnail' />
+                          <img src={`${baseUrl}/assets/graphics/content/indicators/${item.id}.jpg`} width='960' height='480' alt='Indicator thumbnail' />
                         </EntryNavLinkMedia>
                       </EntryNavLink>
                     </li>

@@ -24,6 +24,9 @@ import {
 
 import { wrapApiResult } from '../../../redux/reduxeed';
 
+import config from '../../../config';
+const { baseUrl } = config;
+
 const metadata = {
   color: '#2276AC'
 };
@@ -69,7 +72,7 @@ class SpotlightAreasHub extends React.Component {
                     >
                       <EntryNavLinkTitle>Global</EntryNavLinkTitle>
                       <EntryNavLinkMedia>
-                        <img src='https://loremflickr.com/960/480' width='960' height='480' alt='Area thumbnail' />
+                        <img src={`${baseUrl}/assets/graphics/content/cities/global.jpg`} width='960' height='480' alt='Area thumbnail' />
                       </EntryNavLinkMedia>
                     </EntryNavLink>
                   </li>
@@ -82,7 +85,7 @@ class SpotlightAreasHub extends React.Component {
                         >
                           <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
                           <EntryNavLinkMedia>
-                            <img src='https://loremflickr.com/960/480' width='960' height='480' alt='Area thumbnail' />
+                            <img src={`${baseUrl}/assets/graphics/content/cities/${item.id}.jpg`} width='960' height='480' alt='Area thumbnail' />
                           </EntryNavLinkMedia>
                         </EntryNavLink>
                       </li>
