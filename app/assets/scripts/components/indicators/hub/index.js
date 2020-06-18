@@ -12,14 +12,24 @@ import {
   InpageBody
 } from '../../../styles/inpage';
 import Prose from '../../../styles/type/prose';
-import Heading from '../../../styles/type/heading';
+import InpageHGroup from '../../../styles/inpage-hgroup';
 import {
   PageConstrainer,
+  HubFold,
   EntriesList,
-  EntryNavLink
+  EntryNavLink,
+  EntryNavLinkTitle,
+  EntryNavLinkMedia
 } from '../../../styles/hub-pages';
 
 import indicatorsList from '../';
+
+import config from '../../../config';
+const { baseUrl } = config;
+
+const metadata = {
+  color: '#2276AC'
+};
 
 class IndicatorsHub extends React.Component {
   render () {
@@ -37,34 +47,41 @@ class IndicatorsHub extends React.Component {
           </InpageHeader>
           <InpageBody>
             <PageConstrainer>
-              <Prose>
-                <Heading as='h2' size='large'>
-                Understanding the Indicators
-                </Heading>
-
-                <p>
-                  Although NASA cannot directly observe COVID-19 from space, we can observe how human actions in response to COVID-19 affect the world around us. We refer to these as indicators.
-                </p>
-                <p>
-                  This dashboard explores 10 key indicators -- 4 environmental and 6 economic -- that show how the planet is responding to our changing behavior.
-                </p>
-              </Prose>
-
-              <Heading as='h2' size='large'>
-                Indicators
-              </Heading>
-              <EntriesList>
-                {indicatorsList.map((item) => (
-                  <li key={item.id}>
-                    <EntryNavLink
-                      to={`/indicators/${item.id}`}
-                      title={`View indicator ${item.name}`}
-                    >
-                      {item.name}
-                    </EntryNavLink>
-                  </li>
-                ))}
-              </EntriesList>
+              <HubFold>
+                <InpageHGroup
+                  title='Understanding the Indicators'
+                  dashColor={metadata.color}
+                />
+                <Prose>
+                  <p>
+                    Although NASA cannot directly observe COVID-19 from space, we can observe how human actions in response to COVID-19 affect the world around us. We refer to these as indicators.
+                  </p>
+                  <p>
+                    This dashboard explores 10 key indicators -- 4 environmental and 6 economic -- that show how the planet is responding to our changing behavior.
+                  </p>
+                </Prose>
+              </HubFold>
+              <HubFold>
+                <InpageHGroup
+                  title='Indicators'
+                  dashColor={metadata.color}
+                />
+                <EntriesList>
+                  {indicatorsList.map((item) => (
+                    <li key={item.id}>
+                      <EntryNavLink
+                        to={`/indicators/${item.id}`}
+                        title={`View indicator ${item.name}`}
+                      >
+                        <EntryNavLinkTitle>{item.name}</EntryNavLinkTitle>
+                        <EntryNavLinkMedia>
+                          <img src={`${baseUrl}/assets/graphics/content/indicators/${item.id}.jpg`} width='960' height='480' alt='Indicator thumbnail' />
+                        </EntryNavLinkMedia>
+                      </EntryNavLink>
+                    </li>
+                  ))}
+                </EntriesList>
+              </HubFold>
             </PageConstrainer>
           </InpageBody>
         </Inpage>

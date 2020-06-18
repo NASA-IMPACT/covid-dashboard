@@ -2,7 +2,7 @@ import config from '../../../config';
 
 export default {
   id: 'co2',
-  name: 'CO2 Mean',
+  name: 'CO₂ Mean',
   description: '',
   type: 'raster-timeseries',
   timeUnit: 'day',
