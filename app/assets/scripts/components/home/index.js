@@ -272,7 +272,8 @@ class Home extends React.Component {
     }
   }
 
-  prevStory () {
+  prevStory (e) {
+    e.preventDefault();
     this.setState(prevState => {
       return ({
         storyIndex: prevState.storyIndex - 1
@@ -280,7 +281,8 @@ class Home extends React.Component {
     }, this.requestSpotlight);
   }
 
-  nextStory () {
+  nextStory (e) {
+    e.preventDefault();
     this.setState(prevState => {
       return ({
         storyIndex: prevState.storyIndex + 1
@@ -332,7 +334,7 @@ class Home extends React.Component {
                         element='a'
                         title='View previous story'
                         disabled={storyIndex === 0}
-                        to='/'
+                        href='#'
                         variation='achromic-plain'
                         useIcon='chevron-left'
                         hideText
@@ -343,7 +345,7 @@ class Home extends React.Component {
                       <Button
                         element='a'
                         title='View next story'
-                        to='/'
+                        href='#'
                         disabled={storyIndex === stories.length - 1}
                         variation='achromic-plain'
                         useIcon='chevron-right'
@@ -361,9 +363,8 @@ class Home extends React.Component {
                     </StoryProse>
                     <StoryActions>
                       <Button
-                        element='a'
+                        element={Link}
                         title='Explore the data'
-                        href={currentStory.link}
                         to={currentStory.link}
                         variation='achromic-plain'
                         useIcon={['chevron-right--small', 'after']}
