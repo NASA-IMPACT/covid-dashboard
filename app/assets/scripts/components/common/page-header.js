@@ -364,6 +364,17 @@ class PageHeader extends React.Component {
                           About
                         </Button>
                       </li>
+                      <li>
+                        <Button
+                          variation='achromic-plain'
+                          title='Send feedback'
+                          onClick={() => {
+                            window.feedback.showForm();
+                          }}
+                        >
+                          Feedback
+                        </Button>
+                      </li>
                     </GlobalMenu>
                     <PageNavSmallInnerTitle>
                       Explore
@@ -565,6 +576,17 @@ class PageHeader extends React.Component {
                     title='Learn more'
                   >
                     About
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    variation='achromic-plain'
+                    title='Send feedback'
+                    onClick={() => {
+                      window.feedback.showForm();
+                    }}
+                  >
+                    Feedback
                   </Button>
                 </li>
                 <li>
