@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { rgba } from 'polished';
+import { rgba, darken } from 'polished';
 
 import { NavLink } from 'react-router-dom';
 import Constrainer from '../constrainer';
@@ -12,6 +12,7 @@ import media from '../utils/media-queries';
 import { Fold } from '../fold';
 
 const _rgba = stylizeFunction(rgba);
+const _darken = stylizeFunction(darken);
 
 export const PageConstrainer = styled(Constrainer)`
   ${Prose} {
@@ -56,7 +57,7 @@ export const EntryNavLink = styled(NavLink)`
   transition: all 0.16s ease 0s;
   min-height: 8rem;
   align-items: flex-end;
-  background: ${themeVal('color.baseAlphaD')};
+  background: ${themeVal('color.link')};
 
   ${media.mediumUp`
     min-height: 10rem;
@@ -115,7 +116,7 @@ export const EntryNavLinkMedia = styled.figure`
     right: 0;
     z-index: 2;
     content: '';
-    background: ${_rgba(themeVal('color.base'), 0.64)};
+    background: ${_darken(0.24, _rgba(themeVal('color.link'), 0.64))};;
     pointer-events: none;
   }
 `;
