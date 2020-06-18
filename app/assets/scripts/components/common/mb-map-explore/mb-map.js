@@ -78,9 +78,7 @@ class MbMap extends React.Component {
       popover: {
         coords: null,
         spotlightId: null
-      },
-      mbMapSpotlightsLoaded: false,
-      mbMapComparingSpotlightsLoaded: false
+      }
     };
   }
 
@@ -202,30 +200,17 @@ class MbMap extends React.Component {
         );
     };
 
-    // As the maps load separately, use component state to verify if they
-    // already loaded the markers
-    const {
-      mbMapSpotlightsLoaded,
-      mbMapComparingSpotlightsLoaded
-    } = this.state;
-
     // Add markers to mbMap, if not done yet
-    if (this.mbMap && !mbMapSpotlightsLoaded) {
+    if (this.mbMap) {
       spotlights.forEach((s) => {
         addMarker(s, this.mbMap);
-      });
-      this.setState({
-        mbMapSpotlightsLoaded: true
       });
     }
 
     // Add markers to mbMapComparing, if not done yet
-    if (this.mbMapComparing && !mbMapComparingSpotlightsLoaded) {
+    if (this.mbMapComparing) {
       spotlights.forEach((s) => {
         addMarker(s, this.mbMapComparing);
-      });
-      this.setState({
-        mbMapComparingSpotlightsLoaded: true
       });
     }
   }
