@@ -212,6 +212,7 @@ class Home extends React.Component {
       storyIndex: 0,
       mapLoaded: false,
       mapLayers: [],
+      flying: false,
       ...getInitialMapExploreState()
     };
 
@@ -241,14 +242,17 @@ class Home extends React.Component {
           const spotlightLayers = getSpotlightLayers(spotlightId)
             .map(layer => ({ ...layer, enabled: storyLayers.includes(layer.id) }));
           this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
-          this.setState({
-            mapLayers: spotlightLayers
-          }, () => {
-            for (const l of spotlightLayers) {
-              if (l.enabled && !this.state.activeLayers.includes(l.id)) {
-                this.toggleLayer(l);
+          this.setState({ activeLayers: [] }, () => {
+            this.setState({
+              mapLayers: spotlightLayers,
+              flying: true
+            }, () => {
+              for (const l of spotlightLayers) {
+                if (l.enabled && !this.state.activeLayers.includes(l.id)) {
+                  this.toggleLayer(l);
+                }
               }
-            }
+            });
           });
         }
       }
@@ -269,23 +273,32 @@ class Home extends React.Component {
         this.setState({ mapLoaded: true }, this.requestSpotlight);
         break;
       }
+      case 'map.move': {
+        if (this.state.flying) {
+          this.setState({ flying: false });
+          setTimeout(() => this.nextStory(), 3000);
+        }
+        break;
+      }
     }
   }
 
   prevStory (e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     this.setState(prevState => {
       return ({
-        storyIndex: prevState.storyIndex - 1
+        storyIndex: prevState.storyIndex > 0 ? prevState.storyIndex - 1 : stories.length - 1
+
       });
     }, this.requestSpotlight);
   }
 
   nextStory (e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
+
     this.setState(prevState => {
       return ({
-        storyIndex: prevState.storyIndex + 1
+        storyIndex: prevState.storyIndex < stories.length - 1 ? prevState.storyIndex + 1 : 0
       });
     }, this.requestSpotlight);
   }
@@ -333,7 +346,7 @@ class Home extends React.Component {
                       <Button
                         element='a'
                         title='View previous story'
-                        disabled={storyIndex === 0}
+                        // disabled={storyIndex === 0}
                         href='#'
                         variation='achromic-plain'
                         useIcon='chevron-left'
@@ -346,7 +359,7 @@ class Home extends React.Component {
                         element='a'
                         title='View next story'
                         href='#'
-                        disabled={storyIndex === stories.length - 1}
+                        // disabled={storyIndex === stories.length - 1}
                         variation='achromic-plain'
                         useIcon='chevron-right'
                         hideText
