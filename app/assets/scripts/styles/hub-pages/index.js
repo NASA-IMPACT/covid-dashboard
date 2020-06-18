@@ -9,6 +9,7 @@ import Prose from '../type/prose';
 import { glsp } from '../utils/theme-values';
 import { themeVal, stylizeFunction } from '../utils/general';
 import media from '../utils/media-queries';
+import { Fold } from '../fold';
 
 const _rgba = stylizeFunction(rgba);
 
@@ -20,6 +21,17 @@ export const PageConstrainer = styled(Constrainer)`
   > *:not(:last-child) {
     margin-bottom: ${glsp(2)};
   }
+`;
+
+export const HubFold = styled(Fold)`
+  display: grid;
+  grid-gap: ${glsp()};
+  padding: 0;
+
+  ${media.mediumUp`
+    grid-gap: ${glsp(2)};
+    padding: ${glsp(0, 0, 1, 0)};
+  `}
 `;
 
 export const EntriesList = styled.ul`
