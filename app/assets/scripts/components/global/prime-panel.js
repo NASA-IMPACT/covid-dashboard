@@ -2,7 +2,7 @@ import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
 
-import Panel, { PanelHeadline } from '../common/panel';
+import Panel, { PanelHeadline, PanelTitle } from '../common/panel';
 import DataLayersBlock from '../common/data-layers-block';
 import {
   PanelBlock,
@@ -10,7 +10,6 @@ import {
   PanelBlockTitle,
   PanelBlockBody
 } from '../common/panel-block';
-import Heading from '../../styles/type/heading';
 import FilterAoi from './filter-aoi';
 import ExploreNavigation from '../common/explore-navigation';
 
@@ -43,7 +42,7 @@ class ExpMapPrimePanel extends React.Component {
         initialState={isLargeViewport()}
         headerContent={(
           <PanelHeadline>
-            <Heading as='h2' size='large'>Explore</Heading>
+            <PanelTitle>Explore</PanelTitle>
           </PanelHeadline>
         )}
         bodyContent={

@@ -42,7 +42,7 @@ const PanelHeader = styled.header`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: ${glsp()} 0;
+  padding: ${glsp(1, 0)};
   max-width: 0;
   opacity: 0;
   overflow: hidden;
