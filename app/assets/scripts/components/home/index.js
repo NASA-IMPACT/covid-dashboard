@@ -346,7 +346,6 @@ class Home extends React.Component {
                       <Button
                         element='a'
                         title='View previous story'
-                        // disabled={storyIndex === 0}
                         href='#'
                         variation='achromic-plain'
                         useIcon='chevron-left'
@@ -359,7 +358,6 @@ class Home extends React.Component {
                         element='a'
                         title='View next story'
                         href='#'
-                        // disabled={storyIndex === stories.length - 1}
                         variation='achromic-plain'
                         useIcon='chevron-right'
                         hideText
