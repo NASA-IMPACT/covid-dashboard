@@ -80,7 +80,7 @@ class SpotlightAreasHub extends React.Component {
                     spotlightAreas.map((item) => (
                       <li key={item.id}>
                         <EntryNavLink
-                          to={`/spotlight/${item.id}`}
+                          to={`/explore/${item.id}`}
                           title={`View spotlight area ${item.label}`}
                         >
                           <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
