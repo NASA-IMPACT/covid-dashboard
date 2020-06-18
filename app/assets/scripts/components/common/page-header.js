@@ -568,6 +568,17 @@ class PageHeader extends React.Component {
                   </Button>
                 </li>
                 <li>
+                  <Button
+                    variation='achromic-plain'
+                    title='Send feedback'
+                    onClick={() => {
+                      window.feedback.showForm();
+                    }}
+                  >
+                    Feedback
+                  </Button>
+                </li>
+                <li>
                   <Share />
                 </li>
               </GlobalMenu>
