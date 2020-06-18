@@ -2,14 +2,21 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
 
+import theme from '../../styles/theme/theme';
+
 import config from '../../config';
 const { environment, baseUrl, appTitle } = config;
+
+
 
 const MetaTags = ({ title, description, children }) => {
   return (
     <Helmet>
       <title>{title}</title>
       {description ? <meta name='description' content={description} /> : null}
+
+      {/* Theme color */}
+      <meta name='theme-color' content={theme.main.color.primary} />
 
       {/* Twitter */}
       <meta name='twitter:card' content='summary' />
