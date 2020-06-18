@@ -65,6 +65,7 @@ class SpotlightAreasHub extends React.Component {
                   <li>
                     <EntryNavLink
                       to='/explore/global'
+                      title='Explore global'
                     >
                       <EntryNavLinkTitle>Global</EntryNavLinkTitle>
                       <EntryNavLinkMedia>
