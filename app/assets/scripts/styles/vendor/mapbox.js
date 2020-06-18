@@ -35,6 +35,11 @@ export default () => css`
     display: inline-flex;
     flex-flow: column;
 
+    button {
+      width: auto;
+      height: auto;
+    }
+
     > button + button {
       margin-top: -${themeVal('layout.border')};
     }
@@ -53,6 +58,14 @@ export default () => css`
         variation: 'base-plain',
         hideText: true,
         useIcon: 'minus--small'
+      })}
+    }
+
+    .mapboxgl-ctrl-geolocate.mapboxgl-ctrl-geolocate {
+      ${Button.getStyles({
+        variation: 'base-plain',
+        hideText: true,
+        useIcon: 'crosshair'
       })}
     }
 

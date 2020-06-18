@@ -24,6 +24,7 @@ import MapMessage from '../common/map-message';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
+import media from '../../styles/utils/media-queries';
 import { wrapApiResult } from '../../redux/reduxeed';
 import {
   fetchCogTimeData as fetchCogTimeDataAction,
@@ -88,6 +89,18 @@ const ExploreCanvas = styled.div`
   grid-template-columns: min-content 1fr min-content;
   overflow: hidden;
 
+  ${media.mediumDown`
+    ${({ panelPrime, panelSec }) => {
+      if (panelPrime && !panelSec) {
+        return 'grid-template-columns: min-content 0 0;';
+      }
+
+      if (!panelPrime && panelSec) {
+        return 'grid-template-columns: 0 0 min-content;';
+      }
+    }}
+  `}
+
   > * {
     grid-row: 1;
   }
@@ -99,6 +112,8 @@ const ExploreCarto = styled.section`
   background: ${themeVal('color.baseAlphaA')};
   display: grid;
   grid-template-rows: 1fr auto;
+  min-width: 0;
+  overflow: hidden;
 `;
 
 class GlobalExplore extends React.Component {
@@ -168,12 +183,18 @@ class GlobalExplore extends React.Component {
         selected: false,
         actionOrigin: null
       },
-      _urlActiveLayers: activeLayers
+      _urlActiveLayers: activeLayers,
+      panelPrime: false,
+      panelSec: false
     };
   }
 
   componentWillUnmount () {
     this.props.invalidateCogTimeData();
+  }
+
+  onPanelChange (panel, revealed) {
+    this.setState({ [panel]: revealed });
   }
 
   updateUrlQS () {
@@ -341,13 +362,16 @@ class GlobalExplore extends React.Component {
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
-            <ExploreCanvas>
+            <ExploreCanvas panelPrime={this.state.panelPrime} panelSec={this.state.panelSec}>
               <ExpMapPrimePanel
                 layers={layers}
                 mapLoaded={this.state.mapLoaded}
                 aoiState={this.state.aoi}
                 onAction={this.onPanelAction}
-                onPanelChange={this.resizeMap}
+                onPanelChange={({ revealed }) => {
+                  this.resizeMap();
+                  this.onPanelChange('panelPrime', revealed);
+                }}
                 spotlightList={spotlightList}
               />
               <ExploreCarto>
@@ -370,6 +394,7 @@ class GlobalExplore extends React.Component {
                   date={this.state.timelineDate}
                   aoiState={this.state.aoi}
                   comparing={isComparing}
+                  enableLocateUser
                 />
                 <Timeline
                   isActive={!!activeTimeseriesLayers.length}
@@ -383,7 +408,10 @@ class GlobalExplore extends React.Component {
                 aoiFeature={this.state.aoi.feature}
                 cogTimeData={this.props.cogTimeData}
                 layers={activeTimeseriesLayers}
-                onPanelChange={this.resizeMap}
+                onPanelChange={({ revealed }) => {
+                  this.resizeMap();
+                  this.onPanelChange('panelSec', revealed);
+                }}
               />
             </ExploreCanvas>
           </InpageBody>

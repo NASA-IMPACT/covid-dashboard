@@ -120,7 +120,7 @@ const PageFooter = props => {
       <PageFootInner>
         <PageCredits>
           <InfoList>
-            <dt>Technical contact</dt>
+            <dt>NASA official</dt>
             <dd>
               <Button
                 as='a'

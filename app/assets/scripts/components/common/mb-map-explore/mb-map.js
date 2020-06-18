@@ -154,11 +154,20 @@ class MbMap extends React.Component {
     // Add zoom controls.
     this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    // Style attribution.
-    this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
-
     // Remove compass.
     document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
+    if (this.props.enableLocateUser) {
+      this.mbMapComparing.addControl(new mapboxgl.GeolocateControl({
+        positionOptions: {
+          enableHighAccuracy: true
+        },
+        trackUserLocation: true
+      }), 'top-left');
+    }
+
+    // Style attribution.
+    this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
 
     this.mbMapComparing.once('load', () => {
       this.mbMapComparingLoaded = true;
@@ -204,12 +213,21 @@ class MbMap extends React.Component {
     // Disable map rotation using touch rotation gesture.
     this.mbMap.touchZoomRotate.disableRotation();
 
-    // Add zoom controls.
     if (!this.props.disableControls) {
+      // Add zoom controls.
       this.mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
       // Remove compass.
       document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
+      if (this.props.enableLocateUser) {
+        this.mbMap.addControl(new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true
+          },
+          trackUserLocation: true
+        }), 'top-left');
+      }
     }
 
     // Style attribution
@@ -269,6 +287,7 @@ MbMap.propTypes = {
   comparing: T.bool,
   activeLayers: T.array,
   layers: T.array,
+  enableLocateUser: T.bool,
   disableControls: T.bool
 };
 
