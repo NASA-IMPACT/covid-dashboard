@@ -312,8 +312,8 @@ class Home extends React.Component {
                   </p>
                 </IntroProse>
                 <IntroStats>
-                  <dt>Locations</dt>
-                  <dd><Link to='/spotlight' title='Explore the spotlight areas'>07</Link></dd>
+                  <dt>Areas</dt>
+                  <dd><Link to='/explore' title='Explore the areas'>07</Link></dd>
                   <dt>Indicators</dt>
                   <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
                 </IntroStats>
