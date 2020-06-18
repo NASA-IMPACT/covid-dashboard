@@ -17,11 +17,10 @@ import {
 import MbMap from '../../common/mb-map-explore/mb-map';
 import UhOh from '../../uhoh';
 import DataLayersBlock from '../../common/data-layers-block';
-import Panel, { PanelHeadline } from '../../common/panel';
+import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import MapMessage from '../../common/map-message';
 import Timeline from '../../common/timeline';
 import SecPanel from './sec-panel';
-import Heading from '../../../styles/type/heading';
 import ExploreNavigation from '../../common/explore-navigation';
 
 import { themeVal } from '../../../styles/utils/general';
@@ -229,9 +228,7 @@ class SpotlightAreasSingle extends React.Component {
                   initialState={isLargeViewport()}
                   headerContent={
                     <PanelHeadline>
-                      <Heading as='h2' size='large'>
-                        Explore
-                      </Heading>
+                      <PanelTitle>Explore</PanelTitle>
                     </PanelHeadline>
                   }
                   bodyContent={
