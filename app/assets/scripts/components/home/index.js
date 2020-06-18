@@ -53,31 +53,33 @@ const IntroCopy = styled.div`
   position: absolute;
   top: ${glsp()};
   left: ${glsp()};
+  right: ${glsp()};
   z-index: 10;
   padding: ${glsp()};
   border-radius: ${themeVal('shape.rounded')};
   max-height: calc(100% - ${glsp(2)});
-  width: 100%;
-  max-width: 18rem;
+  width: calc(100% - ${glsp(2)});
   overflow-y: auto;
   display: grid;
   grid-gap: ${glsp()} 0;
 
-  ${media.smallUp`
-    max-width: 24rem;
-  `}
-
   ${media.mediumUp`
     top: ${glsp(2)};
     left: ${glsp(2)};
+    right: ${glsp()};
     padding: ${glsp(2)};
+    width: 100%;
     max-height: calc(100% - ${glsp(4)});
-    max-width: 28rem;
+    max-width: 34rem;
   `}
 
   ${media.largeUp`
     max-height: calc(100% - ${glsp(6)});
     max-width: 36rem;
+  `}
+
+  ${media.xlargeUp`
+    max-width: 40rem;
   `}
 `;
 
@@ -304,7 +306,7 @@ class Home extends React.Component {
                   <p>
                     As communities around the world have changed their behavior in response
                     to the spread of COVID-19, NASA satellites have observed changes in the
-                    environment. This experimental dashboard reflects a rapid response to
+                    environment. This <strong>experimental</strong> dashboard reflects a rapid response to
                     COVID-19 that is currently underway and will continue to evolve as more
                     data becomes available. <Link to='/about' title='Read more on the about page'>Read more...</Link>
                   </p>
