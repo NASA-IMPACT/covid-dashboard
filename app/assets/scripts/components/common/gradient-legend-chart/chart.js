@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import T from 'prop-types';
 import * as d3 from 'd3';
 
 import SizeAwareElement from '../../common/size-aware-element';
@@ -124,6 +125,7 @@ class DataBrowserChart extends React.Component {
 }
 
 DataBrowserChart.propTypes = {
+  id: T.string
 };
 
 export default DataBrowserChart;
