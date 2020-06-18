@@ -2,7 +2,7 @@ import config from '../../../config';
 
 export default {
   id: 'water-chlorophyll',
-  name: 'Chlorophyll Anomaly',
+  name: 'Chlorophyll',
   type: 'raster-timeseries',
   domain: [/* spotlight dependent */],
   timeUnit: 'day',
@@ -30,5 +30,5 @@ export default {
       '#67001F'
     ]
   },
-  info: null
+  info: 'Chlorophyll is an indicator of algae growth. This dataset shows the difference in chlorophyll abundance in 2020 compared to previous years. Redder colors indicate increases in chlorophyll, while bluer colors indicate decreases in chlorophyll. White areas indicate no change.'
 };

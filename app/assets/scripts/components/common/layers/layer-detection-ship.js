@@ -26,6 +26,6 @@ export default {
     color: '#411073',
     name: 'Purple'
   },
-  timeUnit: 'day'
-
+  timeUnit: 'day',
+  info: 'Ships detected each day in PlanetScope imagery are shown in red.'
 };

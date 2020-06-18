@@ -2,7 +2,7 @@ import config from '../../../config';
 
 export default {
   id: 'co2-diff',
-  name: 'CO2 Diff',
+  name: 'CO₂ Diff',
   description: '',
   type: 'raster-timeseries',
   timeUnit: 'day',

@@ -7,7 +7,6 @@ import no2 from './layer-no2';
 import co2 from './layer-co2';
 import co2Diff from './layer-co2-diff';
 import population from './layer-population';
-import carCount from './layer-car-count';
 import nightlightsViirs from './layer-nightlights-viirs';
 import nightlightsHd from './layer-nightlights-hd';
 import detectionShip from './layer-detection-ship';
@@ -20,7 +19,6 @@ const layers = [
   co2,
   co2Diff,
   population,
-  carCount,
   nightlightsViirs,
   nightlightsHd,
   detectionShip,
@@ -32,13 +30,13 @@ const layers = [
 export default layers;
 
 const layersBySpotlight = {
-  be: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
+  be: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
   du: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
   gh: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
   la: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-multi'],
   sf: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm'],
-  tk: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'water-chlorophyll'],
-  ny: ['co2', 'co2-diff', 'water-chlorophyll']
+  tk: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
+  ny: ['no2', 'co2', 'co2-diff', 'water-chlorophyll']
 };
 
 const layerOverridesBySpotlight = {
