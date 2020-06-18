@@ -383,8 +383,13 @@ class MbMap extends React.Component {
           </>
         }
         footerContent={
-          <Button element={NavLink} to={`/explore/${spotlight.id}`}>
-            Go to area
+          <Button
+            variation='primary-raised-dark'
+            element={NavLink}
+            to={`/explore/${spotlight.id}`}
+            title={`Visit ${spotlight.label} page`}
+          >
+            Explore area
           </Button>
         }
       />
