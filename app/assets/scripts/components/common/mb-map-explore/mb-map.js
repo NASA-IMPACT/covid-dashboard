@@ -9,6 +9,10 @@ import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
 import { round } from '../../../utils/format';
+import ReactPopoverGl from './mb-popover';
+import { createMbMarker } from './mb-popover/utils';
+import Button from '../../../styles/button/button';
+import { NavLink } from 'react-router-dom';
 
 const {
   center,
@@ -71,6 +75,10 @@ class MbMap extends React.Component {
     this.mbDraw = null;
 
     this.state = {
+      popover: {
+        coords: null,
+        spotlightId: null
+      },
       mbMapSpotlightsLoaded: false,
       mbMapComparingSpotlightsLoaded: false
     };
@@ -186,7 +194,12 @@ class MbMap extends React.Component {
 
     // Define a common function to add markers
     const addMarker = (spotlight, map) => {
-      new mapboxgl.Marker().setLngLat(spotlight.center).addTo(map);
+      createMbMarker(map)
+        .setLngLat(spotlight.center)
+        .addTo(map)
+        .onClick((coords) =>
+          this.setState({ popover: { coords, spotlightId: spotlight.id } })
+        );
     };
 
     // As the maps load separately, use component state to verify if they
@@ -353,20 +366,66 @@ class MbMap extends React.Component {
     });
   }
 
+  renderPopover () {
+    const [spotlight] = this.props.spotlightList.getData().filter(
+      (s) => s.id === this.state.popover.spotlightId
+    );
+
+    if (!spotlight) return null;
+
+    return (
+      <ReactPopoverGl
+        mbMap={this.mbMap}
+        lngLat={this.state.popover.coords}
+        onClose={() => this.setState({ popover: {} })}
+        suptitle='Spotlight'
+        title={spotlight.label}
+        content={
+          <>
+            <div>Minim veniam aliquip exercitation officia in.</div>
+            <dl>
+              <dt>22</dt>
+              <dd>Indicator 1</dd>
+            </dl>
+            <dl>
+              <dt>74%</dt>
+              <dd>Indicator 2</dd>
+            </dl>
+            <dl>
+              <dt>A+</dt>
+              <dd>Indicator 3</dd>
+            </dl>
+          </>
+        }
+        footerContent={
+          <Button element={NavLink} to={`/explore/${spotlight.id}`}>
+            Go to area
+          </Button>
+        }
+      />
+    );
+  }
+
   render () {
     return (
-      <MapsContainer id='container'>
-        <SingleMapContainer
-          ref={(el) => {
-            this.mapContainerComparing = el;
-          }}
-        />
-        <SingleMapContainer
-          ref={(el) => {
-            this.mapContainer = el;
-          }}
-        />
-      </MapsContainer>
+      <>
+        {this.props.spotlightList &&
+          this.mbMap &&
+          this.state.popover.coords &&
+          this.renderPopover()}
+        <MapsContainer id='container'>
+          <SingleMapContainer
+            ref={(el) => {
+              this.mapContainerComparing = el;
+            }}
+          />
+          <SingleMapContainer
+            ref={(el) => {
+              this.mapContainer = el;
+            }}
+          />
+        </MapsContainer>
+      </>
     );
   }
 }
