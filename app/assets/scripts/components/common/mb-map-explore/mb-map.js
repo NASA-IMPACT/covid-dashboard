@@ -3,16 +3,17 @@ import T from 'prop-types';
 import styled, { withTheme } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
+import { NavLink } from 'react-router-dom';
 
 import config from '../../../config';
 import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
 import { round } from '../../../utils/format';
-import ReactPopoverGl from './mb-popover';
 import { createMbMarker } from './mb-popover/utils';
+
+import ReactPopoverGl from './mb-popover';
 import Button from '../../../styles/button/button';
-import { NavLink } from 'react-router-dom';
 
 const {
   center,
@@ -356,11 +357,11 @@ class MbMap extends React.Component {
   }
 
   renderPopover () {
-    const [spotlight] = this.props.spotlightList.getData().filter(
+    const { getData, isReady } = this.props.spotlightList;
+    const spotlightList = isReady() ? getData() : [];
+    const spotlight = spotlightList.find(
       (s) => s.id === this.state.popover.spotlightId
-    );
-
-    if (!spotlight) return null;
+    ) || {};
 
     return (
       <ReactPopoverGl
@@ -412,7 +413,6 @@ class MbMap extends React.Component {
       <>
         {this.props.spotlightList &&
           this.mbMap &&
-          this.state.popover.coords &&
           this.renderPopover()}
         <MapsContainer id='container'>
           <SingleMapContainer
