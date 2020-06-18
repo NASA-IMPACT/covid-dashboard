@@ -16,7 +16,6 @@ import { themeVal } from '../../styles/utils/general';
 
 const PanelBlockNav = styled(PanelBlock)`
   box-shadow: 0 1px 0 0 ${themeVal('color.baseAlphaB')};
-  z-index: 100;
 `;
 
 const PanelNavLink = styled(NavLink)`
@@ -33,7 +32,7 @@ const PanelNavLink = styled(NavLink)`
   }
 
   &:hover {
-    background: ${_rgba(themeVal('color.primary'), 0.16)};
+    background: ${_rgba(themeVal('color.primary'), 0.04)};
     opacity: 1;
   }
 
@@ -42,20 +41,25 @@ const PanelNavLink = styled(NavLink)`
     top: 0;
     right: 0;
     bottom: 0;
-    width: ${glsp(0.125)};
+    width: ${glsp(0.25)};
     content: '';
     opacity: 0;
     transition: all 0.16s ease 0s;
+    background: ${themeVal('color.primary')};
   }
 
-  &.active,
-  &.active:hover {
+  &.active {
     background: ${_rgba(themeVal('color.primary'), 0.08)};
+    color: ${themeVal('color.primary')};
     font-weight: bold;
 
     &:after {
       opacity: 1;
     }
+  }
+
+  &.active:hover {
+    background: ${_rgba(themeVal('color.primary'), 0.16)};
   }
 `;
 
