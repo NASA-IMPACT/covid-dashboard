@@ -7,8 +7,6 @@ import theme from '../../styles/theme/theme';
 import config from '../../config';
 const { environment, baseUrl, appTitle } = config;
 
-
-
 const MetaTags = ({ title, description, children }) => {
   return (
     <Helmet>
