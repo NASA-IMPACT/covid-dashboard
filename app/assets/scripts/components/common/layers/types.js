@@ -74,7 +74,7 @@ export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
-      const { id, source } = layerInfo;
+      const { id, source, compare } = layerInfo;
       const prevLayerInfo = prevProps.layers.find(l => l.id === layerInfo.id);
       const { date, comparing } = props;
 
@@ -107,11 +107,14 @@ export const layerTypes = {
 
       // Update/init compare layer tiles.
       if (comparing) {
-        const source5years = prepSource(layerInfo, source, sub(date, { years: 5 }), knobPos);
+        const sourceCompare = prepSource(layerInfo,
+          compare.source || source,
+          sub(date, { years: compare.yearDiff === undefined ? 5 : compare.yearDiff }),
+          knobPos);
         if (mbMapComparing.getSource(id)) {
-          replaceRasterTiles(mbMapComparing, id, source5years.tiles);
+          replaceRasterTiles(mbMapComparing, id, sourceCompare.tiles);
         } else {
-          mbMapComparing.addSource(id, source5years);
+          mbMapComparing.addSource(id, sourceCompare);
           mbMapComparing.addLayer(
             {
               id: id,
