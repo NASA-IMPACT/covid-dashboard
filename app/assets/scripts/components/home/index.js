@@ -37,12 +37,11 @@ import {
 
 // import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
+import { surfaceElevatedD } from '../../styles/skins';
 import media from '../../styles/utils/media-queries';
 
 import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
-
-const _rgba = stylizeFunction(rgba);
 
 const Intro = styled.section`
   position: relative;
@@ -51,6 +50,7 @@ const Intro = styled.section`
 `;
 
 const IntroCopy = styled.div`
+  ${surfaceElevatedD()}
   position: absolute;
   top: ${glsp()};
   left: ${glsp()};
@@ -63,15 +63,6 @@ const IntroCopy = styled.div`
   overflow-y: auto;
   display: grid;
   grid-gap: ${glsp()} 0;
-
-  ${() => CSS.supports('backdrop-filter', 'blur(0.5rem)')
-    ? css`
-        background: ${_rgba(themeVal('color.surface'), 0.48)};
-        backdrop-filter: blur(0.5rem);
-      ` : css`
-        background: ${_rgba(themeVal('color.surface'), 0.80)};
-      `
-  }
 
   ${media.smallUp`
     max-width: 24rem;
@@ -308,8 +299,7 @@ class Home extends React.Component {
             <Intro>
               <IntroCopy>
                 <IntroTitle>
-                  <small>Welcome to the</small>
-                  <strong>COVID-19 Data Dashboard</strong>
+                  <strong>Welcome</strong>
                 </IntroTitle>
                 <IntroProse>
                   <p>
