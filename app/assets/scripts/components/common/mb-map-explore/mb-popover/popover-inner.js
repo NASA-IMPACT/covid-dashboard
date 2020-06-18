@@ -262,12 +262,11 @@ export default class MBPopoverInner extends React.Component {
         <Popover
           className={className}
           style={popoverStyle}
-          verticalAttachment={anchorPoints[0]}
           ref={el => {
             this.popoverEl = el;
           }}
         >
-          <PopoverContents anchor={anchor}>
+          <PopoverContents anchor={anchor} verticalAttachment={anchorPoints[0]}>
             {this.renderContents()}
           </PopoverContents>
         </Popover>
