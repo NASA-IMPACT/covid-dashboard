@@ -40,7 +40,7 @@ class SpotlightAreasHub extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Spotlight Areas</InpageTitle>
+                <InpageTitle>Explore</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
@@ -48,7 +48,7 @@ class SpotlightAreasHub extends React.Component {
             <PageConstrainer>
               <HubFold>
                 <InpageHGroup
-                  title='Explore the Spotlight Areas'
+                  title='Explore the areas'
                   dashColor={metadata.color}
                 />
                 <Prose>
@@ -58,10 +58,20 @@ class SpotlightAreasHub extends React.Component {
               </HubFold>
               <HubFold>
                 <InpageHGroup
-                  title='Spotlight Areas'
+                  title='Areas'
                   dashColor={metadata.color}
                 />
                 <EntriesList>
+                  <li>
+                    <EntryNavLink
+                      to='/explore/global'
+                    >
+                      <EntryNavLinkTitle>Global</EntryNavLinkTitle>
+                      <EntryNavLinkMedia>
+                        <img src='https://loremflickr.com/960/480' width='960' height='480' alt='Area thumbnail' />
+                      </EntryNavLinkMedia>
+                    </EntryNavLink>
+                  </li>
                   {spotlightAreas &&
                     spotlightAreas.map((item) => (
                       <li key={item.id}>
