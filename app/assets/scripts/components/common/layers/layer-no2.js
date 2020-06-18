@@ -41,5 +41,5 @@ export default {
       '#050308'
     ]
   },
-  info: 'Higher nitrogen dioxide (NO2) levels, associated with higher levels of travel and economic activity, are indicated by the darker colors on the map. Lighter colors indicate lower levels of NO2 and less activity.'
+  info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated with higher levels of travel and economic activity. Lighter colors indicate lower levels of NO₂ and less activity.'
 };

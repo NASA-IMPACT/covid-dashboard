@@ -25,5 +25,5 @@ export default {
     max: 'more',
     stops: ['#08041d', '#1f0a46', '#52076c', '#f57c16', '#f7cf39']
   },
-  info: null
+  info: 'The darker purple indicates fewer night lights while the lighter yellow indicates more night lights. Check out the HD dataset below to see a light-corrected version of this dataset.'
 };
