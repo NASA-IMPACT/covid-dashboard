@@ -122,7 +122,7 @@ export const Popover = styled.article`
 export const PopoverContents = styled.div`
   border-radius: ${themeVal('shape.rounded')};
   background: ${themeVal('color.surface')};
-  box-shadow: 0 0 32px 2px ${themeVal('color.mist')}, 0 16px 48px -16px ${themeVal('color.shadow')};
+  box-shadow: 0 0 32px 2px ${themeVal('color.baseAlphaA')}, 0 16px 48px -16px ${themeVal('color.baseAlphaB')};
   padding: ${glsp()};
   transform: scale(1);
   transform-origin: center ${({ verticalAttachment: va }) => va === 'top' ? 'top' : 'bottom'};
