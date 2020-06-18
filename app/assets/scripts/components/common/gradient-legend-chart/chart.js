@@ -113,6 +113,7 @@ class DataBrowserChart extends React.Component {
       <SizeAwareElement
         element={ChartWrapper}
         trackSize={this.trackSize}
+        id={this.props.id}
         ref={el => {
           this.container = el;
         }}

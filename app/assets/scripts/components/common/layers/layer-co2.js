@@ -23,7 +23,7 @@ export default {
     name: 'Grey'
   },
   legend: {
-    type: 'gradient',
+    type: 'gradient-adjustable',
     min: 'less',
     max: 'more',
     stops: [

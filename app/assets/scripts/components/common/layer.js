@@ -142,7 +142,8 @@ class Layer extends React.Component {
       dataOrder,
       legend,
       knobPos,
-      onLegendKnobChange
+      onLegendKnobChange,
+      id
     } = this.props;
 
     if (!legend) return null;
@@ -187,6 +188,7 @@ class Layer extends React.Component {
                 }}
                 stops={stops}
                 knobPos={knobPos !== undefined ? knobPos : 50}
+                id={id}
               />
             </dt>
             <dd>
