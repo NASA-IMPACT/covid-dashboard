@@ -79,7 +79,7 @@ export const layerTypes = {
       const { date, comparing } = props;
 
       const knobPos = layerInfo.knobCurrPos;
-      const knobPosPrev = prevLayerInfo.knobCurrPos;
+      const knobPosPrev = prevLayerInfo ? prevLayerInfo.knobCurrPos : null;
 
       // Do not update if:
       if (

@@ -136,9 +136,10 @@ export function getLayerState (id, prop) {
  * Returns the layer list, merging the visibility state and any other data
  * stored for each layer in the layer state.
  */
-export function getLayersWithState () {
+export function getLayersWithState (layers) {
   const { activeLayers, layersState } = this.state;
-  return this.props.mapLayers.map((l) => {
+  const mapLayers = layers || this.props.mapLayers;
+  return mapLayers.map((l) => {
     // Get additional propertied from the layerData array.
     const extra = layersState[l.id] || {};
     return {
