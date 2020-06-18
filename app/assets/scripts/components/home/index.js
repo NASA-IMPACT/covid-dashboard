@@ -1,11 +1,10 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import T from 'prop-types';
 
-import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
-import { themeVal, stylizeFunction } from '../../styles/utils/general';
+import { themeVal } from '../../styles/utils/general';
 
 import { Link } from 'react-router-dom';
 
