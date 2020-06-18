@@ -46,6 +46,36 @@ export const EntriesList = styled.ul`
   `}
 `;
 
+export const EntryNavLinkMedia = styled.figure`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  margin: 0;
+
+  &:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+    content: '';
+    background: ${_darken(0.24, _rgba(themeVal('color.link'), 0.64))};
+    pointer-events: none;
+  }
+
+  img {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+`;
+
 export const EntryNavLink = styled(NavLink)`
   display: flex;
   position: relative;
@@ -89,34 +119,4 @@ export const EntryNavLink = styled(NavLink)`
 export const EntryNavLinkTitle = styled.strong`
   position: relative;
   z-index: 2;
-`;
-
-export const EntryNavLinkMedia = styled.figure`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 1;
-  margin: 0;
-
-  img {
-    position: relative;
-    z-index: 1;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 2;
-    content: '';
-    background: ${_darken(0.24, _rgba(themeVal('color.link'), 0.64))};;
-    pointer-events: none;
-  }
 `;
