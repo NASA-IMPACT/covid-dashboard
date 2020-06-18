@@ -67,6 +67,10 @@ const SingleMapContainer = styled.div`
   bottom: 0;
 `;
 
+const SpotlightNavLink = styled(NavLink)`
+  color: inherit;
+`;
+
 class MbMap extends React.Component {
   constructor (props) {
     super(props);
@@ -364,7 +368,14 @@ class MbMap extends React.Component {
         lngLat={this.state.popover.coords}
         onClose={() => this.setState({ popover: {} })}
         suptitle='Spotlight'
-        title={spotlight.label}
+        title={(
+          <SpotlightNavLink
+            to={`/explore/${spotlight.id}`}
+            title={`Visit ${spotlight.label} page`}
+          >
+            {spotlight.label}
+          </SpotlightNavLink>
+        )}
         content={
           <>
             <div>Minim veniam aliquip exercitation officia in.</div>
