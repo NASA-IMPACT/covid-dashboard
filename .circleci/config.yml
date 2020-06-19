@@ -92,12 +92,12 @@ jobs:
       - attach_workspace:
           at: /workspace
       - aws-cli/install
-      - aws-s3/sync:
+      - aws-s3/copy:
           arguments: |
+            --recursive
             --acl public-read \
             --cache-control "max-age=86400"
           from: /workspace/dist
-          overwrite: true
           to: 's3://covid-eo'
 
 workflows:
