@@ -96,7 +96,7 @@ export const mediaRanges = {
 
 export const indicatorGroupColors = {
   economic: {
-    color: '#7E7E7E',
+    color: '#C0C0C0',
     name: 'Grey'
   },
   'water-quality': {
