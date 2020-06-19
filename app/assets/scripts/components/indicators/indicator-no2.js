@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import ReactCompareImage from 'react-compare-image';
 
 import Prose from '../../styles/type/prose';
-import Constrainer from '../../styles/constrainer';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
 import { Fold, FoldDetails } from '../../styles/fold';
@@ -11,11 +10,20 @@ import {
   IntroLead
 } from '../../styles/datasets';
 import MediaImage, { MediaCompare } from '../../styles/media-image';
+import media from '../../styles/utils/media-queries';
 
 import { glsp } from '../../styles/utils/theme-values';
 import config from '../../config';
 
 const { baseUrl } = config;
+
+const LeadFold = styled(Fold)`
+  padding-bottom: 0;
+
+  ${media.largeUp`
+    padding-bottom: ${glsp(3)};
+  `}
+`;
 
 const IntroFold = styled(Fold)`
   padding-bottom: 0;
@@ -25,19 +33,40 @@ const IntroFold = styled(Fold)`
   }
 
   ${MediaCompare} {
-    grid-column: full-start / content-8;
-    grid-row: 1;
+    grid-column: full-start / full-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-end;
+    `}
+
+    ${media.largeUp`
+      grid-column: full-start / content-8;
+      grid-row: 1;
+    `}
+
+    figcaption {
+      padding: 0 ${glsp()};
+      max-width: 30rem;
+      text-align: center;
+      margin: 0 auto;
+    }
   }
 
   ${FoldDetails} {
-    grid-column: content-8 / content-end;
+    grid-column: content-start / content-end;
     text-align: left;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-8 / content-end;
+    `}
   }
 `;
 
-const FactsFold = styled(Fold)`
-  padding-bottom: ${glsp(6)};
-
+const ResearchFold = styled(Fold)`
   ${Gridder} {
     align-items: center;
   }
@@ -52,14 +81,10 @@ const FactsFold = styled(Fold)`
     grid-column: content-start / content-end;
     grid-row: 2;
     margin-bottom: ${glsp(2)};
-  }
-`;
 
-const CreditsFold = styled(FactsFold)`
-  padding-bottom: 0;
-
-  ${Prose} {
-    grid-column: content-start / content-7;
+    ${media.smallDown`
+      column-count: 1;
+    `}
   }
 `;
 
@@ -71,17 +96,94 @@ const InterpretDataFold = styled(Fold)`
   }
 
   ${MediaImage} {
-    grid-column: content-start / content-8;
-    grid-row: 1;
+    grid-column: content-start / content-end;
+
+    ${media.mediumUp`
+      grid-column: content-2 / content-7;
+    `}
+    
+    ${media.largeUp`
+      grid-row: 1;
+      grid-column: content-start / content-8;
+    `}
 
     figcaption {
+      padding: 0 ${glsp()};
       max-width: 30rem;
+      text-align: center;
+      margin: 0 auto;
     }
   }
 
   ${FoldDetails} {
-    grid-column: content-8 / content-end;
+    grid-column: content-start / content-end;
     text-align: left;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-8 / content-end;
+    `}
+  }
+`;
+
+const CreditsFold = styled(Fold)`
+  padding-bottom: 0;
+
+  ${Gridder} {
+    align-items: center;
+  }
+
+  /* stylelint-disable-next-line */
+  ${InpageHGroup} {
+    grid-row: 1;
+    grid-column: content-start / content-end;
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
+  }
+
+  ${Prose} {
+    grid-column: content-start / content-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
+  }
+`;
+
+const FactsFold = styled(Fold)`
+  ${Gridder} {
+    align-items: center;
+  }
+
+  /* stylelint-disable-next-line */
+  ${InpageHGroup} {
+    grid-row: 1;
+    grid-column: content-start / content-end;
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
+  }
+
+  ${Prose} {
+    grid-column: content-start / content-end;
+    
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
   }
 `;
 
@@ -95,13 +197,13 @@ class NO2LongForm extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <Fold>
-          <Constrainer>
+        <LeadFold>
+          <Gridder>
             <IntroLead>
               Since the onset of COVID-19, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in some regions.
             </IntroLead>
-          </Constrainer>
-        </Fold>
+          </Gridder>
+        </LeadFold>
 
         <IntroFold>
           <Gridder>
@@ -144,7 +246,7 @@ class NO2LongForm extends React.Component {
           </Gridder>
         </IntroFold>
 
-        <FactsFold>
+        <ResearchFold>
           <Gridder>
             <InpageHGroup
               title='Scientific Research'
@@ -179,7 +281,7 @@ class NO2LongForm extends React.Component {
               </p>
             </Prose>
           </Gridder>
-        </FactsFold>
+        </ResearchFold>
 
         <InterpretDataFold>
           <Gridder>
