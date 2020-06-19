@@ -1,4 +1,5 @@
 import config from '../../../config';
+import { indicatorGroupColors } from '../../../styles/theme/theme';
 
 export default {
   id: 'nightlights-viirs',
@@ -15,10 +16,7 @@ export default {
     ]
   },
   exclusiveWith: ['no2', 'co2-diff', 'co2', 'gibs-population', 'car-count', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
-  swatch: {
-    color: '#f2a73a',
-    name: 'Gold'
-  },
+  swatch: indicatorGroupColors.economic,
   legend: {
     type: 'gradient',
     min: 'less',
