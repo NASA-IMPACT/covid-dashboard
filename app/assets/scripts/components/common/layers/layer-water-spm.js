@@ -1,5 +1,7 @@
 import config from '../../../config';
 
+import { indicatorGroupColors } from '../../../styles/theme/theme.js';
+
 export default {
   id: 'water-spm',
   name: 'Turbidity',
@@ -13,10 +15,7 @@ export default {
     ]
   },
   exclusiveWith: ['no2', 'co2-diff', 'co2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll'],
-  swatch: {
-    color: '#154F8D',
-    name: 'Deep blue'
-  },
+  swatch: indicatorGroupColors['water-quality'],
   legend: {
     type: 'gradient',
     min: 'less',
