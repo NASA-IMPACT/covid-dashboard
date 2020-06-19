@@ -21,13 +21,7 @@ import Button from '../../../styles/button/button';
 import Prose from '../../../styles/type/prose';
 import Dl from '../../../styles/type/definition-list';
 
-const {
-  center,
-  zoom: defaultZoom,
-  minZoom,
-  maxZoom,
-  styleUrl
-} = config.map;
+const { center, zoom: defaultZoom, minZoom, maxZoom, styleUrl } = config.map;
 
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;
@@ -143,8 +137,8 @@ class MbMap extends React.Component {
     // This leads to problems when finding a given layer in the layers array.
     // We can safely assume that when the layers array change, all the active
     // layers should be hidden.
-    const currId = this.props.layers.map(l => l.id).join('.');
-    const prevIds = prevProps.layers.map(l => l.id).join('.');
+    const currId = this.props.layers.map((l) => l.id).join('.');
+    const prevIds = prevProps.layers.map((l) => l.id).join('.');
     if (currId !== prevIds) {
       this.props.activeLayers.forEach((layerId) => {
         const layerInfo = prevProps.layers.find((l) => l.id === layerId);
@@ -157,7 +151,10 @@ class MbMap extends React.Component {
       });
     }
 
-    if (prevProps.activeLayers !== activeLayers || comparing !== prevProps.comparing) {
+    if (
+      prevProps.activeLayers !== activeLayers ||
+      comparing !== prevProps.comparing
+    ) {
       const toRemove = prevProps.activeLayers.filter(
         (l) => !activeLayers.includes(l)
       );
@@ -265,22 +262,30 @@ class MbMap extends React.Component {
     });
 
     // Add zoom controls.
-    this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    this.mbMapComparing.addControl(
+      new mapboxgl.NavigationControl(),
+      'top-left'
+    );
 
     // Remove compass.
     document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
 
     if (this.props.enableLocateUser) {
-      this.mbMapComparing.addControl(new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true
-        },
-        trackUserLocation: true
-      }), 'top-left');
+      this.mbMapComparing.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true
+          },
+          trackUserLocation: true
+        }),
+        'top-left'
+      );
     }
 
     // Style attribution.
-    this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
+    this.mbMapComparing.addControl(
+      new mapboxgl.AttributionControl({ compact: true })
+    );
 
     this.mbMapComparing.once('load', () => {
       this.mbMapComparingLoaded = true;
@@ -288,7 +293,11 @@ class MbMap extends React.Component {
       this.updateSpotlights();
     });
 
-    this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
+    this.compareControl = new CompareMbGL(
+      this.mbMapComparing,
+      this.mbMap,
+      '#container'
+    );
   }
 
   updateActiveLayers (prevProps) {
@@ -336,12 +345,15 @@ class MbMap extends React.Component {
       document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
 
       if (this.props.enableLocateUser) {
-        this.mbMap.addControl(new mapboxgl.GeolocateControl({
-          positionOptions: {
-            enableHighAccuracy: true
-          },
-          trackUserLocation: true
-        }), 'top-left');
+        this.mbMap.addControl(
+          new mapboxgl.GeolocateControl({
+            positionOptions: {
+              enableHighAccuracy: true
+            },
+            trackUserLocation: true
+          }),
+          'top-left'
+        );
       }
     }
 
@@ -352,7 +364,11 @@ class MbMap extends React.Component {
     if (this.props.aoiState) {
       this.mbDraw = mbAoiDraw(this.mbMap);
       const { feature } = this.props.aoiState;
-      this.mbDraw.setup(this.props.onAction, feature ? [feature] : null, this.props.theme);
+      this.mbDraw.setup(
+        this.props.onAction,
+        feature ? [feature] : null,
+        this.props.theme
+      );
     }
 
     this.mbMap.on('load', () => {
@@ -472,10 +488,7 @@ class MbMap extends React.Component {
   render () {
     return (
       <>
-        {
-          this.mbMap &&
-          this.renderPopover()
-        }
+        {this.mbMap && this.renderPopover()}
         <MapsContainer id='container'>
           <SingleMapContainer
             ref={(el) => {
