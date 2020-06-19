@@ -1,3 +1,6 @@
+
+import { indicatorGroupColors } from '../../../styles/theme/theme.js';
+
 export default {
   id: 'gibs-population',
   name: 'Population',
@@ -9,10 +12,7 @@ export default {
     ]
   },
   exclusiveWith: ['no2', 'co2-diff', 'co2', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
-  swatch: {
-    color: '#F55E2C',
-    name: 'Orange'
-  },
+  swatch: indicatorGroupColors.economic,
   legend: {
     type: 'gradient',
     min: 'less',

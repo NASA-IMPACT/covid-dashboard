@@ -94,6 +94,25 @@ class MbMap extends React.Component {
       }
     }
 
+    // Technical debt: The activeLayers and layers prop depend on eachother,
+    // but they get updated at different times.
+    // This leads to problems when finding a given layer in the layers array.
+    // We can safely assume that when the layers array change, all the active
+    // layers should be hidden.
+    const currId = this.props.layers.map(l => l.id).join('.');
+    const prevIds = prevProps.layers.map(l => l.id).join('.');
+    if (currId !== prevIds) {
+      this.props.activeLayers.forEach((layerId) => {
+        const layerInfo = prevProps.layers.find((l) => l.id === layerId);
+        const fns = layerTypes[layerInfo.type];
+        if (fns) {
+          return fns.hide(this, layerInfo, prevProps);
+        }
+        /* eslint-disable-next-line no-console */
+        console.error('No functions found for layer type', layerInfo.type);
+      });
+    }
+
     if (prevProps.activeLayers !== activeLayers || comparing !== prevProps.comparing) {
       const toRemove = prevProps.activeLayers.filter(
         (l) => !activeLayers.includes(l)
@@ -104,6 +123,7 @@ class MbMap extends React.Component {
 
       toRemove.forEach((layerId) => {
         const layerInfo = this.props.layers.find((l) => l.id === layerId);
+        if (!layerInfo) return;
         const fns = layerTypes[layerInfo.type];
         if (fns) {
           return fns.hide(this, layerInfo, prevProps);
@@ -114,6 +134,7 @@ class MbMap extends React.Component {
 
       toAdd.forEach(async (layerId) => {
         const layerInfo = this.props.layers.find((l) => l.id === layerId);
+        if (!layerInfo) return;
         const fns = layerTypes[layerInfo.type];
         if (fns) {
           fns.show(this, layerInfo, prevProps);
@@ -180,6 +201,7 @@ class MbMap extends React.Component {
   updateActiveLayers (prevProps) {
     this.props.activeLayers.forEach((layerId) => {
       const layerInfo = this.props.layers.find((l) => l.id === layerId);
+      if (!layerInfo) return;
       const fns = layerTypes[layerInfo.type];
       if (fns && fns.update) {
         return fns.update(this, layerInfo, prevProps);
@@ -252,8 +274,11 @@ class MbMap extends React.Component {
       }
     });
 
-    this.mbMap.on('moveend', () => {
+    this.mbMap.on('moveend', (e) => {
       this.props.onAction('map.move', {
+        // The existence of originalEvent indicates that it was not caused by
+        // a method call.
+        userInitiated: Object.prototype.hasOwnProperty.call(e, 'originalEvent'),
         lng: round(this.mbMap.getCenter().lng, 4),
         lat: round(this.mbMap.getCenter().lat, 4),
         zoom: round(this.mbMap.getZoom(), 2)

@@ -2,6 +2,8 @@ import { format } from 'date-fns';
 
 import config from '../../../config';
 
+import { indicatorGroupColors } from '../../../styles/theme/theme.js';
+
 export default {
   id: 'co2',
   name: 'CO₂ Mean',
@@ -34,10 +36,7 @@ export default {
     }
   },
 
-  swatch: {
-    color: '#7E7E7E',
-    name: 'Grey'
-  },
+  swatch: indicatorGroupColors['greenhouse-gas'],
   legend: {
     type: 'gradient-adjustable',
     min: 'less',

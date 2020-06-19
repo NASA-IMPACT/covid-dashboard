@@ -303,7 +303,7 @@ export function getUpdatedActiveLayersState (state, layer) {
  * @param {object} layer Layer object
  * @param {function} cb callback after the state is updated.
  */
-export async function toggleLayerCommon (layer, cb) {
+export function toggleLayerCommon (layer, cb) {
   const layerId = layer.id;
   const isEnabled = this.state.activeLayers.includes(layerId);
 

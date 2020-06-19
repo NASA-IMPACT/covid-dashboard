@@ -9,5 +9,6 @@
   "rules": {
     "font-family-no-missing-generic-family-keyword": null,
     "no-duplicate-selectors": null
-  }
+  },
+  "ignoreFiles": ["app/assets/scripts/styles/gridder.js"]
 }
