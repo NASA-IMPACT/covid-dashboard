@@ -56,19 +56,16 @@ const IntroCopy = styled.div`
   left: ${glsp()};
   right: ${glsp()};
   z-index: 10;
-  padding: ${glsp()};
   border-radius: ${themeVal('shape.rounded')};
   max-height: calc(100% - ${glsp(2)});
   width: calc(100% - ${glsp(2)});
   overflow-y: auto;
   display: grid;
-  grid-gap: ${glsp()} 0;
 
   ${media.mediumUp`
     top: ${glsp(2)};
     left: ${glsp(2)};
     right: ${glsp()};
-    padding: ${glsp(2)};
     width: 100%;
     max-height: calc(100% - ${glsp(4)});
     max-width: 34rem;
@@ -111,12 +108,25 @@ const IntroWelcomeTitle = styled.h1`
 
 const IntroWelcome = styled.section`
   display: grid;
-  grid-gap: ${glsp()} 0;
+  grid-gap: ${glsp()};
+  padding: ${glsp()};
+  box-shadow: 0 1px 0 0 ${themeVal('color.baseAlphaB')};
+
+  ${media.mediumUp`
+    grid-gap: ${glsp()} 0;
+    padding: ${glsp(1.25, 2)};
+  `}
 `;
 
 const IntroStats = styled.section`
   display: grid;
   grid-gap: ${glsp()} 0;
+  padding: ${glsp()};
+
+  ${media.mediumUp`
+    grid-gap: ${glsp()} 0;
+    padding: ${glsp(1.25, 2)};
+  `}
 `;
 
 const IntroStatsTitle = styled.h1`
@@ -161,9 +171,13 @@ const IntroMedia = styled.figure`
 
 const IntroStories = styled.section`
   background: ${themeVal('color.primary')};
-  border-radius: ${themeVal('shape.rounded')};
   padding: ${glsp()};
   color: ${themeVal('color.surface')};
+  padding: ${glsp()};
+
+  ${media.mediumUp`
+    padding: ${glsp(1.25, 2)};
+  `}
 `;
 
 const IntroStoriesHeader = styled.header`
