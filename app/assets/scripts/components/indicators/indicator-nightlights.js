@@ -6,6 +6,7 @@ import Prose from '../../styles/type/prose';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
 import { Fold, FoldDetails } from '../../styles/fold';
+import Heading from '../../styles/type/heading';
 import MediaImage, { MediaCompare } from '../../styles/media-image';
 import media from '../../styles/utils/media-queries';
 import config from '../../config';
@@ -121,7 +122,7 @@ const CreditsFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-10;
     `}
   }
 `;
@@ -149,7 +150,7 @@ const FactsFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-10;
     `}
   }
 `;
@@ -269,15 +270,15 @@ class BMLongForm extends React.Component {
               dashColor={metadata.color}
             />
             <Prose>
-              <p>NASA Features</p>
+              <Heading as='h3' size='medium'>NASA Features</Heading>
               <ul>
                 <li><a href='https://earthobservatory.nasa.gov/images/146481/nighttime-images-capture-change-in-china' target='_blank' rel='noopener noreferrer'>Nighttime Images Capture Change In China </a></li>
               </ul>
-              <p>Explore the Data</p>
+              <Heading as='h3' size='medium'>Explore the Data</Heading>
               <ul>
                 <li><a href='https://earthdata.nasa.gov/learn/articles/feature-articles/nighttime-images-wuhan' target='_blank' rel='noopener noreferrer'>Nighttime Images Show Changes In Human Activity</a></li>
               </ul>
-              <p>Explore the Missions</p>
+              <Heading as='h3' size='medium'>Explore the Missions</Heading>
               <ul>
                 <li><a href='https://blackmarble.gsfc.nasa.gov/' target='_blank' rel='noopener noreferrer'>NASA’s Black Marble</a></li>
                 <li><a href='https://www.nasa.gov/mission_pages/NPP/main/index.html' target='_blank' rel='noopener noreferrer'>Suomi National Polar-orbiting Partnership (Suomi NPP)</a></li>
