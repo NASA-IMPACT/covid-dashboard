@@ -4,22 +4,22 @@ import styled, { withTheme } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
 import { NavLink } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
-import { wrapApiResult } from '../../../redux/reduxeed';
 
 import config from '../../../config';
+import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
+import { wrapApiResult } from '../../../redux/reduxeed';
 import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
 import { round } from '../../../utils/format';
 import { createMbMarker } from './mb-popover/utils';
+import { getSpotlightLayers } from '../layers';
 
 import ReactPopoverGl from './mb-popover';
 import Button from '../../../styles/button/button';
-import Heading from '../../../styles/type/heading';
 import Prose from '../../../styles/type/prose';
+import Dl from '../../../styles/type/definition-list';
 
 const {
   center,
@@ -74,12 +74,30 @@ const SingleMapContainer = styled.div`
   bottom: 0;
 `;
 
-const SpotlightIndicatorsHeading = styled(Heading)`
-  margin-bottom: 0.5rem;
+const PopoverDetails = styled(Dl)`
+  dt {
+    font-size: 0.75rem;
+    line-height: 1;
+    margin: 0;
+    margin-bottom: ${glsp(0.25)};
+
+    &:not(:first-child) {
+      margin-top: ${glsp(0.75)};
+    }
+  }
+  dd {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin: 0;
+    padding-left: ${glsp(0.25)};
+  }
 `;
 
 const SpotlightNavLink = styled(NavLink)`
-  color: inherit;
+  &,
+  &:visited {
+    color: inherit;
+  }
 `;
 
 class MbMap extends React.Component {
@@ -210,11 +228,10 @@ class MbMap extends React.Component {
       createMbMarker(map)
         .setLngLat(spotlight.center)
         .addTo(map)
-        .onClick(async (coords) => {
-          await this.props.fetchSpotlightSingle(spotlight.id);
+        .onClick((coords) => {
+          this.props.fetchSpotlightSingle(spotlight.id);
           this.setState({ popover: { coords, spotlightId: spotlight.id } });
-        }
-        );
+        });
     };
 
     // Add markers to mbMap, if not done yet
@@ -378,7 +395,25 @@ class MbMap extends React.Component {
       spotlight = isReady() ? getData() : {};
     }
 
+    const truncateArray = (arr, count) => {
+      if (!arr) return [];
+      if (arr.length <= count) return arr;
+      return [
+        // We always want to have count items. If there are more show, count - 1
+        // and "more".
+        ...arr.slice(0, count - 1),
+        {
+          id: 'other',
+          name: <em>and {arr.length - (count - 1)} more</em>
+        }
+      ];
+    };
+
     const { indicators } = spotlight;
+    const spotlightLayers = getSpotlightLayers(spotlightId);
+
+    const indicatorsToShow = truncateArray(indicators, 3);
+    const layersToShow = truncateArray(spotlightLayers, 3);
 
     return (
       <ReactPopoverGl
@@ -388,37 +423,44 @@ class MbMap extends React.Component {
         offset={[38, 3]}
         suptitle='Area'
         title={
-          <SpotlightNavLink
-            to={`/explore/${spotlight.id}`}
-            title={`Visit ${spotlight.label} page`}
-          >
-            {spotlight.label}
-          </SpotlightNavLink>
+          spotlight.id ? (
+            <SpotlightNavLink
+              to={`/explore/${spotlight.id}`}
+              title={`Visit ${spotlight.label} page`}
+            >
+              {spotlight.label}
+            </SpotlightNavLink>
+          ) : (
+            'Loading'
+          )
         }
         content={
-          <Prose>
-            {indicators && indicators.length > 0 ? (
-              <>
-                <SpotlightIndicatorsHeading as='h2' size='medium'>
-                  Indicators available
-                </SpotlightIndicatorsHeading>
-                <ul>
-                  {indicators.map(({ id, name }) => (
-                    <li key={id}>{name}</li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <div>There are no indicators for this area at the moment.</div>
-            )}
-          </Prose>
+          spotlight.id && (
+            <Prose>
+              <PopoverDetails>
+                <dt>Indicators</dt>
+                {indicatorsToShow.length ? (
+                  indicatorsToShow.map(({ id, name }) => (
+                    <dd key={id}>{name}</dd>
+                  ))
+                ) : (
+                  <dd>There are no indicators</dd>
+                )}
+                <dt>Layers</dt>
+                {layersToShow.map(({ id, name }) => (
+                  <dd key={id}>{name}</dd>
+                ))}
+              </PopoverDetails>
+            </Prose>
+          )
         }
         footerContent={
           <Button
             variation='primary-raised-dark'
             element={NavLink}
-            to={`/explore/${spotlight.id}`}
+            to={`/explore/${spotlightId}`}
             title={`Visit ${spotlight.label} page`}
+            useIcon={['chevron-right--small', 'after']}
           >
             Explore area
           </Button>
