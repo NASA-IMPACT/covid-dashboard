@@ -1,11 +1,11 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import T from 'prop-types';
 
-import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
-import { themeVal, stylizeFunction } from '../../styles/utils/general';
+import { themeVal } from '../../styles/utils/general';
+import { visuallyHidden } from '../../styles/helpers';
 
 import { Link } from 'react-router-dom';
 
@@ -37,12 +37,11 @@ import {
 
 // import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
+import { surfaceElevatedD } from '../../styles/skins';
 import media from '../../styles/utils/media-queries';
 
 import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
-
-const _rgba = stylizeFunction(rgba);
 
 const Intro = styled.section`
   position: relative;
@@ -51,47 +50,42 @@ const Intro = styled.section`
 `;
 
 const IntroCopy = styled.div`
+  ${surfaceElevatedD()}
   position: absolute;
   top: ${glsp()};
   left: ${glsp()};
+  right: ${glsp()};
   z-index: 10;
-  padding: ${glsp()};
   border-radius: ${themeVal('shape.rounded')};
   max-height: calc(100% - ${glsp(2)});
-  width: 100%;
-  max-width: 18rem;
+  width: calc(100% - ${glsp(2)});
   overflow-y: auto;
   display: grid;
-  grid-gap: ${glsp()} 0;
-
-  ${() => CSS.supports('backdrop-filter', 'blur(0.5rem)')
-    ? css`
-        background: ${_rgba(themeVal('color.surface'), 0.48)};
-        backdrop-filter: blur(0.5rem);
-      ` : css`
-        background: ${_rgba(themeVal('color.surface'), 0.80)};
-      `
-  }
-
-  ${media.smallUp`
-    max-width: 24rem;
-  `}
 
   ${media.mediumUp`
     top: ${glsp(2)};
     left: ${glsp(2)};
-    padding: ${glsp(2)};
+    right: ${glsp()};
+    width: 100%;
     max-height: calc(100% - ${glsp(4)});
-    max-width: 28rem;
+    max-width: 34rem;
   `}
 
   ${media.largeUp`
     max-height: calc(100% - ${glsp(6)});
     max-width: 36rem;
   `}
+
+  ${media.xlargeUp`
+    max-width: 40rem;
+  `}
 `;
 
 const IntroTitle = styled.h1`
+  ${visuallyHidden()}
+`;
+
+const IntroWelcomeTitle = styled.h1`
   margin: 0;
 
   small {
@@ -112,11 +106,34 @@ const IntroTitle = styled.h1`
   }
 `;
 
-const IntroProse = styled(Prose)`
-  background: transparent;
+const IntroWelcome = styled.section`
+  display: grid;
+  grid-gap: ${glsp()};
+  padding: ${glsp()};
+  box-shadow: 0 1px 0 0 ${themeVal('color.baseAlphaB')};
+
+  ${media.mediumUp`
+    grid-gap: ${glsp()} 0;
+    padding: ${glsp(1.25, 2)};
+  `}
 `;
 
-const IntroStats = styled.div`
+const IntroStats = styled.section`
+  display: grid;
+  grid-gap: ${glsp()} 0;
+  padding: ${glsp()};
+
+  ${media.mediumUp`
+    grid-gap: ${glsp()} 0;
+    padding: ${glsp(1.25, 2)};
+  `}
+`;
+
+const IntroStatsTitle = styled.h1`
+  ${visuallyHidden()}
+`;
+
+const IntroStatsList = styled.dl`
   display: grid;
   grid-auto-columns: min-content;
   grid-auto-rows: auto;
@@ -154,9 +171,12 @@ const IntroMedia = styled.figure`
 
 const IntroStories = styled.section`
   background: ${themeVal('color.primary')};
-  border-radius: ${themeVal('shape.rounded')};
-  padding: ${glsp()};
   color: ${themeVal('color.surface')};
+  padding: ${glsp()};
+
+  ${media.mediumUp`
+    padding: ${glsp(1.25, 2)};
+  `}
 `;
 
 const IntroStoriesHeader = styled.header`
@@ -300,31 +320,34 @@ class Home extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Welcome</InpageTitle>
+                <InpageTitle>Home</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
             <Intro>
               <IntroCopy>
-                <IntroTitle>
-                  <small>Welcome to the</small>
-                  <strong>COVID-19 Data Dashboard</strong>
-                </IntroTitle>
-                <IntroProse>
-                  <p>
-                    As communities around the world have changed their behavior in response
-                    to the spread of COVID-19, NASA satellites have observed changes in the
-                    environment. This experimental dashboard reflects a rapid response to
+                <IntroTitle>Start exploring</IntroTitle>
+                <IntroWelcome>
+                  <IntroWelcomeTitle>Welcome</IntroWelcomeTitle>
+                  <Prose>
+                    <p>
+                      As communities around the world have changed their behavior in response
+                      to the spread of COVID-19, NASA satellites have observed changes in the
+                    environment. This <strong>experimental</strong> dashboard reflects a rapid response to
                     COVID-19 that is currently underway and will continue to evolve as more
                     data becomes available. <Link to='/about' title='Read more on the about page'>Read more...</Link>
-                  </p>
-                </IntroProse>
+                    </p>
+                  </Prose>
+                </IntroWelcome>
                 <IntroStats>
-                  <dt>Locations</dt>
-                  <dd><Link to='/spotlight' title='Explore the spotlight areas'>07</Link></dd>
-                  <dt>Indicators</dt>
-                  <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
+                  <IntroStatsTitle>Some numbers</IntroStatsTitle>
+                  <IntroStatsList>
+                    <dt>Areas</dt>
+                    <dd><Link to='/explore' title='Explore the areas'>07</Link></dd>
+                    <dt>Indicators</dt>
+                    <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
+                  </IntroStatsList>
                 </IntroStats>
                 <IntroStories>
                   <IntroStoriesHeader>
