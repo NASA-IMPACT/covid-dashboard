@@ -99,7 +99,9 @@ class MbMap extends React.Component {
     // This leads to problems when finding a given layer in the layers array.
     // We can safely assume that when the layers array change, all the active
     // layers should be hidden.
-    if (JSON.stringify(this.props.layers) !== JSON.stringify(prevProps.layers)) {
+    const currId = this.props.layers.map(l => l.id).join('.');
+    const prevIds = prevProps.layers.map(l => l.id).join('.');
+    if (currId !== prevIds) {
       this.props.activeLayers.forEach((layerId) => {
         const layerInfo = prevProps.layers.find((l) => l.id === layerId);
         const fns = layerTypes[layerInfo.type];
