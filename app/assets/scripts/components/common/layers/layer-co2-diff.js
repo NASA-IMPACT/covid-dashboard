@@ -1,5 +1,7 @@
 import config from '../../../config';
 
+import { indicatorGroupColors } from '../../../styles/theme/theme.js';
+
 export default {
   id: 'co2-diff',
   name: 'CO₂ Diff',
@@ -18,10 +20,7 @@ export default {
   },
   exclusiveWith: ['no2', 'co2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: false,
-  swatch: {
-    color: '#B8D8E7',
-    name: 'Pale blue'
-  },
+  swatch: indicatorGroupColors['greenhouse-gases'],
   legend: {
     type: 'gradient',
     min: 'less',
