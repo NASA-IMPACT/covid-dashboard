@@ -29,6 +29,7 @@ import IndicatorsSingle from './components/indicators/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
 import About from './components/about';
+import Development from './components/development';
 
 // Load the spotlight areas list.
 store.dispatch(fetchSpotlightList());
@@ -104,6 +105,7 @@ class Root extends React.Component {
                 />
                 <Route path='/sandbox' component={Sandbox} />
                 <Route path='/about' component={About} />
+                <Route path='/development' component={Development} />
                 <Route path='*' component={UhOh} />
               </Switch>
               <GlobalLoading />
