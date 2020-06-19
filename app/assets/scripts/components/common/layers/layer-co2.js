@@ -1,4 +1,4 @@
-import { format, sub } from 'date-fns';
+import { format } from 'date-fns';
 
 import config from '../../../config';
 
@@ -24,7 +24,7 @@ export default {
     enabled: true,
     help: 'Compare with baseline',
     yearDiff: 0,
-    mapLabel: date => `${format(sub(date, { years: 1 }), "MMM yy''")} — ${format(date, "MMM yy''")}`,
+    mapLabel: date => `Base - Mean (${format(date, "dd MMM yy''")})`,
     source: {
       type: 'raster',
       tiles: [
