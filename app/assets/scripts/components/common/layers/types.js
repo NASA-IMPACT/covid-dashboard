@@ -219,8 +219,8 @@ export const layerTypes = {
       const { vector, raster } = source;
 
       const inferPaint = {
-        'line-color': '#ff0000',
-        'line-opacity': 0.6,
+        'line-color': '#f2a73a',
+        'line-opacity': 0.8,
         'line-width': 2
       };
       const formatDate = format(utcDate(domain[domain.length - 1]), dateFormats[layerInfo.timeUnit]);
