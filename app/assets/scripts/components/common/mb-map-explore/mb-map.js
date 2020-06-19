@@ -3,20 +3,25 @@ import T from 'prop-types';
 import styled, { withTheme } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import config from '../../../config';
+import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
+import { wrapApiResult } from '../../../redux/reduxeed';
 import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
 import mbAoiDraw from './mb-aoi-draw';
 import { round } from '../../../utils/format';
+import { createMbMarker } from './mb-popover/utils';
+import { getSpotlightLayers } from '../layers';
 
-const {
-  center,
-  zoom: defaultZoom,
-  minZoom,
-  maxZoom,
-  styleUrl
-} = config.map;
+import ReactPopoverGl from './mb-popover';
+import Button from '../../../styles/button/button';
+import Prose from '../../../styles/type/prose';
+import Dl from '../../../styles/type/definition-list';
+
+const { center, zoom: defaultZoom, minZoom, maxZoom, styleUrl } = config.map;
 
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;
@@ -63,12 +68,45 @@ const SingleMapContainer = styled.div`
   bottom: 0;
 `;
 
+const PopoverDetails = styled(Dl)`
+  dt {
+    font-size: 0.75rem;
+    line-height: 1;
+    margin: 0;
+    margin-bottom: ${glsp(0.25)};
+
+    &:not(:first-child) {
+      margin-top: ${glsp(0.75)};
+    }
+  }
+  dd {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin: 0;
+    padding-left: ${glsp(0.25)};
+  }
+`;
+
+const SpotlightNavLink = styled(NavLink)`
+  &,
+  &:visited {
+    color: inherit;
+  }
+`;
+
 class MbMap extends React.Component {
   constructor (props) {
     super(props);
     this.mapContainer = null;
     this.mbMap = null;
     this.mbDraw = null;
+
+    this.state = {
+      popover: {
+        coords: null,
+        spotlightId: null
+      }
+    };
   }
 
   componentDidMount () {
@@ -77,7 +115,7 @@ class MbMap extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { activeLayers, comparing } = this.props;
+    const { activeLayers, comparing, spotlightList } = this.props;
 
     // Compare Maps
     if (comparing !== prevProps.comparing) {
@@ -99,8 +137,8 @@ class MbMap extends React.Component {
     // This leads to problems when finding a given layer in the layers array.
     // We can safely assume that when the layers array change, all the active
     // layers should be hidden.
-    const currId = this.props.layers.map(l => l.id).join('.');
-    const prevIds = prevProps.layers.map(l => l.id).join('.');
+    const currId = this.props.layers.map((l) => l.id).join('.');
+    const prevIds = prevProps.layers.map((l) => l.id).join('.');
     if (currId !== prevIds) {
       this.props.activeLayers.forEach((layerId) => {
         const layerInfo = prevProps.layers.find((l) => l.id === layerId);
@@ -113,7 +151,10 @@ class MbMap extends React.Component {
       });
     }
 
-    if (prevProps.activeLayers !== activeLayers || comparing !== prevProps.comparing) {
+    if (
+      prevProps.activeLayers !== activeLayers ||
+      comparing !== prevProps.comparing
+    ) {
       const toRemove = prevProps.activeLayers.filter(
         (l) => !activeLayers.includes(l)
       );
@@ -155,6 +196,54 @@ class MbMap extends React.Component {
     if (this.mbDraw) {
       this.mbDraw.update(prevProps.aoiState, this.props.aoiState);
     }
+
+    // If spotlightList is active and was made available, add it to the map
+    if (
+      spotlightList &&
+      spotlightList.isReady() &&
+      !prevProps.spotlightList.isReady()
+    ) {
+      this.updateSpotlights();
+    }
+  }
+
+  /**
+   * Adds spotlight markers to mbMap and mbMapComparing. This functions uses
+   * component state to control spotlights loading state, because maps will
+   * finish loading at different times.
+   */
+  updateSpotlights () {
+    // Check if spotlights are available
+    const { spotlightList } = this.props;
+    if (!spotlightList && !spotlightList.isReady()) return;
+
+    // Get spotlights from API data
+    const spotlights = spotlightList.getData();
+
+    // Define a common function to add markers
+    const addMarker = (spotlight, map) => {
+      createMbMarker(map)
+        .setLngLat(spotlight.center)
+        .addTo(map)
+        .onClick((coords) => {
+          this.props.fetchSpotlightSingle(spotlight.id);
+          this.setState({ popover: { coords, spotlightId: spotlight.id } });
+        });
+    };
+
+    // Add markers to mbMap, if not done yet
+    if (this.mbMap) {
+      spotlights.forEach((s) => {
+        addMarker(s, this.mbMap);
+      });
+    }
+
+    // Add markers to mbMapComparing, if not done yet
+    if (this.mbMapComparing) {
+      spotlights.forEach((s) => {
+        addMarker(s, this.mbMapComparing);
+      });
+    }
   }
 
   enableCompare (prevProps) {
@@ -173,29 +262,42 @@ class MbMap extends React.Component {
     });
 
     // Add zoom controls.
-    this.mbMapComparing.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    this.mbMapComparing.addControl(
+      new mapboxgl.NavigationControl(),
+      'top-left'
+    );
 
     // Remove compass.
     document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
 
     if (this.props.enableLocateUser) {
-      this.mbMapComparing.addControl(new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true
-        },
-        trackUserLocation: true
-      }), 'top-left');
+      this.mbMapComparing.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true
+          },
+          trackUserLocation: true
+        }),
+        'top-left'
+      );
     }
 
     // Style attribution.
-    this.mbMapComparing.addControl(new mapboxgl.AttributionControl({ compact: true }));
+    this.mbMapComparing.addControl(
+      new mapboxgl.AttributionControl({ compact: true })
+    );
 
     this.mbMapComparing.once('load', () => {
       this.mbMapComparingLoaded = true;
       this.updateActiveLayers(prevProps);
+      this.updateSpotlights();
     });
 
-    this.compareControl = new CompareMbGL(this.mbMapComparing, this.mbMap, '#container');
+    this.compareControl = new CompareMbGL(
+      this.mbMapComparing,
+      this.mbMap,
+      '#container'
+    );
   }
 
   updateActiveLayers (prevProps) {
@@ -243,12 +345,15 @@ class MbMap extends React.Component {
       document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
 
       if (this.props.enableLocateUser) {
-        this.mbMap.addControl(new mapboxgl.GeolocateControl({
-          positionOptions: {
-            enableHighAccuracy: true
-          },
-          trackUserLocation: true
-        }), 'top-left');
+        this.mbMap.addControl(
+          new mapboxgl.GeolocateControl({
+            positionOptions: {
+              enableHighAccuracy: true
+            },
+            trackUserLocation: true
+          }),
+          'top-left'
+        );
       }
     }
 
@@ -259,7 +364,11 @@ class MbMap extends React.Component {
     if (this.props.aoiState) {
       this.mbDraw = mbAoiDraw(this.mbMap);
       const { feature } = this.props.aoiState;
-      this.mbDraw.setup(this.props.onAction, feature ? [feature] : null, this.props.theme);
+      this.mbDraw.setup(
+        this.props.onAction,
+        feature ? [feature] : null,
+        this.props.theme
+      );
     }
 
     this.mbMap.on('load', () => {
@@ -271,6 +380,12 @@ class MbMap extends React.Component {
           ...this.props,
           comparing: false
         });
+      }
+
+      // If spotlight list is available on map mount, add it to the map
+      const { spotlightList } = this.props;
+      if (spotlightList && spotlightList.isReady()) {
+        this.updateSpotlights(spotlightList.getData());
       }
     });
 
@@ -286,20 +401,107 @@ class MbMap extends React.Component {
     });
   }
 
+  renderPopover () {
+    const { spotlightId } = this.state.popover;
+
+    let spotlight = {};
+
+    if (spotlightId) {
+      const { getData, isReady } = this.props.spotlight[spotlightId];
+      spotlight = isReady() ? getData() : {};
+    }
+
+    const truncateArray = (arr, count) => {
+      if (!arr) return [];
+      if (arr.length <= count) return arr;
+      return [
+        // We always want to have count items. If there are more show, count - 1
+        // and "more".
+        ...arr.slice(0, count - 1),
+        {
+          id: 'other',
+          name: <em>and {arr.length - (count - 1)} more</em>
+        }
+      ];
+    };
+
+    const { indicators } = spotlight;
+    const spotlightLayers = getSpotlightLayers(spotlightId);
+
+    const indicatorsToShow = truncateArray(indicators, 3);
+    const layersToShow = truncateArray(spotlightLayers, 3);
+
+    return (
+      <ReactPopoverGl
+        mbMap={this.mbMap}
+        lngLat={this.state.popover.coords}
+        onClose={() => this.setState({ popover: {} })}
+        offset={[38, 3]}
+        suptitle='Area'
+        title={
+          spotlight.id ? (
+            <SpotlightNavLink
+              to={`/explore/${spotlight.id}`}
+              title={`Visit ${spotlight.label} page`}
+            >
+              {spotlight.label}
+            </SpotlightNavLink>
+          ) : (
+            'Loading'
+          )
+        }
+        content={
+          spotlight.id && (
+            <Prose>
+              <PopoverDetails>
+                <dt>Indicators</dt>
+                {indicatorsToShow.length ? (
+                  indicatorsToShow.map(({ id, name }) => (
+                    <dd key={id}>{name}</dd>
+                  ))
+                ) : (
+                  <dd>There are no indicators</dd>
+                )}
+                <dt>Layers</dt>
+                {layersToShow.map(({ id, name }) => (
+                  <dd key={id}>{name}</dd>
+                ))}
+              </PopoverDetails>
+            </Prose>
+          )
+        }
+        footerContent={
+          <Button
+            variation='primary-raised-dark'
+            element={NavLink}
+            to={`/explore/${spotlightId}`}
+            title={`Visit ${spotlight.label} page`}
+            useIcon={['chevron-right--small', 'after']}
+          >
+            Explore area
+          </Button>
+        }
+      />
+    );
+  }
+
   render () {
     return (
-      <MapsContainer id='container'>
-        <SingleMapContainer
-          ref={(el) => {
-            this.mapContainerComparing = el;
-          }}
-        />
-        <SingleMapContainer
-          ref={(el) => {
-            this.mapContainer = el;
-          }}
-        />
-      </MapsContainer>
+      <>
+        {this.mbMap && this.renderPopover()}
+        <MapsContainer id='container'>
+          <SingleMapContainer
+            ref={(el) => {
+              this.mapContainerComparing = el;
+            }}
+          />
+          <SingleMapContainer
+            ref={(el) => {
+              this.mapContainer = el;
+            }}
+          />
+        </MapsContainer>
+      </>
     );
   }
 }
@@ -313,7 +515,22 @@ MbMap.propTypes = {
   activeLayers: T.array,
   layers: T.array,
   enableLocateUser: T.bool,
-  disableControls: T.bool
+  disableControls: T.bool,
+  spotlightList: T.object,
+  spotlight: T.object,
+  fetchSpotlightSingle: T.func
 };
 
-export default withTheme(MbMap);
+function mapStateToProps (state) {
+  return {
+    spotlight: wrapApiResult(state.spotlight.single, true)
+  };
+}
+
+const mapDispatchToProps = {
+  fetchSpotlightSingle: fetchSpotlightSingleAction
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  forwardRef: true
+})(withTheme(MbMap));
