@@ -7,8 +7,7 @@ import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
 import { Fold, FoldDetails } from '../../styles/fold';
 import MediaImage, { MediaCompare } from '../../styles/media-image';
-
-import { glsp } from '../../styles/utils/theme-values';
+import media from '../../styles/utils/media-queries';
 import config from '../../config';
 
 const { baseUrl } = config;
@@ -17,7 +16,15 @@ const IntroFold = styled(Fold)`
   padding-bottom: 0;
 
   ${Prose} {
-    grid-column: content-start / content-10;
+    grid-column: content-start / content-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-start / content-10;
+    `}
   }
 `;
 
@@ -29,13 +36,29 @@ const ResearchFold = styled(Fold)`
   }
 
   ${MediaImage} {
-    grid-column: content-8 / full-end;
-    grid-row: 1;
+    grid-column: full-start / full-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-end;
+    `}
+
+    ${media.largeUp`
+      grid-row: 1;
+      grid-column: content-8 / full-end;
+    `}
   }
 
   ${FoldDetails} {
-    grid-column: content-start / content-8;
+    grid-column: content-start / content-end;
     text-align: left;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-start / content-8;
+    `}
   }
 `;
 
@@ -47,18 +70,34 @@ const DataFold = styled(Fold)`
   }
 
   ${MediaCompare} {
-    grid-column: full-start / content-8;
-    grid-row: 1;
+    grid-column: full-start / full-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-end;
+    `}
+
+    ${media.largeUp`
+      grid-column: full-start / content-8;
+      grid-row: 1;
+    `}
   }
 
   ${FoldDetails} {
-    grid-column: content-8 / content-end;
+    grid-column: content-start / content-end;
     text-align: left;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-8 / content-end;
+    `}
   }
 `;
 
-const FactsFold = styled(Fold)`
-  padding-bottom: ${glsp(6)};
+const CreditsFold = styled(Fold)`
+  padding-bottom: 0;
 
   ${Gridder} {
     align-items: center;
@@ -67,21 +106,51 @@ const FactsFold = styled(Fold)`
   /* stylelint-disable-next-line */
   ${InpageHGroup} {
     grid-row: 1;
-    grid-column: content-start / content-7;
+    grid-column: content-start / content-end;
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
   }
 
   ${Prose} {
     grid-column: content-start / content-end;
-    grid-row: 2;
-    margin-bottom: ${glsp(2)};
+
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
   }
 `;
 
-const CreditsFold = styled(FactsFold)`
-  padding-bottom: 0;
+const FactsFold = styled(Fold)`
+  ${Gridder} {
+    align-items: center;
+  }
+
+  /* stylelint-disable-next-line */
+  ${InpageHGroup} {
+    grid-row: 1;
+    grid-column: content-start / content-end;
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
+  }
 
   ${Prose} {
-    grid-column: content-start / content-7;
+    grid-column: content-start / content-end;
+    
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
   }
 `;
 
