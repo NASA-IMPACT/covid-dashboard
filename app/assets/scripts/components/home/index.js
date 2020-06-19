@@ -332,6 +332,7 @@ class Home extends React.Component {
     const { spotlightId, layers } = stories[storyIndex];
     if (mapLoaded) {
       if (spotlight !== prevProps.spotlight) {
+        this.resizeMap();
         const spotlightData = spotlight[spotlightId].getData();
         if (spotlightData.bounding_box) {
           const storyLayers = layers;
