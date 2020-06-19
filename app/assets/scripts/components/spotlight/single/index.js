@@ -17,44 +17,52 @@ import {
 import MbMap from '../../common/mb-map-explore/mb-map';
 import UhOh from '../../uhoh';
 import DataLayersBlock from '../../common/data-layers-block';
-import Panel, { PanelHeadline } from '../../common/panel';
+import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import MapMessage from '../../common/map-message';
 import Timeline from '../../common/timeline';
 import SecPanel from './sec-panel';
-import Heading from '../../../styles/type/heading';
+import ExploreNavigation from '../../common/explore-navigation';
 
 import { themeVal } from '../../../styles/utils/general';
 import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
 import { wrapApiResult, getFromState } from '../../../redux/reduxeed';
-import { showGlobalLoading, hideGlobalLoading } from '../../common/global-loading';
-import allMapLayers from '../../common/layers';
+import {
+  showGlobalLoading,
+  hideGlobalLoading
+} from '../../common/global-loading';
+import { getSpotlightLayers } from '../../common/layers';
 import {
   setLayerState,
   getLayerState,
   getLayersWithState,
   resizeMap,
   getInitialMapExploreState,
+  getActiveTimeseriesLayers,
   handlePanelAction,
-  getUpdatedActiveLayersState,
-  toggleLayerCompare,
-  toggleLayerRasterTimeseries,
-  getActiveTimeseriesLayers
+  getCommonQsState,
+  handleMapAction,
+  toggleLayerCommon
 } from '../../../utils/map-explore-utils';
-
-const layersBySpotlight = {
-  be: ['no2', 'nightlights-hd', 'nightlights-viirs', 'car-count'],
-  du: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  gh: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  la: ['no2', 'nightlights-hd', 'nightlights-viirs'],
-  sf: ['no2', 'nightlights-hd', 'nightlights-viirs', 'sample-ml'],
-  tk: ['no2', 'nightlights-hd', 'nightlights-viirs']
-};
+import QsState from '../../../utils/qs-state';
+import media, { isLargeViewport } from '../../../styles/utils/media-queries';
 
 const ExploreCanvas = styled.div`
   display: grid;
   height: 100%;
   grid-template-columns: min-content 1fr min-content;
   overflow: hidden;
+
+  ${media.mediumDown`
+    ${({ panelPrime, panelSec }) => {
+      if (panelPrime && !panelSec) {
+        return 'grid-template-columns: min-content 0 0;';
+      }
+
+      if (!panelPrime && panelSec) {
+        return 'grid-template-columns: 0 0 min-content;';
+      }
+    }}
+  `}
 
   > * {
     grid-row: 1;
@@ -67,10 +75,14 @@ const ExploreCarto = styled.section`
   background: ${themeVal('color.baseAlphaA')};
   display: grid;
   grid-template-rows: 1fr auto;
+  min-width: 0;
+  overflow: hidden;
 `;
 
 const PrimePanel = styled(Panel)`
-  width: 18rem;
+  ${media.largeUp`
+    width: 18rem;
+  `}
 `;
 
 class SpotlightAreasSingle extends React.Component {
@@ -80,7 +92,6 @@ class SpotlightAreasSingle extends React.Component {
     this.setLayerState = setLayerState.bind(this);
     this.getLayerState = getLayerState.bind(this);
     this.getLayersWithState = getLayersWithState.bind(this);
-    this.toggleLayerCompare = toggleLayerCompare.bind(this);
     this.getActiveTimeseriesLayers = getActiveTimeseriesLayers.bind(this);
     this.resizeMap = resizeMap.bind(this);
 
@@ -90,8 +101,27 @@ class SpotlightAreasSingle extends React.Component {
     // are shown/hidden.
     this.mbMapRef = React.createRef();
 
+    // Set query state definition for url state storing.
+    const common = getCommonQsState(props);
+    common.layers.default = 'nightlights-hd';
+    this.qsState = new QsState(common);
+
+    // The active layers can only be enabled once the map loads. The toggle
+    // layer method checks the state to see what layers are enabled so we can't
+    // store the active layers from the url in the same property, otherwise
+    // they'd be disabled.
+    // They get temporarily stored in another property and once the map loads
+    // the layers are enabled and stored in the correct property.
+    const { activeLayers, ...urlState } = this.qsState.getState(
+      props.location.search.substr(1)
+    );
+
     this.state = {
-      ...getInitialMapExploreState()
+      ...getInitialMapExploreState(),
+      ...urlState,
+      _urlActiveLayers: activeLayers,
+      panelPrime: false,
+      panelSec: false
     };
   }
 
@@ -108,6 +138,15 @@ class SpotlightAreasSingle extends React.Component {
     }
   }
 
+  onPanelChange (panel, revealed) {
+    this.setState({ [panel]: revealed });
+  }
+
+  updateUrlQS () {
+    const qString = this.qsState.getQs(this.state);
+    this.props.history.push({ search: qString });
+  }
+
   async requestSpotlight () {
     showGlobalLoading();
     await this.props.fetchSpotlightSingle(this.props.match.params.spotlightId);
@@ -120,49 +159,37 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   async onMapAction (action, payload) {
+    // Returns true if the action was handled.
+    handleMapAction.call(this, action, payload);
+
+    // Extend the map.loaded action
     switch (action) {
-      case 'map.loaded': {
-        const spotlightData = this.props.spotlight.getData();
-        this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
-        this.setState({ mapLoaded: true });
-        // Enable default layers sequentially so they trigger needed actions.
-        const layersToLoad = this.props.mapLayers.filter((l) => l.enabled);
-        for (const l of layersToLoad) {
-          await this.toggleLayer(l);
+      case 'map.loaded':
+        if (this.state.mapPos === null) {
+          const spotlightData = this.props.spotlight.getData();
+          this.mbMapRef.current.mbMap.fitBounds(spotlightData.bounding_box);
         }
         break;
-      }
     }
   }
 
   async toggleLayer (layer) {
-    const layerId = layer.id;
-
-    if (layer.type === 'raster-timeseries') {
-      toggleLayerRasterTimeseries.call(this, layer);
-    }
-
-    // If we disable a layer we're comparing, disable the comparison as well.
-    if (this.getLayerState(layerId, 'comparing')) {
-      this.toggleLayerCompare(layer);
-    }
-
-    this.setState((state) => getUpdatedActiveLayersState(state, layer));
+    toggleLayerCommon.call(this, layer, () => {
+      this.updateUrlQS();
+    });
   }
 
   render () {
-    const { spotlight, indicatorGroups } = this.props;
+    const { spotlight, spotlightList, indicatorGroups } = this.props;
 
     if (spotlight.hasError() || indicatorGroups.hasError()) return <UhOh />;
 
-    const {
-      label,
-      indicators
-    } = spotlight.getData();
-
+    const { indicators } = spotlight.getData();
+    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
     const indicatorGroupsData = indicatorGroups.isReady()
       ? indicatorGroups.getData()
       : null;
+
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
 
@@ -171,9 +198,12 @@ class SpotlightAreasSingle extends React.Component {
     const isComparing = !!comparingLayer;
 
     const mapLabel = get(comparingLayer, 'compare.mapLabel');
-    const compareMessage = isComparing && mapLabel
-      ? typeof mapLabel === 'function' ? mapLabel(this.state.timelineDate) : mapLabel
-      : '';
+    const compareMessage =
+      isComparing && mapLabel
+        ? typeof mapLabel === 'function'
+          ? mapLabel(this.state.timelineDate)
+          : mapLabel
+        : '';
 
     return (
       <App hideFooter>
@@ -187,22 +217,29 @@ class SpotlightAreasSingle extends React.Component {
           </InpageHeader>
           {spotlight.isReady() && (
             <InpageBody>
-              <ExploreCanvas>
+              <ExploreCanvas panelPrime={this.state.panelPrime} panelSec={this.state.panelSec}>
                 <PrimePanel
                   collapsible
                   direction='left'
-                  onPanelChange={this.resizeMap}
+                  onPanelChange={({ revealed }) => {
+                    this.resizeMap();
+                    this.onPanelChange('panelPrime', revealed);
+                  }}
+                  initialState={isLargeViewport()}
                   headerContent={
                     <PanelHeadline>
-                      <Heading as='h2' size='large'>{label}</Heading>
+                      <PanelTitle>Explore</PanelTitle>
                     </PanelHeadline>
                   }
                   bodyContent={
-                    <DataLayersBlock
-                      layers={layers}
-                      mapLoaded={this.state.mapLoaded}
-                      onAction={this.onPanelAction}
-                    />
+                    <>
+                      <ExploreNavigation spotlights={spotlightAreas || []} />
+                      <DataLayersBlock
+                        layers={layers}
+                        mapLoaded={this.state.mapLoaded}
+                        onAction={this.onPanelAction}
+                      />
+                    </>
                   }
                 />
                 <ExploreCarto>
@@ -211,6 +248,7 @@ class SpotlightAreasSingle extends React.Component {
                   </MapMessage>
                   <MbMap
                     ref={this.mbMapRef}
+                    position={this.state.mapPos}
                     onAction={this.onMapAction}
                     layers={layers}
                     activeLayers={this.state.activeLayers}
@@ -228,10 +266,17 @@ class SpotlightAreasSingle extends React.Component {
                 </ExploreCarto>
 
                 <SecPanel
-                  onPanelChange={this.resizeMap}
+                  onPanelChange={({ revealed }) => {
+                    this.resizeMap();
+                    this.onPanelChange('panelSec', revealed);
+                  }}
                   indicators={indicators}
                   indicatorGroups={indicatorGroupsData}
-                  selectedDate={activeTimeseriesLayers.length ? this.state.timelineDate : null}
+                  selectedDate={
+                    activeTimeseriesLayers.length
+                      ? this.state.timelineDate
+                      : null
+                  }
                 />
               </ExploreCanvas>
             </InpageBody>
@@ -244,63 +289,23 @@ class SpotlightAreasSingle extends React.Component {
 
 SpotlightAreasSingle.propTypes = {
   fetchSpotlightSingle: T.func,
-  mapLayers: T.array,
   spotlight: T.object,
+  spotlightList: T.object,
   indicatorGroups: T.object,
-  match: T.object
+  match: T.object,
+  location: T.object,
+  history: T.object
 };
 
 function mapStateToProps (state, props) {
   const { spotlightId } = props.match.params;
-  const layersToUse = layersBySpotlight[spotlightId] || [];
-  // Filter by the layers to include &
-  // Replace the {site} property on the layers
-  const spotlightMapLayers = allMapLayers
-    .filter(l => layersToUse.includes(l.id))
-    .map(l => {
-      // This layer requires a special handling.
-      if (l.id === 'nightlights-viirs') {
-        const spotlightName = {
-          be: 'Beijing',
-          gh: 'EUPorts',
-          du: 'EUPorts',
-          la: 'LosAngeles',
-          sf: 'SanFrancisco',
-          tk: 'Tokyo'
-        }[spotlightId];
-
-        return {
-          ...l,
-          domain: l.domain.filter(d => {
-            if (spotlightName === 'Beijing') {
-              const dates = ['2020-03-18'];
-              return !dates.includes(d);
-            } else if (spotlightName === 'EUPorts') {
-              const dates = ['2020-05-05', '2020-05-07', '2020-05-11', '2020-05-13', '2020-05-16', '2020-05-18', '2020-05-19'];
-              return !dates.includes(d);
-            }
-            return true;
-          }),
-          source: {
-            ...l.source,
-            tiles: l.source.tiles.map(t => t.replace('{spotlightName}', spotlightName))
-          }
-        };
-      } else {
-        return {
-          ...l,
-          enabled: l.id === 'nightlights-hd',
-          source: {
-            ...l.source,
-            tiles: l.source.tiles.map(t => t.replace('{spotlightId}', spotlightId))
-          }
-        };
-      }
-    });
 
   return {
-    mapLayers: spotlightMapLayers,
-    spotlight: wrapApiResult(getFromState(state, ['spotlight', 'single', spotlightId])),
+    mapLayers: getSpotlightLayers(spotlightId),
+    spotlightList: wrapApiResult(state.spotlight.list),
+    spotlight: wrapApiResult(
+      getFromState(state, ['spotlight', 'single', spotlightId])
+    ),
     indicatorGroups: wrapApiResult(state.indicators.groups)
   };
 }
@@ -309,4 +314,7 @@ const mapDispatchToProps = {
   fetchSpotlightSingle: fetchSpotlightSingleAction
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpotlightAreasSingle);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SpotlightAreasSingle);

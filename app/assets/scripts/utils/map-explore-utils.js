@@ -1,4 +1,5 @@
 import get from 'lodash.get';
+import { isWithinInterval, isEqual, format } from 'date-fns';
 
 import { utcDate } from './utils';
 
@@ -13,6 +14,7 @@ import { utcDate } from './utils';
 export function getInitialMapExploreState () {
   return {
     activeLayers: [],
+    _urlActiveLayers: [],
     // Additional data that needs to be tracked for the map layers, like the
     // knob position on a adjustable gradient legend.
     // Values will be objects keyed by the layer id.
@@ -24,7 +26,71 @@ export function getInitialMapExploreState () {
       // }
     },
     timelineDate: null,
-    mapLoaded: false
+    mapLoaded: false,
+    mapPos: null
+  };
+}
+
+export function getCommonQsState () {
+  return {
+    map: {
+      accessor: 'mapPos',
+      default: null,
+      hydrator: (v) => {
+        if (!v) return null;
+        const [lng, lat, zoom] = v.split(',').map(Number);
+        return { lng, lat, zoom };
+      },
+      dehydrator: (v) => {
+        if (!v) return null;
+        const { lng, lat, zoom } = v;
+        return [lng, lat, zoom].join(',');
+      }
+    },
+    layers: {
+      accessor: 'activeLayers',
+      default: [],
+      hydrator: (v) => v ? v.split(',') : null,
+      dehydrator: (v) => v.join(',')
+    },
+    date: {
+      accessor: 'timelineDate',
+      default: null,
+      hydrator: (v) => {
+        const d = utcDate(v);
+        return isNaN(d.getTime()) ? null : d;
+      },
+      dehydrator: (v) => v ? format(v, 'yyyy-MM-dd') : null
+    },
+    lState: {
+      accessor: 'layersState',
+      default: {},
+      hydrator: (v) => {
+        if (!v) return null;
+        const pieces = v.split(',');
+        return pieces.reduce((acc, piece) => {
+          const [key, comparing, knob] = piece.split('|');
+          return {
+            ...acc,
+            [key]: {
+              comparing: Boolean(+comparing),
+              knobPos: +knob,
+              knobCurrPos: +knob
+            }
+          };
+        }, {});
+      },
+      dehydrator: (v) => {
+        // We only need to store the knob position and whether is comparing.
+        // Store it as: id|comparing|position,id|comparing|position
+        const state = Object.keys(v).reduce((acc, k) => {
+          const { comparing, knobCurrPos } = v[k];
+          return acc.concat([k, Number(!!comparing), knobCurrPos || 0].join('|'));
+        }, []);
+
+        return state.join(',');
+      }
+    }
   };
 }
 
@@ -71,9 +137,10 @@ export function getLayerState (id, prop) {
  * Returns the layer list, merging the visibility state and any other data
  * stored for each layer in the layer state.
  */
-export function getLayersWithState () {
+export function getLayersWithState (layers) {
   const { activeLayers, layersState } = this.state;
-  return this.props.mapLayers.map((l) => {
+  const mapLayers = layers || this.props.mapLayers;
+  return mapLayers.map((l) => {
     // Get additional propertied from the layerData array.
     const extra = layersState[l.id] || {};
     return {
@@ -115,7 +182,7 @@ export function handlePanelAction (action, payload) {
       this.toggleLayer(payload);
       break;
     case 'layer.compare':
-      this.toggleLayerCompare(payload);
+      toggleLayerCompare.call(this, payload);
       break;
     case 'layer.legend-knob':
       this.setLayerState(payload.id, layerState => ({
@@ -125,11 +192,59 @@ export function handlePanelAction (action, payload) {
         knobCurrPos: payload.end
           ? payload.value
           : layerState.knobCurrPos
-      }));
+      }), () => {
+        this.updateUrlQS && this.updateUrlQS();
+      });
       break;
     case 'date.set':
       this.setState({
         timelineDate: payload.date
+      }, () => {
+        this.updateUrlQS && this.updateUrlQS();
+      });
+      break;
+    default:
+      return false;
+  }
+
+  return true;
+}
+
+/**
+ * Handles an action.
+ * The function returns true if the action was handled, or false otherwise.
+ * This can be used to extend the function and add more actions.
+ *
+ * @param {string} action The action to handle
+ * @param {object} payload Action data
+ */
+export async function handleMapAction (action, payload) {
+  switch (action) {
+    case 'map.loaded':
+      {
+        this.setState({ mapLoaded: true });
+        // Enable default layers sequentially so they trigger needed actions.
+        const layersToLoad = this.props.mapLayers.filter((l) =>
+          this.state._urlActiveLayers.includes(l.id)
+        );
+        for (const l of layersToLoad) {
+          await this.toggleLayer(l);
+          const isComparing = get(this.state, ['layersState', l.id, 'comparing']);
+          // The compare should only be enabled if the state stored in the url
+          // is true, or if there is no state in the url and the layer has the
+          // compare enabled by default.
+          // However if the comparison is already enabled, there's no need to
+          // enable it again.
+          const enableCompare = isComparing === undefined && get(l, 'compare.enabled');
+          if (enableCompare) {
+            toggleLayerCompare.call(this, l);
+          }
+        }
+      }
+      break;
+    case 'map.move':
+      this.setState({ mapPos: payload }, () => {
+        this.updateUrlQS();
       });
       break;
     default:
@@ -184,6 +299,30 @@ export function getUpdatedActiveLayersState (state, layer) {
 }
 
 /**
+ * Toggle the given layer
+ * @param {object} layer Layer object
+ * @param {function} cb callback after the state is updated.
+ */
+export async function toggleLayerCommon (layer, cb) {
+  const layerId = layer.id;
+  const isEnabled = this.state.activeLayers.includes(layerId);
+
+  if (layer.type === 'raster-timeseries' || layer.type === 'inference-timeseries') {
+    toggleLayerRasterTimeseries.call(this, layer);
+  }
+
+  // If we disable a layer we're comparing, disable the comparison as well.
+  if (isEnabled && this.getLayerState(layerId, 'comparing')) {
+    toggleLayerCompare.call(this, layer);
+  }
+
+  this.setState(
+    (state) => getUpdatedActiveLayersState(state, layer),
+    cb
+  );
+}
+
+/**
  * Toggle the compare for the given layer
  * @param {object} layer Layer object
  */
@@ -194,6 +333,8 @@ export function toggleLayerCompare (layer) {
   if (isComparing) {
     this.setLayerState(layerId, {
       comparing: false
+    }, () => {
+      this.updateUrlQS && this.updateUrlQS();
     });
   } else {
     this.setState(state => {
@@ -215,7 +356,20 @@ export function toggleLayerCompare (layer) {
       };
 
       return { layersState };
+    }, () => {
+      this.updateUrlQS && this.updateUrlQS();
     });
+  }
+}
+
+function isDateInDomain (date, domain) {
+  if (!date) return false;
+  if (domain.length === 2) {
+    // Start and end, check if between dates.
+    const [s, e] = domain;
+    return isWithinInterval(date, { start: utcDate(s), end: utcDate(e) });
+  } else {
+    return !!domain.find(d => isEqual(date, utcDate(d)));
   }
 }
 
@@ -225,17 +379,23 @@ export function toggleLayerCompare (layer) {
  */
 export function toggleLayerRasterTimeseries (layer) {
   this.setState(state => {
+    // Init the timeline date.
+    const timelineDate = state.timelineDate &&
+      isDateInDomain(state.timelineDate, layer.domain)
+      ? state.timelineDate
+      : utcDate(layer.domain[layer.domain.length - 1]);
+
     // Check if there's a knob value set. If not, means that this is the
     // first time it is enabled and we need to set a default.
     const knobCurrPos = get(state, ['layersState', layer.id, 'knobCurrPos'], null);
-    const knobData = knobCurrPos === null
+    const knobData = knobCurrPos === null && get(layer, ['legend', 'type']) === 'gradient-adjustable'
       ? {
         knobPos: 50,
         knobCurrPos: 50
       }
       : {};
     return {
-      timelineDate: utcDate(layer.domain[layer.domain.length - 1]),
+      timelineDate,
       layersState: {
         ...state.layersState,
         [layer.id]: {
@@ -253,6 +413,6 @@ export function toggleLayerRasterTimeseries (layer) {
 export function getActiveTimeseriesLayers () {
   return this.props.mapLayers.filter(
     (l) =>
-      l.type === 'raster-timeseries' && this.state.activeLayers.includes(l.id)
+      l.type.includes('timeseries') && this.state.activeLayers.includes(l.id)
   );
 }

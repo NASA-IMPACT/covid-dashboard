@@ -14,7 +14,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/BM_500M_DAILY/VNP46A2_V011_{spotlightName}_{date}_cog.tif&resampling_method=nearest&bidx=1&rescale=0%2C100&color_map=viridis`
     ]
   },
-  exclusiveWith: ['no2', 'gibs-population', 'car-count', 'nightlights-hd', 'sample-ml'],
+  exclusiveWith: ['no2', 'co2-diff', 'co2', 'gibs-population', 'car-count', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   swatch: {
     color: '#f2a73a',
     name: 'Gold'
@@ -25,5 +25,5 @@ export default {
     max: 'more',
     stops: ['#08041d', '#1f0a46', '#52076c', '#f57c16', '#f7cf39']
   },
-  info: null
+  info: 'The darker purple indicates fewer night lights while the lighter yellow indicates more night lights. Check out the HD dataset below to see a light-corrected version of this dataset.'
 };

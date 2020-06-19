@@ -4,7 +4,7 @@ import { css } from 'styled-components';
 const styles = props => css`
   .track {
     stroke-width: ${({ trackSize }) => trackSize}px;
-    stroke: url(#trackGradient);
+    stroke: ${({ id }) => `url(#trackGradient-${id})`};
     stroke-linecap: round;
   }
 `;
@@ -19,7 +19,7 @@ export default {
 
     ctx.svg.select('defs')
       .append('linearGradient')
-      .attr('id', 'trackGradient')
+      .attr('id', `trackGradient-${ctx.props.id}`)
       .attr('gradientUnits', 'userSpaceOnUse');
   },
 
@@ -45,7 +45,7 @@ export default {
       .domain([0, 1])
       .range([Math.max(0, midPointDiff), Math.min(1, 1 + midPointDiff)]);
 
-    const trackGradient = ctx.svg.select('#trackGradient');
+    const trackGradient = ctx.svg.select(`#trackGradient-${ctx.props.id}`);
 
     // Set the gradient size so it matched the element is being used on.
     // Used in conjunction with gradientUnits='userSpaceOnUse'

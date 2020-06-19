@@ -14,10 +14,11 @@ import { mediaRanges } from '../../styles/theme/theme';
 
 const { appTitle, appDescription } = config;
 
-const Page = styled(SizeAwareElement)`
+const Page = styled.div`
   display: grid;
   grid-template-rows: minmax(2rem, min-content) 1fr ${({ hideFooter }) => hideFooter ? 0 : 'auto'};
   min-height: 100vh;
+  min-height: ${({ innerHeight }) => `${innerHeight}px`};
 `;
 
 const PageBody = styled.main`
@@ -34,7 +35,8 @@ class App extends Component {
 
     this.state = {
       useSmallPanel: false,
-      useShortTitle: false
+      useShortTitle: false,
+      height: window.innerHeight
     };
 
     this.resizeListener = this.resizeListener.bind(this);
@@ -51,8 +53,12 @@ class App extends Component {
     }
   }
 
-  resizeListener ({ width }) {
+  resizeListener ({ width, height }) {
     this.setState({
+      // Store the height to set the page min height. This is needed for mobile
+      // devices to account for the address bar, since 100vh does not work.
+      // https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+      height,
       useShortTitle: width < mediaRanges.small[0],
       useSmallPanel: width < mediaRanges.medium[0]
     });
@@ -63,7 +69,12 @@ class App extends Component {
     const title = pageTitle ? `${pageTitle} — ` : '';
 
     return (
-      <Page onChange={this.resizeListener} hideFooter={hideFooter}>
+      <SizeAwareElement
+        innerHeight={this.state.height}
+        element={Page}
+        onChange={this.resizeListener}
+        hideFooter={hideFooter}
+      >
         <MetaTags title={`${title}${appTitle}`} description={appDescription} />
         <PageHeader
           useShortTitle={this.state.useShortTitle}
@@ -71,7 +82,7 @@ class App extends Component {
         />
         <PageBody role='main'>{children}</PageBody>
         <PageFooter />
-      </Page>
+      </SizeAwareElement>
     );
   }
 }

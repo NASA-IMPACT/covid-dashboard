@@ -124,6 +124,7 @@ class ShadowScrollbar extends React.Component {
           autoHide
           style={scrollbarStyle}
           onUpdate={this.handleUpdate}
+          className='scroll-area'
           {...scrollbarsProps}
         >
           {children}

@@ -2,7 +2,7 @@ import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
 
-import Panel from '../common/panel';
+import Panel, { PanelHeadline, PanelTitle } from '../common/panel';
 import DataLayersBlock from '../common/data-layers-block';
 import {
   PanelBlock,
@@ -11,33 +11,43 @@ import {
   PanelBlockBody
 } from '../common/panel-block';
 import FilterAoi from './filter-aoi';
+import ExploreNavigation from '../common/explore-navigation';
 
-import { visuallyHidden } from '../../styles/helpers';
+import media, { isLargeViewport } from '../../styles/utils/media-queries';
 
 const PrimePanel = styled(Panel)`
-  width: 18rem;
-`;
-
-const PrimePanelHeader = styled.header`
-  ${visuallyHidden()}
+  ${media.largeUp`
+    width: 18rem;
+  `}
 `;
 
 class ExpMapPrimePanel extends React.Component {
   render () {
-    const { layers, onAction, onPanelChange, mapLoaded, aoiState } = this.props;
+    const {
+      layers,
+      onAction,
+      onPanelChange,
+      mapLoaded,
+      aoiState,
+      spotlightList
+    } = this.props;
+
+    const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
     return (
       <PrimePanel
         collapsible
         direction='left'
         onPanelChange={onPanelChange}
-        renderHeader={() => (
-          <PrimePanelHeader>
-            <h1>Explore the map</h1>
-          </PrimePanelHeader>
+        initialState={isLargeViewport()}
+        headerContent={(
+          <PanelHeadline>
+            <PanelTitle>Explore</PanelTitle>
+          </PanelHeadline>
         )}
         bodyContent={
           <>
+            <ExploreNavigation spotlights={spotlightAreas || []} />
             <DataLayersBlock
               layers={layers}
               mapLoaded={mapLoaded}
@@ -49,10 +59,7 @@ class ExpMapPrimePanel extends React.Component {
                 <PanelBlockTitle>Tools</PanelBlockTitle>
               </PanelBlockHeader>
               <PanelBlockBody>
-                <FilterAoi
-                  onAction={onAction}
-                  aoiState={aoiState}
-                />
+                <FilterAoi onAction={onAction} aoiState={aoiState} />
               </PanelBlockBody>
             </PanelBlock>
           </>
@@ -67,7 +74,8 @@ ExpMapPrimePanel.propTypes = {
   onAction: T.func,
   layers: T.array,
   mapLoaded: T.bool,
-  aoiState: T.object
+  aoiState: T.object,
+  spotlightList: T.object
 };
 
 export default ExpMapPrimePanel;

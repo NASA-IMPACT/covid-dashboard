@@ -17,7 +17,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_{date}_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1e16&color_map=custom_no2&color_formula=gamma r {gamma}`
     ]
   },
-  exclusiveWith: ['gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'sample-ml'],
+  exclusiveWith: ['co2', 'co2-diff', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: true,
   compare: {
     enabled: true,
@@ -41,5 +41,5 @@ export default {
       '#050308'
     ]
   },
-  info: 'Higher nitrogen dioxide (NO2) levels, associated with higher levels of travel and economic activity, are indicated by the darker colors on the map. Lighter colors indicate lower levels of NO2 and less activity.'
+  info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated with higher levels of travel and economic activity. Lighter colors indicate lower levels of NO₂ and less activity.'
 };

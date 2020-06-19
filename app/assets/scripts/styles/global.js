@@ -141,10 +141,6 @@ const baseStyles = css`
     color: ${themeVal('color.baseLight')};
   }
 
-  #root {
-    min-height: 100vh;
-  }
-
   .tether-element {
     z-index: 1000;
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import bbox from '@turf/bbox';
 import { sub } from 'date-fns';
 import get from 'lodash.get';
 import find from 'lodash.find';
@@ -23,13 +24,14 @@ import MapMessage from '../common/map-message';
 
 import { showGlobalLoading, hideGlobalLoading } from '../common/global-loading';
 import { themeVal } from '../../styles/utils/general';
+import media from '../../styles/utils/media-queries';
 import { wrapApiResult } from '../../redux/reduxeed';
 import {
   fetchCogTimeData as fetchCogTimeDataAction,
   invalidateCogTimeData as invalidateCogTimeDataAction
 } from '../../redux/cog-time-data';
 import { utcDate } from '../../utils/utils';
-import allMapLayers from '../common/layers';
+import { getGlobalLayers } from '../common/layers';
 import {
   setLayerState,
   getLayerState,
@@ -37,11 +39,13 @@ import {
   resizeMap,
   getInitialMapExploreState,
   handlePanelAction,
-  getUpdatedActiveLayersState,
-  toggleLayerCompare,
-  toggleLayerRasterTimeseries,
-  getActiveTimeseriesLayers
+  getActiveTimeseriesLayers,
+  getCommonQsState,
+  handleMapAction,
+  toggleLayerCommon
 } from '../../utils/map-explore-utils';
+import QsState from '../../utils/qs-state';
+import { round } from '../../utils/format';
 
 /**
  * Returns a feature with a polygon geometry made of the provided bounds.
@@ -85,6 +89,18 @@ const ExploreCanvas = styled.div`
   grid-template-columns: min-content 1fr min-content;
   overflow: hidden;
 
+  ${media.mediumDown`
+    ${({ panelPrime, panelSec }) => {
+      if (panelPrime && !panelSec) {
+        return 'grid-template-columns: min-content 0 0;';
+      }
+
+      if (!panelPrime && panelSec) {
+        return 'grid-template-columns: 0 0 min-content;';
+      }
+    }}
+  `}
+
   > * {
     grid-row: 1;
   }
@@ -96,6 +112,8 @@ const ExploreCarto = styled.section`
   background: ${themeVal('color.baseAlphaA')};
   display: grid;
   grid-template-rows: 1fr auto;
+  min-width: 0;
+  overflow: hidden;
 `;
 
 class GlobalExplore extends React.Component {
@@ -105,7 +123,6 @@ class GlobalExplore extends React.Component {
     this.setLayerState = setLayerState.bind(this);
     this.getLayerState = getLayerState.bind(this);
     this.getLayersWithState = getLayersWithState.bind(this);
-    this.toggleLayerCompare = toggleLayerCompare.bind(this);
     this.getActiveTimeseriesLayers = getActiveTimeseriesLayers.bind(this);
     this.resizeMap = resizeMap.bind(this);
 
@@ -116,20 +133,73 @@ class GlobalExplore extends React.Component {
     // are shown/hidden.
     this.mbMapRef = React.createRef();
 
+    // Set query state definition for url state storing.
+    const common = getCommonQsState(props);
+    common.layers.default = props.mapLayers
+      .filter((l) => l.enabled)
+      .map((l) => l.id);
+    this.qsState = new QsState({
+      ...common,
+      bbox: {
+        accessor: 'aoi.feature',
+        default: null,
+        hydrator: (box) => {
+          if (!box) return null;
+          // Feature from bbox.
+          const b = box.split(',').map(Number);
+          if (b.some(isNaN)) return null;
+          return updateFeatureBounds(null, {
+            ne: [b[2], b[3]],
+            sw: [b[0], b[1]]
+          });
+        },
+        dehydrator: (feat) => {
+          // bbox from feature.
+          if (!feat) return null;
+          return bbox(feat)
+            .map((v) => round(v, 5))
+            .join(',');
+        }
+      }
+    });
+
+    // The active layers can only be enabled once the map loads. The toggle
+    // layer method checks the state to see what layers are enabled so we can't
+    // store the active layers from the url in the same property, otherwise
+    // they'd be disabled.
+    // They get temporarily stored in another property and once the map loads
+    // the layers are enabled and stored in the correct property.
+    const { activeLayers, ...urlState } = this.qsState.getState(
+      props.location.search.substr(1)
+    );
+
     this.state = {
       ...getInitialMapExploreState(),
+      ...urlState,
 
       aoi: {
-        feature: null,
+        ...urlState.aoi,
         drawing: false,
         selected: false,
         actionOrigin: null
-      }
+      },
+      _urlActiveLayers: activeLayers,
+      panelPrime: false,
+      panelSec: false
     };
   }
 
   componentWillUnmount () {
     this.props.invalidateCogTimeData();
+  }
+
+  onPanelChange (panel, revealed) {
+    this.setState({ [panel]: revealed });
+  }
+
+  updateUrlQS () {
+    const qString = this.qsState.getQs(this.state);
+    this.props.history.push({ search: qString });
   }
 
   async requestCogData () {
@@ -185,6 +255,7 @@ class GlobalExplore extends React.Component {
             }
           }),
           () => {
+            this.updateUrlQS();
             this.requestCogData();
           }
         );
@@ -200,6 +271,7 @@ class GlobalExplore extends React.Component {
             }
           },
           () => {
+            this.updateUrlQS();
             this.props.invalidateCogTimeData();
           }
         );
@@ -208,21 +280,10 @@ class GlobalExplore extends React.Component {
   }
 
   async onMapAction (action, payload) {
+    // Returns true if the action was handled.
+    handleMapAction.call(this, action, payload);
+
     switch (action) {
-      case 'map.loaded':
-        {
-          this.setState({ mapLoaded: true });
-          // Enable default layers sequentially so they trigger needed actions.
-          const layersToLoad = this.props.mapLayers.filter((l) => l.enabled);
-          for (const l of layersToLoad) {
-            await this.toggleLayer(l);
-            // Enable compare if set as default.
-            if (l.compare.enabled) {
-              this.toggleLayerCompare(l);
-            }
-          }
-        }
-        break;
       case 'aoi.draw-finish':
         this.setState(
           (state) => ({
@@ -234,6 +295,7 @@ class GlobalExplore extends React.Component {
             }
           }),
           () => {
+            this.updateUrlQS();
             this.requestCogData();
           }
         );
@@ -257,6 +319,7 @@ class GlobalExplore extends React.Component {
             }
           }),
           () => {
+            this.updateUrlQS();
             this.requestCogData();
           }
         );
@@ -265,23 +328,14 @@ class GlobalExplore extends React.Component {
   }
 
   async toggleLayer (layer) {
-    const layerId = layer.id;
-
-    if (layer.type === 'raster-timeseries') {
-      toggleLayerRasterTimeseries.call(this, layer);
-    }
-
-    // If we disable a layer we're comparing, disable the comparison as well.
-    if (this.getLayerState(layerId, 'comparing')) {
-      this.toggleLayerCompare(layer);
-    }
-
-    this.setState((state) => getUpdatedActiveLayersState(state, layer), () => {
+    toggleLayerCommon.call(this, layer, () => {
+      this.updateUrlQS();
       this.requestCogData();
     });
   }
 
   render () {
+    const { spotlightList } = this.props;
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
 
@@ -290,9 +344,12 @@ class GlobalExplore extends React.Component {
     const isComparing = !!comparingLayer;
 
     const mapLabel = get(comparingLayer, 'compare.mapLabel');
-    const compareMessage = isComparing && mapLabel
-      ? typeof mapLabel === 'function' ? mapLabel(this.state.timelineDate) : mapLabel
-      : '';
+    const compareMessage =
+      isComparing && mapLabel
+        ? typeof mapLabel === 'function'
+          ? mapLabel(this.state.timelineDate)
+          : mapLabel
+        : '';
 
     return (
       <App hideFooter>
@@ -305,29 +362,39 @@ class GlobalExplore extends React.Component {
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
-            <ExploreCanvas>
+            <ExploreCanvas panelPrime={this.state.panelPrime} panelSec={this.state.panelSec}>
               <ExpMapPrimePanel
                 layers={layers}
                 mapLoaded={this.state.mapLoaded}
                 aoiState={this.state.aoi}
                 onAction={this.onPanelAction}
-                onPanelChange={this.resizeMap}
+                onPanelChange={({ revealed }) => {
+                  this.resizeMap();
+                  this.onPanelChange('panelPrime', revealed);
+                }}
+                spotlightList={spotlightList}
               />
               <ExploreCarto>
                 <MapMessage active={this.state.aoi.drawing}>
                   <p>Draw an AOI on the map</p>
                 </MapMessage>
-                <MapMessage active={!this.state.aoi.drawing && isComparing && !!compareMessage}>
+                <MapMessage
+                  active={
+                    !this.state.aoi.drawing && isComparing && !!compareMessage
+                  }
+                >
                   <p>{compareMessage}</p>
                 </MapMessage>
                 <MbMap
                   ref={this.mbMapRef}
+                  position={this.state.mapPos}
                   onAction={this.onMapAction}
                   layers={layers}
                   activeLayers={this.state.activeLayers}
                   date={this.state.timelineDate}
                   aoiState={this.state.aoi}
                   comparing={isComparing}
+                  enableLocateUser
                 />
                 <Timeline
                   isActive={!!activeTimeseriesLayers.length}
@@ -341,7 +408,10 @@ class GlobalExplore extends React.Component {
                 aoiFeature={this.state.aoi.feature}
                 cogTimeData={this.props.cogTimeData}
                 layers={activeTimeseriesLayers}
-                onPanelChange={this.resizeMap}
+                onPanelChange={({ revealed }) => {
+                  this.resizeMap();
+                  this.onPanelChange('panelSec', revealed);
+                }}
               />
             </ExploreCanvas>
           </InpageBody>
@@ -355,17 +425,16 @@ GlobalExplore.propTypes = {
   fetchCogTimeData: T.func,
   invalidateCogTimeData: T.func,
   mapLayers: T.array,
-  cogTimeData: T.object
+  cogTimeData: T.object,
+  spotlightList: T.object,
+  location: T.object,
+  history: T.object
 };
 
 function mapStateToProps (state, props) {
-  const layersToUse = [
-    'no2',
-    'gibs-population'
-  ];
-
   return {
-    mapLayers: allMapLayers.filter(l => layersToUse.includes(l.id)),
+    spotlightList: wrapApiResult(state.spotlight.list),
+    mapLayers: getGlobalLayers(),
     cogTimeData: wrapApiResult(state.cogTimeData, true)
   };
 }

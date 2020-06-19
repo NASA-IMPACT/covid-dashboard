@@ -1,14 +1,17 @@
 import { format, sub } from 'date-fns';
+import bbox from '@turf/bbox';
+
+import { utcDate } from '../../../utils/utils';
+
+const dateFormats = {
+  month: 'yyyyMM',
+  day: 'yyyy_MM_dd'
+};
 
 const prepDateSource = (source, date, timeUnit = 'month') => {
-  const formats = {
-    month: 'yyyyMM',
-    day: 'yyyy_MM_dd'
-  };
-
   return {
     ...source,
-    tiles: source.tiles.map((t) => t.replace('{date}', format(date, formats[timeUnit])))
+    tiles: source.tiles.map((t) => t.replace('{date}', format(date, dateFormats[timeUnit])))
   };
 };
 
@@ -45,6 +48,10 @@ const replaceRasterTiles = (theMap, sourceId, tiles) => {
   theMap.triggerRepaint();
 };
 
+const replaceVectorData = (theMap, sourceId, data) => {
+  theMap.getSource(sourceId).setData(data);
+};
+
 const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
   if (mbMap.getSource(id)) {
     mbMap.setLayoutProperty(id, 'visibility', 'visible');
@@ -67,12 +74,12 @@ export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
-      const { id, source } = layerInfo;
+      const { id, source, compare } = layerInfo;
       const prevLayerInfo = prevProps.layers.find(l => l.id === layerInfo.id);
       const { date, comparing } = props;
 
       const knobPos = layerInfo.knobCurrPos;
-      const knobPosPrev = prevLayerInfo.knobCurrPos;
+      const knobPosPrev = prevLayerInfo ? prevLayerInfo.knobCurrPos : null;
 
       // Do not update if:
       if (
@@ -100,11 +107,14 @@ export const layerTypes = {
 
       // Update/init compare layer tiles.
       if (comparing) {
-        const source5years = prepSource(layerInfo, source, sub(date, { years: 5 }), knobPos);
+        const sourceCompare = prepSource(layerInfo,
+          compare.source || source,
+          sub(date, { years: compare.yearDiff === undefined ? 5 : compare.yearDiff }),
+          knobPos);
         if (mbMapComparing.getSource(id)) {
-          replaceRasterTiles(mbMapComparing, id, source5years.tiles);
+          replaceRasterTiles(mbMapComparing, id, sourceCompare.tiles);
         } else {
-          mbMapComparing.addSource(id, source5years);
+          mbMapComparing.addSource(id, sourceCompare);
           mbMapComparing.addLayer(
             {
               id: id,
@@ -127,7 +137,6 @@ export const layerTypes = {
       const { mbMap, props } = ctx;
       const { id, source } = layerInfo;
       const { date } = props;
-
       if (!date) return;
 
       if (mbMap.getSource(id)) {
@@ -172,7 +181,22 @@ export const layerTypes = {
       }
     }
   },
-  inference: {
+  'inference-timeseries': {
+    update: (ctx, layerInfo, prevProps) => {
+      const { props, mbMap } = ctx;
+      const { date } = props;
+      const { id, source } = layerInfo;
+      const vecId = `${id}-vector`;
+      const rastId = `${id}-raster`;
+      const { vector, raster } = source;
+
+      const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
+      const vectorData = vector.data.replace('{date}', formatDate);
+      const rasterTiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
+
+      replaceVectorData(mbMap, vecId, vectorData);
+      replaceRasterTiles(mbMap, rastId, rasterTiles);
+    },
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
@@ -189,7 +213,7 @@ export const layerTypes = {
     },
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
-      const { id, source } = layerInfo;
+      const { id, source, domain } = layerInfo;
       const vecId = `${id}-vector`;
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
@@ -199,9 +223,27 @@ export const layerTypes = {
         'line-opacity': 0.6,
         'line-width': 2
       };
+      const formatDate = format(utcDate(domain[domain.length - 1]), dateFormats[layerInfo.timeUnit]);
+      const vectorL = {
+        ...vector,
+        data: vector.data.replace('{date}', formatDate)
+      };
+      const rasterL = {
+        ...raster,
+        tiles: raster.tiles.map(tile => tile.replace('{date}', formatDate))
+      };
 
-      toggleOrAddLayer(mbMap, vecId, vector, 'line', inferPaint, 'admin-0-boundary-bg');
-      toggleOrAddLayer(mbMap, rastId, raster, 'raster', {}, vecId);
+      toggleOrAddLayer(mbMap, vecId, vectorL, 'line', inferPaint, 'admin-0-boundary-bg');
+      toggleOrAddLayer(mbMap, rastId, rasterL, 'raster', {}, vecId);
+
+      fetch(vectorL.data)
+        .then(res => res.json())
+        .then(geo => {
+          mbMap.fitBounds(bbox(geo));
+        })
+        .catch(err => {
+          throw err;
+        });
     }
   }
 };

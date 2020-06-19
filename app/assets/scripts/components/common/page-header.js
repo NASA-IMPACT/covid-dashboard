@@ -272,10 +272,14 @@ const PageNavSmallInnerTitle = styled.h3`
 
 const PageNavSmallBody = styled.div`
   display: grid;
-  grid-gap: ${glsp(1)};
+  grid-gap: ${glsp()};
   padding: ${glsp()};
   box-shadow: inset 0 1px 0 0 ${_rgba('#FFFFFF', 0.12)};
   overflow: auto;
+
+  > *:last-child {
+    padding-bottom: ${glsp()};
+  }
 `;
 
 // See documentation of filterComponentProp as to why this is
@@ -314,16 +318,13 @@ class PageHeader extends React.Component {
             <>
               <Share />
               <Button
-                as='a'
-                to='/'
-                exact
                 hideText
                 useIcon='hamburger-menu'
                 variation='achromic-plain'
                 title='Show menu'
                 onClick={() => this.setState({ panelOpen: true })}
               >
-                <span>Show menu</span>
+                Show menu
               </Button>
               {this.state.panelOpen && <PageNavSmallGlobalStyle />}
               <PageNavSmall role='navigation' revealed={this.state.panelOpen}>
@@ -331,76 +332,84 @@ class PageHeader extends React.Component {
                   <PageNavSmallHeader>
                     <PageNavSmallTitle>Menu</PageNavSmallTitle>
                     <Button
-                      as='a'
-                      to='/'
-                      exact
                       hideText
                       useIcon='xmark'
                       variation='achromic-plain'
                       title='Hide menu'
                       onClick={() => this.setState({ panelOpen: false })}
                     >
-                      <span>Hide menu</span>
+                      Hide menu
                     </Button>
                   </PageNavSmallHeader>
                   <PageNavSmallBody>
                     <GlobalMenu>
                       <li>
                         <Button
-                          as={NavLinkFilter}
+                          element={NavLinkFilter}
                           to='/'
                           exact
                           variation='achromic-plain'
                           title='View the welcome page'
                         >
-                          <span>Welcome</span>
+                          Welcome
                         </Button>
                       </li>
                       <li>
                         <Button
-                          as={NavLinkFilter}
-                          to='/global'
-                          exact
-                          variation='achromic-plain'
-                          title='Explore the global map'
-                        >
-                          <span>Global</span>
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          as={NavLinkFilter}
+                          element={NavLinkFilter}
                           to='/about'
                           variation='achromic-plain'
                           title='View the about page'
                         >
-                          <span>About</span>
+                          About
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          variation='achromic-plain'
+                          title='Send feedback'
+                          onClick={() => {
+                            window.feedback.showForm();
+                          }}
+                        >
+                          Feedback
                         </Button>
                       </li>
                     </GlobalMenu>
                     <PageNavSmallInnerTitle>
-                    Spotlight areas
+                      Explore
                     </PageNavSmallInnerTitle>
                     <GlobalMenu>
                       <li>
                         <Button
-                          as={NavLinkFilter}
-                          to='/spotlight'
+                          element={NavLinkFilter}
+                          to='/explore'
                           exact
                           variation='achromic-plain'
-                          title='Explore the Spotlight areas'
+                          title='Explore the Data'
                         >
                         About
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          element={NavLinkFilter}
+                          to='/explore/global'
+                          exact
+                          variation='achromic-plain'
+                          title='Explore the global map'
+                        >
+                          Global
                         </Button>
                       </li>
                       {spotlightAreas &&
                       spotlightAreas.map((ss) => (
                         <li key={ss.id}>
                           <Button
-                            as={NavLinkFilter}
-                            to={`/spotlight/${ss.id}`}
+                            element={NavLinkFilter}
+                            to={`/explore/${ss.id}`}
                             variation='achromic-plain'
-                            title='Explore spotlight area'
+                            title={`Explore ${ss.label}`}
                           >
                             {ss.label}
                           </Button>
@@ -412,13 +421,13 @@ class PageHeader extends React.Component {
                     <GlobalMenu>
                       <li>
                         <Button
-                          as={NavLinkFilter}
+                          element={NavLinkFilter}
                           to='/indicators'
                           exact
                           variation='achromic-plain'
                           title='Learn about the indicators'
                         >
-                        About
+                          About
                         </Button>
                       </li>
                       {indicatorsList
@@ -426,7 +435,7 @@ class PageHeader extends React.Component {
                         .map((d) => (
                           <li key={d.id}>
                             <Button
-                              as={NavLinkFilter}
+                              element={NavLinkFilter}
                               to={`/indicators/${d.id}`}
                               variation='achromic-plain'
                               title='Learn about the indicator'
@@ -445,7 +454,7 @@ class PageHeader extends React.Component {
               <GlobalMenu>
                 <li>
                   <Button
-                    as={NavLinkFilter}
+                    element={NavLinkFilter}
                     to='/'
                     exact
                     hideText
@@ -453,18 +462,7 @@ class PageHeader extends React.Component {
                     variation='achromic-plain'
                     title='View the welcome page'
                   >
-                    <span>Welcome</span>
-                  </Button>
-                </li>
-                <li>
-                  <Button
-                    as={NavLinkFilter}
-                    to='/global'
-                    exact
-                    variation='achromic-plain'
-                    title='Explore the global map'
-                  >
-                    <span>Global</span>
+                    Welcome
                   </Button>
                 </li>
                 <li>
@@ -475,39 +473,52 @@ class PageHeader extends React.Component {
                     triggerElement={
                       <Button
                         variation='achromic-plain'
-                        title='Explore the Spotlight areas'
+                        title='Explore the data'
                         useIcon={['chevron-down--small', 'after']}
                       >
-                        <span>Spotlight</span>
+                        Explore
                       </Button>
                     }
                   >
+                    <DropTitle>Explore</DropTitle>
                     <DropMenu role='menu' selectable>
                       <li>
                         <DropMenuItem
-                          exact
                           as={NavLink}
-                          to='/spotlight'
+                          exact
+                          to='/explore/global'
+                          title='Explore the global map'
                           data-dropdown='click.close'
                         >
-                          About
+                          Global
                         </DropMenuItem>
                       </li>
-                    </DropMenu>
-                    <DropTitle>Spotlight areas</DropTitle>
-                    <DropMenu role='menu' selectable>
                       {spotlightAreas &&
                         spotlightAreas.map((ss) => (
                           <li key={ss.id}>
                             <DropMenuItem
                               as={NavLink}
-                              to={`/spotlight/${ss.id}`}
+                              to={`/explore/${ss.id}`}
+                              title={`Explore ${ss.label}`}
                               data-dropdown='click.close'
                             >
                               {ss.label}
                             </DropMenuItem>
                           </li>
                         ))}
+                    </DropMenu>
+                    <DropMenu role='menu' selectable>
+                      <li>
+                        <DropMenuItem
+                          as={NavLink}
+                          exact
+                          to='/explore'
+                          title='Learn more'
+                          data-dropdown='click.close'
+                        >
+                          About
+                        </DropMenuItem>
+                      </li>
                     </DropMenu>
                   </Dropdown>
                 </li>
@@ -521,22 +532,10 @@ class PageHeader extends React.Component {
                         title='Explore the indicators'
                         useIcon={['chevron-down--small', 'after']}
                       >
-                        <span>Indicators</span>
+                        Indicators
                       </Button>
                     }
                   >
-                    <DropMenu role='menu' selectable>
-                      <li>
-                        <DropMenuItem
-                          exact
-                          as={NavLink}
-                          to='/indicators'
-                          data-dropdown='click.close'
-                        >
-                          About
-                        </DropMenuItem>
-                      </li>
-                    </DropMenu>
                     <DropTitle>Indicators</DropTitle>
                     <DropMenu role='menu' selectable>
                       {indicatorsList
@@ -547,22 +546,47 @@ class PageHeader extends React.Component {
                               as={NavLink}
                               to={`/indicators/${d.id}`}
                               data-dropdown='click.close'
+                              title={`Learn about ${d.name}`}
                             >
                               {d.name}
                             </DropMenuItem>
                           </li>
                         ))}
                     </DropMenu>
+                    <DropMenu role='menu' selectable>
+                      <li>
+                        <DropMenuItem
+                          as={NavLink}
+                          exact
+                          to='/indicators'
+                          data-dropdown='click.close'
+                          title='Learn more'
+                        >
+                          About
+                        </DropMenuItem>
+                      </li>
+                    </DropMenu>
                   </Dropdown>
                 </li>
                 <li>
                   <Button
-                    as={NavLinkFilter}
+                    element={NavLinkFilter}
                     to='/about'
                     variation='achromic-plain'
-                    title='View the about page'
+                    title='Learn more'
                   >
-                    <span>About</span>
+                    About
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    variation='achromic-plain'
+                    title='Send feedback'
+                    onClick={() => {
+                      window.feedback.showForm();
+                    }}
+                  >
+                    Feedback
                   </Button>
                 </li>
                 <li>

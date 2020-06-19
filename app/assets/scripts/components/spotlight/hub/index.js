@@ -12,14 +12,24 @@ import {
   InpageBody
 } from '../../../styles/inpage';
 import Prose from '../../../styles/type/prose';
-import Heading from '../../../styles/type/heading';
+import InpageHGroup from '../../../styles/inpage-hgroup';
 import {
   PageConstrainer,
+  HubFold,
   EntriesList,
-  EntryNavLink
+  EntryNavLink,
+  EntryNavLinkTitle,
+  EntryNavLinkMedia
 } from '../../../styles/hub-pages';
 
 import { wrapApiResult } from '../../../redux/reduxeed';
+
+import config from '../../../config';
+const { baseUrl } = config;
+
+const metadata = {
+  color: '#2276AC'
+};
 
 class SpotlightAreasHub extends React.Component {
   render () {
@@ -33,40 +43,55 @@ class SpotlightAreasHub extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Spotlight Areas</InpageTitle>
+                <InpageTitle>Explore</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
             <PageConstrainer>
-              <Prose>
-                <Heading as='h2' size='large'>
-                Explore the Spotlight Areas
-                </Heading>
-                <p>
-                  The global trajectory of the virus and different levels of response to its spread have led to regional variations in environmental and economic indicators.
-                </p>
-                <p>
-                  This dashboard highlights 6 key Spotlight Areas around the world, allowing you to explore how specific locations’ response to COVID-19 have influenced local environmental signals.
-                </p>
-              </Prose>
-
-              <Heading as='h2' size='large'>
-                Spotlight Areas
-              </Heading>
-              <EntriesList>
-                {spotlightAreas &&
-                  spotlightAreas.map((item) => (
-                    <li key={item.id}>
-                      <EntryNavLink
-                        to={`/spotlight/${item.id}`}
-                        title={`View spotlight area ${item.label}`}
-                      >
-                        {item.label}
-                      </EntryNavLink>
-                    </li>
-                  ))}
-              </EntriesList>
+              <HubFold>
+                <InpageHGroup
+                  title='Explore the areas'
+                  dashColor={metadata.color}
+                />
+                <Prose>
+                  <p>The global trajectory of the virus and different levels of response to its spread have led to regional variations in environmental and economic indicators.</p>
+                  <p>This dashboard highlights 6 key Spotlight Areas around the world, allowing you to explore how specific locations’ response to COVID-19 have influenced local environmental signals.</p>
+                </Prose>
+              </HubFold>
+              <HubFold>
+                <InpageHGroup
+                  title='Areas'
+                  dashColor={metadata.color}
+                />
+                <EntriesList>
+                  <li>
+                    <EntryNavLink
+                      to='/explore/global'
+                      title='Explore global'
+                    >
+                      <EntryNavLinkTitle>Global</EntryNavLinkTitle>
+                      <EntryNavLinkMedia>
+                        <img src={`${baseUrl}/assets/graphics/content/cities/global.jpg`} width='960' height='480' alt='Area thumbnail' />
+                      </EntryNavLinkMedia>
+                    </EntryNavLink>
+                  </li>
+                  {spotlightAreas &&
+                    spotlightAreas.map((item) => (
+                      <li key={item.id}>
+                        <EntryNavLink
+                          to={`/explore/${item.id}`}
+                          title={`View spotlight area ${item.label}`}
+                        >
+                          <EntryNavLinkTitle>{item.label}</EntryNavLinkTitle>
+                          <EntryNavLinkMedia>
+                            <img src={`${baseUrl}/assets/graphics/content/cities/${item.id}.jpg`} width='960' height='480' alt='Area thumbnail' />
+                          </EntryNavLinkMedia>
+                        </EntryNavLink>
+                      </li>
+                    ))}
+                </EntriesList>
+              </HubFold>
             </PageConstrainer>
           </InpageBody>
         </Inpage>

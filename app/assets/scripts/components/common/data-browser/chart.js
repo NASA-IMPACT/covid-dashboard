@@ -24,6 +24,7 @@ const _rgba = stylizeFunction(rgba);
 
 const ChartWrapper = styled(SizeAwareElement)`
   flex-grow: 1;
+  min-width: 50rem;
 
   svg {
     display: block;
@@ -76,6 +77,7 @@ class DataBrowserChart extends React.Component {
     this.dataCanvas = null;
 
     this.resizeListener = this.resizeListener.bind(this);
+    this.getXDomain = this.getXDomain.bind(this);
 
     this.state = {
       bisecting: false,
@@ -132,6 +134,14 @@ class DataBrowserChart extends React.Component {
     };
   }
 
+  getXDomain () {
+    const { xDomain } = this.props;
+    return [
+      xDomain[0],
+      xDomain[xDomain.length - 1]
+    ];
+  }
+
   initChart () {
     const { top, left } = this.margin;
     const containerEl = this.container.elRef.current;
@@ -151,7 +161,6 @@ class DataBrowserChart extends React.Component {
 
     // Axis.
     xaxisLayer.init(this);
-    // yaxisLayer.init(this);
 
     // dataPointsLayer.init(this);
     dataExtentLayer.init(this);
@@ -161,24 +170,14 @@ class DataBrowserChart extends React.Component {
   updateChart () {
     const { top, bottom, right, left } = this.margin;
     const { width, height } = this.getSize();
-    const { svg, dataCanvas, props } = this;
+    const { svg, dataCanvas, getXDomain } = this;
 
     // ---------------------------------------------------
     // Functions
-    const xDomain = [
-      props.xDomain[0],
-      props.xDomain[props.xDomain.length - 1]
-    ];
-
     this.xScale = d3
       .scaleTime()
-      .domain(xDomain)
+      .domain(getXDomain())
       .range([0, width]);
-
-    // this.yScale = d3
-    //   .scaleLinear()
-    //   .domain(props.yDomain)
-    //   .range([height, 10]);
 
     // ---------------------------------------------------
     // Size updates
@@ -195,7 +194,6 @@ class DataBrowserChart extends React.Component {
 
     // Axis.
     xaxisLayer.update(this);
-    // yaxisLayer.update(this);
   }
 
   renderPopover () {
@@ -205,6 +203,7 @@ class DataBrowserChart extends React.Component {
     const matrix = this.dataCanvas.node().getScreenCTM()
       .translate(xPos, 0);
 
+    const popoverWidth = 160;
     const posY = matrix.f;
     const posX = matrix.e;
 
@@ -212,6 +211,12 @@ class DataBrowserChart extends React.Component {
       left: posX + 'px',
       top: posY + 'px'
     };
+
+    const direction = posX - popoverWidth / 2 < 0
+      ? 'right'
+      : posX + popoverWidth / 2 > document.body.clientWidth
+        ? 'left'
+        : 'none';
 
     return createPortal((
       <CSSTransition
@@ -221,7 +226,7 @@ class DataBrowserChart extends React.Component {
         classNames='pop-chart'
         timeout={{ enter: 300, exit: 300 }}
       >
-        <Popover style={style}>
+        <Popover style={style} direction={direction}>
           {formatDate(xPosDate, this.props.timeUnit)}
         </Popover>
       </CSSTransition>
