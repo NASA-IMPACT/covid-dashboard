@@ -171,7 +171,6 @@ const IntroMedia = styled.figure`
 
 const IntroStories = styled.section`
   background: ${themeVal('color.primary')};
-  padding: ${glsp()};
   color: ${themeVal('color.surface')};
   padding: ${glsp()};
 
