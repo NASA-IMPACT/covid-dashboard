@@ -252,8 +252,11 @@ class MbMap extends React.Component {
       }
     });
 
-    this.mbMap.on('moveend', () => {
+    this.mbMap.on('moveend', (e) => {
       this.props.onAction('map.move', {
+        // The existence of originalEvent indicates that it was not caused by
+        // a method call.
+        userInitiated: Object.prototype.hasOwnProperty.call(e, 'originalEvent'),
         lng: round(this.mbMap.getCenter().lng, 4),
         lat: round(this.mbMap.getCenter().lat, 4),
         zoom: round(this.mbMap.getZoom(), 2)
