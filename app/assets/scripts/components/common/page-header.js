@@ -42,7 +42,7 @@ const PageHeadInner = styled.div`
   margin: 0 auto;
   height: 100%;
 
-  ${media.mediumUp`
+  ${media.largeUp`
     padding: ${glsp(0.75)};
   `}
 `;
@@ -86,7 +86,7 @@ const PageTitle = styled.h1`
       transform-origin: top left;
       clip-path: polygon(0 25%, 100% 25%, 100% 75%, 0 75%);
 
-      ${media.mediumUp`
+      ${media.largeUp`
         position: static;
         transform: none;
         opacity: 1;
@@ -114,7 +114,7 @@ const PageTitle = styled.h1`
     vertical-align: inherit;
     transform: translate(0, -0.125rem);
 
-    ${media.mediumUp`
+    ${media.largeUp`
       font-size: 0.875rem;
       line-height: 1rem;
       transform: none;
@@ -134,7 +134,7 @@ const PageTitle = styled.h1`
     letter-spacing: -0.025em;
     transform: translate(0, 0.125rem);
 
-    ${media.mediumUp`
+    ${media.largeUp`
       font-size: 1.25rem;
       line-height: 1.5rem;
       font-weight: ${themeVal('type.base.light')};
@@ -156,7 +156,7 @@ const PageTitle = styled.h1`
     align-self: center;
     display: none;
 
-    ${media.mediumUp`
+    ${media.largeUp`
       display: flex;
     `}
   }
@@ -168,7 +168,7 @@ const PageNavLarge = styled.nav`
   padding: 0;
   order: 2;
 
-  ${media.mediumUp`
+  ${media.largeUp`
     display: flex;
     flex-flow: row nowrap;
   `}
@@ -181,7 +181,7 @@ const GlobalMenu = styled.ul`
   margin: 0;
   list-style: none;
 
-  ${media.mediumUp`
+  ${media.largeUp`
     display: flex;
     flex-flow: row nowrap;
   `}
@@ -189,7 +189,7 @@ const GlobalMenu = styled.ul`
   > * {
     margin: 0 0 ${glsp(0.25)} 0;
 
-    ${media.mediumUp`
+    ${media.largeUp`
       margin: 0 ${glsp(0.5)} 0 0;
     `}
   }
@@ -202,7 +202,7 @@ const GlobalMenu = styled.ul`
     width: 100%;
     text-align: left;
 
-    ${media.mediumUp`
+    ${media.largeUp`
       width: auto;
       text-align: center;
     `}
@@ -297,7 +297,7 @@ class PageHeader extends React.Component {
   }
 
   render () {
-    const { spotlightList, useSmallPanel } = this.props;
+    const { spotlightList, isMediumDown } = this.props;
 
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
@@ -316,7 +316,7 @@ class PageHeader extends React.Component {
             </PageTitle>
           </PageHeadline>
 
-          {useSmallPanel ? (
+          {isMediumDown ? (
             <>
               <Share />
               <Button
@@ -605,7 +605,7 @@ class PageHeader extends React.Component {
 
 PageHeader.propTypes = {
   spotlightList: T.object,
-  useSmallPanel: T.bool
+  isMediumDown: T.bool
 };
 
 function mapStateToProps (state, props) {

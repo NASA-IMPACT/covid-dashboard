@@ -33,8 +33,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      useSmallPanel: false,
-      useShortTitle: false
+      isMediumDown: false
     };
 
     this.resizeListener = this.resizeListener.bind(this);
@@ -53,8 +52,7 @@ class App extends Component {
 
   resizeListener ({ width, height }) {
     this.setState({
-      useShortTitle: width < mediaRanges.small[0],
-      useSmallPanel: width < mediaRanges.medium[0]
+      isMediumDown: width < mediaRanges.large[0]
     });
   }
 
@@ -70,10 +68,7 @@ class App extends Component {
         hideFooter={hideFooter}
       >
         <MetaTags title={`${title}${appTitle}`} description={appDescription} />
-        <PageHeader
-          useShortTitle={this.state.useShortTitle}
-          useSmallPanel={this.state.useSmallPanel}
-        />
+        <PageHeader isMediumDown={this.state.isMediumDown} />
         <PageBody role='main'>{children}</PageBody>
         <PageFooter />
       </SizeAwareElement>
