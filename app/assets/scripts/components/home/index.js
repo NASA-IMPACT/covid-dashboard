@@ -48,34 +48,31 @@ const CYCLE_TIME = 5000;
 
 const Intro = styled.section`
   position: relative;
-  height: 100%;
+  min-height: 100%;
   background: ${themeVal('color.baseAlphaA')};
+  display: flex;
+  flex-flow: column nowrap;
+  padding: ${glsp()};
+
+  ${media.mediumUp`
+    padding: ${glsp(2)};
+  `}
 `;
 
 const IntroCopy = styled.div`
   ${surfaceElevatedD()}
-  position: absolute;
-  top: ${glsp()};
-  left: ${glsp()};
-  right: ${glsp()};
+  position: relative;
   z-index: 10;
   border-radius: ${themeVal('shape.rounded')};
-  max-height: calc(100% - ${glsp(2)});
-  width: calc(100% - ${glsp(2)});
-  overflow-y: auto;
+  overflow: hidden;
+  width: 100%;
   display: grid;
 
   ${media.mediumUp`
-    top: ${glsp(2)};
-    left: ${glsp(2)};
-    right: ${glsp()};
-    width: 100%;
-    max-height: calc(100% - ${glsp(4)});
     max-width: 34rem;
   `}
 
   ${media.largeUp`
-    max-height: calc(100% - ${glsp(6)});
     max-width: 36rem;
   `}
 
@@ -89,6 +86,8 @@ const IntroTitle = styled.h1`
 `;
 
 const IntroWelcomeTitle = styled.h1`
+  font-size: 1.5rem;
+  line-height: 1.75rem;
   margin: 0;
 
   small {
@@ -167,8 +166,10 @@ const IntroStatsList = styled.dl`
 
 const IntroMedia = styled.figure`
   position: absolute;
-  height: 100%;
-  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 2;
 `;
 
