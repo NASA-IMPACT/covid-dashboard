@@ -476,4 +476,4 @@ const mapDispatchToProps = {
   fetchSpotlightSingle: fetchSpotlightSingleAction
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(MbMap));
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(withTheme(MbMap));
