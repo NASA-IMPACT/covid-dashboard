@@ -327,7 +327,7 @@ class GlobalExplore extends React.Component {
     }
   }
 
-  async toggleLayer (layer) {
+  toggleLayer (layer) {
     toggleLayerCommon.call(this, layer, () => {
       this.updateUrlQS();
       this.requestCogData();
