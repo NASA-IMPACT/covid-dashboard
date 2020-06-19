@@ -5,6 +5,10 @@ import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
 import { NavLink } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { fetchSpotlightSingle as fetchSpotlightSingleAction } from '../../../redux/spotlight';
+import { wrapApiResult } from '../../../redux/reduxeed';
+
 import config from '../../../config';
 import { layerTypes } from '../layers/types';
 import { glsp } from '../../../styles/utils/theme-values';
@@ -200,8 +204,10 @@ class MbMap extends React.Component {
       createMbMarker(map)
         .setLngLat(spotlight.center)
         .addTo(map)
-        .onClick((coords) =>
-          this.setState({ popover: { coords, spotlightId: spotlight.id } })
+        .onClick(async (coords) => {
+          await this.props.fetchSpotlightSingle(spotlight.id);
+          this.setState({ popover: { coords, spotlightId: spotlight.id } });
+        }
         );
     };
 
@@ -357,11 +363,16 @@ class MbMap extends React.Component {
   }
 
   renderPopover () {
-    const { getData, isReady } = this.props.spotlightList;
-    const spotlightList = isReady() ? getData() : [];
-    const spotlight = spotlightList.find(
-      (s) => s.id === this.state.popover.spotlightId
-    ) || {};
+    const { spotlightId } = this.state.popover;
+
+    let spotlight = {};
+
+    if (spotlightId) {
+      const { getData, isReady } = this.props.spotlight[spotlightId];
+      spotlight = isReady() ? getData() : {};
+    }
+
+    const { indicators } = spotlight;
 
     return (
       <ReactPopoverGl
@@ -369,30 +380,27 @@ class MbMap extends React.Component {
         lngLat={this.state.popover.coords}
         onClose={() => this.setState({ popover: {} })}
         suptitle='Spotlight'
-        title={(
+        title={
           <SpotlightNavLink
             to={`/explore/${spotlight.id}`}
             title={`Visit ${spotlight.label} page`}
           >
             {spotlight.label}
           </SpotlightNavLink>
-        )}
+        }
         content={
-          <>
-            <div>Minim veniam aliquip exercitation officia in.</div>
-            <dl>
-              <dt>22</dt>
-              <dd>Indicator 1</dd>
-            </dl>
-            <dl>
-              <dt>74%</dt>
-              <dd>Indicator 2</dd>
-            </dl>
-            <dl>
-              <dt>A+</dt>
-              <dd>Indicator 3</dd>
-            </dl>
-          </>
+          indicators && indicators.length > 0 ? (
+            <>
+              <h2>Indicators available</h2>
+              <ul>
+                {indicators.map(({ id, name }) => (
+                  <li key={id}>{name}</li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <div>This area has no indicators at the moment.</div>
+          )
         }
         footerContent={
           <Button
@@ -411,9 +419,10 @@ class MbMap extends React.Component {
   render () {
     return (
       <>
-        {this.props.spotlightList &&
+        {
           this.mbMap &&
-          this.renderPopover()}
+          this.renderPopover()
+        }
         <MapsContainer id='container'>
           <SingleMapContainer
             ref={(el) => {
@@ -441,7 +450,19 @@ MbMap.propTypes = {
   layers: T.array,
   enableLocateUser: T.bool,
   disableControls: T.bool,
-  spotlightList: T.object
+  spotlightList: T.object,
+  spotlight: T.object,
+  fetchSpotlightSingle: T.func
 };
 
-export default withTheme(MbMap);
+function mapStateToProps (state) {
+  return {
+    spotlight: wrapApiResult(state.spotlight.single, true)
+  };
+}
+
+const mapDispatchToProps = {
+  fetchSpotlightSingle: fetchSpotlightSingleAction
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(MbMap));
