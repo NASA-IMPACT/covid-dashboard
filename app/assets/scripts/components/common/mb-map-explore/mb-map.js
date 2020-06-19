@@ -74,6 +74,10 @@ const SingleMapContainer = styled.div`
   bottom: 0;
 `;
 
+const SpotlightIndicatorsHeading = styled(Heading)`
+  margin-bottom: 0.5rem;
+`;
+
 const SpotlightNavLink = styled(NavLink)`
   color: inherit;
 `;
@@ -395,9 +399,9 @@ class MbMap extends React.Component {
           <Prose>
             {indicators && indicators.length > 0 ? (
               <>
-                <Heading as='h2' size='medium'>
+                <SpotlightIndicatorsHeading as='h2' size='medium'>
                   Indicators available
-                </Heading>
+                </SpotlightIndicatorsHeading>
                 <ul>
                   {indicators.map(({ id, name }) => (
                     <li key={id}>{name}</li>
