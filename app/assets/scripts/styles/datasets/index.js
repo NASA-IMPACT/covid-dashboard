@@ -9,13 +9,22 @@ import Heading from '../type/heading';
 
 import { themeVal } from '../utils/general';
 import { glsp } from '../utils/theme-values';
+import media from '../utils/media-queries';
 
 export const IntroLead = styled(Heading).attrs({
   as: 'p',
   size: 'xlarge'
 })`
+  grid-column: content-start / content-end;
   grid-row: 1;
-  grid-column: span 6;
+
+  ${media.mediumUp`
+    grid-column: content-start / content-8;
+  `}
+
+  ${media.largeUp`
+    grid-column: content-start / content-9;
+  `}
 `;
 
 export const IntroDescription = styled(Prose)`
