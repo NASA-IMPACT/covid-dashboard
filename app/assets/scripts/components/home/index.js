@@ -407,7 +407,7 @@ class Home extends React.Component {
     const layers = this.getLayersWithState(mapLayers);
 
     return (
-      <App pageTitle='Home' hideFooter>
+      <App pageTitle='Home'>
         <Inpage isMapCentric>
           <InpageHeader>
             <InpageHeaderInner>
