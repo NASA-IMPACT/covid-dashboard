@@ -18,6 +18,8 @@ import { createMbMarker } from './mb-popover/utils';
 
 import ReactPopoverGl from './mb-popover';
 import Button from '../../../styles/button/button';
+import Heading from '../../../styles/type/heading';
+import Prose from '../../../styles/type/prose';
 
 const {
   center,
@@ -379,7 +381,7 @@ class MbMap extends React.Component {
         mbMap={this.mbMap}
         lngLat={this.state.popover.coords}
         onClose={() => this.setState({ popover: {} })}
-        suptitle='Spotlight'
+        suptitle='Area'
         title={
           <SpotlightNavLink
             to={`/explore/${spotlight.id}`}
@@ -389,18 +391,22 @@ class MbMap extends React.Component {
           </SpotlightNavLink>
         }
         content={
-          indicators && indicators.length > 0 ? (
-            <>
-              <h2>Indicators available</h2>
-              <ul>
-                {indicators.map(({ id, name }) => (
-                  <li key={id}>{name}</li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <div>This area has no indicators at the moment.</div>
-          )
+          <Prose>
+            {indicators && indicators.length > 0 ? (
+              <>
+                <Heading as='h2' size='medium'>
+                  Indicators available
+                </Heading>
+                <ul>
+                  {indicators.map(({ id, name }) => (
+                    <li key={id}>{name}</li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <div>This area has no indicators at the moment.</div>
+            )}
+          </Prose>
         }
         footerContent={
           <Button
