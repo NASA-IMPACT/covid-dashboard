@@ -134,7 +134,11 @@ class SpotlightAreasSingle extends React.Component {
     if (spotlightId !== prevProps.match.params.spotlightId) {
       this.requestSpotlight();
       // Reset state on page change.
-      this.setState(getInitialMapExploreState());
+      this.setState({
+        ...getInitialMapExploreState(),
+        panelPrime: false,
+        panelSec: false
+      });
     }
   }
 
