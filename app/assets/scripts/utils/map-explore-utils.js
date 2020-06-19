@@ -14,6 +14,7 @@ import { utcDate } from './utils';
 export function getInitialMapExploreState () {
   return {
     activeLayers: [],
+    _urlActiveLayers: [],
     // Additional data that needs to be tracked for the map layers, like the
     // knob position on a adjustable gradient legend.
     // Values will be objects keyed by the layer id.
