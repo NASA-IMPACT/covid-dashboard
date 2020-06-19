@@ -1,16 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import { rgba } from 'polished';
 
 import config from '../../config';
 
 import { Link } from 'react-router-dom';
-import { themeVal } from '../../styles/utils/general';
+import { themeVal, stylizeFunction } from '../../styles/utils/general';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
 import { headingAlt } from '../../styles/type/heading';
 import Button from '../../styles/button/button';
 
 const { appTitle } = config;
+
+const _rgba = stylizeFunction(rgba);
 
 const PageFoot = styled.footer`
   position: relative;
@@ -48,7 +51,7 @@ const PageFootTitle = styled(Link)`
 
   strong {
     font-size: 1rem;
-    line-height: 1.25rem;
+    line-height: 1.5rem;
     font-weight: ${themeVal('type.base.light')};
     letter-spacing: -0.025em;
     display: block;
@@ -65,21 +68,20 @@ const PageCredits = styled.address`
   ${media.smallUp`
     flex-flow: row nowrap;
   `}
-
-  time {
-    display: block;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    opacity: 0.64;
-  }
 `;
 
 const Colophon = styled.p`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+
   time {
     ${headingAlt}
-    font-size: 0.75rem;
-    line-height: 1rem;
-    display: block;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    margin-left: ${glsp(0.5)};
+    padding-left: ${glsp(0.5)};
+    box-shadow: inset 1px 0 0 0 ${_rgba('#FFFFFF', 0.16)};
   }
 `;
 
@@ -149,7 +151,7 @@ const PageFooter = props => {
           </InfoList>
           <Colophon>
             <PageFootTitle to='/' title='Go to welcome page'>
-              <sup>NASA - Earthdata</sup>
+              <sup>NASA — Earthdata</sup>
               <strong>{appTitle}</strong>
             </PageFootTitle>
             <time dateTime='2020'>2020</time>
