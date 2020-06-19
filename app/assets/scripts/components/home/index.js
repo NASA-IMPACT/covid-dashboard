@@ -5,6 +5,7 @@ import T from 'prop-types';
 import { connect } from 'react-redux';
 
 import { themeVal } from '../../styles/utils/general';
+import { visuallyHidden } from '../../styles/helpers';
 
 import { Link } from 'react-router-dom';
 
@@ -84,6 +85,10 @@ const IntroCopy = styled.div`
 `;
 
 const IntroTitle = styled.h1`
+  ${visuallyHidden()}
+`;
+
+const IntroWelcomeTitle = styled.h1`
   margin: 0;
 
   small {
@@ -104,11 +109,21 @@ const IntroTitle = styled.h1`
   }
 `;
 
-const IntroProse = styled(Prose)`
-  background: transparent;
+const IntroWelcome = styled.section`
+  display: grid;
+  grid-gap: ${glsp()} 0;
 `;
 
-const IntroStats = styled.div`
+const IntroStats = styled.section`
+  display: grid;
+  grid-gap: ${glsp()} 0;
+`;
+
+const IntroStatsTitle = styled.h1`
+  ${visuallyHidden()}
+`;
+
+const IntroStatsList = styled.dl`
   display: grid;
   grid-auto-columns: min-content;
   grid-auto-rows: auto;
@@ -292,30 +307,34 @@ class Home extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Welcome</InpageTitle>
+                <InpageTitle>Home</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
             <Intro>
               <IntroCopy>
-                <IntroTitle>
-                  <strong>Welcome</strong>
-                </IntroTitle>
-                <IntroProse>
-                  <p>
-                    As communities around the world have changed their behavior in response
-                    to the spread of COVID-19, NASA satellites have observed changes in the
+                <IntroTitle>Start exploring</IntroTitle>
+                <IntroWelcome>
+                  <IntroWelcomeTitle>Welcome</IntroWelcomeTitle>
+                  <Prose>
+                    <p>
+                      As communities around the world have changed their behavior in response
+                      to the spread of COVID-19, NASA satellites have observed changes in the
                     environment. This <strong>experimental</strong> dashboard reflects a rapid response to
                     COVID-19 that is currently underway and will continue to evolve as more
                     data becomes available. <Link to='/about' title='Read more on the about page'>Read more...</Link>
-                  </p>
-                </IntroProse>
+                    </p>
+                  </Prose>
+                </IntroWelcome>
                 <IntroStats>
-                  <dt>Areas</dt>
-                  <dd><Link to='/explore' title='Explore the areas'>07</Link></dd>
-                  <dt>Indicators</dt>
-                  <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
+                  <IntroStatsTitle>Some numbers</IntroStatsTitle>
+                  <IntroStatsList>
+                    <dt>Areas</dt>
+                    <dd><Link to='/explore' title='Explore the areas'>07</Link></dd>
+                    <dt>Indicators</dt>
+                    <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
+                  </IntroStatsList>
                 </IntroStats>
                 <IntroStories>
                   <IntroStoriesHeader>
