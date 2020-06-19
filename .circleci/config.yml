@@ -94,7 +94,7 @@ jobs:
       - aws-cli/install
       - aws-s3/copy:
           arguments: |
-            --recursive
+            --recursive \
             --acl public-read \
             --cache-control "max-age=86400"
           from: /workspace/dist
