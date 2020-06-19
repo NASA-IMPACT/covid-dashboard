@@ -1,4 +1,4 @@
-import { eachMonthOfInterval, format } from 'date-fns';
+import { eachMonthOfInterval, format, eachDayOfInterval } from 'date-fns';
 
 import config from '../config';
 import { makeActions, fetchJSON, makeAPIReducer } from './reduxeed';
@@ -14,12 +14,18 @@ export const invalidateCogTimeData = cogTimeDataActions.invalidate;
 export function fetchCogTimeData (id, timeframe, area) {
   return async function (dispatch) {
     dispatch(cogTimeDataActions.request(id));
+    const { start, end, timeUnit } = timeframe;
+    const dateFormat = timeUnit === 'month'
+      ? 'yyyyMM'
+      : 'yyyy_MM_dd';
 
-    const { start, end, dateFormat } = timeframe;
-    const months = eachMonthOfInterval({ start, end });
+    const interval = timeUnit === 'month'
+      ? eachMonthOfInterval({ start, end })
+      : eachDayOfInterval({ start, end });
+
     const url = `${config.api}/timelapse`;
 
-    const requests = months.map(async date => {
+    const requests = interval.map(async date => {
       const reqDate = format(date, dateFormat);
 
       try {
