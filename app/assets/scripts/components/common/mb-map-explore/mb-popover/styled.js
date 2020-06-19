@@ -111,7 +111,7 @@ const getTransition = (isShowing) => {
 };
 
 export const Popover = styled.article`
-  max-width: 20rem;
+  width: 16rem;
   padding: 0.75rem 0;
   position: absolute;
   top: 0;
