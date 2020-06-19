@@ -20,7 +20,7 @@ export default {
   },
   exclusiveWith: ['no2', 'co2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: false,
-  swatch: indicatorGroupColors['greenhouse-gases'],
+  swatch: indicatorGroupColors['greenhouse-gas'],
   legend: {
     type: 'gradient',
     min: 'less',

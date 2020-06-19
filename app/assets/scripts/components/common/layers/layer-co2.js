@@ -36,7 +36,7 @@ export default {
     }
   },
 
-  swatch: indicatorGroupColors['greenhouse-gases'],
+  swatch: indicatorGroupColors['greenhouse-gas'],
   legend: {
     type: 'gradient-adjustable',
     min: 'less',

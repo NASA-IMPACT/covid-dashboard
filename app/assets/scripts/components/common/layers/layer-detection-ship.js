@@ -1,4 +1,5 @@
 import config from '../../../config';
+import { indicatorGroupColors } from '../../../styles/theme/theme';
 
 export default {
   id: 'detection-ship',
@@ -22,10 +23,7 @@ export default {
   },
   exclusiveWith: ['no2', 'co2-diff', 'co2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: false,
-  swatch: {
-    color: '#411073',
-    name: 'Purple'
-  },
+  swatch: indicatorGroupColors.economic,
   timeUnit: 'day',
   info: 'Ships detected each day in PlanetScope imagery are shown in red.'
 };
