@@ -125,6 +125,12 @@ const IntroWelcome = styled.section`
   padding: ${glsp()};
   box-shadow: 0 1px 0 0 ${themeVal('color.baseAlphaB')};
 
+  ${Prose} {
+    a {
+      font-weight: ${themeVal('type.base.bold')};
+    }
+  }
+
   ${media.mediumUp`
     grid-gap: ${glsp()} 0;
     padding: ${glsp(1.25, 2)};
@@ -332,6 +338,7 @@ class Home extends React.Component {
     const { spotlightId, layers } = stories[storyIndex];
     if (mapLoaded) {
       if (spotlight !== prevProps.spotlight) {
+        this.resizeMap();
         const spotlightData = spotlight[spotlightId].getData();
         if (spotlightData.bounding_box) {
           const storyLayers = layers;
@@ -476,9 +483,9 @@ class Home extends React.Component {
                     <p>
                       As communities around the world have changed their behavior in response
                       to the spread of COVID-19, NASA satellites have observed changes in the
-                    environment. This <strong>experimental</strong> dashboard reflects a rapid response to
-                    COVID-19 that is currently underway and will continue to evolve as more
-                    data becomes available. <Link to='/about' title='Read more on the about page'>Read more...</Link>
+                      environment. This <strong>experimental</strong> dashboard reflects a rapid response to
+                      COVID-19 that is currently underway and will continue to evolve as more
+                      data becomes available. <Link to='/about' title='Read more on the about page'>Read more...</Link>
                     </p>
                   </Prose>
                 </IntroWelcome>
