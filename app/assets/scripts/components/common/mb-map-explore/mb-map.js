@@ -381,6 +381,7 @@ class MbMap extends React.Component {
         mbMap={this.mbMap}
         lngLat={this.state.popover.coords}
         onClose={() => this.setState({ popover: {} })}
+        offset={[38, 3]}
         suptitle='Area'
         title={
           <SpotlightNavLink
