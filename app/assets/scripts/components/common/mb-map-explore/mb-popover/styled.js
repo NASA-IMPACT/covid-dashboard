@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components';
 
 import { themeVal } from '../../../../styles/utils/general';
-import { _rgba, glsp } from '../../../../styles/utils/theme-values';
+import { glsp } from '../../../../styles/utils/theme-values';
+import { headingAlt } from '../../../../styles/type/heading';
 
 export const POPOVER_SHOW_HIDE_ANIM_TIME = 240;
 
@@ -184,12 +185,7 @@ export const PopoverHeadline = styled.div`
 
 export const PopoverSubtitle = styled.p`
   order: ${({ isSup }) => isSup ? -1 : 1};
-  font-feature-settings: "pnum" 0; /* Use proportional numbers */
-  font-family: ${themeVal('type.base.family')};
-  font-weight: ${themeVal('type.heading.light')};
-  color: ${_rgba(themeVal('color.base'), 0.64)};
-  font-size: 0.875rem;
-  line-height: 1rem;
+  ${headingAlt()}
 `;
 
 export const PopoverToolbar = styled.div`
