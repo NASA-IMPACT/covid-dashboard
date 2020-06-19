@@ -29,7 +29,7 @@ export default {
     source: {
       type: 'raster',
       tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/xco2_15day_base.{date}.tif&resampling_method=bilinear&bidx=1&rescale=0.0004%2C0.00042`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/xco2_15day_base.{date}.tif&resampling_method=bilinear&bidx=1&rescale=0.0004%2C0.00042&color_map=reds&color_formula=gamma r {gamma}`
       ]
     }
   },
