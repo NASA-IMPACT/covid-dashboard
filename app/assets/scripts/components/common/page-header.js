@@ -30,7 +30,6 @@ const PageHead = styled.header`
   z-index: 20;
   background: ${themeVal('color.link')};
   color: ${themeVal('color.baseLight')};
-  overflow: hidden;
 
   /* Animation */
   animation: ${reveal} 0.32s ease 0s 1;
@@ -85,11 +84,13 @@ const PageTitle = styled.h1`
       opacity: 0.16;
       transform: scale(2) translate(-0.5rem, -25%);
       transform-origin: top left;
+      clip-path: polygon(0 25%, 100% 25%, 100% 75%, 0 75%);
 
       ${media.mediumUp`
         position: static;
         transform: none;
         opacity: 1;
+        clip-path: none;
       `}
     }
 
@@ -209,12 +210,12 @@ const GlobalMenu = styled.ul`
 `;
 
 const PageNavSmall = styled.nav`
-  overflow: hidden;
   position: fixed;
   top: 0;
   right: 0;
   width: 100%;
   height: 100%;
+  z-index: 100;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
@@ -222,6 +223,7 @@ const PageNavSmall = styled.nav`
   transition: all 0.16s ease 0s;
   opacity: 0;
   visibility: hidden;
+  transform: translate3d(0,0,0);
 
   ${({ revealed }) => revealed &&
     css`
