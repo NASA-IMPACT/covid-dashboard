@@ -45,7 +45,7 @@ import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
 import { mod } from '../../utils/utils';
 
-const CYCLE_TIME = 5000;
+const CYCLE_TIME = 8000;
 
 const Intro = styled.section`
   position: relative;
