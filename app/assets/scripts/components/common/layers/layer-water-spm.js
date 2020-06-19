@@ -6,7 +6,7 @@ export default {
   id: 'water-spm',
   name: 'Turbidity',
   type: 'raster-timeseries',
-  domain: ['2020-03-02', '2020-04-03', '2020-04-19', '2020-05-04', '2020-05-05', '2020-05-19', '2020-05-21', '2020-05-24'],
+  domain: [/* spotlight dependent */],
   timeUnit: 'day',
   source: {
     type: 'raster',
@@ -21,10 +21,12 @@ export default {
     min: 'less',
     max: 'more',
     stops: [
-      '#C9E1ED',
-      '#4694C4',
-      '#1A5FA0',
-      '#154F8D'
+      '#3A88BD',
+      '#C9E0ED',
+      '#E4EEF3',
+      '#FDDCC9',
+      '#DE725B',
+      '#67001F'
     ]
   },
   info: 'Turbidity refers to the amount of sediment or particles suspended in water. For this dataset, darker colors indicate more sediment and murkier water, while lighter colors indicate less sediment and clearer water.'
