@@ -37,6 +37,7 @@ export const createMbMarker = (map, opt) => {
   mk.remove = () => {
     markerRemove.apply(mk);
     map.off('click', onMapClick);
+    map.off('touchend', onMapClick);
     return mk;
   };
 
@@ -44,6 +45,7 @@ export const createMbMarker = (map, opt) => {
   mk.addTo = (m) => {
     makerAdd.call(mk, m);
     map.on('click', onMapClick);
+    map.on('touchend', onMapClick);
     mk._element.style.cursor = 'pointer';
     return mk;
   };
