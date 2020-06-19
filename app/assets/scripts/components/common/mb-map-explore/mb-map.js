@@ -404,7 +404,7 @@ class MbMap extends React.Component {
                 </ul>
               </>
             ) : (
-              <div>This area has no indicators at the moment.</div>
+              <div>There are no indicators for this area at the moment.</div>
             )}
           </Prose>
         }
