@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 
 import App from '../common/app';
 import Button from '../../styles/button/button';
+import collecticon from '../../styles/collecticons';
 import {
   Inpage,
   InpageHeader,
@@ -68,6 +69,10 @@ const IntroCopy = styled.div`
   width: 100%;
   display: grid;
 
+  ${media.smallUp`
+    max-width: 32rem;
+  `}
+
   ${media.mediumUp`
     max-width: 34rem;
   `}
@@ -86,9 +91,15 @@ const IntroTitle = styled.h1`
 `;
 
 const IntroWelcomeTitle = styled.h1`
-  font-size: 1.5rem;
-  line-height: 1.75rem;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
   margin: 0;
+
+
+  ${media.mediumUp`
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+  `}
 
   small {
     ${headingAlt()}
@@ -182,24 +193,41 @@ const grow = keyframes`
   }
 `;
 
-const CycleProgressBar = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 0.25rem;
-  background-color: rgba(255, 255, 255, 0.16);
-  animation: ${grow} ${CYCLE_TIME}ms linear forwards;
-`;
-
 const IntroStories = styled.section`
   position: relative;
   background: ${themeVal('color.primary')};
   color: ${themeVal('color.surface')};
-  padding: ${glsp()};
+  padding: ${glsp(0.75, 1, 1.25, 1)};
 
-  ${media.mediumUp`
-    padding: ${glsp(1.25, 2)};
+  ${media.smallUp`
+    min-height: 12rem;
   `}
+  
+  ${media.mediumUp`
+    padding: ${glsp(1.25, 2, 1.75, 2)};
+    min-height: auto;
+  `}
+
+  &::before {
+    ${collecticon('chart-bars')}
+    font-size: 8rem;
+    line-height: 1;
+    opacity: 0.16;
+    position: absolute;
+    bottom: ${glsp()};
+    right: ${glsp()};
+    z-index: 1;
+
+    ${media.mediumUp`
+      bottom: ${glsp(1.5)};
+      right: ${glsp(1.5)};
+    `}
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 `;
 
 const IntroStoriesHeader = styled.header`
@@ -217,13 +245,42 @@ const IntroStoriesTitle = styled.h1`
 const IntroStoriesToolbar = styled.div`
   display: flex;
   flex-flow: row nowrap;
+  margin-right: -${glsp(0.5)};
+
+  ${media.mediumUp`
+    margin-right: -${glsp(1)};
+  `}
 
   > * {
     vertical-align: top;
   }
 `;
 
+const CycleProgressBar = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.16);
+  animation: ${grow} ${CYCLE_TIME}ms linear forwards;
+`;
+
 const Story = styled.article`
+  display: flex;
+`;
+
+const StoryContent = styled.a`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  &,
+  &:visited {
+    color: inherit;
+  }
+`;
+
+const StoryCopy = styled.div`
   display: grid;
   grid-gap: ${glsp()} 0;
 `;
@@ -237,14 +294,6 @@ const StoryTitle = styled.h1`
 const StoryProse = styled(Prose)`
   display: grid;
   grid-gap: ${glsp()} 0;
-`;
-
-const StoryActions = styled.div`
-  display: flex;
-
-  > * {
-    vertical-align: top;
-  }
 `;
 
 class Home extends React.Component {
@@ -481,21 +530,14 @@ class Home extends React.Component {
                     </IntroStoriesToolbar>
                   </IntroStoriesHeader>
                   <Story>
-                    <StoryTitle>{currentStory.title}</StoryTitle>
-                    <StoryProse>
-                      <p>{currentStory.prose}</p>
-                    </StoryProse>
-                    <StoryActions>
-                      <Button
-                        element={Link}
-                        title='Explore the data'
-                        to={currentStory.link}
-                        variation='achromic-plain'
-                        useIcon={['chevron-right--small', 'after']}
-                      >
-                        Learn more
-                      </Button>
-                    </StoryActions>
+                    <StoryContent title='Explore the data' href={currentStory.link}>
+                      <StoryCopy>
+                        <StoryTitle>{currentStory.title}</StoryTitle>
+                        <StoryProse>
+                          <p>{currentStory.prose}</p>
+                        </StoryProse>
+                      </StoryCopy>
+                    </StoryContent>
                   </Story>
                 </IntroStories>
               </IntroCopy>
