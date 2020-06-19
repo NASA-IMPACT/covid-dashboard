@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import T from 'prop-types';
 
 import { connect } from 'react-redux';
@@ -42,6 +42,9 @@ import media from '../../styles/utils/media-queries';
 
 import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
+import { mod } from '../../utils/utils';
+
+const CYCLE_TIME = 5000;
 
 const Intro = styled.section`
   position: relative;
@@ -169,7 +172,26 @@ const IntroMedia = styled.figure`
   z-index: 2;
 `;
 
+const grow = keyframes`
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+`;
+
+const CycleProgressBar = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.16);
+  animation: ${grow} ${CYCLE_TIME}ms linear forwards;
+`;
+
 const IntroStories = styled.section`
+  position: relative;
   background: ${themeVal('color.primary')};
   color: ${themeVal('color.surface')};
   padding: ${glsp()};
@@ -232,17 +254,22 @@ class Home extends React.Component {
       storyIndex: 0,
       mapLoaded: false,
       mapLayers: [],
+      storiesCycling: true,
+      storiesCyclingIteration: 0,
       ...getInitialMapExploreState()
     };
 
     this.prevStory = this.prevStory.bind(this);
     this.nextStory = this.nextStory.bind(this);
+    this.toggleStoriesCycling = this.toggleStoriesCycling.bind(this);
     this.onMapAction = this.onMapAction.bind(this);
     this.getLayersWithState = getLayersWithState.bind(this);
     this.getLayerState = getLayerState.bind(this);
     this.setLayerState = setLayerState.bind(this);
     this.getActiveTimeseriesLayers = getActiveTimeseriesLayers.bind(this);
     this.resizeMap = resizeMap.bind(this);
+
+    this.storiesCyclingTimeout = null;
   }
 
   componentDidMount (prevProps, prevState) {
@@ -275,8 +302,26 @@ class Home extends React.Component {
     }
   }
 
-  async toggleLayer (layer) {
-    toggleLayerCommon.call(this, layer);
+  componentWillUnmount () {
+    if (this.storiesCyclingTimeout) {
+      clearTimeout(this.storiesCyclingTimeout);
+    }
+  }
+
+  toggleLayer (layer) {
+    toggleLayerCommon.call(this, layer, () => {
+      if (this.storiesCyclingTimeout) {
+        clearTimeout(this.storiesCyclingTimeout);
+      }
+      if (this.state.storiesCycling) {
+        this.setState(state => ({
+          storiesCyclingIteration: state.storiesCyclingIteration + 1
+        }));
+        this.storiesCyclingTimeout = setTimeout(() => {
+          this.nextStory();
+        }, CYCLE_TIME);
+      }
+    });
   }
 
   async requestSpotlight () {
@@ -289,31 +334,78 @@ class Home extends React.Component {
         this.setState({ mapLoaded: true }, this.requestSpotlight);
         break;
       }
+      case 'map.move': {
+        // Any user interaction with the map will stop the stories.
+        if (payload.userInitiated) {
+          this.stopStoriesCycling();
+        }
+        break;
+      }
     }
   }
 
+  toggleStoriesCycling () {
+    const { storiesCycling } = this.state;
+    if (storiesCycling) {
+      this.stopStoriesCycling();
+    } else {
+      this.startStoriesCycling();
+    }
+  }
+
+  stopStoriesCycling () {
+    // Stop timeout when the user paused
+    if (this.storiesCyclingTimeout) {
+      clearTimeout(this.storiesCyclingTimeout);
+    }
+    this.setState({ storiesCycling: false });
+  }
+
+  startStoriesCycling () {
+    // Prepare timeout when the user restarts.
+    this.storiesCyclingTimeout = setTimeout(() => {
+      this.nextStory();
+    }, CYCLE_TIME);
+    this.setState({ storiesCycling: true });
+  }
+
   prevStory (e) {
-    e.preventDefault();
+    // If the user is manually navigating, stop the auto play.
+    if (e) {
+      e.preventDefault();
+      this.stopStoriesCycling();
+    }
     this.setState(prevState => {
       return ({
-        storyIndex: prevState.storyIndex - 1
+        storyIndex: mod(prevState.storyIndex - 1, stories.length)
       });
     }, this.requestSpotlight);
   }
 
   nextStory (e) {
-    e.preventDefault();
+    // If the user is manually navigating, stop the auto play.
+    if (e) {
+      e.preventDefault();
+      this.stopStoriesCycling();
+    }
     this.setState(prevState => {
       return ({
-        storyIndex: prevState.storyIndex + 1
+        storyIndex: mod(prevState.storyIndex + 1, stories.length)
       });
     }, this.requestSpotlight);
   }
 
   render () {
-    const { storyIndex, mapLayers } = this.state;
+    const {
+      storyIndex,
+      mapLayers,
+      storiesCycling,
+      storiesCyclingIteration,
+      activeLayers
+    } = this.state;
     const currentStory = stories[storyIndex];
     const layers = this.getLayersWithState(mapLayers);
+
     return (
       <App pageTitle='Home' hideFooter>
         <Inpage isMapCentric>
@@ -350,16 +442,25 @@ class Home extends React.Component {
                   </IntroStatsList>
                 </IntroStats>
                 <IntroStories>
+                  {storiesCycling && !!storiesCyclingIteration && <CycleProgressBar key={storiesCyclingIteration} /> }
                   <IntroStoriesHeader>
                     <IntroStoriesTitle>Did you know?</IntroStoriesTitle>
                     <IntroStoriesToolbar>
                       <Button
+                        title={storiesCycling ? 'Stop cycling through stories' : 'Start cycling through stories'}
+                        variation='achromic-plain'
+                        useIcon={storiesCycling ? 'circle-pause' : 'circle-play'}
+                        hideText
+                        onClick={this.toggleStoriesCycling}
+                      >
+                        {storiesCycling ? 'Stop' : 'Start'}
+                      </Button>
+                      <Button
                         element='a'
                         title='View previous story'
-                        disabled={storyIndex === 0}
                         href='#'
                         variation='achromic-plain'
-                        useIcon='chevron-left'
+                        useIcon='chevron-left--small'
                         hideText
                         onClick={this.prevStory}
                       >
@@ -369,9 +470,8 @@ class Home extends React.Component {
                         element='a'
                         title='View next story'
                         href='#'
-                        disabled={storyIndex === stories.length - 1}
                         variation='achromic-plain'
-                        useIcon='chevron-right'
+                        useIcon='chevron-right--small'
                         hideText
                         onClick={this.nextStory}
                       >
@@ -403,7 +503,7 @@ class Home extends React.Component {
                   ref={this.mbMapRef}
                   onAction={this.onMapAction}
                   layers={layers}
-                  activeLayers={this.state.activeLayers}
+                  activeLayers={activeLayers}
                   date={new Date('03/01/20')}
                   aoiState={null}
                   comparing={false}
