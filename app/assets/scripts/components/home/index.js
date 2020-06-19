@@ -460,7 +460,7 @@ class Home extends React.Component {
                         title='View previous story'
                         href='#'
                         variation='achromic-plain'
-                        useIcon='chevron-left'
+                        useIcon='chevron-left--small'
                         hideText
                         onClick={this.prevStory}
                       >
@@ -471,7 +471,7 @@ class Home extends React.Component {
                         title='View next story'
                         href='#'
                         variation='achromic-plain'
-                        useIcon='chevron-right'
+                        useIcon='chevron-right--small'
                         hideText
                         onClick={this.nextStory}
                       >
