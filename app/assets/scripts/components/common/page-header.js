@@ -56,50 +56,57 @@ const PageHeadline = styled.div`
 `;
 
 const PageTitle = styled.h1`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
   margin: 0;
   line-height: 1;
+`;
 
-  a {
-    display: grid;
+const PageTitlePrimeLink = styled(Link)`
+  display: grid;
+  grid-template-columns: 1fr;
+
+  ${media.largeUp`
+    grid-template-columns: min-content 1fr;
     grid-gap: 0 ${glsp(0.5)};
-    grid-template-columns: min-content 1fr min-content;
+  `}
 
-    &,
-    &:visited {
-      color: inherit;
-    }
+  &,
+  &:visited {
+    color: inherit;
+  }
+
+  &::before {
+    grid-row: 1 / span 2;
+    content: '';
+    height: 48px;
+    width: 56px;
+    background: url(${`${baseUrl}/assets/graphics/layout/app-logo-sprites.png`});
+    background-size: auto 100%;
+    background-repeat: none;
+    background-position: top right;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.16;
+    transform: scale(2) translate(-0.5rem, -25%);
+    transform-origin: top left;
+    clip-path: polygon(0 25%, 100% 25%, 100% 75%, 0 75%);
+
+    ${media.largeUp`
+      position: static;
+      transform: none;
+      opacity: 1;
+      clip-path: none;
+    `}
+  }
+
+  &:hover {
+    opacity: 1;
 
     &::before {
-      grid-row: 1 / span 2;
-      content: '';
-      height: 48px;
-      width: 56px;
-      background: url(${`${baseUrl}/assets/graphics/layout/app-logo-sprites.png`});
-      background-size: auto 100%;
-      background-repeat: none;
-      background-position: top right;
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0.16;
-      transform: scale(2) translate(-0.5rem, -25%);
-      transform-origin: top left;
-      clip-path: polygon(0 25%, 100% 25%, 100% 75%, 0 75%);
-
-      ${media.largeUp`
-        position: static;
-        transform: none;
-        opacity: 1;
-        clip-path: none;
-      `}
-    }
-
-    &:hover {
-      opacity: 1;
-
-      &::before {
-        background-position: top left;
-      }
+      background-position: top left;
     }
   }
 
@@ -141,25 +148,26 @@ const PageTitle = styled.h1`
       transform: none;
     `}
   }
+`;
 
-  sub {
-    grid-row: 2;
+const PageTitleSecLink = styled(Link)`
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  color: ${themeVal('color.link')};
+  background: ${themeVal('color.surface')};
+  padding: 0 ${glsp(0.25)};
+  border-radius: ${themeVal('shape.rounded')};
+  bottom: inherit;
+  vertical-align: inherit;
+  margin: ${glsp(0, 0.5)};
+
+  ${media.largeUp`
+    margin: ${glsp(0.25, 0.5)};
     font-size: 0.875rem;
     line-height: 1.25rem;
-    text-transform: uppercase;
-    color: ${themeVal('color.link')};
-    background: ${themeVal('color.surface')};
     padding: 0 ${glsp(0.5)};
-    border-radius: ${themeVal('shape.rounded')};
-    bottom: inherit;
-    vertical-align: inherit;
-    align-self: center;
-    display: none;
-
-    ${media.largeUp`
-      display: flex;
-    `}
-  }
+  `}
 `;
 
 const PageNavLarge = styled.nav`
@@ -306,13 +314,15 @@ class PageHeader extends React.Component {
         <PageHeadInner>
           <PageHeadline>
             <PageTitle>
-              <Link to='/' title='Go to welcome page'>
+              <PageTitlePrimeLink to='/' title='View the welcome page'>
                 <sup>
                   <span>NASA - </span>Earthdata
                 </sup>
                 <strong>{appTitle}</strong>
-                <sub title={appVersion}>beta</sub>
-              </Link>
+              </PageTitlePrimeLink>
+              <PageTitleSecLink to='/development' title={appVersion}>
+                Beta
+              </PageTitleSecLink>
             </PageTitle>
           </PageHeadline>
 
