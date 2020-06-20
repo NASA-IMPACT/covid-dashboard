@@ -327,7 +327,7 @@ class GlobalExplore extends React.Component {
     }
   }
 
-  async toggleLayer (layer) {
+  toggleLayer (layer) {
     toggleLayerCommon.call(this, layer, () => {
       this.updateUrlQS();
       this.requestCogData();
@@ -395,6 +395,7 @@ class GlobalExplore extends React.Component {
                   aoiState={this.state.aoi}
                   comparing={isComparing}
                   enableLocateUser
+                  spotlightList={spotlightList}
                 />
                 <Timeline
                   isActive={!!activeTimeseriesLayers.length}

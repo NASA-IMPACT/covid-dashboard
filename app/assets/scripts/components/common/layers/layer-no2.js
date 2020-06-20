@@ -2,6 +2,8 @@ import { format, sub } from 'date-fns';
 
 import config from '../../../config';
 
+import { indicatorGroupColors } from '../../../styles/theme/theme.js';
+
 export default {
   id: 'no2',
   name: 'Nitrogen dioxide',
@@ -24,10 +26,7 @@ export default {
     help: 'Compare with baseline (5 years ago)',
     mapLabel: date => `${format(sub(date, { years: 5 }), "MMM yy''")} — ${format(date, "MMM yy''")}`
   },
-  swatch: {
-    color: '#411073',
-    name: 'Purple'
-  },
+  swatch: indicatorGroupColors['air-quality'],
   legend: {
     type: 'gradient-adjustable',
     min: 'less',

@@ -30,7 +30,6 @@ const PageHead = styled.header`
   z-index: 20;
   background: ${themeVal('color.link')};
   color: ${themeVal('color.baseLight')};
-  overflow: hidden;
 
   /* Animation */
   animation: ${reveal} 0.32s ease 0s 1;
@@ -43,7 +42,7 @@ const PageHeadInner = styled.div`
   margin: 0 auto;
   height: 100%;
 
-  ${media.mediumUp`
+  ${media.largeUp`
     padding: ${glsp(0.75)};
   `}
 `;
@@ -57,48 +56,57 @@ const PageHeadline = styled.div`
 `;
 
 const PageTitle = styled.h1`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
   margin: 0;
   line-height: 1;
+`;
 
-  a {
-    display: grid;
+const PageTitlePrimeLink = styled(Link)`
+  display: grid;
+  grid-template-columns: 1fr;
+
+  ${media.largeUp`
+    grid-template-columns: min-content 1fr;
     grid-gap: 0 ${glsp(0.5)};
-    grid-template-columns: min-content 1fr min-content;
+  `}
 
-    &,
-    &:visited {
-      color: inherit;
-    }
+  &,
+  &:visited {
+    color: inherit;
+  }
+
+  &::before {
+    grid-row: 1 / span 2;
+    content: '';
+    height: 48px;
+    width: 56px;
+    background: url(${`${baseUrl}/assets/graphics/layout/app-logo-sprites.png`});
+    background-size: auto 100%;
+    background-repeat: none;
+    background-position: top right;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.16;
+    transform: scale(2) translate(-0.5rem, -25%);
+    transform-origin: top left;
+    clip-path: polygon(0 25%, 100% 25%, 100% 75%, 0 75%);
+
+    ${media.largeUp`
+      position: static;
+      transform: none;
+      opacity: 1;
+      clip-path: none;
+    `}
+  }
+
+  &:hover {
+    opacity: 1;
 
     &::before {
-      grid-row: 1 / span 2;
-      content: '';
-      height: 48px;
-      width: 56px;
-      background: url(${`${baseUrl}/assets/graphics/layout/app-logo-sprites.png`});
-      background-size: auto 100%;
-      background-repeat: none;
-      background-position: top right;
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0.16;
-      transform: scale(2) translate(-0.5rem, -25%);
-      transform-origin: top left;
-
-      ${media.mediumUp`
-        position: static;
-        transform: none;
-        opacity: 1;
-      `}
-    }
-
-    &:hover {
-      opacity: 1;
-
-      &::before {
-        background-position: top left;
-      }
+      background-position: top left;
     }
   }
 
@@ -113,7 +121,7 @@ const PageTitle = styled.h1`
     vertical-align: inherit;
     transform: translate(0, -0.125rem);
 
-    ${media.mediumUp`
+    ${media.largeUp`
       font-size: 0.875rem;
       line-height: 1rem;
       transform: none;
@@ -133,32 +141,33 @@ const PageTitle = styled.h1`
     letter-spacing: -0.025em;
     transform: translate(0, 0.125rem);
 
-    ${media.mediumUp`
+    ${media.largeUp`
       font-size: 1.25rem;
       line-height: 1.5rem;
       font-weight: ${themeVal('type.base.light')};
       transform: none;
     `}
   }
+`;
 
-  sub {
-    grid-row: 2;
+const PageTitleSecLink = styled(Link)`
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  color: ${themeVal('color.link')};
+  background: ${themeVal('color.surface')};
+  padding: 0 ${glsp(0.25)};
+  border-radius: ${themeVal('shape.rounded')};
+  bottom: inherit;
+  vertical-align: inherit;
+  margin: ${glsp(0, 0.5)};
+
+  ${media.largeUp`
+    margin: ${glsp(0.25, 0.5)};
     font-size: 0.875rem;
     line-height: 1.25rem;
-    text-transform: uppercase;
-    color: ${themeVal('color.link')};
-    background: ${themeVal('color.surface')};
     padding: 0 ${glsp(0.5)};
-    border-radius: ${themeVal('shape.rounded')};
-    bottom: inherit;
-    vertical-align: inherit;
-    align-self: center;
-    display: none;
-
-    ${media.mediumUp`
-      display: flex;
-    `}
-  }
+  `}
 `;
 
 const PageNavLarge = styled.nav`
@@ -167,7 +176,7 @@ const PageNavLarge = styled.nav`
   padding: 0;
   order: 2;
 
-  ${media.mediumUp`
+  ${media.largeUp`
     display: flex;
     flex-flow: row nowrap;
   `}
@@ -180,7 +189,7 @@ const GlobalMenu = styled.ul`
   margin: 0;
   list-style: none;
 
-  ${media.mediumUp`
+  ${media.largeUp`
     display: flex;
     flex-flow: row nowrap;
   `}
@@ -188,7 +197,7 @@ const GlobalMenu = styled.ul`
   > * {
     margin: 0 0 ${glsp(0.25)} 0;
 
-    ${media.mediumUp`
+    ${media.largeUp`
       margin: 0 ${glsp(0.5)} 0 0;
     `}
   }
@@ -201,7 +210,7 @@ const GlobalMenu = styled.ul`
     width: 100%;
     text-align: left;
 
-    ${media.mediumUp`
+    ${media.largeUp`
       width: auto;
       text-align: center;
     `}
@@ -209,12 +218,12 @@ const GlobalMenu = styled.ul`
 `;
 
 const PageNavSmall = styled.nav`
-  overflow: hidden;
   position: fixed;
   top: 0;
   right: 0;
   width: 100%;
   height: 100%;
+  z-index: 100;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
@@ -222,6 +231,7 @@ const PageNavSmall = styled.nav`
   transition: all 0.16s ease 0s;
   opacity: 0;
   visibility: hidden;
+  transform: translate3d(0,0,0);
 
   ${({ revealed }) => revealed &&
     css`
@@ -295,7 +305,7 @@ class PageHeader extends React.Component {
   }
 
   render () {
-    const { spotlightList, useSmallPanel } = this.props;
+    const { spotlightList, isMediumDown } = this.props;
 
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
@@ -304,17 +314,19 @@ class PageHeader extends React.Component {
         <PageHeadInner>
           <PageHeadline>
             <PageTitle>
-              <Link to='/' title='Go to welcome page'>
+              <PageTitlePrimeLink to='/' title='View the welcome page'>
                 <sup>
                   <span>NASA - </span>Earthdata
                 </sup>
                 <strong>{appTitle}</strong>
-                <sub title={appVersion}>beta</sub>
-              </Link>
+              </PageTitlePrimeLink>
+              <PageTitleSecLink to='/development' title={appVersion}>
+                Beta
+              </PageTitleSecLink>
             </PageTitle>
           </PageHeadline>
 
-          {useSmallPanel ? (
+          {isMediumDown ? (
             <>
               <Share />
               <Button
@@ -603,7 +615,7 @@ class PageHeader extends React.Component {
 
 PageHeader.propTypes = {
   spotlightList: T.object,
-  useSmallPanel: T.bool
+  isMediumDown: T.bool
 };
 
 function mapStateToProps (state, props) {

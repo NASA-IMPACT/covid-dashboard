@@ -156,6 +156,10 @@ const baseStyles = css`
   #app-container {
     position: relative;
     overflow: hidden;
+    
+    > .page {
+      min-height: ${({ innerHeight }) => `${innerHeight}px`};
+    }
   }
 `;
 
