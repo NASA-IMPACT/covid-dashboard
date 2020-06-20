@@ -41,7 +41,13 @@ export default class Development extends React.Component {
             <PageConstrainer>
               <Prose>
                 <p>
-                  Content goes here.
+                  NASA started the development of the Dashboard in May 2020. This experimental site reflects a rapid response to COVID-19 currently underway and will continue to evolve as more data become available.
+                </p>
+                <p>
+                  We welcome your feedback to help improve the Dashboard.
+                </p>
+                <p>
+                  Link to Github.
                 </p>
               </Prose>
             </PageConstrainer>
