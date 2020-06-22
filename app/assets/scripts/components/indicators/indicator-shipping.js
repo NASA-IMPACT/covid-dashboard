@@ -10,19 +10,10 @@ import media from '../../styles/utils/media-queries';
 
 import Heading from '../../styles/type/heading';
 import config from '../../config';
-import { glsp } from '../../styles/utils/theme-values';
 import { indicatorGroupColors } from '../../styles/theme/theme';
 import { IntroLead } from '../../styles/datasets';
 
 const { baseUrl } = config;
-
-const LeadFold = styled(Fold)`
-  padding-bottom: 0;
-
-  ${media.largeUp`
-    padding-bottom: ${glsp(3)};
-  `}
-`;
 
 const IntroFold = styled(Fold)`
   padding-bottom: 0;
@@ -230,7 +221,7 @@ class WQLongForm extends React.Component {
                   CSDAP
                 </a>
                 ), which acquires data from commercial sources that support
-                NASA's Earth science research goals. The PlanetScope image
+                NASA&apos;s Earth science research goals. The PlanetScope image
                 resolution is 3 meters per pixel, which allows researchers to
                 get a detailed look at changes occurring on the ground.
                 Commercial small satellites also provide high temporal
