@@ -42,9 +42,13 @@ export default {
     min: '408',
     max: '419',
     stops: [
-      '#FF0000',
-      '#FFFF00',
-      '#0000FF'
+      '#5D4FA2',
+      '#2F75BE',
+      '#6DC7A3',
+      '#D7ED96',
+      '#FFEA9B',
+      '#FA894C',
+      '#B11E4D'
     ]
   },
   info: null
