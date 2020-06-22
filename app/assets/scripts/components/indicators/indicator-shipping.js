@@ -200,7 +200,7 @@ const metadata = {
   color: indicatorGroupColors.economic.color
 };
 
-class WQLongForm extends React.Component {
+class ShippingLongForm extends React.Component {
   render () {
     return (
       <React.Fragment>
@@ -362,9 +362,9 @@ class WQLongForm extends React.Component {
   }
 }
 
-WQLongForm.propTypes = {};
+ShippingLongForm.propTypes = {};
 
 export default {
   ...metadata,
-  LongForm: WQLongForm
+  LongForm: ShippingLongForm
 };
