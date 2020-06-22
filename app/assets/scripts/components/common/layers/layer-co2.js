@@ -39,7 +39,7 @@ export default {
   swatch: indicatorGroupColors['greenhouse-gas'],
   legend: {
     type: 'gradient-adjustable',
-    min: '408',
+    min: '< 408 ppm',
     max: '419',
     stops: [
       '#5D4FA2',
