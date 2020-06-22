@@ -40,7 +40,7 @@ export default {
   legend: {
     type: 'gradient-adjustable',
     min: '< 408 ppm',
-    max: '419',
+    max: '> 419 ppm',
     stops: [
       '#5D4FA2',
       '#2F75BE',
