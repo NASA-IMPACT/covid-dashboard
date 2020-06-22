@@ -43,20 +43,40 @@ class SpotlightAreasHub extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Explore</InpageTitle>
+                <InpageTitle>Understanding Spotlight Areas</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
             <PageConstrainer>
               <HubFold>
-                <InpageHGroup
-                  title='Explore the areas'
-                  dashColor={metadata.color}
-                />
                 <Prose>
-                  <p>The global trajectory of the virus and different levels of response to its spread have led to regional variations in environmental and economic indicators.</p>
-                  <p>This dashboard highlights 6 key Spotlight Areas around the world, allowing you to explore how specific locations’ response to COVID-19 have influenced local environmental signals.</p>
+                  <p>
+                    The global trajectory of the coronavirus and different
+                    levels of response to its spread have led to regional
+                    changes to air and water quality, night lights, and other
+                    economic indicators.
+                  </p>
+                  <p>
+                    This dashboard highlights seven spotlight areas around the
+                    world, allowing you to explore how a specific location&apos;s
+                    response to COVID-19 outbreaks has influenced local
+                    environmental signals.
+                  </p>
+                  <p>
+                    The seven spotlight areas were chosen based on their large
+                    populations and high level of economic activity, which
+                    reveal significant changes in response to coronavirus
+                    lockdown measures. For instance, larger urban areas where
+                    more people live and work see more significant fluctuations
+                    in NO2, while locations with active ports reveal changes in
+                    water quality. This unique vantage point from space allows
+                    researchers to track global and regional changes on our
+                    planet, particularly during times of stress and crisis.
+                  </p>
+                  <p>
+                    Click below to visit a spotlight area.
+                  </p>
                 </Prose>
               </HubFold>
               <HubFold>

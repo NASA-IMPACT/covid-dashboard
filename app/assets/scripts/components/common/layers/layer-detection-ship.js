@@ -3,8 +3,7 @@ import { indicatorGroupColors } from '../../../styles/theme/theme';
 
 export default {
   id: 'detection-ship',
-  name: 'Ship Detections',
-  description: 'Ship detections by machine learning',
+  name: 'Shipping',
   type: 'inference-timeseries',
   domain: [
     '2020-03-11'

@@ -7,7 +7,6 @@ import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 export default {
   id: 'no2',
   name: 'Nitrogen dioxide',
-  description: 'Acute harm due to NO<sub>2</sub> exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.',
   type: 'raster-timeseries',
   domain: [
     '2019-03-01',
@@ -40,5 +39,5 @@ export default {
       '#050308'
     ]
   },
-  info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated with higher levels of travel and economic activity. Lighter colors indicate lower levels of NO₂ and less activity.'
+  info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.'
 };
