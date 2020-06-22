@@ -291,12 +291,6 @@ const StoryCopy = styled.div`
   grid-gap: ${glsp()} 0;
 `;
 
-const StoryTitle = styled.h1`
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  margin: 0;
-`;
-
 const StoryProse = styled(Prose)`
   display: grid;
   grid-gap: ${glsp()} 0;
