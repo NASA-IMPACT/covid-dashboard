@@ -10,8 +10,20 @@ import Heading from '../../styles/type/heading';
 import MediaImage, { MediaCompare } from '../../styles/media-image';
 import media from '../../styles/utils/media-queries';
 import config from '../../config';
+import { glsp } from '../../styles/utils/theme-values';
+
+import {
+  IntroLead
+} from '../../styles/datasets';
 
 const { baseUrl } = config;
+const LeadFold = styled(Fold)`
+  padding-bottom: 0;
+
+  ${media.largeUp`
+    padding-bottom: ${glsp(3)};
+  `}
+`;
 
 const IntroFold = styled(Fold)`
   padding-bottom: 0;
@@ -165,12 +177,18 @@ class BMLongForm extends React.Component {
   render () {
     return (
       <React.Fragment>
+        <LeadFold>
+          <Gridder>
+            <IntroLead>
+                During the COVID-19 pandemic, researchers are using night light observations to track variations in energy use, migration, and transportation in response to social distancing and lockdown measures.
+
+            </IntroLead>
+          </Gridder>
+        </LeadFold>
+
         <IntroFold>
           <Gridder>
             <Prose>
-              <p>
-                During the COVID-19 pandemic, researchers are using night light observations to track variations in energy use, migration, and transportation in response to social distancing and lockdown measures.
-              </p>
               <p>
                 Images of Earth at night give us an extraordinary view of human activity over time. The nighttime environment illuminates Earth features, including city infrastructure, lightning flashes, fishing boats navigating open water, gas flares, aurora, and natural hazards, such as lava flowing from an active volcano. Paired with the moonlight, researchers can also spot snow and ice, as well as other reflective surfaces that allow nighttime land and ocean analysis.
               </p>
@@ -191,7 +209,7 @@ class BMLongForm extends React.Component {
               />
               <Prose>
                 <p>
-                  Nightlights data are collected by the <a href='https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/viirs/' target='_blank' rel='noopener noreferrer' > Visible Infrared Radiometer Suite (VIIRS) Day/Night Band (DNB)</a> on the Suomi-National Polar-Orbiting Partnership (Suomi-NPP) platform, a joint National Oceanic and Atmospheric Administration (NOAA) and NASA satellite. The images are produced by <a href='https://blackmarble.gsfc.nasa.gov/' target='_blank' rel='noopener noreferrer'>NASA’s Black Marble</a> products suite. All data are calibrated daily, corrected, and validated with ground measurements for science-ready analysis.
+                  Nightlights data are collected by the <a href='https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/viirs/' target='_blank' rel='noopener noreferrer'> Visible Infrared Radiometer Suite (VIIRS) Day/Night Band (DNB)</a> on the Suomi-National Polar-Orbiting Partnership (Suomi-NPP) platform, a joint National Oceanic and Atmospheric Administration (NOAA) and NASA satellite. The images are produced by <a href='https://blackmarble.gsfc.nasa.gov/' target='_blank' rel='noopener noreferrer'>NASA’s Black Marble</a> products suite. All data are calibrated daily, corrected, and validated with ground measurements for science-ready analysis.
                 </p>
                 <p>
                   <a href='https://science.nasa.gov/earth-science/rrnes-awards'>New research</a> funded by NASA’s Rapid Response and Novel Research in the Earth Sciences (RRNES) program seeks to discover what nightlights can tell us about the impacts of novel coronavirus-related shutdowns.
