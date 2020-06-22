@@ -56,7 +56,10 @@ export default class MBPopoverInner extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (prevProps.lngLat !== this.props.lngLat) {
+    if (
+      prevProps.lngLat !== this.props.lngLat ||
+      prevProps.content !== this.props.content
+    ) {
       this.preventNextClick = true;
       setTimeout(() => {
         this.preventNextClick = false;
