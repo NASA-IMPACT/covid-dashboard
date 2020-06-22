@@ -275,7 +275,7 @@ const Story = styled.article`
   display: flex;
 `;
 
-const StoryContent = styled.a`
+const StoryContent = styled(Link)`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -537,7 +537,7 @@ class Home extends React.Component {
                     </IntroStoriesToolbar>
                   </IntroStoriesHeader>
                   <Story>
-                    <StoryContent title='Explore the data' href={currentStory.link}>
+                    <StoryContent title='Explore the data' to={currentStory.link}>
                       <StoryCopy>
                         <StoryTitle>{currentStory.title}</StoryTitle>
                         <StoryProse>
