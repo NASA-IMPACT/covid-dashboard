@@ -6,8 +6,7 @@ import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 
 export default {
   id: 'co2',
-  name: 'CO₂ Mean',
-  description: '',
+  name: 'Carbon Dioxide - avg',
   type: 'raster-timeseries',
   timeUnit: 'day',
   domain: [
@@ -46,5 +45,5 @@ export default {
       '#FF0000'
     ]
   },
-  info: null
+  info: 'This layer shows the average background concentration of carbon dioxide (CO₂) in our atmosphere for 2020. Redder colors indicate more CO₂. Whiter colors indicate less CO₂.'
 };
