@@ -28,8 +28,6 @@ const IntroFold = styled(Fold)`
     align-items: center;
   }
 
-
-
   ${FoldDetails} {
     grid-column: content-start / content-end;
 
@@ -40,11 +38,12 @@ const IntroFold = styled(Fold)`
     ${media.largeUp`
       grid-column: content-start / content-10;
     `}
-
   }
 `;
 
 const ResearchFold = styled(Fold)`
+  padding-bottom: 0;
+
   ${Gridder} {
     align-items: center;
   }
@@ -52,16 +51,22 @@ const ResearchFold = styled(Fold)`
   /* stylelint-disable-next-line */
   ${InpageHGroup} {
     grid-row: 1;
-    grid-column: content-start / content-7;
+    grid-column: content-start / content-end;
+
+    ${media.largeUp`
+      grid-column: content-start / content-7;
+    `}
   }
 
   ${Prose} {
     grid-column: content-start / content-end;
-    grid-row: 2;
-    margin-bottom: ${glsp(2)};
 
-    ${media.smallDown`
-      column-count: 1;
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-start / content-10;
     `}
   }
 `;
@@ -73,8 +78,6 @@ const InterpretDataFold = styled(Fold)`
     align-items: center;
   }
 
- 
-
   ${FoldDetails} {
     grid-column: content-start / content-end;
 
@@ -85,7 +88,6 @@ const InterpretDataFold = styled(Fold)`
     ${media.largeUp`
       grid-column: content-start / content-10;
     `}
-
   }
 `;
 
