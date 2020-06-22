@@ -130,36 +130,6 @@ const InterpretDataFold = styled(Fold)`
   }
 `;
 
-const CreditsFold = styled(Fold)`
-  padding-bottom: 0;
-
-  ${Gridder} {
-    align-items: center;
-  }
-
-  /* stylelint-disable-next-line */
-  ${InpageHGroup} {
-    grid-row: 1;
-    grid-column: content-start / content-end;
-
-    ${media.largeUp`
-      grid-column: content-start / content-7;
-    `}
-  }
-
-  ${Prose} {
-    grid-column: content-start / content-end;
-
-    ${media.mediumUp`
-      grid-column: content-start / content-8;
-    `}
-
-    ${media.largeUp`
-      grid-column: content-start / content-10;
-    `}
-  }
-`;
-
 const FactsFold = styled(Fold)`
   ${Gridder} {
     align-items: center;
