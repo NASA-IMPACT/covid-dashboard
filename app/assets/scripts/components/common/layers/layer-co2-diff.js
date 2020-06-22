@@ -4,8 +4,7 @@ import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 
 export default {
   id: 'co2-diff',
-  name: 'CO₂ Diff',
-  description: '',
+  name: 'Carbon Dioxide - change',
   type: 'raster-timeseries',
   timeUnit: 'day',
   domain: [
@@ -33,5 +32,5 @@ export default {
       '#DD7059'
     ]
   },
-  info: null
+  info: 'This layer shows changes in carbon dioxide (CO₂) levels during coronavirus lockdowns versus previous years. Redder colors indicate increases in CO₂. Bluer colors indicate lower levels of CO₂.'
 };
