@@ -44,7 +44,7 @@ import media from '../../styles/utils/media-queries';
 import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
 import { mod } from '../../utils/utils';
-import config from '../../config'
+import config from '../../config';
 
 const CYCLE_TIME = 8000;
 
