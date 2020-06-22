@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Prose from '../../styles/type/prose';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
-import { Fold } from '../../styles/fold';
+import { Fold, FoldDetails } from '../../styles/fold';
 import MediaImage from '../../styles/media-image';
 import media from '../../styles/utils/media-queries';
 
@@ -12,21 +12,55 @@ import Heading from '../../styles/type/heading';
 import config from '../../config';
 import { indicatorGroupColors } from '../../styles/theme/theme';
 import { IntroLead } from '../../styles/datasets';
+import { glsp } from '../../styles/utils/theme-values';
 
 const { baseUrl } = config;
+
+const LeadFold = styled(Fold)`
+  padding-bottom: 0;
+
+  ${media.largeUp`
+    padding-bottom: ${glsp(3)};
+  `}
+`;
 
 const IntroFold = styled(Fold)`
   padding-bottom: 0;
 
-  ${Prose} {
+  ${Gridder} {
+    align-items: center;
+  }
+
+  ${MediaImage} {
+    grid-column: full-start / full-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-end;
+    `}
+
+    ${media.largeUp`
+      grid-column: full-start / content-8;
+      grid-row: 1;
+    `}
+
+    figcaption {
+      padding: 0 ${glsp()};
+      max-width: 30rem;
+      text-align: center;
+      margin: 0 auto;
+    }
+  }
+
+  ${FoldDetails} {
     grid-column: content-start / content-end;
+    text-align: left;
 
     ${media.mediumUp`
       grid-column: content-start / content-8;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-8 / content-end;
     `}
   }
 `;
@@ -64,15 +98,40 @@ const ApproachFold = styled(Fold)`
 const InterpretingDataFold = styled(Fold)`
   padding-bottom: 0;
 
-  ${Prose} {
+  ${Gridder} {
+    align-items: center;
+  }
+
+  ${MediaImage} {
     grid-column: content-start / content-end;
+
+    ${media.mediumUp`
+      grid-column: content-2 / content-7;
+    `}
+
+    ${media.largeUp`
+      grid-row: 1;
+      grid-column: content-start / content-8;
+    `}
+
+    figcaption {
+      padding: 0 ${glsp()};
+      max-width: 30rem;
+      text-align: center;
+      margin: 0 auto;
+    }
+  }
+
+  ${FoldDetails} {
+    grid-column: content-start / content-end;
+    text-align: left;
 
     ${media.mediumUp`
       grid-column: content-start / content-8;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-8 / content-end;
     `}
   }
 `;
@@ -145,45 +204,53 @@ class WQLongForm extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <IntroFold>
+        <LeadFold>
           <Gridder>
             <IntroLead>
-              Since the onset of COVID-19, atmospheric concentrations of
-              nitrogen dioxide have changed by as much as 60% in some regions.
+              Travel restrictions and lockdown measures have disrupted the
+              shipping industry and the global economy broadly. NASA researchers
+              are using artificial intelligence to track shipping activities
+              across major ports in the U.S.
             </IntroLead>
-            <Prose>
-              <p>
-                Supply chains around the world dependent on cargo shipping have
-                been interrupted by travel restrictions and quarantines designed
-                to stop the spread of the novel coronavirus. Many ports are
-                closed, shipments have been canceled, and, in some locations,
-                altered shipping routes have prevented the efficient movement of
-                cargo.
-              </p>
-              <p>
-                NASA researchers are using cutting-edge artificial intelligence
-                technology and high-resolution satellite imagery from Planet
-                Labs to track shipping activity at major U.S. ports during the
-                novel coronavirus pandemic. This data will help quantify the
-                level of shipping-related economic activity over time and could
-                eventually contribute to our understanding of the environmental
-                implications of global decreases in shipping on key air
-                pollutants like nitrogen dioxide (NO<sub>2</sub>) and sulphur
-                dioxide (SO<sub>2</sub>).
-              </p>
+          </Gridder>
+        </LeadFold>
 
-              <MediaImage
-                src={`${baseUrl}/assets/graphics/content/la-port.png`}
-                alt='Wuhan Before and After'
-              >
-                <figcaption>
-                  Los Angeles has the busiest port in the United States, which
-                  this year saw a 19% reduction in shipping cargo volumes
-                  compared to 2019, according to the Port of Los Angeles. Image
-                  Credit: Planet Labs/NASA.
-                </figcaption>
-              </MediaImage>
-            </Prose>
+        <IntroFold>
+          <Gridder>
+            <FoldDetails>
+              <Prose>
+                <p>
+                  Supply chains around the world dependent on cargo shipping
+                  have been interrupted by travel restrictions and quarantines
+                  designed to stop the spread of the novel coronavirus. Many
+                  ports are closed, shipments have been canceled, and, in some
+                  locations, altered shipping routes have prevented the
+                  efficient movement of cargo.
+                </p>
+                <p>
+                  NASA researchers are using cutting-edge artificial
+                  intelligence technology and high-resolution satellite imagery
+                  from Planet Labs to track shipping activity at major U.S.
+                  ports during the novel coronavirus pandemic. This data will
+                  help quantify the level of shipping-related economic activity
+                  over time and could eventually contribute to our understanding
+                  of the environmental implications of global decreases in
+                  shipping on key air pollutants like nitrogen dioxide (NO
+                  <sub>2</sub>) and sulphur dioxide (SO<sub>2</sub>).
+                </p>
+              </Prose>
+            </FoldDetails>
+            <MediaImage
+              src={`${baseUrl}/assets/graphics/content/la-port.png`}
+              alt='Wuhan Before and After'
+            >
+              <figcaption>
+                Los Angeles has the busiest port in the United States, which
+                this year saw a 19% reduction in shipping cargo volumes compared
+                to 2019, according to the Port of Los Angeles. Image Credit:
+                Planet Labs/NASA.
+              </figcaption>
+            </MediaImage>
           </Gridder>
         </IntroFold>
         <ApproachFold>
@@ -208,54 +275,60 @@ class WQLongForm extends React.Component {
         </ApproachFold>
         <InterpretingDataFold>
           <Gridder>
-            <Prose>
-              <p>
-                NASA researchers have access to the high-resolution imagery from
-                Planet Labs, through the Commercial SmallSat Data Acquisition
-                Program (
-                <a
-                  href='https://earthdata.nasa.gov/esds/small-satellite-data-buy-program'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  CSDAP
-                </a>
-                ), which acquires data from commercial sources that support
-                NASA&apos;s Earth science research goals. The PlanetScope image
-                resolution is 3 meters per pixel, which allows researchers to
-                get a detailed look at changes occurring on the ground.
-                Commercial small satellites also provide high temporal
-                resolution, making images available almost every day (depending
-                on cloud cover) for key areas of interest.
-              </p>
-              <p>
-                Ship detections will be provided daily, except when prevented by
-                significant cloud cover. After the machine learning model
-                detects the ships, a secondary human validation is also
-                performed before the detections are made available for the
-                dashboard.
-              </p>
-
-              <MediaImage
-                src={`${baseUrl}/assets/graphics/content/Pixabay_ship-4490857_1280.jpg`}
-                alt='Container Ship'
-              >
-                <figcaption>
-                Supply chains around the world dependent on cargo shipping have been interrupted by travel restrictions and quarantines designed to stop the spread of the novel coronavirus. Image Credit: Open Source.
-                </figcaption>
-              </MediaImage>
-            </Prose>
+            <FoldDetails>
+              <InpageHGroup
+                title='Interpreting Data'
+                dashColor={metadata.color}
+              />
+              <Prose>
+                <p>
+                  NASA researchers have access to the high-resolution imagery
+                  from Planet Labs, through the Commercial SmallSat Data
+                  Acquisition Program (
+                  <a
+                    href='https://earthdata.nasa.gov/esds/small-satellite-data-buy-program'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    CSDAP
+                  </a>
+                  ), which acquires data from commercial sources that support
+                  NASA&apos;s Earth science research goals. The PlanetScope
+                  image resolution is 3 meters per pixel, which allows
+                  researchers to get a detailed look at changes occurring on the
+                  ground. Commercial small satellites also provide high temporal
+                  resolution, making images available almost every day
+                  (depending on cloud cover) for key areas of interest.
+                </p>
+                <p>
+                  Ship detections will be provided daily, except when prevented
+                  by significant cloud cover. After the machine learning model
+                  detects the ships, a secondary human validation is also
+                  performed before the detections are made available for the
+                  dashboard.
+                </p>
+              </Prose>
+            </FoldDetails>
+            <MediaImage
+              src={`${baseUrl}/assets/graphics/content/Pixabay_ship-4490857_1280.jpg`}
+              alt='Container Ship'
+            >
+              <figcaption>
+                Supply chains around the world dependent on cargo shipping have
+                been interrupted by travel restrictions and quarantines designed
+                to stop the spread of the novel coronavirus. Image Credit: Open
+                Source.
+              </figcaption>
+            </MediaImage>
           </Gridder>
         </InterpretingDataFold>
         <CreditsFold>
           <Gridder>
-            <InpageHGroup
-              title='Credits'
-              dashColor={metadata.color}
-            />
+            <InpageHGroup title='Credits' dashColor={metadata.color} />
             <Prose>
               <p>
-                The CSDAP and IMPACT are elements of NASA’s Earth Science Data Systems program.
+                The CSDAP and IMPACT are elements of NASA’s Earth Science Data
+                Systems program.
               </p>
             </Prose>
           </Gridder>
@@ -284,7 +357,6 @@ class WQLongForm extends React.Component {
             </Prose>
           </Gridder>
         </AdditionalResourcesFold>
-
       </React.Fragment>
     );
   }
