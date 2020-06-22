@@ -539,7 +539,6 @@ class Home extends React.Component {
                   <Story>
                     <StoryContent title='Explore the data' href={currentStory.link}>
                       <StoryCopy>
-                        <StoryTitle>{currentStory.title}</StoryTitle>
                         <StoryProse>
                           <p>{currentStory.prose}</p>
                         </StoryProse>
