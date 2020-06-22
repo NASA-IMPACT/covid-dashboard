@@ -44,7 +44,6 @@ import media from '../../styles/utils/media-queries';
 import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
 import { mod } from '../../utils/utils';
-import config from '../../config';
 
 const CYCLE_TIME = 8000;
 
@@ -276,7 +275,7 @@ const Story = styled.article`
   display: flex;
 `;
 
-const StoryContent = styled.a`
+const StoryContent = styled(Link)`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -538,7 +537,7 @@ class Home extends React.Component {
                     </IntroStoriesToolbar>
                   </IntroStoriesHeader>
                   <Story>
-                    <StoryContent title='Explore the data' href={`${config.baseUrl}${currentStory.link}`}>
+                    <StoryContent title='Explore the data' to={currentStory.link}>
                       <StoryCopy>
                         <StoryTitle>{currentStory.title}</StoryTitle>
                         <StoryProse>
