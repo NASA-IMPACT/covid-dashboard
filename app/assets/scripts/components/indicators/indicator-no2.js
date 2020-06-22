@@ -201,7 +201,7 @@ class NO2LongForm extends React.Component {
         <LeadFold>
           <Gridder>
             <IntroLead>
-              Since the onset of COVID-19, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in some regions.
+              Since the outbreak of the novel coronavirus, atmospheric concentrations of nitrogen dioxide have changed by as much as 60% in some regions.
             </IntroLead>
           </Gridder>
         </LeadFold>
@@ -211,24 +211,18 @@ class NO2LongForm extends React.Component {
             <FoldDetails>
               <Prose>
                 <p>
-                  NO<sub>2</sub> is a common air pollutant primarily emitted from the burning of fossil fuels in cars,
-                  power plants and industrial facilities. Lower to the ground, NO<sub>2</sub> can directly irritate peoples&apos;
-                  lungs and contributes to the production of particulate pollution and smog when it reacts with sunlight.
+                  Nitrogen dioxide (NO<sub>2</sub>) is a common air pollutant primarily emitted from the burning of fossil fuels in cars and power plants. Lower to the ground, nitrogen dioxide can directly irritate the lungs and contributes to the production of particulate pollution and smog when it reacts with sunlight.
                 </p>
                 <p>
-                  During the COVID-19 pandemic, scientists observed considerable decreases in NO<sub>2</sub> levels
-                  around the world. These decreases are predominantly associated with changing human behavior in
-                  response to the spread of COVID-19. As communities worldwide have implemented lockdown restrictions
-                  in an attempt to stem the spread of the virus, the reduction in human transportation activity has
-                  resulted in less NO<sub>2</sub> emitted into the atmosphere.
+                  During the COVID-19 pandemic, scientists have observed considerable decreases in nitrogen dioxide levels around the world. These decreases are predominantly associated with changing human behavior in response to the spread of COVID-19. As communities worldwide have implemented lockdown restrictions in an attempt to stem the spread of the virus, the reduction in human transportation activity has resulted in less NO2 being emitted into the atmosphere.
                 </p>
                 <p>
-                  These changes are particularly apparent over large urban areas and economic corridors, which
-                  typically have high levels of automobile traffic, airline flights, and other related activity.
+                  These changes are particularly apparent over large urban areas and economic corridors, which typically have high levels of automobile traffic, airline flights, and other related activity.
                 </p>
                 <p>
-                  NASA has been able to observe subsequent rebounds in nitrogen dioxide as the lockdown restrictions ease.
+                  NASA has observed subsequent rebounds in nitrogen dioxide levels as the lockdown restrictions ease.
                 </p>
+
               </Prose>
             </FoldDetails>
             <MediaCompare>
@@ -241,7 +235,7 @@ class NO2LongForm extends React.Component {
                 rightImageLabel='March 2020'
               />
               <figcaption>
-                NO<sub>2</sub> levels fell by as much as 30% over much of the Northeast U.S. Credit: NASA Scientific Visualization Studio
+                NO<sub>2</sub> levels fell by as much as 30% over much of the Northeast U.S. Image Credit: NASA Scientific Visualization Studio
               </figcaption>
             </MediaCompare>
           </Gridder>
@@ -264,22 +258,18 @@ class NO2LongForm extends React.Component {
               </p>
               <p>
                 For nitrogen dioxide levels related to COVID-19, NASA uses data collected
-                by the joint NASA/Royal Netherlands Meteorological Institute (KNMI) <a href='https://aura.gsfc.nasa.gov/omi.html'>Ozone Monitoring Instrument (OMI)</a> aboard
+                by the joint NASA-Royal Netherlands Meteorological Institute (KNMI) <a href='https://aura.gsfc.nasa.gov/omi.html'>Ozone Monitoring Instrument (OMI)</a> aboard
                 the Aura satellite, as well as data collected by the Tropospheric
                 Monitoring Instrument (TROPOMI) aboard the European Commission’s Copernicus
                 Sentinel-5P satellite, built by the European Space&nbsp;Agency.
               </p>
               <p>
-                OMI, which launched in 2004, is the predecessor to TROPOMI. Although TROPOMI,
-                which launched in 2017, provides higher resolution information, the longer
-                OMI data record provides good context for the current TROPOMI observations.
+                OMI, which launched in 2004, preceded TROPOMI, which launched in 2017. While TROPOMI provides higher resolution information, the longer OMI data record provides context for the TROPOMI observations.
               </p>
               <p>
-                Scientists will be using these data to investigate how travel bans and lockdown
-                orders related to COVID-19 are impacting regional air quality and chemistry, as
-                well as why these restrictions may be having inconsistent effects on air quality
-                around the world.
+                Scientists will use these data to investigate how travel bans and lockdown orders related to the novel coronavirus are impacting regional air quality and chemistry, as well as why these restrictions may be having inconsistent effects on air quality around the world.
               </p>
+
             </Prose>
           </Gridder>
         </ResearchFold>
@@ -293,29 +283,15 @@ class NO2LongForm extends React.Component {
               />
               <Prose>
                 <p>
-                  Each spotlight city has a slider for turning nitrogen dioxide data on and off. The darker purple
-                  indicates higher levels of nitrogen dioxide associated with increased travel and economic activity,
-                  while the lighter blues indicate lower levels of NO<sub>2</sub> and decreased activity.
+                  Nitrogen dioxide has a relatively short lifetime in the atmosphere. Once it is emitted, it lasts only a few hours before it dissipates, so it does not travel far from its source.
                 </p>
+
                 <p>
-                  Nitrogen dioxide has a relatively short lifetime in the atmosphere. Once it is emitted, it lasts
-                  only a few hours before it dissipates, so it does not travel far from its source.
+                  Because nitrogen dioxide is primarily emitted from burning fossil fuels, changes in its atmospheric concentration can be related to changes in human activity, if the data are properly processed and interpreted.
                 </p>
+
                 <p>
-                  Because nitrogen dioxide is primarily emitted from burning fossil fuels, changes in its
-                  atmospheric concentration can be related to changes in human activity if the data are properly
-                  processed and interpreted.
-                </p>
-                <p>
-                  However, care must be taken when interpreting satellite NO 2 data, as the quantity observed by
-                  satellite is not exactly the same as the abundance at ground level, and natural variations in
-                  weather (e.g., temperature, wind speed, solar intensity) influence the amount of NO 2 in the
-                  atmosphere. In addition, the OMI and TROPOMI instruments cannot observe the NO 2
-                  abundance underneath clouds. For more information on processing and cautions related to
-                  interpreting this data, please <a href='https://airquality.gsfc.nasa.gov/caution-interpretation'>click here</a>.
-                </p>
-                <p>
-                  Scientists will be using this data to investigate how travel bans and lockdown orders related to COVID-19 are impacting regional air quality and chemistry.
+                  Interpreting satellite NO2 data must be done carefully, as the quantity observed by satellite is not exactly the same as the abundance at ground level, and natural variations in weather (e.g., temperature, wind speed, solar intensity) influence the amount of NO2 in the atmosphere.  In addition, the OMI and TROPOMI instruments cannot observe the NO2 abundance underneath clouds. For more information on processing and cautions related to interpreting this data, please click <a href='https://airquality.gsfc.nasa.gov/caution-interpretation'>here</a>.
                 </p>
               </Prose>
             </FoldDetails>
@@ -323,24 +299,10 @@ class NO2LongForm extends React.Component {
               src={`${baseUrl}/assets/graphics/content/no2_south_america.png`}
               alt='NO2 over South America'
             >
-              NO<sub>2</sub> levels over South America from the Ozone Monitoring Instrument. The dark green areas in the northwest indicate areas of no data, most likely associated with cloud cover or snow.
+              NO<sub>2</sub> levels over South America from the Ozone Monitoring Instrument. The dark green areas in the northwest indicate areas of no data, most likely associated with cloud cover or snow. Image Credit: NASA
             </MediaImage>
           </Gridder>
         </InterpretDataFold>
-
-        <CreditsFold>
-          <Gridder>
-            <InpageHGroup
-              title='Credits'
-              dashColor={metadata.color}
-            />
-            <Prose>
-              <p>
-                Nitrogen dioxide data courtesy of NASA Goddard Space Flight Center&apos;s <a href='https://science.gsfc.nasa.gov/earth/acd/'>Atmospheric Chemistry and Dynamics Laboratory</a> using OMI data from the Aura&nbsp;satellite.
-              </p>
-            </Prose>
-          </Gridder>
-        </CreditsFold>
 
         <FactsFold>
           <Gridder>
