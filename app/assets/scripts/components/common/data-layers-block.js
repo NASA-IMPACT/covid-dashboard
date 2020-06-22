@@ -24,7 +24,7 @@ class DataLayersBlock extends React.Component {
     return (
       <PanelBlockLayer>
         <PanelBlockHeader>
-          <PanelBlockTitle>Data</PanelBlockTitle>
+          <PanelBlockTitle>Indicators</PanelBlockTitle>
         </PanelBlockHeader>
         <PanelBlockBody>
           <PanelBlockScroll>
