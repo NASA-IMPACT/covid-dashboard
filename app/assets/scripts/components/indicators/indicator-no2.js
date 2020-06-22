@@ -214,7 +214,7 @@ class NO2LongForm extends React.Component {
                   Nitrogen dioxide (NO<sub>2</sub>) is a common air pollutant primarily emitted from the burning of fossil fuels in cars and power plants. Lower to the ground, nitrogen dioxide can directly irritate the lungs and contributes to the production of particulate pollution and smog when it reacts with sunlight.
                 </p>
                 <p>
-                  During the COVID-19 pandemic, scientists have observed considerable decreases in nitrogen dioxide levels around the world. These decreases are predominantly associated with changing human behavior in response to the spread of COVID-19. As communities worldwide have implemented lockdown restrictions in an attempt to stem the spread of the virus, the reduction in human transportation activity has resulted in less NO2 being emitted into the atmosphere.
+                  During the COVID-19 pandemic, scientists have observed considerable decreases in nitrogen dioxide levels around the world. These decreases are predominantly associated with changing human behavior in response to the spread of COVID-19. As communities worldwide have implemented lockdown restrictions in an attempt to stem the spread of the virus, the reduction in human transportation activity has resulted in less NO<sub>2</sub> being emitted into the atmosphere.
                 </p>
                 <p>
                   These changes are particularly apparent over large urban areas and economic corridors, which typically have high levels of automobile traffic, airline flights, and other related activity.
@@ -291,7 +291,7 @@ class NO2LongForm extends React.Component {
                 </p>
 
                 <p>
-                  Interpreting satellite NO2 data must be done carefully, as the quantity observed by satellite is not exactly the same as the abundance at ground level, and natural variations in weather (e.g., temperature, wind speed, solar intensity) influence the amount of NO2 in the atmosphere.  In addition, the OMI and TROPOMI instruments cannot observe the NO2 abundance underneath clouds. For more information on processing and cautions related to interpreting this data, please click <a href='https://airquality.gsfc.nasa.gov/caution-interpretation'>here</a>.
+                  Interpreting satellite NO<sub>2</sub> data must be done carefully, as the quantity observed by satellite is not exactly the same as the abundance at ground level, and natural variations in weather (e.g., temperature, wind speed, solar intensity) influence the amount of NO<sub>2</sub> in the atmosphere.  In addition, the OMI and TROPOMI instruments cannot observe the NO<sub>2</sub> abundance underneath clouds. For more information on processing and cautions related to interpreting this data, please click <a href='https://airquality.gsfc.nasa.gov/caution-interpretation'>here</a>.
                 </p>
               </Prose>
             </FoldDetails>
