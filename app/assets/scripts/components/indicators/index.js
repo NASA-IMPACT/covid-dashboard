@@ -36,7 +36,6 @@
  */
 import no2 from './indicator-no2';
 import co2 from './indicator-co2';
-
 import bm from './indicator-nightlights';
 import population from './indicator-population';
 import waterQuality from './indicator-water-quality';
@@ -45,9 +44,8 @@ const indicators = [
   bm,
   no2,
   co2,
-  population
+  population,
   waterQuality
-
 ];
 
 export default indicators;
