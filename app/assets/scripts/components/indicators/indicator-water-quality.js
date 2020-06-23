@@ -202,7 +202,7 @@ class WQLongForm extends React.Component {
             </FoldDetails>
             <MediaImage
               src={`${baseUrl}/assets/graphics/content/water-quality-chlorophyll-a-sf.png`}
-              alt='Wuhan Before and After'
+              alt='Chlorophyll-a anomaly percentage'
             >
               Chlorophyll-a is an indicator of algae growth. During
               coronavirus-related shutdowns, changes in our activity may
