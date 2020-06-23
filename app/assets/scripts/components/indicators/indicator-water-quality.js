@@ -44,10 +44,15 @@ const IntroFold = styled(Fold)`
     `}
 
     figcaption {
-      padding: 0 ${glsp()};
-      max-width: 30rem;
-      text-align: center;
       margin: 0 auto;
+      padding: 0 ${glsp()};
+      max-width: 40rem;
+      text-align: center;
+
+      ${media.mediumUp`
+        /* Image has a white border which must be taken into account. */
+        margin-top: -${glsp()};
+      `}
     }
   }
 
@@ -199,16 +204,14 @@ class WQLongForm extends React.Component {
               src={`${baseUrl}/assets/graphics/content/water-quality-chlorophyll-a-sf.png`}
               alt='Wuhan Before and After'
             >
-              <figcaption>
-                Chlorophyll-a is an indicator of algae growth. During
-                coronavirus-related shutdowns, changes in our activity may
-                affect the amount of nutrients flowing in water bodies. This
-                image shows the changes in chlorophyll-a for the San Francisco
-                Bay Area on April 3, 2020. Redder colors indicate higher levels
-                of chlorophyll-a and worse water quality. Bluer colors indicate
-                lower levels of chlorophyll-a and improved water quality. Image
-                Credit: NASA.
-              </figcaption>
+              Chlorophyll-a is an indicator of algae growth. During
+              coronavirus-related shutdowns, changes in our activity may
+              affect the amount of nutrients flowing in water bodies. This
+              image shows the changes in chlorophyll-a for the San Francisco
+              Bay Area on April 3, 2020. Redder colors indicate higher levels
+              of chlorophyll-a and worse water quality. Bluer colors indicate
+              lower levels of chlorophyll-a and improved water quality. Image
+              Credit: NASA.
             </MediaImage>
           </Gridder>
         </IntroFold>
