@@ -1,25 +1,25 @@
 import React from 'react';
 import T from 'prop-types';
+import { Link, NavLink } from 'react-router-dom';
 import styled, { css, createGlobalStyle } from 'styled-components';
 import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
 import config from '../../config';
 
-import { Link, NavLink } from 'react-router-dom';
 import { visuallyHidden, unscrollableY } from '../../styles/helpers';
 import { themeVal, stylizeFunction } from '../../styles/utils/general';
 import { reveal } from '../../styles/animation';
 import { filterComponentProps } from '../../utils/utils';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
+import { surfaceElevatedD } from '../../styles/skins';
 import { wrapApiResult } from '../../redux/reduxeed';
 import { headingAlt } from '../../styles/type/heading';
+import indicatorsList from '../indicators';
 
 import Button from '../../styles/button/button';
-import Dropdown, { DropTitle, DropMenu, DropMenuItem } from './dropdown';
-import Share from './share';
-import indicatorsList from '../indicators';
+import { CopyField } from './copy-field';
 
 const { appTitle, appVersion, baseUrl } = config;
 
@@ -170,54 +170,7 @@ const PageTitleSecLink = styled(Link)`
   `}
 `;
 
-const PageNavLarge = styled.nav`
-  display: none;
-  margin: 0;
-  padding: 0;
-  order: 2;
-
-  ${media.largeUp`
-    display: flex;
-    flex-flow: row nowrap;
-  `}
-`;
-
-const GlobalMenu = styled.ul`
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  margin: 0;
-  list-style: none;
-
-  ${media.largeUp`
-    display: flex;
-    flex-flow: row nowrap;
-  `}
-
-  > * {
-    margin: 0 0 ${glsp(0.25)} 0;
-
-    ${media.largeUp`
-      margin: 0 ${glsp(0.5)} 0 0;
-    `}
-  }
-
-  > *:last-child {
-    margin: 0;
-  }
-
-  ${Button} {
-    width: 100%;
-    text-align: left;
-
-    ${media.largeUp`
-      width: auto;
-      text-align: center;
-    `}
-  }
-`;
-
-const PageNavSmall = styled.nav`
+const PageNav = styled.nav`
   position: fixed;
   top: 0;
   right: 0;
@@ -233,6 +186,15 @@ const PageNavSmall = styled.nav`
   visibility: hidden;
   transform: translate3d(0,0,0);
 
+  ${media.largeUp`
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    background: transparent;
+    width: auto;
+    height: auto;
+  `}
+
   ${({ revealed }) => revealed &&
     css`
       opacity: 1;
@@ -240,13 +202,7 @@ const PageNavSmall = styled.nav`
     `}
 `;
 
-const PageNavSmallGlobalStyle = createGlobalStyle`
-  body {
-    ${unscrollableY()}
-  }
-`;
-
-const PageNavSmallInner = styled.div`
+const PageNavInner = styled.div`
   display: flex;
   flex-flow: column nowrap;
   width: 18rem;
@@ -261,34 +217,197 @@ const PageNavSmallInner = styled.div`
     css`
       transform: translate(0, 0);
     `};
+  
+  ${media.largeUp`
+    flex-flow: row nowrap;
+    transform: none;
+    width: auto;
+    height: auto;
+  `}
 `;
 
-const PageNavSmallHeader = styled.header`
+const PageNavHeader = styled.header`
   display: flex;
   flex-flow: row nowrap;
   padding: ${glsp(0.5, 0.5, 0.5, 1)};
   align-items: center;
+
+  ${media.largeUp`
+    ${visuallyHidden()};
+  `}
 `;
 
-const PageNavSmallTitle = styled.h2`
-  font-size: 1rem;
+const PageNavTitle = styled.h2`
+  ${headingAlt}
+  font-size: 0.875rem;
   line-height: 2rem;
   margin: 0 auto 0 0;
+
+  ${media.largeUp`
+    ${visuallyHidden()};
+  `}
 `;
 
-const PageNavSmallInnerTitle = styled.h3`
-  ${headingAlt}
-`;
-
-const PageNavSmallBody = styled.div`
+const PageNavBody = styled.div`
   display: grid;
   grid-gap: ${glsp()};
   padding: ${glsp()};
   box-shadow: inset 0 1px 0 0 ${_rgba('#FFFFFF', 0.12)};
   overflow: auto;
+  flex: 1;
+
+  ${media.largeUp`
+    padding: 0;
+    box-shadow: none;
+    overflow: visible;
+  `}
 
   > *:last-child {
     padding-bottom: ${glsp()};
+
+    ${media.largeUp`
+      padding: 0;
+    `}
+  }
+`;
+
+const PrimeMenuBlock = styled.section`
+  color: ${themeVal('color.surface')};
+
+  ${media.largeUp`
+    ${surfaceElevatedD()}
+    border-radius: ${themeVal('shape.rounded')};
+    padding: ${glsp()};
+    color: ${themeVal('type.base.color')};
+    width: 14rem;
+  `}
+`;
+
+const PrimeMenuBlockTitle = styled.h6`
+  ${headingAlt}
+  margin: 0 0 ${glsp(0.5)} 0;
+  display: none;
+
+  ${media.largeUp`
+    display: block;
+    margin: 0 0 ${glsp(0.25)} 0;
+  `}
+`;
+
+const PrimeMenu = styled.ul`
+  display: flex;
+  flex-flow: column nowrap;
+
+  ${media.largeUp`
+    flex-flow: row nowrap;
+  `}
+
+  a {
+    display: block;
+    text-align: left;
+  }
+
+  > li {
+    position: relative;
+
+    ${media.largeUp`
+      margin: 0 0 0 ${glsp(0.25)};
+    `}
+  }
+
+  ${PrimeMenuBlock} {
+    transition: all 0.16s ease 0s;
+
+    ${media.largeUp`
+      position: absolute;
+      right: 0;
+      visibility: hidden;
+      opacity: 0;
+      transform: translate(0, -${glsp(0.25)});
+    `}
+  }
+
+  > li:hover ${/* sc-sel */PrimeMenuBlock},
+  > li:focus-within ${/* sc-sel */PrimeMenuBlock},
+  ${/* sc-sel */PrimeMenuBlock}:hover, ${/* sc-sel */PrimeMenuBlock}:focus {
+    visibility: visible;
+    opacity: 1;
+
+    ${media.largeUp`
+      transform: translate(0, ${glsp(0.25)});
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        background: transparent;
+        height: 0.25rem;
+        width: 100%;
+        display: block;
+      }
+    `}
+  }
+`;
+
+const PrimeSubmenu = styled.ul`
+  display: flex;
+  flex-flow: column nowrap;
+  padding: ${glsp(0, 1)};
+
+  ${media.largeUp`
+    padding: 0;
+  `}
+`;
+
+const ShareLi = styled.li`
+  margin-top: ${glsp()};
+  padding-top: ${glsp()};
+  box-shadow: inset 0 1px 0 0 ${_rgba('#FFFFFF', 0.12)};
+
+  ${media.largeUp`
+    display: block;
+    margin-top: 0;
+    padding-top: 0;
+    box-shadow: none;
+  `}
+
+  > a {
+    display: none;
+    text-align: center;
+
+    ${media.largeUp`
+      display: block;
+    `}
+  }
+
+  ${PrimeMenuBlockTitle} {
+    display: block;
+  }
+
+  ${PrimeSubmenu} {
+    padding: 0;
+  }
+`;
+
+const CopyBlock = styled.div`
+  padding: ${glsp(0.5)};
+  background: ${_rgba('#FFFFFF', 0.12)};
+  border-radius: ${themeVal('shape.rounded')};
+  margin-top: ${glsp(0.5)};
+
+  ${media.largeUp`
+    background: ${themeVal('color.baseAlphaA')};
+    box-shadow: inset 0 ${themeVal('layout.border')} 0 0 ${themeVal('color.baseAlphaB')};
+    margin: ${glsp(0.5, -1, -1, -1)};
+    padding: ${glsp(1)};
+    border-radius: 0 0 ${themeVal('shape.rounded')} ${themeVal('shape.rounded')};
+  `}
+`;
+
+const PageNavGlobalStyle = createGlobalStyle`
+  body {
+    ${unscrollableY()}
   }
 `;
 
@@ -308,6 +427,7 @@ class PageHeader extends React.Component {
     const { spotlightList, isMediumDown } = this.props;
 
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
+    const url = window.location.toString();
 
     return (
       <PageHead role='banner'>
@@ -326,287 +446,191 @@ class PageHeader extends React.Component {
             </PageTitle>
           </PageHeadline>
 
-          {isMediumDown ? (
-            <>
-              <Share />
-              <Button
-                hideText
-                useIcon='hamburger-menu'
-                variation='achromic-plain'
-                title='Show menu'
-                onClick={() => this.setState({ panelOpen: true })}
-              >
-                Show menu
-              </Button>
-              {this.state.panelOpen && <PageNavSmallGlobalStyle />}
-              <PageNavSmall role='navigation' revealed={this.state.panelOpen}>
-                <PageNavSmallInner revealed={this.state.panelOpen}>
-                  <PageNavSmallHeader>
-                    <PageNavSmallTitle>Menu</PageNavSmallTitle>
+          {this.state.panelOpen && <PageNavGlobalStyle />}
+
+          {isMediumDown && (
+            <Button
+              hideText
+              useIcon='hamburger-menu'
+              variation='achromic-plain'
+              title='Show menu'
+              onClick={() => this.setState({ panelOpen: true })}
+            >
+              Show menu
+            </Button>
+          )}
+
+          <PageNav role='navigation' revealed={this.state.panelOpen}>
+            <PageNavInner revealed={this.state.panelOpen}>
+              <PageNavHeader>
+                <PageNavTitle>Menu</PageNavTitle>
+                {isMediumDown && (
+                  <Button
+                    hideText
+                    useIcon='xmark'
+                    variation='achromic-plain'
+                    title='Hide menu'
+                    onClick={() => this.setState({ panelOpen: false })}
+                  >
+                    Hide menu
+                  </Button>
+                )}
+              </PageNavHeader>
+              <PageNavBody>
+                <PrimeMenu>
+                  <li>
                     <Button
-                      hideText
-                      useIcon='xmark'
+                      element={NavLinkFilter}
+                      to='/'
+                      exact
                       variation='achromic-plain'
-                      title='Hide menu'
-                      onClick={() => this.setState({ panelOpen: false })}
+                      title='View the Welcome page'
                     >
-                      Hide menu
+                      Welcome
                     </Button>
-                  </PageNavSmallHeader>
-                  <PageNavSmallBody>
-                    <GlobalMenu>
-                      <li>
-                        <Button
-                          element={NavLinkFilter}
-                          to='/'
-                          exact
-                          variation='achromic-plain'
-                          title='View the welcome page'
-                        >
-                          Welcome
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          element={NavLinkFilter}
-                          to='/about'
-                          variation='achromic-plain'
-                          title='View the about page'
-                        >
-                          About
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          variation='achromic-plain'
-                          title='Send feedback'
-                          onClick={() => {
-                            window.feedback.showForm();
-                          }}
-                        >
-                          Feedback
-                        </Button>
-                      </li>
-                    </GlobalMenu>
-                    <PageNavSmallInnerTitle>
+                  </li>
+                  <li>
+                    <Button
+                      element={NavLinkFilter}
+                      to='/explore'
+                      exact
+                      variation='achromic-plain'
+                      title='View the Explore page'
+                      useIcon={isMediumDown ? null : ['chevron-down--small', 'after']}
+                    >
                       Explore
-                    </PageNavSmallInnerTitle>
-                    <GlobalMenu>
-                      <li>
-                        <Button
-                          element={NavLinkFilter}
-                          to='/explore'
-                          exact
-                          variation='achromic-plain'
-                          title='Explore the Data'
-                        >
-                        About
-                        </Button>
-                      </li>
-                      <li>
-                        <Button
-                          element={NavLinkFilter}
-                          to='/explore/global'
-                          exact
-                          variation='achromic-plain'
-                          title='Explore the global map'
-                        >
-                          Global
-                        </Button>
-                      </li>
-                      {spotlightAreas &&
-                      spotlightAreas.map((ss) => (
-                        <li key={ss.id}>
+                    </Button>
+                    <PrimeMenuBlock>
+                      <PrimeMenuBlockTitle>Explore</PrimeMenuBlockTitle>
+                      <PrimeSubmenu aria-label='submenu'>
+                        <li>
                           <Button
                             element={NavLinkFilter}
-                            to={`/explore/${ss.id}`}
-                            variation='achromic-plain'
-                            title={`Explore ${ss.label}`}
+                            to='/explore/global'
+                            exact
+                            variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                            title='Explore the global map'
                           >
-                            {ss.label}
+                            Global
                           </Button>
                         </li>
-                      ))}
-                    </GlobalMenu>
-
-                    <PageNavSmallInnerTitle>Indicators</PageNavSmallInnerTitle>
-                    <GlobalMenu>
-                      <li>
-                        <Button
-                          element={NavLinkFilter}
-                          to='/indicators'
-                          exact
-                          variation='achromic-plain'
-                          title='Learn about the indicators'
-                        >
-                          About
-                        </Button>
-                      </li>
-                      {indicatorsList
-                        .filter((d) => !!d.LongForm)
-                        .map((d) => (
-                          <li key={d.id}>
-                            <Button
-                              element={NavLinkFilter}
-                              to={`/indicators/${d.id}`}
-                              variation='achromic-plain'
-                              title='Learn about the indicator'
-                            >
-                              {d.name}
-                            </Button>
-                          </li>
-                        ))}
-                    </GlobalMenu>
-                  </PageNavSmallBody>
-                </PageNavSmallInner>
-              </PageNavSmall>
-            </>
-          ) : (
-            <PageNavLarge role='navigation'>
-              <GlobalMenu>
-                <li>
-                  <Button
-                    element={NavLinkFilter}
-                    to='/'
-                    exact
-                    hideText
-                    useIcon='house'
-                    variation='achromic-plain'
-                    title='View the welcome page'
-                  >
-                    Welcome
-                  </Button>
-                </li>
-                <li>
-                  <Dropdown
-                    alignment='right'
-                    direction='down'
-                    disabled={!spotlightAreas}
-                    triggerElement={
-                      <Button
-                        variation='achromic-plain'
-                        title='Explore the data'
-                        useIcon={['chevron-down--small', 'after']}
-                      >
-                        Explore
-                      </Button>
-                    }
-                  >
-                    <DropTitle>Explore</DropTitle>
-                    <DropMenu role='menu' selectable>
-                      <li>
-                        <DropMenuItem
-                          as={NavLink}
-                          exact
-                          to='/explore/global'
-                          title='Explore the global map'
-                          data-dropdown='click.close'
-                        >
-                          Global
-                        </DropMenuItem>
-                      </li>
-                      {spotlightAreas &&
-                        spotlightAreas.map((ss) => (
-                          <li key={ss.id}>
-                            <DropMenuItem
-                              as={NavLink}
-                              to={`/explore/${ss.id}`}
-                              title={`Explore ${ss.label}`}
-                              data-dropdown='click.close'
-                            >
-                              {ss.label}
-                            </DropMenuItem>
-                          </li>
-                        ))}
-                    </DropMenu>
-                    <DropMenu role='menu' selectable>
-                      <li>
-                        <DropMenuItem
-                          as={NavLink}
-                          exact
-                          to='/explore'
-                          title='Learn more'
-                          data-dropdown='click.close'
-                        >
-                          About
-                        </DropMenuItem>
-                      </li>
-                    </DropMenu>
-                  </Dropdown>
-                </li>
-                <li>
-                  <Dropdown
-                    alignment='right'
-                    direction='down'
-                    triggerElement={
-                      <Button
-                        variation='achromic-plain'
-                        title='Explore the indicators'
-                        useIcon={['chevron-down--small', 'after']}
-                      >
-                        Indicators
-                      </Button>
-                    }
-                  >
-                    <DropTitle>Indicators</DropTitle>
-                    <DropMenu role='menu' selectable>
-                      {indicatorsList
-                        .filter((d) => !!d.LongForm)
-                        .map((d) => (
-                          <li key={d.id}>
-                            <DropMenuItem
-                              as={NavLink}
-                              to={`/indicators/${d.id}`}
-                              data-dropdown='click.close'
-                              title={`Learn about ${d.name}`}
-                            >
-                              {d.name}
-                            </DropMenuItem>
-                          </li>
-                        ))}
-                    </DropMenu>
-                    <DropMenu role='menu' selectable>
-                      <li>
-                        <DropMenuItem
-                          as={NavLink}
-                          exact
-                          to='/indicators'
-                          data-dropdown='click.close'
-                          title='Learn more'
-                        >
-                          About
-                        </DropMenuItem>
-                      </li>
-                    </DropMenu>
-                  </Dropdown>
-                </li>
-                <li>
-                  <Button
-                    element={NavLinkFilter}
-                    to='/about'
-                    variation='achromic-plain'
-                    title='Learn more'
-                  >
-                    About
-                  </Button>
-                </li>
-                <li>
-                  <Button
-                    variation='achromic-plain'
-                    title='Send feedback'
-                    onClick={() => {
-                      window.feedback.showForm();
-                    }}
-                  >
-                    Feedback
-                  </Button>
-                </li>
-                <li>
-                  <Share />
-                </li>
-              </GlobalMenu>
-            </PageNavLarge>
-          )}
+                        {spotlightAreas &&
+                          spotlightAreas.map((ss) => (
+                            <li key={ss.id}>
+                              <Button
+                                element={NavLinkFilter}
+                                to={`/explore/${ss.id}`}
+                                variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                                title={`Explore ${ss.label}`}
+                              >
+                                {ss.label}
+                              </Button>
+                            </li>
+                          ))}
+                      </PrimeSubmenu>
+                    </PrimeMenuBlock>
+                  </li>
+                  <li>
+                    <Button
+                      element={NavLinkFilter}
+                      to='/indicators'
+                      exact
+                      variation='achromic-plain'
+                      title='View the Indicators page'
+                      useIcon={isMediumDown ? null : ['chevron-down--small', 'after']}
+                    >
+                      Indicators
+                    </Button>
+                    <PrimeMenuBlock>
+                      <PrimeMenuBlockTitle>Indicators</PrimeMenuBlockTitle>
+                      <PrimeSubmenu aria-label='submenu'>
+                        {indicatorsList
+                          .filter((d) => !!d.LongForm)
+                          .map((d) => (
+                            <li key={d.id}>
+                              <Button
+                                element={NavLinkFilter}
+                                to={`/indicators/${d.id}`}
+                                variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                                title='Learn about the indicator'
+                              >
+                                {d.name}
+                              </Button>
+                            </li>
+                          ))}
+                      </PrimeSubmenu>
+                    </PrimeMenuBlock>
+                  </li>
+                  <li>
+                    <Button
+                      element={NavLinkFilter}
+                      to='/about'
+                      variation='achromic-plain'
+                      title='Learn more'
+                    >
+                      About
+                    </Button>
+                  </li>
+                  <li>
+                    <Button
+                      variation='achromic-plain'
+                      title='Send feedback'
+                      onClick={() => {
+                        window.feedback.showForm();
+                      }}
+                    >
+                      Feedback
+                    </Button>
+                  </li>
+                  <ShareLi>
+                    <Button
+                      element='a'
+                      href='#share-options'
+                      variation='achromic-plain'
+                      title='View share options'
+                      hideText
+                      useIcon='share-2'
+                      onClick={e => { e.preventDefault(); }}
+                    >
+                      Share
+                    </Button>
+                    <PrimeMenuBlock id='share-options'>
+                      <PrimeMenuBlockTitle>Share</PrimeMenuBlockTitle>
+                      <PrimeSubmenu aria-label='submenu'>
+                        <li>
+                          <Button
+                            element='a'
+                            variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                            useIcon='brand-facebook'
+                            href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
+                            title='Share on Facebook'
+                            target='_blank'
+                          >
+                            Facebook
+                          </Button>
+                        </li>
+                        <li>
+                          <Button
+                            element='a'
+                            variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                            useIcon='brand-twitter'
+                            href={`https://twitter.com/intent/tweet?url=${url}`}
+                            title='Share on Twitter'
+                            target='_blank'
+                          >
+                            Twitter
+                          </Button>
+                        </li>
+                      </PrimeSubmenu>
+                      <CopyBlock>
+                        <CopyField value={url} />
+                      </CopyBlock>
+                    </PrimeMenuBlock>
+                  </ShareLi>
+                </PrimeMenu>
+              </PageNavBody>
+            </PageNavInner>
+          </PageNav>
         </PageHeadInner>
       </PageHead>
     );
