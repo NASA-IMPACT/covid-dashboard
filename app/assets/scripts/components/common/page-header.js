@@ -1,12 +1,12 @@
 import React from 'react';
 import T from 'prop-types';
+import { Link, NavLink } from 'react-router-dom';
 import styled, { css, createGlobalStyle } from 'styled-components';
 import { rgba } from 'polished';
 import { connect } from 'react-redux';
 
 import config from '../../config';
 
-import { Link, NavLink } from 'react-router-dom';
 import { visuallyHidden, unscrollableY } from '../../styles/helpers';
 import { themeVal, stylizeFunction } from '../../styles/utils/general';
 import { reveal } from '../../styles/animation';
@@ -16,9 +16,10 @@ import media from '../../styles/utils/media-queries';
 import { surfaceElevatedD } from '../../styles/skins';
 import { wrapApiResult } from '../../redux/reduxeed';
 import { headingAlt } from '../../styles/type/heading';
+import indicatorsList from '../indicators';
 
 import Button from '../../styles/button/button';
-import indicatorsList from '../indicators';
+import { CopyField } from './copy-field';
 
 const { appTitle, appVersion, baseUrl } = config;
 
@@ -326,10 +327,9 @@ const PrimeMenu = styled.ul`
     `}
   }
 
-  > li:hover ${PrimeMenuBlock},
-  > li:focus-within ${PrimeMenuBlock},
-  ${PrimeMenuBlock}:hover,
-  ${PrimeMenuBlock}:focus {
+  > li:hover ${/* sc-sel */PrimeMenuBlock},
+  > li:focus-within ${/* sc-sel */PrimeMenuBlock},
+  ${/* sc-sel */PrimeMenuBlock}:hover, ${/* sc-sel */PrimeMenuBlock}:focus {
     visibility: visible;
     opacity: 1;
 
@@ -401,6 +401,7 @@ class PageHeader extends React.Component {
     const { spotlightList, isMediumDown } = this.props;
 
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
+    const url = window.location.toString();
 
     return (
       <PageHead role='banner'>
@@ -557,24 +558,25 @@ class PageHeader extends React.Component {
                   </li>
                   <ShareLi>
                     <Button
-                      as='a'
+                      element='a'
                       href='#share-options'
                       variation='achromic-plain'
                       title='View share options'
                       hideText
                       useIcon='share-2'
+                      onClick={e => { e.preventDefault(); }}
                     >
-                      <span>Share</span>
+                      Share
                     </Button>
                     <PrimeMenuBlock id='share-options'>
                       <PrimeMenuBlockTitle>Share</PrimeMenuBlockTitle>
                       <PrimeSubmenu aria-label='submenu'>
                         <li>
                           <Button
-                            as='a'
+                            element='a'
                             variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
                             useIcon='brand-facebook'
-                            href=''
+                            href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
                             title='Share on Facebook'
                             target='_blank'
                           >
@@ -583,10 +585,10 @@ class PageHeader extends React.Component {
                         </li>
                         <li>
                           <Button
-                            as='a'
+                            element='a'
                             variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
                             useIcon='brand-twitter'
-                            href=''
+                            href={`https://twitter.com/intent/tweet?url=${url}`}
                             title='Share on Twitter'
                             target='_blank'
                           >
@@ -594,6 +596,7 @@ class PageHeader extends React.Component {
                           </Button>
                         </li>
                       </PrimeSubmenu>
+                      <CopyField value={url} />
                     </PrimeMenuBlock>
                   </ShareLi>
                 </PrimeMenu>
