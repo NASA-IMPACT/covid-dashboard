@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Prose from '../../styles/type/prose';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
+import MediaImage from '../../styles/media-image';
 import { Fold, FoldDetails } from '../../styles/fold';
 import {
   IntroLead
@@ -12,6 +13,9 @@ import media from '../../styles/utils/media-queries';
 
 import { glsp } from '../../styles/utils/theme-values';
 import Heading from '../../styles/type/heading';
+import config from '../../config';
+
+const { baseUrl } = config;
 
 const LeadFold = styled(Fold)`
   padding-bottom: 0;
@@ -77,6 +81,27 @@ const InterpretDataFold = styled(Fold)`
   ${Gridder} {
     align-items: center;
   }
+
+  ${MediaImage} {
+    grid-column: content-start / content-end;
+
+    ${media.mediumUp`
+      grid-column: content-2 / content-7;
+    `}
+    
+    ${media.largeUp`
+      grid-row: 1;
+      grid-column: content-start / content-10;
+    `}
+
+    figcaption {
+      padding: 0 ${glsp()};
+      max-width: 30rem;
+      text-align: center;
+      margin: 0 auto;
+    }
+  }
+
 
   ${FoldDetails} {
     grid-column: content-start / content-end;
@@ -232,12 +257,19 @@ class CO2LongForm extends React.Component {
 
                 </p>
 
-                <p>
+                <p
                   To more clearly discriminate between the COVID-19 related changes and much larger seasonal variations, observations from 2020 are compared with a carefully constructed baseline CO<sub>2</sub> climatology derived from a reference simulation that was corrected for persistent biases between the model and OCO-2 observations collected in 2015-2019.
 
                 </p>
               </Prose>
             </FoldDetails>
+            <MediaImage
+              src={`${baseUrl}/assets/graphics/content/co2_april_1_20.png`}
+              alt='CO2 Diff April 1'
+            >
+              CO<sub>2</sub> difference on April 1, 2020.
+            </MediaImage>
+
           </Gridder>
         </InterpretDataFold>
 
