@@ -35,11 +35,11 @@ const IntroFold = styled(Fold)`
     grid-column: full-start / full-end;
 
     ${media.mediumUp`
-      grid-column: content-start / content-end;
+      grid-column: content-2 / content-7;
     `}
 
     ${media.largeUp`
-      grid-column: full-start / content-8;
+      grid-column: content-8 / full-end;
       grid-row: 1;
     `}
 
@@ -60,7 +60,7 @@ const IntroFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-8 / content-end;
+      grid-column: content-start / content-8;
     `}
   }
 `;
@@ -103,7 +103,7 @@ const InterpretingDataFold = styled(Fold)`
   }
 
   ${MediaImage} {
-    grid-column: content-start / content-end;
+    grid-column: full-start / full-end;
 
     ${media.mediumUp`
       grid-column: content-2 / content-7;
