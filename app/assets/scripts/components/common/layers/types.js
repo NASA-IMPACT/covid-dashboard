@@ -74,7 +74,7 @@ export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
-      const { id, source, compare, paint} = layerInfo;
+      const { id, source, compare, paint } = layerInfo;
       const prevLayerInfo = prevProps.layers.find(l => l.id === layerInfo.id);
       const { date, comparing } = props;
 
@@ -136,7 +136,7 @@ export const layerTypes = {
     },
     show: (ctx, layerInfo) => {
       const { mbMap, props } = ctx;
-      const { id, source, paint} = layerInfo;
+      const { id, source, paint } = layerInfo;
       const { date } = props;
       if (!date) return;
 
