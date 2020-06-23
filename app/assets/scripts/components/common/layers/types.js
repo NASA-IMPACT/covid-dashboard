@@ -190,6 +190,17 @@ export const layerTypes = {
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
 
+      // Do not update if:
+      if (
+        // There's no date defined.
+        prevProps.date && date &&
+        // Dates are the same
+        date.getTime() === prevProps.date.getTime()
+      ) return;
+
+      // The source we're updating is not present.
+      if (!mbMap.getSource(id)) return;
+
       const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
       const vectorData = vector.data.replace('{date}', formatDate);
       const rasterTiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
