@@ -77,6 +77,7 @@ export default class Development extends React.Component {
               </Prose>
               <ContributeCta>
                 <Button
+                  size='large'
                   element='a'
                   href='https://github.com/NASA-IMPACT/covid-dashboard'
                   variation='primary-raised-dark'
@@ -85,6 +86,7 @@ export default class Development extends React.Component {
                   Github
                 </Button>
                 <Button
+                  size='large'
                   variation='primary-raised-dark'
                   useIcon={['speech-balloon', 'after']}
                   onClick={() => {
