@@ -190,21 +190,20 @@ export const layerTypes = {
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
 
-      const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
-      const vectorData = vector.data.replace('{date}', formatDate);
-      const rasterTiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
-
       // Do not update if:
       if (
         // There's no date defined.
         prevProps.date && date &&
         // Dates are the same
         date.getTime() === prevProps.date.getTime()
-        // Knob position for gamma correction is the same.
       ) return;
 
       // The source we're updating is not present.
       if (!mbMap.getSource(id)) return;
+
+      const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
+      const vectorData = vector.data.replace('{date}', formatDate);
+      const rasterTiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
 
       replaceVectorData(mbMap, vecId, vectorData);
       replaceRasterTiles(mbMap, rastId, rasterTiles);
