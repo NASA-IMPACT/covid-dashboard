@@ -257,7 +257,7 @@ class CO2LongForm extends React.Component {
 
                 </p>
 
-                <p
+                <p>
                   To more clearly discriminate between the COVID-19 related changes and much larger seasonal variations, observations from 2020 are compared with a carefully constructed baseline CO<sub>2</sub> climatology derived from a reference simulation that was corrected for persistent biases between the model and OCO-2 observations collected in 2015-2019.
 
                 </p>
