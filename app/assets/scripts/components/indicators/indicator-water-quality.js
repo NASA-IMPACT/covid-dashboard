@@ -160,7 +160,7 @@ const metadata = {
 };
 
 class WQLongForm extends React.Component {
-  render() {
+  render () {
     return (
       <React.Fragment>
         <LeadFold>
