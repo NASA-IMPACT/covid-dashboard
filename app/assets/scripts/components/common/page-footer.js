@@ -125,7 +125,7 @@ const PageFooter = props => {
             <dt>NASA official</dt>
             <dd>
               <Button
-                as='a'
+                element='a'
                 href='mailto:manil.maskey@nasa.gov'
                 title='Get in touch'
                 variation='base-plain'
@@ -138,7 +138,7 @@ const PageFooter = props => {
             <dt>Open source code</dt>
             <dd>
               <Button
-                as='a'
+                element='a'
                 href='https://github.com/NASA-IMPACT/covid-dashboard'
                 title='Explore the code'
                 variation='base-plain'
