@@ -335,6 +335,17 @@ const PrimeMenu = styled.ul`
 
     ${media.largeUp`
       transform: translate(0, ${glsp(0.25)});
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        background: transparent;
+        height: 0.25rem;
+        width: 100%;
+        display: block;
+      }
     `}
   }
 `;
