@@ -379,6 +379,21 @@ const ShareLi = styled.li`
   }
 `;
 
+const CopyBlock = styled.div`
+  padding: ${glsp(0.5)};
+  background: ${_rgba('#FFFFFF', 0.12)};
+  border-radius: ${themeVal('shape.rounded')};
+  margin-top: ${glsp(0.5)};
+
+  ${media.largeUp`
+    background: ${themeVal('color.baseAlphaA')};
+    box-shadow: inset 0 ${themeVal('layout.border')} 0 0 ${themeVal('color.baseAlphaB')};
+    margin: ${glsp(0.5, -1, -1, -1)};
+    padding: ${glsp(1)};
+    border-radius: 0 0 ${themeVal('shape.rounded')} ${themeVal('shape.rounded')};
+  `}
+`;
+
 const PageNavGlobalStyle = createGlobalStyle`
   body {
     ${unscrollableY()}
@@ -596,7 +611,9 @@ class PageHeader extends React.Component {
                           </Button>
                         </li>
                       </PrimeSubmenu>
-                      <CopyField value={url} />
+                      <CopyBlock>
+                        <CopyField value={url} />
+                      </CopyBlock>
                     </PrimeMenuBlock>
                   </ShareLi>
                 </PrimeMenu>
