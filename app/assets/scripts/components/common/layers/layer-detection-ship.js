@@ -16,7 +16,7 @@ export default {
     raster: {
       type: 'raster',
       tiles: [
-        `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/planet/{spotlightId}_{date}.tif&resampling_method=nearest&bidx=1,2,3`
+        `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/planet/{spotlightId}-{date}.tif&resampling_method=nearest&bidx=1,2,3`
       ]
     }
   },
