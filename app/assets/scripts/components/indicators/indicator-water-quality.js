@@ -4,28 +4,63 @@ import styled from 'styled-components';
 import Prose from '../../styles/type/prose';
 import Gridder from '../../styles/gridder';
 import InpageHGroup from '../../styles/inpage-hgroup';
-import { Fold } from '../../styles/fold';
+import { Fold, FoldDetails } from '../../styles/fold';
 import MediaImage from '../../styles/media-image';
 import media from '../../styles/utils/media-queries';
 
 import Heading from '../../styles/type/heading';
 import config from '../../config';
 import { indicatorGroupColors } from '../../styles/theme/theme';
+import { glsp } from '../../styles/utils/theme-values';
+import { IntroLead } from '../../styles/datasets';
 
 const { baseUrl } = config;
+
+const LeadFold = styled(Fold)`
+  padding-bottom: 0;
+
+  ${media.largeUp`
+    padding-bottom: ${glsp(3)};
+  `}
+`;
 
 const IntroFold = styled(Fold)`
   padding-bottom: 0;
 
-  ${Prose} {
+  ${Gridder} {
+    align-items: center;
+  }
+
+  ${MediaImage} {
+    grid-column: full-start / full-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-end;
+    `}
+
+    ${media.largeUp`
+      grid-column: full-start / content-8;
+      grid-row: 1;
+    `}
+
+    figcaption {
+      padding: 0 ${glsp()};
+      max-width: 30rem;
+      text-align: center;
+      margin: 0 auto;
+    }
+  }
+
+  ${FoldDetails} {
     grid-column: content-start / content-end;
+    text-align: left;
 
     ${media.mediumUp`
       grid-column: content-start / content-8;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-8 / content-end;
     `}
   }
 `;
@@ -91,7 +126,6 @@ const InterpretingDataFold = styled(Fold)`
 `;
 
 const AdditionalResourcesFold = styled(Fold)`
-
   ${Gridder} {
     align-items: center;
   }
@@ -126,51 +160,56 @@ const metadata = {
 };
 
 class WQLongForm extends React.Component {
-  render () {
+  render() {
     return (
       <React.Fragment>
+        <LeadFold>
+          <Gridder>
+            <IntroLead>
+              Human activity greatly influences water quality. Runoff from
+              agriculture and cities can overload coastal waters with excess
+              nutrients, ships in ports and other waterways can mix up sediment
+              and increase turbidity, and even air pollution can end up in our
+              water.
+            </IntroLead>
+          </Gridder>
+        </LeadFold>
+
         <IntroFold>
           <Gridder>
-            <Prose>
-              <p>
-                Images of the Earth at night give us an extraordinary view of
-                human activity over time. The nighttime environment illuminates
-                Earth features like city infrastructure, lightning flashes,
-                fishing boats navigating open water, gas flares, aurora, and
-                natural hazards like lava flowing from an active volcano. Paired
-                with the moonlight, researchers can also spot snow and ice, as
-                well as other reflective surfaces that allow nighttime land and
-                ocean analysis.
-              </p>
-              <p>
-                During the COVID-19 pandemic, researchers are using night light
-                observations to track variations in energy use, migration, and
-                transportation in response to social distancing and lockdown
-                measures.
-              </p>
-              <p>
-                Scientists are examining whether the amount of algae
-                (chlorophyll-a) and sediment (turbidity) in water bodies was
-                affected by the shutdowns in response to the COVID-19 pandemic.
-                However, teasing out those signals from normal variations due to
-                weather and economic changes is challenging.
-              </p>
-              <MediaImage
-                src={`${baseUrl}/assets/graphics/content/water-quality-chlorophyll-a-sf.png`}
-                alt='Wuhan Before and After'
-              >
-                <figcaption>
-                  Chlorophyll-a is an indicator of algae growth. During
-                  coronavirus-related shutdowns, changes in our activity may
-                  affect the amount of nutrients flowing in water bodies. This
-                  image shows the changes in chlorophyll-a for the San Francisco
-                  Bay Area on April 3, 2020. Redder colors indicate higher
-                  levels of chlorophyll-a and worse water quality. Bluer colors
-                  indicate lower levels of chlorophyll-a and improved water
-                  quality. Image Credit: NASA.
-                </figcaption>
-              </MediaImage>
-            </Prose>
+            <FoldDetails>
+              <Prose>
+                <p>
+                  As lockdown restrictions were put into place around the world
+                  in response to the novel coronavirus, the immediate reduction
+                  in vehicle and ship traffic led to noticeable improvements in
+                  our air quality. Now, researchers are looking to see if those
+                  same benefits will be reflected in our water.
+                </p>
+                <p>
+                  Scientists are examining whether the amount of algae
+                  (chlorophyll-a) and sediment (turbidity) in water bodies was
+                  affected by the shutdowns in response to the COVID-19
+                  pandemic. However, teasing out those signals from normal
+                  variations due to weather and economic changes is challenging.
+                </p>
+              </Prose>
+            </FoldDetails>
+            <MediaImage
+              src={`${baseUrl}/assets/graphics/content/water-quality-chlorophyll-a-sf.png`}
+              alt='Wuhan Before and After'
+            >
+              <figcaption>
+                Chlorophyll-a is an indicator of algae growth. During
+                coronavirus-related shutdowns, changes in our activity may
+                affect the amount of nutrients flowing in water bodies. This
+                image shows the changes in chlorophyll-a for the San Francisco
+                Bay Area on April 3, 2020. Redder colors indicate higher levels
+                of chlorophyll-a and worse water quality. Bluer colors indicate
+                lower levels of chlorophyll-a and improved water quality. Image
+                Credit: NASA.
+              </figcaption>
+            </MediaImage>
           </Gridder>
         </IntroFold>
 
