@@ -211,7 +211,7 @@ const IntroStories = styled.section`
   
   ${media.mediumUp`
     padding: ${glsp(1.25, 2, 1.75, 2)};
-    min-height: auto;
+    min-height: 10rem;
   `}
 
   &::before {
