@@ -45,6 +45,7 @@ import {
 } from '../../../utils/map-explore-utils';
 import QsState from '../../../utils/qs-state';
 import media, { isLargeViewport } from '../../../styles/utils/media-queries';
+import summaries from './summaries';
 
 const ExploreCanvas = styled.div`
   display: grid;
@@ -184,7 +185,7 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   render () {
-    const { spotlight, spotlightList, indicatorGroups } = this.props;
+    const { spotlight, spotlightList, indicatorGroups, summary } = this.props;
 
     if (spotlight.hasError() || indicatorGroups.hasError()) return <UhOh />;
 
@@ -274,6 +275,7 @@ class SpotlightAreasSingle extends React.Component {
                     this.resizeMap();
                     this.onPanelChange('panelSec', revealed);
                   }}
+                  summary={summary}
                   indicators={indicators}
                   indicatorGroups={indicatorGroupsData}
                   selectedDate={
@@ -296,6 +298,7 @@ SpotlightAreasSingle.propTypes = {
   spotlight: T.object,
   spotlightList: T.object,
   indicatorGroups: T.object,
+  summary: T.node,
   match: T.object,
   location: T.object,
   history: T.object
@@ -305,6 +308,7 @@ function mapStateToProps (state, props) {
   const { spotlightId } = props.match.params;
 
   return {
+    summary: summaries[spotlightId],
     mapLayers: getSpotlightLayers(spotlightId),
     spotlightList: wrapApiResult(state.spotlight.list),
     spotlight: wrapApiResult(

@@ -72,4 +72,4 @@ The app can then be run by any web server.
 **When building the site for deployment provide the base url trough the `BASEURL` environment variable. Omit the leading slash. (E.g. https://example.com)**
 
 # License
-This project is licensed under **The MIT License (MIT)**, see the [LICENSE](LICENSE.md) file for more details.
+This project is licensed under **Apache 2**, see the [LICENSE](LICENSE) file for more details.

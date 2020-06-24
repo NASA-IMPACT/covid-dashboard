@@ -74,7 +74,7 @@ export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
-      const { id, source, compare } = layerInfo;
+      const { id, source, compare, paint } = layerInfo;
       const prevLayerInfo = prevProps.layers.find(l => l.id === layerInfo.id);
       const { date, comparing } = props;
 
@@ -119,7 +119,8 @@ export const layerTypes = {
             {
               id: id,
               type: 'raster',
-              source: id
+              source: id,
+              paint: paint || {}
             },
             'admin-0-boundary-bg'
           );
@@ -135,7 +136,7 @@ export const layerTypes = {
     },
     show: (ctx, layerInfo) => {
       const { mbMap, props } = ctx;
-      const { id, source } = layerInfo;
+      const { id, source, paint } = layerInfo;
       const { date } = props;
       if (!date) return;
 
@@ -147,7 +148,8 @@ export const layerTypes = {
           {
             id: id,
             type: 'raster',
-            source: id
+            source: id,
+            paint: paint || {}
           },
           'admin-0-boundary-bg'
         );
@@ -189,6 +191,17 @@ export const layerTypes = {
       const vecId = `${id}-vector`;
       const rastId = `${id}-raster`;
       const { vector, raster } = source;
+
+      // Do not update if:
+      if (
+        // There's no date defined.
+        prevProps.date && date &&
+        // Dates are the same
+        date.getTime() === prevProps.date.getTime()
+      ) return;
+
+      // The source we're updating is not present.
+      if (!mbMap.getSource(id)) return;
 
       const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
       const vectorData = vector.data.replace('{date}', formatDate);

@@ -206,7 +206,7 @@ const IntroStories = styled.section`
   padding: ${glsp(0.75, 1, 1.25, 1)};
 
   ${media.smallUp`
-    min-height: 12rem;
+    min-height: 7.5rem;
   `}
   
   ${media.mediumUp`
@@ -216,7 +216,7 @@ const IntroStories = styled.section`
 
   &::before {
     ${collecticon('chart-bars')}
-    font-size: 8rem;
+    font-size: 6rem;
     line-height: 1;
     opacity: 0.16;
     position: absolute;
