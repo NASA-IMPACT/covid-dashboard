@@ -58,6 +58,10 @@ const LayerTitle = styled.h1`
   font-size: 1rem;
   line-height: 1.25rem;
   margin: 0;
+
+  sub {
+    bottom: 0;
+  }
 `;
 
 const LayerSubtitle = styled.p`
