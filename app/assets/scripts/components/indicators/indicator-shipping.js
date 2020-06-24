@@ -242,7 +242,7 @@ class ShippingLongForm extends React.Component {
             </FoldDetails>
             <MediaImage
               src={`${baseUrl}/assets/graphics/content/indicators/la-ship.png`}
-              alt='Wuhan Before and After'
+              alt='Shiping detection in Los Angeles'
             >
               <figcaption>
                 Los Angeles has the busiest port in the United States, which
