@@ -241,7 +241,7 @@ class ShippingLongForm extends React.Component {
               </Prose>
             </FoldDetails>
             <MediaImage
-              src={`${baseUrl}/assets/graphics/content/la-port.png`}
+              src={`${baseUrl}/assets/graphics/content/indicators/la-ship.png`}
               alt='Wuhan Before and After'
             >
               <figcaption>
@@ -316,8 +316,7 @@ class ShippingLongForm extends React.Component {
               <figcaption>
                 Supply chains around the world dependent on cargo shipping have
                 been interrupted by travel restrictions and quarantines designed
-                to stop the spread of the novel coronavirus. Image Credit: Open
-                Source.
+                to stop the spread of the novel coronavirus. Image Credit: NOAA.
               </figcaption>
             </MediaImage>
           </Gridder>
@@ -353,6 +352,16 @@ class ShippingLongForm extends React.Component {
                     A Satellite’s View of Ship Pollution
                   </a>
                 </li>
+                <li>
+                  <a
+                    href='https://earthdata.nasa.gov/esds/small-satellite-data-buy-program'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    Commercial Smallsat Data Acquisition Program (CSDAP)
+                  </a>
+                </li>
+
               </ul>
             </Prose>
           </Gridder>
