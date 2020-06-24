@@ -46,7 +46,7 @@ export default class About extends React.Component {
                   our yards more abundant.
                 </p>
                 <p>
-                  The National Aeronautics and Space Administration's (NASA) continuous and sometimes near-real-time measurements of Earth allow for understanding both the systems
+                  The National Aeronautics and Space Administration&apos;s (NASA) continuous and sometimes near-real-time measurements of Earth allow for understanding both the systems
                   changes themselves and the potential impact on economies and society during the pandemic – and as the world
                   slowly returns to operations.
                 </p>
