@@ -31,7 +31,7 @@ const layersBySpotlight = {
   la: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship'],
   sf: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm'],
   tk: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  ny: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  ny: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm']
 };
 
 const layerOverridesBySpotlight = {
@@ -88,6 +88,7 @@ const layerOverridesBySpotlight = {
     }
   },
   ny: {
+    'nightlights-viirs': handleNightlightsViirs,
     'water-chlorophyll': (l, spotlightId) => {
       return {
         ...l,
@@ -163,6 +164,7 @@ function handleNightlightsViirs (l, spotlightId) {
     gh: 'EUPorts',
     du: 'EUPorts',
     la: 'LosAngeles',
+    ny: 'NewYork',
     sf: 'SanFrancisco',
     tk: 'Tokyo'
   }[spotlightId];
