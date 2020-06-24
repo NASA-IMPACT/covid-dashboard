@@ -241,8 +241,8 @@ class ShippingLongForm extends React.Component {
               </Prose>
             </FoldDetails>
             <MediaImage
-              src={`${baseUrl}/assets/graphics/content/la-port.png`}
-              alt='Wuhan Before and After'
+              src={`${baseUrl}/assets/graphics/content/indicators/la-ship.png`}
+              alt='Shiping detection in Los Angeles'
             >
               <figcaption>
                 Los Angeles has the busiest port in the United States, which
@@ -316,8 +316,7 @@ class ShippingLongForm extends React.Component {
               <figcaption>
                 Supply chains around the world dependent on cargo shipping have
                 been interrupted by travel restrictions and quarantines designed
-                to stop the spread of the novel coronavirus. Image Credit: Open
-                Source.
+                to stop the spread of the novel coronavirus. Image Credit: NOAA.
               </figcaption>
             </MediaImage>
           </Gridder>
@@ -353,6 +352,16 @@ class ShippingLongForm extends React.Component {
                     A Satellite’s View of Ship Pollution
                   </a>
                 </li>
+                <li>
+                  <a
+                    href='https://earthdata.nasa.gov/esds/small-satellite-data-buy-program'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    Commercial Smallsat Data Acquisition Program (CSDAP)
+                  </a>
+                </li>
+
               </ul>
             </Prose>
           </Gridder>

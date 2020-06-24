@@ -6,7 +6,7 @@ import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 
 export default {
   id: 'no2',
-  name: 'Nitrogen dioxide',
+  name: 'NO\u2082',
   type: 'raster-timeseries',
   domain: [
     '2018-03-01',

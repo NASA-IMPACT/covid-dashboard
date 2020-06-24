@@ -46,15 +46,15 @@ export default class About extends React.Component {
                   our yards more abundant.
                 </p>
                 <p>
-                  NASA’s continuous and sometimes near-real-time measurements of Earth allow for understanding both the systems
+                  The National Aeronautics and Space Administration&apos;s (NASA) continuous and sometimes near-real-time measurements of Earth allow for understanding both the systems
                   changes themselves and the potential impact on economies and society during the pandemic – and as the world
                   slowly returns to operations.
                 </p>
                 <p>
-                  This dashboard features data collected and analyzed by the National Aeronautics and Space Administration (NASA).
+                  This dashboard features data collected and analyzed by NASA.
                   Information about Earth systems is gathered by a fleet of powerful global Earth-Observing satellites, instruments
                   aboard the International Space Station, from airborne science campaigns, and via ground observations. With this
-                  data we have been able to monitor some of those changes andand this is allowing us to track and compare these
+                  data we have been able to monitor some of those changes and this is allowing us to track and compare these
                   changes over time.
                 </p>
                 <p>

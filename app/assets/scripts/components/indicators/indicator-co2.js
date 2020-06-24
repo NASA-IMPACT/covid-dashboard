@@ -196,12 +196,6 @@ class CO2LongForm extends React.Component {
             <FoldDetails>
               <Prose>
                 <p>
-                  Reductions in carbon dioxide (CO<sub>2</sub>) emissions due to
-                  COVID-19 shutdowns are expected to reduce the rate at which CO
-                  <sub>2</sub> accumulates in the atmosphere, but not its total
-                  atmospheric concentration.
-                </p>
-                <p>
                   Carbon dioxide (CO<sub>2</sub>) is a greenhouse gas primarily
                   emitted from the combustion of fossil fuels such as petroleum,
                   coal, and natural gas.{' '}
@@ -337,7 +331,7 @@ class CO2LongForm extends React.Component {
               src={`${baseUrl}/assets/graphics/content/co2_april_1_20.png`}
               alt='CO2 Diff April 1'
             >
-              CO<sub>2</sub> difference on April 1, 2020.
+              The difference in carbon dioxide (CO<sub>2</sub>) levels from April 1, 2020 compared to previous years. Redder colors indicate increases in CO<sub>2</sub>. Bluer colors indicate lower levels of CO<sub>2</sub>. Image Credit: NASA
             </MediaImage>
           </Gridder>
         </InterpretDataFold>

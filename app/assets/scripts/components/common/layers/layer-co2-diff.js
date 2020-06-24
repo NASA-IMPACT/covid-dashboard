@@ -4,7 +4,7 @@ import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 
 export default {
   id: 'co2-diff',
-  name: 'Carbon Dioxide - change',
+  name: 'CO\u2082 (Diff)',
   type: 'raster-timeseries',
   timeUnit: 'day',
   domain: [

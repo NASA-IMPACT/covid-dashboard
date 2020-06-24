@@ -6,7 +6,7 @@ import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 
 export default {
   id: 'co2',
-  name: 'Carbon Dioxide - avg',
+  name: 'CO\u2082 (Avg)',
   type: 'raster-timeseries',
   timeUnit: 'day',
   domain: [
