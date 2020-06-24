@@ -253,7 +253,7 @@ class NO2LongForm extends React.Component {
               />
               <Prose>
                 <p>
-                  Nitrogen dioxide has a relatively short lifetime in the atmosphere. Once it is emitted, it lasts only a few hours before it dissipates, so it does not travel far from its source.
+                  Nitrogen dioxide has a relatively short lifespan in the atmosphere. Once it is emitted, it lasts only a few hours before it dissipates, so it does not travel far from its source.
                 </p>
 
                 <p>
