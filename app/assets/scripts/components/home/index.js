@@ -175,9 +175,13 @@ const IntroStatsList = styled.dl`
   dd {
     font-family: ${themeVal('type.base.family')};
     font-weight: ${themeVal('type.heading.weight')};
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 1;
     grid-row: 2;
+
+    ${media.mediumUp`
+      font-size: 3rem;
+    `}
   }
 `;
 
