@@ -31,7 +31,7 @@ const layersBySpotlight = {
   la: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship'],
   sf: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm'],
   tk: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  ny: ['no2', 'co2', 'co2-diff', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  ny: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm']
 };
 
 const layerOverridesBySpotlight = {
@@ -88,6 +88,7 @@ const layerOverridesBySpotlight = {
     }
   },
   ny: {
+    'nightlights-viirs': handleNightlightsViirs,
     'water-chlorophyll': (l, spotlightId) => {
       return {
         ...l,
@@ -102,6 +103,13 @@ const layerOverridesBySpotlight = {
       return {
         ...l,
         domain: ['2020-01-01', '2020-01-08', '2020-01-15', '2020-01-22', '2020-01-29', '2020-02-05', '2020-02-12', '2020-02-19', '2020-02-26', '2020-03-04', '2020-03-11', '2020-03-18', '2020-03-25', '2020-04-01', '2020-04-08', '2020-04-15', '2020-04-22', '2020-04-29', '2020-05-06', '2020-05-13', '2020-05-20', '2020-05-27', '2020-06-03']
+      };
+    },
+    'nightlights-hd': (l, spotlightId) => {
+      return {
+        ...l,
+        // For NY, nightlights goes till June
+        domain: [l.domain[0], '2020-06-01']
       };
     }
   }
@@ -156,6 +164,7 @@ function handleNightlightsViirs (l, spotlightId) {
     gh: 'EUPorts',
     du: 'EUPorts',
     la: 'LosAngeles',
+    ny: 'NewYork',
     sf: 'SanFrancisco',
     tk: 'Tokyo'
   }[spotlightId];
