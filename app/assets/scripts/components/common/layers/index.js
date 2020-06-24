@@ -6,6 +6,7 @@ import co2Diff from './layer-co2-diff';
 import population from './layer-population';
 import nightlightsViirs from './layer-nightlights-viirs';
 import nightlightsHd from './layer-nightlights-hd';
+import nightlights500m from './layer-nightlights-500m';
 import detectionShip from './layer-detection-ship';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
@@ -17,12 +18,23 @@ const layers = [
   population,
   nightlightsViirs,
   nightlightsHd,
+  nightlights500m,
   detectionShip,
   waterChlorophyll,
   waterSpm
 ];
 
 export default layers;
+
+const spotlightNames = {
+  be: 'Beijing',
+  gh: 'EUPorts',
+  du: 'EUPorts',
+  la: 'LosAngeles',
+  sf: 'SanFrancisco',
+  tk: 'Tokyo',
+  ny: 'NewYork'
+};
 
 const layersBySpotlight = {
   be: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
@@ -31,7 +43,7 @@ const layersBySpotlight = {
   la: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship'],
   sf: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm'],
   tk: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  ny: ['no2', 'co2', 'co2-diff', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  ny: ['no2', 'co2', 'co2-diff', 'nightlights-500m', 'detection-ship', 'water-chlorophyll', 'water-spm']
 };
 
 const layerOverridesBySpotlight = {
@@ -88,6 +100,7 @@ const layerOverridesBySpotlight = {
     }
   },
   ny: {
+    'nightlights-500m': handleNightlights500m,
     'water-chlorophyll': (l, spotlightId) => {
       return {
         ...l,
@@ -150,15 +163,22 @@ function handleSpotlightId (l, spotlightId) {
     : l;
 }
 
+function handleNightlights500m (l, spotlightId) {
+  const spotlightName = spotlightNames[spotlightId];
+
+  return {
+    ...l,
+    source: {
+      ...l.source,
+      tiles: l.source.tiles.map((t) =>
+        t.replace('{spotlightName}', spotlightName)
+      )
+    }
+  };
+}
+
 function handleNightlightsViirs (l, spotlightId) {
-  const spotlightName = {
-    be: 'Beijing',
-    gh: 'EUPorts',
-    du: 'EUPorts',
-    la: 'LosAngeles',
-    sf: 'SanFrancisco',
-    tk: 'Tokyo'
-  }[spotlightId];
+  const spotlightName = spotlightNames[spotlightId];
 
   return {
     ...l,
