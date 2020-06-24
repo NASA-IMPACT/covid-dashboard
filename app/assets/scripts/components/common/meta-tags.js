@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import theme from '../../styles/theme/theme';
 
 import config from '../../config';
-const { environment, baseUrl, appTitle } = config;
+const { environment, baseUrl, appTitle, twitterHandle } = config;
 
 const MetaTags = ({ title, description, children }) => {
   return (
@@ -18,7 +18,7 @@ const MetaTags = ({ title, description, children }) => {
 
       {/* Twitter */}
       <meta name='twitter:card' content='summary' />
-      <meta name='twitter:site' content='@NASAEarthData' />
+      <meta name='twitter:site' content={twitterHandle} />
       <meta name='twitter:title' content={title} />
       {description ? (
         <meta name='twitter:description' content={description} />
