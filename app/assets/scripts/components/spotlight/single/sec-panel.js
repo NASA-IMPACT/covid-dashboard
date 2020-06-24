@@ -13,6 +13,7 @@ import {
 import { Accordion, AccordionFold } from '../../common/accordion';
 import Heading from '../../../styles/type/heading';
 import Prose from '../../../styles/type/prose';
+import SummaryExpandable from '../../common/summary-expandable';
 
 import { glsp } from '../../../styles/utils/theme-values';
 import { utcDate } from '../../../utils/utils';
@@ -71,7 +72,7 @@ const Attribution = styled.p`
 `;
 
 export default function SecPanel (props) {
-  const { onPanelChange, indicators, indicatorGroups, selectedDate } = props;
+  const { onPanelChange, indicators, indicatorGroups, selectedDate, summary } = props;
 
   // Ensure that we only deal with groups that have data.
   const groups = (indicatorGroups || []).filter(g => (
@@ -91,6 +92,10 @@ export default function SecPanel (props) {
       }
       bodyContent={
         <BodyScroll>
+          {summary && (
+            <SummaryExpandable>{summary}</SummaryExpandable>
+          )}
+
           <Accordion allowMultiple initialState={[true]}>
             {({ checkExpanded, setExpanded }) => (
               !!groups.length && groups.map((group, idx) => (
@@ -174,6 +179,7 @@ export default function SecPanel (props) {
 
 SecPanel.propTypes = {
   onPanelChange: T.func,
+  summary: T.node,
   indicators: T.array,
   indicatorGroups: T.array,
   selectedDate: T.object
