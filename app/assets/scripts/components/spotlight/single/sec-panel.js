@@ -71,110 +71,119 @@ const Attribution = styled.p`
   margin-bottom: ${glsp()};
 `;
 
-export default function SecPanel (props) {
-  const { onPanelChange, indicators, indicatorGroups, selectedDate, summary } = props;
+class SecPanel extends React.Component {
+  renderChart (ind) {
+    const xDomain = ind.domain.date.map(utcDate);
+    const yDomain = ind.domain.indicator;
+    const { selectedDate } = this.props;
 
-  // Ensure that we only deal with groups that have data.
-  const groups = (indicatorGroups || []).filter(g => (
-    g.indicators.some(indId => indicators.find(ind => ind.id === indId))
-  ));
+    return (
+      <figure>
+        <LineChart
+          xDomain={xDomain}
+          yDomain={yDomain}
+          data={ind.data}
+          yUnit={ind.units}
+          selectedDate={selectedDate}
+          highlightBands={
+            ind.highlight_bands && ind.highlight_bands.length
+              ? ind.highlight_bands
+              : null
+          }
+          noBaseline={ind.data[0].baseline === undefined}
+          noBaselineConfidence
+          noIndicatorConfidence
+        />
+        {ind.attribution && (
+          <figcaption>
+            <Attribution>By: {ind.attribution}</Attribution>
+          </figcaption>
+        )}
+      </figure>
+    );
+  }
 
-  return (
-    <PanelSelf
-      collapsible
-      direction='right'
-      onPanelChange={onPanelChange}
-      initialState={isLargeViewport()}
-      headerContent={
-        <PanelHeadline>
-          <PanelTitle>Insights</PanelTitle>
-        </PanelHeadline>
-      }
-      bodyContent={
-        <BodyScroll>
-          {summary && (
-            <SummaryExpandable>{summary}</SummaryExpandable>
-          )}
+  render () {
+    const {
+      onPanelChange,
+      indicators,
+      indicatorGroups,
+      summary
+    } = this.props;
 
-          <Accordion allowMultiple initialState={[true]}>
-            {({ checkExpanded, setExpanded }) => (
-              !!groups.length && groups.map((group, idx) => (
-                <AccordionFold
-                  forwardedAs={PanelBlock}
-                  key={group.id}
-                  isFoldExpanded={checkExpanded(idx)}
-                  setFoldExpanded={(v) => setExpanded(idx, v)}
-                  renderHeader={({ isFoldExpanded, setFoldExpanded }) => (
-                    <PanelBlockHeader>
-                      <AccordionFoldTrigger
-                        isExpanded={isFoldExpanded}
-                        onClick={() => setFoldExpanded(!isFoldExpanded)}
-                      >
-                        <PanelBlockTitle>{group.label}</PanelBlockTitle>
-                      </AccordionFoldTrigger>
-                    </PanelBlockHeader>
-                  )}
-                  renderBody={() => (
-                    <PanelBodyInner>
-                      {group.prose && (
-                        <Prose size='small'>
-                          <p>{group.prose}</p>
-                        </Prose>
-                      )}
-                      {group.indicators.map((indId) => {
-                        const ind = indicators.find((o) => o.id === indId);
-                        if (!ind) return null;
+    // Ensure that we only deal with groups that have data.
+    const groups = (indicatorGroups || []).filter((g) =>
+      g.indicators.some((indId) => indicators.find((ind) => ind.id === indId))
+    );
 
-                        const xDomain = ind.domain.date.map(utcDate);
-                        const yDomain = ind.domain.indicator;
+    return (
+      <PanelSelf
+        collapsible
+        direction='right'
+        onPanelChange={onPanelChange}
+        initialState={isLargeViewport()}
+        headerContent={
+          <PanelHeadline>
+            <PanelTitle>Insights</PanelTitle>
+          </PanelHeadline>
+        }
+        bodyContent={
+          <BodyScroll>
+            {summary && <SummaryExpandable>{summary}</SummaryExpandable>}
 
-                        return (
-                          <section key={ind.id}>
-                            <Prose size='small'>
-                              <Heading as='h2' size='medium'>{ind.name}</Heading>
-                              {ind.description && <p>{ind.description}</p>}
-                              <figure>
-                                <LineChart
-                                  xDomain={xDomain}
-                                  yDomain={yDomain}
-                                  data={ind.data}
-                                  yUnit={ind.units}
-                                  selectedDate={selectedDate}
-                                  highlightBands={
-                                    ind.highlight_bands &&
-                                    ind.highlight_bands.length
-                                      ? ind.highlight_bands
-                                      : null
-                                  }
-                                  noBaseline={
-                                    ind.data[0].baseline === undefined
-                                  }
-                                  noBaselineConfidence
-                                  noIndicatorConfidence
-                                />
-                                {ind.attribution && (
-                                  <figcaption>
-                                    <Attribution>
-                                      By: {ind.attribution}
-                                    </Attribution>
-                                  </figcaption>
-                                )}
-                              </figure>
-                              {ind.notes && <p>{ind.notes}</p>}
-                            </Prose>
-                          </section>
-                        );
-                      })}
-                    </PanelBodyInner>
-                  )}
-                />
-              ))
-            )}
-          </Accordion>
-        </BodyScroll>
-      }
-    />
-  );
+            <Accordion allowMultiple initialState={[true]}>
+              {({ checkExpanded, setExpanded }) =>
+                !!groups.length &&
+                groups.map((group, idx) => (
+                  <AccordionFold
+                    forwardedAs={PanelBlock}
+                    key={group.id}
+                    isFoldExpanded={checkExpanded(idx)}
+                    setFoldExpanded={(v) => setExpanded(idx, v)}
+                    renderHeader={({ isFoldExpanded, setFoldExpanded }) => (
+                      <PanelBlockHeader>
+                        <AccordionFoldTrigger
+                          isExpanded={isFoldExpanded}
+                          onClick={() => setFoldExpanded(!isFoldExpanded)}
+                        >
+                          <PanelBlockTitle>{group.label}</PanelBlockTitle>
+                        </AccordionFoldTrigger>
+                      </PanelBlockHeader>
+                    )}
+                    renderBody={() => (
+                      <PanelBodyInner>
+                        {group.prose && (
+                          <Prose size='small'>
+                            <p>{group.prose}</p>
+                          </Prose>
+                        )}
+                        {group.indicators.map((indId) => {
+                          const ind = indicators.find((o) => o.id === indId);
+                          if (!ind) return null;
+
+                          return (
+                            <section key={ind.id}>
+                              <Prose size='small'>
+                                <Heading as='h2' size='medium'>
+                                  {ind.name}
+                                </Heading>
+                                {ind.description && <p>{ind.description}</p>}
+                                {ind.data && this.renderChart(ind)}
+                                {ind.notes && <p>{ind.notes}</p>}
+                              </Prose>
+                            </section>
+                          );
+                        })}
+                      </PanelBodyInner>
+                    )}
+                  />
+                ))}
+            </Accordion>
+          </BodyScroll>
+        }
+      />
+    );
+  }
 }
 
 SecPanel.propTypes = {
@@ -184,3 +193,5 @@ SecPanel.propTypes = {
   indicatorGroups: T.array,
   selectedDate: T.object
 };
+
+export default SecPanel;
