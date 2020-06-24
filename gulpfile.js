@@ -14,6 +14,12 @@ const through2 = require('through2');
 
 const { compile: collecticonsCompile } = require('collecticons-processor');
 
+const {
+  appTitle,
+  appDescription,
+  twitterHandle
+} = require('./app/assets/scripts/config/production').default;
+
 // /////////////////////////////////////////////////////////////////////////////
 // --------------------------- Variables -------------------------------------//
 // ---------------------------------------------------------------------------//
@@ -71,7 +77,10 @@ function serve () {
         // Replace the baseUrl placeholder on runtime.
         match: /{{baseurl}}/g,
         replace: ''
-      }
+      },
+      { match: /{{appTitle}}/g, replace: appTitle },
+      { match: /{{appDescription}}/g, replace: appDescription },
+      { match: /{{twitterHandle}}/g, replace: twitterHandle }
     ]
   });
 
@@ -233,6 +242,9 @@ function html () {
     // Add a prefix to all replacements so next line catches them.
     .pipe($.revRewrite({ prefix: '{{baseurl}}' }))
     .pipe($.replace('{{baseurl}}', baseurl))
+    .pipe($.replace('{{appTitle}}', appTitle))
+    .pipe($.replace('{{appDescription}}', appDescription))
+    .pipe($.replace('{{twitterHandle}}', twitterHandle))
     .pipe(gulp.dest('dist'));
 }
 
