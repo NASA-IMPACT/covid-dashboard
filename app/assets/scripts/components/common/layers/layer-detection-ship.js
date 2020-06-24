@@ -3,8 +3,7 @@ import { indicatorGroupColors } from '../../../styles/theme/theme';
 
 export default {
   id: 'detection-ship',
-  name: 'Ship Detections',
-  description: 'Ship detections by machine learning',
+  name: 'Shipping',
   type: 'inference-timeseries',
   domain: [
     '2020-03-11'
@@ -17,7 +16,7 @@ export default {
     raster: {
       type: 'raster',
       tiles: [
-        `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/planet/{spotlightId}_{date}.tif&resampling_method=nearest&bidx=1,2,3`
+        `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/planet/{spotlightId}-{date}.tif&resampling_method=nearest&bidx=1,2,3`
       ]
     }
   },

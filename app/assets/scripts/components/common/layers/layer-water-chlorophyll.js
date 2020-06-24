@@ -29,5 +29,5 @@ export default {
       '#67001F'
     ]
   },
-  info: 'Chlorophyll is an indicator of algae growth. This dataset shows the difference in chlorophyll abundance in 2020 compared to previous years. Redder colors indicate increases in chlorophyll, while bluer colors indicate decreases in chlorophyll. White areas indicate no change.'
+  info: 'Chlorophyll is an indicator of algae growth. Redder colors indicate increases in chlorophyll-a and worse water quality. Bluer colors indicate decreases in chlorophyll-a and improved water quality. White areas indicate no change.'
 };

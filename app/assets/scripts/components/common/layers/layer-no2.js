@@ -7,17 +7,19 @@ import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 export default {
   id: 'no2',
   name: 'Nitrogen dioxide',
-  description: 'Acute harm due to NO<sub>2</sub> exposure is only likely to arise in occupational settings. Direct exposure to the skin can cause irritations and burns.',
   type: 'raster-timeseries',
   domain: [
-    '2019-03-01',
-    '2020-03-01'
+    '2018-03-01',
+    '2020-04-01'
   ],
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_{date}_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1e16&color_map=custom_no2&color_formula=gamma r {gamma}`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_{date}_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2&color_formula=gamma r {gamma}`
     ]
+  },
+  paint: {
+    'raster-opacity': 0.75
   },
   exclusiveWith: ['co2', 'co2-diff', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: true,
@@ -40,5 +42,5 @@ export default {
       '#050308'
     ]
   },
-  info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated with higher levels of travel and economic activity. Lighter colors indicate lower levels of NO₂ and less activity.'
+  info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.'
 };

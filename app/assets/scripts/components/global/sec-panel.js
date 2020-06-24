@@ -13,9 +13,17 @@ import ShadowScrollbar from '../common/shadow-scrollbar';
 
 import { glsp } from '../../styles/utils/theme-values';
 import { utcDate } from '../../utils/utils';
-import { isLargeViewport } from '../../styles/utils/media-queries';
+import media, { isLargeViewport } from '../../styles/utils/media-queries';
 import DatePicker from '../common/date-picker';
 import { differenceInMonths, differenceInDays } from 'date-fns';
+
+import SummaryExpandable from '../common/summary-expandable';
+
+const PanelSelf = styled(Panel)`
+  ${media.largeUp`
+    width: 30rem;
+  `}
+`;
 
 const BodyScroll = styled(ShadowScrollbar)`
   flex: 1;
@@ -123,7 +131,7 @@ class ExpMapSecPanel extends React.Component {
 
   render () {
     return (
-      <Panel
+      <PanelSelf
         collapsible
         direction='right'
         onPanelChange={this.props.onPanelChange}
@@ -135,6 +143,12 @@ class ExpMapSecPanel extends React.Component {
         }
         bodyContent={
           <BodyScroll>
+            <SummaryExpandable>
+              <p>As communities around the world have changed their behavior in response to the spread of novel coronavirus, NASA satellites have observed associated changes in the environment.</p>
+              <p>Use the dashboard to interact with real NASA data and investigate how social distancing measures and regional shelter-in-place guidelines have affected Earth’s air, land, and water.</p>
+              <p>Explore global changes in nitrogen dioxide (NO2), a common air pollutant, and carbon dioxide (CO2), a potent greenhouse gas, on the worldwide map, or see how localized changes in water quality, nightlights, and other economic indicators for specific spotlight areas may have been influenced by changes in our behavior due to COVID-19.</p>
+              <p>This experimental dashboard will continue to evolve as more data become available.</p>
+            </SummaryExpandable>
             <InsightsBlock>
               {this.renderContent()}
             </InsightsBlock>

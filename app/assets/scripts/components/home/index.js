@@ -206,7 +206,7 @@ const IntroStories = styled.section`
   padding: ${glsp(0.75, 1, 1.25, 1)};
 
   ${media.smallUp`
-    min-height: 12rem;
+    min-height: 7.5rem;
   `}
   
   ${media.mediumUp`
@@ -216,7 +216,7 @@ const IntroStories = styled.section`
 
   &::before {
     ${collecticon('chart-bars')}
-    font-size: 8rem;
+    font-size: 6rem;
     line-height: 1;
     opacity: 0.16;
     position: absolute;
@@ -275,7 +275,7 @@ const Story = styled.article`
   display: flex;
 `;
 
-const StoryContent = styled.a`
+const StoryContent = styled(Link)`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -289,12 +289,6 @@ const StoryContent = styled.a`
 const StoryCopy = styled.div`
   display: grid;
   grid-gap: ${glsp()} 0;
-`;
-
-const StoryTitle = styled.h1`
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  margin: 0;
 `;
 
 const StoryProse = styled(Prose)`
@@ -537,9 +531,8 @@ class Home extends React.Component {
                     </IntroStoriesToolbar>
                   </IntroStoriesHeader>
                   <Story>
-                    <StoryContent title='Explore the data' href={currentStory.link}>
+                    <StoryContent title='Explore the data' to={currentStory.link}>
                       <StoryCopy>
-                        <StoryTitle>{currentStory.title}</StoryTitle>
                         <StoryProse>
                           <p>{currentStory.prose}</p>
                         </StoryProse>

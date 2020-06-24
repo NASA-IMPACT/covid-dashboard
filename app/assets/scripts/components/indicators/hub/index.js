@@ -41,23 +41,31 @@ class IndicatorsHub extends React.Component {
           <InpageHeader>
             <InpageHeaderInner>
               <InpageHeadline>
-                <InpageTitle>Indicators</InpageTitle>
+                <InpageTitle>Understanding the Indicators</InpageTitle>
               </InpageHeadline>
             </InpageHeaderInner>
           </InpageHeader>
           <InpageBody>
             <PageConstrainer>
               <HubFold>
-                <InpageHGroup
-                  title='Understanding the Indicators'
-                  dashColor={metadata.color}
-                />
                 <Prose>
                   <p>
-                    Although NASA cannot directly observe COVID-19 from space, we can observe how human actions in response to COVID-19 affect the world around us. We refer to these as indicators.
+                    Although NASA cannot see the novel coronavirus from space,
+                    we can observe how human actions in response to the
+                    coronavirus affect the world around us. We refer to these
+                    as indicators.
                   </p>
                   <p>
-                    This dashboard explores 10 key indicators -- 4 environmental and 6 economic -- that show how the planet is responding to our changing behavior.
+                    This dashboard explores key indicators to track and compare
+                    changes over time including: Water quality, nighttime
+                    lights, carbon dioxide (CO2), nitrogen dioxide (NO2), and
+                    ship activity in major ports.
+                  </p>
+                  <p>
+                    These indicators were chosen based on NASA researchers&apos;
+                    observations and the availability of satellite data to track
+                    human-induced changes of our planet. Click an indicator
+                    below to find out more.
                   </p>
                 </Prose>
               </HubFold>
