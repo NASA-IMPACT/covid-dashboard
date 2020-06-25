@@ -58,7 +58,7 @@ class DateRange extends React.Component {
       allowRange
     } = this.props;
 
-    if (allowRange) {
+    if (!allowRange) {
       return onChange({
         start: date,
         end: date
@@ -97,7 +97,8 @@ class DateRange extends React.Component {
       value: { start, end },
       min,
       max,
-      allowRange
+      allowRange,
+      className
     } = this.props;
 
     const compProps = allowRange ? {
@@ -111,7 +112,7 @@ class DateRange extends React.Component {
     };
 
     return (
-      <div onClick={this.onPickerClick}>
+      <div className={className} onClick={this.onPickerClick}>
         {this.state.pickerType === 'day' ? (
           <DatePicker
             previousMonthButtonLabel={<span>Previous Month</span>}
@@ -119,7 +120,7 @@ class DateRange extends React.Component {
             onChange={this.onDateSelect}
             // selectsStart={!start || !end}
             // selectsEnd={!start || !end}
-            monthsShown={2}
+            monthsShown={1}
             shouldCloseOnSelect={false}
             // startDate={start}
             // endDate={end || start}
@@ -148,6 +149,7 @@ class DateRange extends React.Component {
 }
 
 DateRange.propTypes = {
+  className: T.string,
   value: T.shape({
     start: T.object,
     end: T.object
