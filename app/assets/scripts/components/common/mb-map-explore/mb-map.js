@@ -222,7 +222,7 @@ class MbMap extends React.Component {
 
     // Define a common function to add markers
     const addMarker = (spotlight, map) => {
-      createMbMarker(map)
+      createMbMarker(map, { color: this.props.theme.color.primary })
         .setLngLat(spotlight.center)
         .addTo(map)
         .onClick((coords) => {

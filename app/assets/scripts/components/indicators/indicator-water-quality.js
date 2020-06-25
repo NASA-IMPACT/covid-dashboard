@@ -206,7 +206,7 @@ class WQLongForm extends React.Component {
             >
               Chlorophyll-a is an indicator of algae growth. During
               coronavirus-related shutdowns, changes in our activity may
-              affect the amount of nutrients flowing in water bodies. This
+              affect the amount of nutrients flowing into water bodies. This
               image shows the changes in chlorophyll-a for the San Francisco
               Bay Area on April 3, 2020. Redder colors indicate higher levels
               of chlorophyll-a and worse water quality. Bluer colors indicate

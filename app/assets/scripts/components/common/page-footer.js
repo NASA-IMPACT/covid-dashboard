@@ -2,16 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 
-import config from '../../config';
-
-import { Link } from 'react-router-dom';
 import { themeVal, stylizeFunction } from '../../styles/utils/general';
 import { glsp } from '../../styles/utils/theme-values';
 import media from '../../styles/utils/media-queries';
 import { headingAlt } from '../../styles/type/heading';
 import Button from '../../styles/button/button';
-
-const { appTitle } = config;
 
 const _rgba = stylizeFunction(rgba);
 
@@ -35,27 +30,6 @@ const PageFootInner = styled.div`
   align-items: center;
   margin: 0 auto;
   height: 100%;
-`;
-
-const PageFootTitle = styled(Link)`
-  display: block;
-
-  sup {
-    display: block;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    font-weight: ${themeVal('type.base.extrabold')};
-    text-transform: uppercase;
-    top: 0;
-  }
-
-  strong {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    font-weight: ${themeVal('type.base.light')};
-    letter-spacing: -0.025em;
-    display: block;
-  }
 `;
 
 const PageCredits = styled.address`
@@ -85,6 +59,20 @@ const Colophon = styled.p`
   }
 `;
 
+const CreditsLink = styled.a`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+
+  strong {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: ${themeVal('type.base.regular')};
+    letter-spacing: -0.0125em;
+    display: block;
+  }
+`;
+
 const InfoList = styled.dl`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -99,15 +87,30 @@ const InfoList = styled.dl`
     order: 2;
   `}
 
+  ${media.mediumUp`
+    grid-template-columns: repeat(4, auto);
+    grid-auto-flow: auto;
+    grid-gap: ${glsp(0, 0.5)};
+    align-items: center;
+  `}
+
   dt {
     ${headingAlt}
     font-size: 0.75rem;
     line-height: 1rem;
     grid-row: 1;
+
+    ${media.mediumUp`
+      margin-left: ${glsp()};
+    `}
   }
 
   dd {
     grid-row: 2;
+
+    ${media.mediumUp`
+      grid-row: 1;
+    `}
 
     > * {
       vertical-align: top;
@@ -150,11 +153,10 @@ const PageFooter = props => {
             </dd>
           </InfoList>
           <Colophon>
-            <PageFootTitle to='/' title='Go to welcome page'>
-              <sup>NASA — Earthdata</sup>
-              <strong>{appTitle}</strong>
-            </PageFootTitle>
-            <time dateTime='2020'>2020</time>
+            <CreditsLink href='https://earthdata.nasa.gov/' title='Visit NASA Earthdata'>
+              <strong>NASA Earthdata</strong>
+              <time dateTime='2020'>2020</time>
+            </CreditsLink>
           </Colophon>
         </PageCredits>
       </PageFootInner>

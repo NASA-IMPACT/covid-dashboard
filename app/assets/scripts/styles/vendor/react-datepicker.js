@@ -1,19 +1,20 @@
 import { css } from 'styled-components';
+import { rgba } from 'polished';
 
-import { themeVal } from '../utils/general';
+import { themeVal, stylizeFunction } from '../utils/general';
 import collecticon from '../collecticons';
 import { visuallyHidden } from '../helpers';
 
 // Some dependencies include styles that must be included.
 // This file overrides to be used the default react-datepicker styles.
 
+const _rgba = stylizeFunction(rgba);
+
 export default () => css`
   .react-datepicker {
     /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
     font-family: ${themeVal('type.base.family')};
     font-size: ${themeVal('type.base.size')};
-    color: inherit;
-    background: ${themeVal('color.surface')};
   }
 
   .react-datepicker__header {
@@ -34,7 +35,7 @@ export default () => css`
   }
 
   .react-datepicker__month {
-    box-shadow: 0 -1px 0 0 ${themeVal('color.baseAlphaA')};
+    box-shadow: 0 -1px 0 0 ${themeVal('color.baseAlphaB')};
     margin-top: 0;
     padding-top: 0.25rem;
   }
@@ -53,48 +54,35 @@ export default () => css`
   .react-datepicker__day {
     width: 2rem;
     line-height: 2rem;
-    outline: 0;
-    text-align: center;
-    transition: background-color 0.24s ease 0s;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.04);
+      background: ${themeVal('color.baseAlphaB')};
     }
   }
 
   .react-datepicker__day--in-range {
     color: #FFF;
-    background: rgba(255, 255, 255, 0.02);
+    background: ${_rgba(themeVal('color.primary'), 0.64)};
 
     &.react-datepicker__day--range-start,
     &.react-datepicker__day--range-end{
       color: #FFF;
-      background: rgba(255, 255, 255, 0.08);
+      background: ${themeVal('color.primary')};
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.12);
+      color: ${themeVal('color.base')};
+      background: ${themeVal('color.baseAlphaB')};
     }
   }
 
   .react-datepicker__day--in-selecting-range {
     color: #FFF;
-    background: rgba(255, 255, 255, 0.02);
-    transition: background-color 0.24s ease 0s;
+    background: ${_rgba(themeVal('color.primary'), 0.64)};
 
     &.react-datepicker__day--selecting-range-end {
       color: #FFF;
-      background: rgba(255, 255, 255, 0.08);
-    }
-  }
-
-  .react-datepicker__month-text,
-  .react-datepicker__quarter-text {
-    transition: background-color 0.24s ease 0s;
-
-    &:hover {
-      color: #FFF;
-      background: rgba(255, 255, 255, 0.08);
+      background: ${themeVal('color.primary')};
     }
   }
 
@@ -104,35 +92,23 @@ export default () => css`
     font-weight: inherit;
   }
 
-  .react-datepicker__day--disabled {
-    opacity: 0.48;
-    pointer-events: none;
-  }
-
   .react-datepicker__navigation {
     overflow: visible;
     text-indent: initial;
     border: none;
     top: 0;
     line-height: 1.5rem;
-    width: 1.5rem;
+    width: 1rem;
     height: 1.5rem;
-    outline: 0;
-    border-radius: ${themeVal('shape.rounded')};
-    transition: background-color 0.24s ease 0s;
-    text-align: center;
 
     span {
       ${visuallyHidden()}
     }
+  }
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    &:active {
-      background: rgba(255, 255, 255, 0.08);
-    }
+  .react-datepicker__day--disabled {
+    opacity: 0.48;
+    pointer-events: none;
   }
 
   .react-datepicker__navigation--next::before {
@@ -149,16 +125,6 @@ export default () => css`
   .react-datepicker__current-month {
     cursor: pointer;
     display: inline-block;
-    padding: 0 0.25rem;
-    transition: background-color 0.24s ease 0s;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    &:active {
-      background: rgba(255, 255, 255, 0.08);
-    }
 
     &::after {
       ${collecticon('swap-horizontal')}

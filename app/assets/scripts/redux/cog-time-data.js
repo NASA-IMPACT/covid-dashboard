@@ -1,4 +1,4 @@
-import { eachMonthOfInterval, format } from 'date-fns';
+import { eachMonthOfInterval, format, eachDayOfInterval } from 'date-fns';
 
 import config from '../config';
 import { makeActions, fetchJSON, makeAPIReducer } from './reduxeed';
@@ -14,25 +14,35 @@ export const invalidateCogTimeData = cogTimeDataActions.invalidate;
 export function fetchCogTimeData (id, timeframe, area) {
   return async function (dispatch) {
     dispatch(cogTimeDataActions.request(id));
+    const { start, end, timeUnit } = timeframe;
+    const dateFormat = timeUnit === 'month'
+      ? 'yyyyMM'
+      : 'yyyy_MM_dd';
 
-    const { start, end } = timeframe;
-    const months = eachMonthOfInterval({ start, end });
+    const interval = timeUnit === 'month'
+      ? eachMonthOfInterval({ start, end })
+      : eachDayOfInterval({ start, end });
+
     const url = `${config.api}/timelapse`;
 
-    const requests = months.map(async date => {
-      const reqDate = format(date, 'yyyyMM');
+    const requests = interval.map(async date => {
+      const reqDate = format(date, dateFormat);
 
       try {
         const { body } = await fetchJSON(url, {
           method: 'POST',
           body: JSON.stringify({
+            type: id,
             month: reqDate,
             geojson: area
           })
         });
+        const v = id === 'co2'
+          ? body.mean < 0 ? null : body.mean * 1000000
+          : body.mean < 0 ? null : body.mean;
         return {
           date: date.toISOString(),
-          value: body.mean < 0 ? null : body.mean
+          value: v
         };
       } catch (e) {
         return {

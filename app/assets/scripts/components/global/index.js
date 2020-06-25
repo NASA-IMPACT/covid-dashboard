@@ -116,6 +116,20 @@ const ExploreCarto = styled.section`
   overflow: hidden;
 `;
 
+const dateMax = (...args) =>
+  args.reduce((curr, d) => (curr.getTime() > d.getTime() ? curr : d));
+
+const cogLayers = {
+  no2: {
+    title: <>NO<sub>2</sub> Concentration</>,
+    unit: <>molecules/cm<sup>2</sup></>
+  },
+  co2: {
+    title: <>CO<sub>2</sub> Concentration</>,
+    unit: 'ppm'
+  }
+};
+
 class GlobalExplore extends React.Component {
   constructor (props) {
     super(props);
@@ -185,7 +199,25 @@ class GlobalExplore extends React.Component {
       },
       _urlActiveLayers: activeLayers,
       panelPrime: false,
-      panelSec: false
+      panelSec: false,
+      // Init dates for cog data according to a default.
+      cogDateRanges: Object.keys(cogLayers).reduce((acc, id) => {
+        const l = props.mapLayers.find(l => l.id === id);
+        const timeUnit = l.timeUnit || 'month';
+
+        const end = utcDate(l.domain[l.domain.length - 1]);
+        const domainStart = utcDate(l.domain[0]);
+        const start = timeUnit === 'month'
+          ? dateMax(sub(end, { months: 11 }), domainStart)
+          : dateMax(sub(end, { months: 2 }), domainStart);
+
+        return {
+          ...acc,
+          [id]: {
+            start, end
+          }
+        };
+      }, {})
     };
   }
 
@@ -204,20 +236,45 @@ class GlobalExplore extends React.Component {
 
   async requestCogData () {
     const {
-      aoi: { feature }
+      aoi: { feature },
+      cogDateRanges
     } = this.state;
-    const activeLayers = this.getActiveTimeseriesLayers();
+    const activeLayers = this.getActiveTimeseriesLayers()
+      .filter(l => !!cogLayers[l.id]);
 
     if (!feature || !activeLayers.length) return;
 
     showGlobalLoading();
-    // TODO: Change from hardcoded cog type and date
-    const end = utcDate('2020-03-01');
+    await Promise.all(activeLayers.map(l => {
+      const cogDate = cogDateRanges[l.id];
+      return this.props.fetchCogTimeData(
+        l.id,
+        {
+          start: cogDate.start,
+          end: cogDate.end,
+          timeUnit: l.timeUnit || 'month'
+        },
+        feature
+      );
+    }));
+    hideGlobalLoading();
+  }
+
+  async requestSingleCogData (id) {
+    const {
+      aoi: { feature },
+      cogDateRanges
+    } = this.state;
+
+    showGlobalLoading();
+    const cogLayerSettings = cogLayers[id];
+    const cogDate = cogDateRanges[id];
     await this.props.fetchCogTimeData(
-      'no2',
+      id,
       {
-        start: sub(end, { months: 11 }),
-        end
+        start: cogDate.start,
+        end: cogDate.end,
+        dateFormat: cogLayerSettings.dateFormat
       },
       feature
     );
@@ -275,6 +332,14 @@ class GlobalExplore extends React.Component {
             this.props.invalidateCogTimeData();
           }
         );
+        break;
+      case 'cog.date-range':
+        this.setState(state => ({
+          cogDateRanges: {
+            ...state.cogDateRanges,
+            [payload.id]: payload.date
+          }
+        }), () => this.requestSingleCogData(payload.id));
         break;
     }
   }
@@ -338,6 +403,8 @@ class GlobalExplore extends React.Component {
     const { spotlightList } = this.props;
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
+    const activeCogTimeseriesLayers = activeTimeseriesLayers
+      .filter(l => !!cogLayers[l.id]);
 
     // Check if there's any layer that's comparing.
     const comparingLayer = find(layers, 'comparing');
@@ -408,7 +475,10 @@ class GlobalExplore extends React.Component {
               <ExpMapSecPanel
                 aoiFeature={this.state.aoi.feature}
                 cogTimeData={this.props.cogTimeData}
-                layers={activeTimeseriesLayers}
+                cogDateRanges={this.state.cogDateRanges}
+                cogLayersSettings={cogLayers}
+                layers={activeCogTimeseriesLayers}
+                onAction={this.onPanelAction}
                 onPanelChange={({ revealed }) => {
                   this.resizeMap();
                   this.onPanelChange('panelSec', revealed);

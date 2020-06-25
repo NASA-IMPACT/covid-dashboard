@@ -175,9 +175,13 @@ const IntroStatsList = styled.dl`
   dd {
     font-family: ${themeVal('type.base.family')};
     font-weight: ${themeVal('type.heading.weight')};
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 1;
     grid-row: 2;
+
+    ${media.mediumUp`
+      font-size: 3rem;
+    `}
   }
 `;
 
@@ -489,7 +493,7 @@ class Home extends React.Component {
                     <dt>Areas</dt>
                     <dd><Link to='/explore' title='Explore the areas'>07</Link></dd>
                     <dt>Indicators</dt>
-                    <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
+                    <dd><Link to='/indicators' title='Learn about the indicators'>05</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
                 <IntroStories>

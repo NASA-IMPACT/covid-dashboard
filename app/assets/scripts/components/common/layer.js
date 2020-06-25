@@ -20,6 +20,19 @@ const makeGradient = (stops) => {
   const steps = stops.map((s, i) => `${s} ${i * d}%`);
   return `linear-gradient(to right, ${steps.join(', ')})`;
 };
+const renderTitle = input => {
+  const content = input.split('\u2082');
+
+  return (
+    <>
+      {
+        content.reduce((accum, el, ind) => (
+          ind < content.length - 1 ? [...accum, el, <sub key={el}>2</sub>] : [...accum, el]
+        ), [])
+      }
+    </>
+  );
+};
 
 const printLegendVal = (val) => typeof val === 'number' ? formatThousands(val, { shorten: true }) : val;
 
@@ -45,6 +58,10 @@ const LayerTitle = styled.h1`
   font-size: 1rem;
   line-height: 1.25rem;
   margin: 0;
+
+  sub {
+    bottom: 0;
+  }
 `;
 
 const LayerSubtitle = styled.p`
@@ -243,7 +260,7 @@ class Layer extends React.Component {
         renderHeader={({ isFoldExpanded, setFoldExpanded }) => (
           <LayerHeader>
             <LayerHeadline>
-              <LayerTitle title={label}>{label}</LayerTitle>
+              <LayerTitle title={label}>{renderTitle(label)}</LayerTitle>
               <LayerSubtitle>{typesSubtitles[type] || 'Layer'}</LayerSubtitle>
               <LayerSwatch swatch={swatchColor}>
                 <small>Color: {swatchName || 'Waikawa Gray'}</small>

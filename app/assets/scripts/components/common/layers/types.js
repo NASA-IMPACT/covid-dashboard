@@ -49,6 +49,11 @@ const replaceRasterTiles = (theMap, sourceId, tiles) => {
 };
 
 const replaceVectorData = (theMap, sourceId, data) => {
+  const empty = {
+    type: 'FeatureCollection',
+    features: []
+  };
+  theMap.getSource(sourceId).setData(empty);
   theMap.getSource(sourceId).setData(data);
 };
 
@@ -201,7 +206,7 @@ export const layerTypes = {
       ) return;
 
       // The source we're updating is not present.
-      if (!mbMap.getSource(id)) return;
+      if (!mbMap.getSource(vecId) || !mbMap.getSource(rastId)) return;
 
       const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
       const vectorData = vector.data.replace('{date}', formatDate);

@@ -71,8 +71,9 @@ export default class Development extends React.Component {
                 <p>
                   NASA started the development of the Dashboard in May 2020. This experimental site reflects a rapid response to COVID-19 currently underway and will continue to evolve as more data become available.
                 </p>
+                <p>This dashboard is built by the <a hreh='https://earthdata.nasa.gov'>NASA Earth Science Data Systems program</a> with help from various science teams and data providers. We are grateful for the many third-party open source projects that we have used.</p>
                 <p>
-                  We welcome your feedback to help improve the Dashboard.
+                  We welcome your feedback to help improve the Dashboard. To do so you can use the feedback option on this website. For an overview of known issues, please consult the Github <a href='https://github.com/NASA-IMPACT/covid-dashboard/issues'>issue queue</a>.
                 </p>
               </Prose>
               <ContributeCta>
