@@ -1,5 +1,11 @@
-# Covid Dashboard
+# COVID-19 Dashboard
+As communities around the world have changed their behavior in response to the spread of COVID-19, NASA satellites have observed changes in the environment. This experimental dashboard reflects a rapid response to COVID-19 that is currently underway and will continue to evolve as more data becomes available.
 
+Visit the live site on: https://earthdata.nasa.gov/covid19/
+
+This dashboard is powered by an [open source API](https://github.com/NASA-IMPACT/covid-api/) that is developed in parallel. This API focuses on serving the Cloud Optimized GeoTIFF and time-series indicator data that people can interact with in the dashboard.
+
+![](https://user-images.githubusercontent.com/751330/85645349-7213ac00-b667-11ea-9ab0-52e2b16d416d.jpg)
 
 ## Installation and Usage
 The steps below will walk you through setting up your own instance of the project.
