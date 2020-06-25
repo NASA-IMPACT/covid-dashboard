@@ -493,7 +493,7 @@ class Home extends React.Component {
                     <dt>Areas</dt>
                     <dd><Link to='/explore' title='Explore the areas'>07</Link></dd>
                     <dt>Indicators</dt>
-                    <dd><Link to='/indicators' title='Learn about the indicators'>04</Link></dd>
+                    <dd><Link to='/indicators' title='Learn about the indicators'>05</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
                 <IntroStories>
