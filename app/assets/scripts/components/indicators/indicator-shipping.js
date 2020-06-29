@@ -258,7 +258,7 @@ class ShippingLongForm extends React.Component {
             <InpageHGroup title='Approach' dashColor={metadata.color} />
             <Prose>
               <p>
-                NASA’s Interagency Implementation and Advanced Concepts Team
+                The Interagency Implementation and Advanced Concepts Team
                 (IMPACT), based at NASA’s Marshall Space Flight Center in
                 Huntsville, Alabama, trained an algorithm using supervised
                 machine learning techniques to detect ships on PlanetScope
@@ -303,14 +303,14 @@ class ShippingLongForm extends React.Component {
                 <p>
                   Ship detections will be provided daily, except when prevented
                   by significant cloud cover. After the machine learning model
-                  detects the ships, a secondary human validation is also
+                  detects the ships, a secondary human validation is
                   performed before the detections are made available for the
                   dashboard.
                 </p>
               </Prose>
             </FoldDetails>
             <MediaImage
-              src={`${baseUrl}/assets/graphics/content/Pixabay_ship-4490857_1280.jpg`}
+              src={`${baseUrl}/assets/graphics/content/indicators/supply-chain.png`}
               alt='Container Ship'
             >
               <figcaption>
