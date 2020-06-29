@@ -224,7 +224,7 @@ class WQLongForm extends React.Component {
             />
             <Prose>
               <p>
-                To determine the effect that COVID-19 lockdowns may have had on
+                To determine the effect that COVID-19 lockdowns may have on
                 global water quality, NASA is using satellite data and imagery
                 from the Moderate Resolution Imaging Spectroradiometer (MODIS)
                 instrument aboard the Aqua satellite and imagery from the
