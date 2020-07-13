@@ -52,14 +52,14 @@ const layerOverridesBySpotlight = {
       }),
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-22', '2020-03-15', '2020-03-18', '2020-03-21', '2020-03-22', '2020-04-23', '2020-04-24']
+        domain: ['2020-01-22', '2020-02-02', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-15', '2020-03-21', '2020-03-22', '2020-03-27', '2020-04-23', '2020-04-24']
       })
   },
   sf: {
     'nightlights-viirs': handleNightlightsViirs,
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-03-10', '2020-03-11', '2020-03-15', '2020-03-18', '2020-04-21']
+        domain: ['2020-01-22', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-08', '2020-03-10', '2020-03-11', '2020-03-15', '2020-03-27', '2020-04-21']
       }),
     'water-chlorophyll': (l, spotlightId) => {
       return {
@@ -97,7 +97,7 @@ const layerOverridesBySpotlight = {
     },
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-20', '2020-01-21', '2020-03-15', '2020-03-18', '2020-03-22']
+        domain: ['2020-01-20', '2020-01-21', '2020-01-22', '2020-02-02', '2020-02-03', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-18', '2020-03-22']
       }),
     'water-spm': (l, spotlightId) => {
       return {
