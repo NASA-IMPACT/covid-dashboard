@@ -461,6 +461,7 @@ class Home extends React.Component {
       activeLayers
     } = this.state;
     const currentStory = stories[storyIndex];
+    const { storyDate } = currentStory;
     const layers = this.getLayersWithState(mapLayers);
 
     const { isReady, getData } = this.props.spotlightList;
@@ -557,7 +558,7 @@ class Home extends React.Component {
                   onAction={this.onMapAction}
                   layers={layers}
                   activeLayers={activeLayers}
-                  date={new Date('03/01/20')}
+                  date={storyDate ? new Date(storyDate) : new Date('03/01/20')}
                   aoiState={null}
                   comparing={false}
                   disableControls
