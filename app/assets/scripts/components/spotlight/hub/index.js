@@ -23,6 +23,7 @@ import {
 } from '../../../styles/hub-pages';
 
 import { wrapApiResult } from '../../../redux/reduxeed';
+import { zeroPad } from '../../../utils/format';
 
 import config from '../../../config';
 const { baseUrl } = config;
@@ -34,8 +35,8 @@ const metadata = {
 class SpotlightAreasHub extends React.Component {
   render () {
     const { spotlightList } = this.props;
-
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
+    const spotlightsCount = spotlightAreas ? spotlightAreas.length : 0;
 
     return (
       <App pageTitle='Spotlight areas'>
@@ -58,13 +59,13 @@ class SpotlightAreasHub extends React.Component {
                     economic indicators.
                   </p>
                   <p>
-                    This dashboard highlights seven spotlight areas around the
+                    This dashboard highlights {zeroPad(spotlightsCount)} spotlight areas around the
                     world, allowing you to explore how a specific location&apos;s
                     response to COVID-19 outbreaks has influenced local
                     environmental signals.
                   </p>
                   <p>
-                    The seven spotlight areas were chosen based on their large
+                    The {zeroPad(spotlightsCount)} spotlight areas were chosen based on their large
                     populations and high level of economic activity, which
                     reveal significant changes in response to coronavirus
                     lockdown measures. For instance, larger urban areas where

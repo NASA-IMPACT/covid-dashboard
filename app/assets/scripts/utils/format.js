@@ -99,3 +99,6 @@ export function formatThousands (num, options) {
 
   return dec !== '' ? `${int}.${dec} ${largeNumUnit}` : `${int} ${largeNumUnit}`;
 }
+
+// Add zero leading decimals
+export const zeroPad = v => v < 10 ? `0${v}` : v;
