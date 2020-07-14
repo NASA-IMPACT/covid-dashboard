@@ -40,6 +40,7 @@ import {
 import { glsp } from '../../styles/utils/theme-values';
 import { surfaceElevatedD } from '../../styles/skins';
 import media from '../../styles/utils/media-queries';
+import { zeroPad } from '../../utils/format';
 
 import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
@@ -300,8 +301,6 @@ const StoryProse = styled(Prose)`
   display: grid;
   grid-gap: ${glsp()} 0;
 `;
-
-const zeroPad = v => v < 10 ? `0${v}` : v;
 
 class Home extends React.Component {
   constructor (props) {
