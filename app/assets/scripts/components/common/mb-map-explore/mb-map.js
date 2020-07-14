@@ -126,8 +126,10 @@ class MbMap extends React.Component {
 
   componentDidUpdate (prevProps, prevState) {
     // Manually trigger render of detached react components.
-    this.layerDropdownControl &&
-      this.layerDropdownControl.render(this.props, this.state);
+    this.overlayDropdownControl &&
+      this.overlayDropdownControl.render(this.props, this.state);
+    this.overlayDropdownControlCompare &&
+      this.overlayDropdownControlCompare.render(this.props, this.state);
 
     const { activeLayers, comparing, spotlightList } = this.props;
 
@@ -319,6 +321,16 @@ class MbMap extends React.Component {
       );
     }
 
+    if (this.props.enableOverlayControls) {
+      this.overlayDropdownControlCompare = new MapboxControl(
+        (props, state) => this.renderOverlayDropdown(props, state)
+      );
+
+      this.mbMapComparing.addControl(this.overlayDropdownControlCompare, 'top-left');
+      // Initial rendering.
+      this.overlayDropdownControlCompare.render(this.props, this.state);
+    }
+
     // Style attribution.
     this.mbMapComparing.addControl(
       new mapboxgl.AttributionControl({ compact: true })
@@ -392,20 +404,17 @@ class MbMap extends React.Component {
           'top-left'
         );
       }
+
+      if (this.props.enableOverlayControls) {
+        this.overlayDropdownControl = new MapboxControl(
+          (props, state) => this.renderOverlayDropdown(props, state)
+        );
+
+        this.mbMap.addControl(this.overlayDropdownControl, 'top-left');
+        // Initial rendering.
+        this.overlayDropdownControl.render(this.props, this.state);
+      }
     }
-
-    this.layerDropdownControl = new MapboxControl((props, state) => (
-      <ThemeProvider theme={props.theme}>
-        <LayerControlDropdown
-          overlayState={state.overlayState}
-          handleOverlayChange={this.handleOverlayChange}
-        />
-      </ThemeProvider>
-    ));
-
-    this.mbMap.addControl(this.layerDropdownControl, 'top-left');
-    // Initial rendering.
-    this.layerDropdownControl.render(this.props, this.state);
 
     // Style attribution
     this.mbMap.addControl(new mapboxgl.AttributionControl({ compact: true }));
@@ -449,6 +458,17 @@ class MbMap extends React.Component {
         zoom: round(this.mbMap.getZoom(), 2)
       });
     });
+  }
+
+  renderOverlayDropdown (props, state) {
+    return (
+      <ThemeProvider theme={props.theme}>
+        <LayerControlDropdown
+          overlayState={state.overlayState}
+          handleOverlayChange={this.handleOverlayChange}
+        />
+      </ThemeProvider>
+    );
   }
 
   renderPopover () {
@@ -565,6 +585,7 @@ MbMap.propTypes = {
   activeLayers: T.array,
   layers: T.array,
   enableLocateUser: T.bool,
+  enableOverlayControls: T.bool,
   disableControls: T.bool,
   spotlightList: T.object,
   spotlight: T.object,
