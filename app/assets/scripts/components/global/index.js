@@ -462,6 +462,7 @@ class GlobalExplore extends React.Component {
                   aoiState={this.state.aoi}
                   comparing={isComparing}
                   enableLocateUser
+                  enableOverlayControls
                   spotlightList={spotlightList}
                 />
                 <Timeline
