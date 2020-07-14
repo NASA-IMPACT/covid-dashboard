@@ -1,6 +1,6 @@
 import React from 'react';
 import T from 'prop-types';
-import styled, { withTheme } from 'styled-components';
+import styled, { withTheme, ThemeProvider } from 'styled-components';
 import mapboxgl from 'mapbox-gl';
 import CompareMbGL from 'mapbox-gl-compare';
 import { NavLink } from 'react-router-dom';
@@ -15,11 +15,13 @@ import mbAoiDraw from './mb-aoi-draw';
 import { round } from '../../../utils/format';
 import { createMbMarker } from './mb-popover/utils';
 import { getSpotlightLayers } from '../layers';
+import MapboxControl from '../mapbox-react-control';
 
 import ReactPopoverGl from './mb-popover';
 import Button from '../../../styles/button/button';
 import Prose from '../../../styles/type/prose';
 import Dl from '../../../styles/type/definition-list';
+import LayerControlDropdown from './map-layer-control';
 
 const { center, zoom: defaultZoom, minZoom, maxZoom, styleUrl } = config.map;
 
@@ -102,11 +104,19 @@ class MbMap extends React.Component {
     this.mbDraw = null;
 
     this.state = {
+      overlayState: {
+        spotlightMarkers: true
+      },
       popover: {
         coords: null,
         spotlightId: null
       }
     };
+
+    // Store markers to be able to remove them.
+    this.spotlightMarkersList = [];
+
+    this.handleOverlayChange = this.handleOverlayChange.bind(this);
   }
 
   componentDidMount () {
@@ -115,6 +125,10 @@ class MbMap extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    // Manually trigger render of detached react components.
+    this.layerDropdownControl &&
+      this.layerDropdownControl.render(this.props, this.state);
+
     const { activeLayers, comparing, spotlightList } = this.props;
 
     // Compare Maps
@@ -189,6 +203,18 @@ class MbMap extends React.Component {
       });
     }
 
+    // Update mapLayers if changed
+    const { spotlightMarkers } = this.state.overlayState;
+    if (prevState.overlayState.spotlightMarkers !== spotlightMarkers) {
+      if (spotlightMarkers) {
+        this.updateSpotlights();
+      } else {
+        this.spotlightMarkersList.forEach(m => m.remove());
+        this.spotlightMarkersList = [];
+        this.setState({ popover: {} });
+      }
+    }
+
     // Update all active layers.
     this.updateActiveLayers(prevProps);
 
@@ -207,6 +233,15 @@ class MbMap extends React.Component {
     }
   }
 
+  handleOverlayChange (id) {
+    this.setState(state => ({
+      // Replace the array index with the negated value.
+      overlayState: Object.assign({}, state.overlayState, {
+        [id]: !state.overlayState[id]
+      })
+    }));
+  }
+
   /**
    * Adds spotlight markers to mbMap and mbMapComparing. This functions uses
    * component state to control spotlights loading state, because maps will
@@ -222,7 +257,7 @@ class MbMap extends React.Component {
 
     // Define a common function to add markers
     const addMarker = (spotlight, map) => {
-      createMbMarker(map, { color: this.props.theme.color.primary })
+      return createMbMarker(map, { color: this.props.theme.color.primary })
         .setLngLat(spotlight.center)
         .addTo(map)
         .onClick((coords) => {
@@ -234,14 +269,16 @@ class MbMap extends React.Component {
     // Add markers to mbMap, if not done yet
     if (this.mbMap) {
       spotlights.forEach((s) => {
-        addMarker(s, this.mbMap);
+        const m = addMarker(s, this.mbMap);
+        this.spotlightMarkersList.push(m);
       });
     }
 
     // Add markers to mbMapComparing, if not done yet
     if (this.mbMapComparing) {
       spotlights.forEach((s) => {
-        addMarker(s, this.mbMapComparing);
+        const m = addMarker(s, this.mbMapComparing);
+        this.spotlightMarkersList.push(m);
       });
     }
   }
@@ -356,6 +393,19 @@ class MbMap extends React.Component {
         );
       }
     }
+
+    this.layerDropdownControl = new MapboxControl((props, state) => (
+      <ThemeProvider theme={props.theme}>
+        <LayerControlDropdown
+          overlayState={state.overlayState}
+          handleOverlayChange={this.handleOverlayChange}
+        />
+      </ThemeProvider>
+    ));
+
+    this.mbMap.addControl(this.layerDropdownControl, 'top-left');
+    // Initial rendering.
+    this.layerDropdownControl.render(this.props, this.state);
 
     // Style attribution
     this.mbMap.addControl(new mapboxgl.AttributionControl({ compact: true }));
