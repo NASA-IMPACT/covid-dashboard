@@ -22,8 +22,8 @@ export default {
   swatch: indicatorGroupColors['greenhouse-gas'],
   legend: {
     type: 'gradient',
-    min: 'less ppm',
-    max: 'more ppm',
+    min: '< -1 ppm',
+    max: '> 1 ppm',
     stops: [
       '#3A88BD',
       '#C9E0ED',
