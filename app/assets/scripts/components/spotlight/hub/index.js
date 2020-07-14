@@ -1,6 +1,7 @@
 import React from 'react';
 import T from 'prop-types';
 import { connect } from 'react-redux';
+import converter from 'number-to-words';
 
 import App from '../../common/app';
 import {
@@ -36,7 +37,7 @@ class SpotlightAreasHub extends React.Component {
   render () {
     const { spotlightList } = this.props;
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
-    const spotlightsCount = spotlightAreas ? spotlightAreas.length : 0;
+    const spotlightsCount = converter.toWords(spotlightAreas ? spotlightAreas.length : 0);
 
     return (
       <App pageTitle='Spotlight areas'>
