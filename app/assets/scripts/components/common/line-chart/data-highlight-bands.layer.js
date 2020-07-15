@@ -1,34 +1,19 @@
-import { css } from 'styled-components';
-
 import { utcDate } from '../../../utils/utils';
-import { themeVal } from '../../../styles/utils/general';
-import { _rgba } from '../../../styles/utils/theme-values';
 
-const styles = props => css`
-  /* Data specific styles */
-  .data-bands {
-    .band {
-      fill-opacity: 0.16;
-      fill: ${themeVal('color.tertiary')};
-    }
-  }
+const styles = props => '';
 
-  .data-bands-labels {
-    .label {
-      font-size: 0.75rem;
-      fill: ${_rgba(themeVal('type.base.color'), 0.96)};
-      font-weight: ${themeVal('type.base.bold')};
-    }
-  }
-`;
+const bandColors = [
+  '#ff000020',
+  '#00ff0020',
+  '#0000ff20',
+  '#ffff0020'
+];
 
 export default {
   styles,
   init: ctx => {
     ctx.dataCanvas
       .append('g').attr('class', 'data-bands');
-    ctx.dataCanvas
-      .append('g').attr('class', 'data-bands-labels');
   },
 
   update: ctx => {
@@ -53,32 +38,10 @@ export default {
       .attr('class', 'band')
       .merge(bands)
       // Update current.
+      .attr('fill', (d, i) => bandColors[i] || '#00000020')
       .attr('x', d => xScale(utcDate(d.interval[0])))
       .attr('y', 0)
       .attr('width', d => xScale(utcDate(d.interval[1])) - xScale(utcDate(d.interval[0])))
       .attr('height', height);
-
-    const labels = dataCanvas
-      .select('.data-bands-labels')
-      .selectAll('.label')
-      .raise()
-      .data(data);
-
-    // Remove old.
-    labels.exit().remove();
-    // Handle new.
-    labels
-      .enter()
-      .append('text')
-      .attr('class', 'label')
-      .merge(labels)
-      // Update current.
-      .text(d => d.label)
-      .attr('y', d => xScale(utcDate(d.interval[0])))
-      .attr('x', 0)
-      .attr('transform', 'rotate(-90)')
-      .attr('text-anchor', 'end')
-      .attr('dy', '1.15em')
-      .attr('dx', '-0.5em');
   }
 };
