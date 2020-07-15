@@ -26,7 +26,7 @@ export default {
     enabled: true,
     help: 'Compare with baseline',
     yearDiff: 0,
-    mapLabel: date => `Base - Mean (${format(date, "dd MMM yy''")})`,
+    mapLabel: date => `${format(date, 'dd MMM yyyy')}: Base vs Mean`,
     source: {
       type: 'raster',
       tiles: [
