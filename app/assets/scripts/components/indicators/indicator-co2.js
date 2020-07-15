@@ -227,7 +227,7 @@ class CO2LongForm extends React.Component {
                   than NO<sub>2</sub>, scientists anticipate much smaller
                   changes in the atmospheric concentration of CO<sub>2</sub> due
                   to its larger atmospheric abundance, relatively long lifespan,
-                  and role of trees and other plants in its seasonal absorption.
+                  and the role of trees and other plants in its seasonal absorption.
                 </p>
                 <p>
                   Because of this, regional-scale changes in CO<sub>2</sub>{' '}

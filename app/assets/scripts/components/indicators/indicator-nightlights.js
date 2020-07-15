@@ -234,10 +234,10 @@ class BMLongForm extends React.Component {
               />
               <Prose>
                 <p>
-                  Each spotlight city has a slider for turning night lights on and off. The darker purple indicates fewer night lights, while the lighter yellow indicates more. By comparing regions before and after guidelines to shelter-in-place began, researchers are able to visualize the extent to which social distancing measures affected various economic activities based on whether or not light pollution increased or decreased, which highways were shut down, and which cities stayed the same.
+                  Each spotlight city has a slider for turning night lights on and off. The darker purple indicates fewer night lights, while the lighter yellow indicates more. By comparing regions before and after guidelines to shelter-in-place began, researchers are able to visualize the extent to which social distancing measures affected various economic activities based on whether light pollution increased or decreased, which highways were shut down, and which cities stayed the same.
                 </p>
                 <p>
-                  The products featured are 500-meter (VNP46) and 30-meter Black Marble High Definition (HD) nighttime lights. Black Marble HD downscales radiances from the 500-meter product to street level using optical imagery from Landsat 8, a NASA and the U.S. Geological Survey (USGS) satellite, along with OpenStreetMap ancillary layers. This helps visualize neighborhoods and commercial centers that have less activity – or closures – due to social distancing restrictions.
+                  The products featured are 500-meter (VNP46) and 30-meter Black Marble High Definition (HD) nighttime lights. Black Marble HD downscales radiances from the 500-meter product to street level using optical imagery from Landsat 8, a NASA and U.S. Geological Survey (USGS) satellite, along with OpenStreetMap ancillary layers. This helps visualize neighborhoods and commercial centers that have less activity – or closures – due to social distancing restrictions.
                 </p>
 
               </Prose>

@@ -40,10 +40,12 @@ import {
 import { glsp } from '../../styles/utils/theme-values';
 import { surfaceElevatedD } from '../../styles/skins';
 import media from '../../styles/utils/media-queries';
+import { zeroPad } from '../../utils/format';
 
 import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
 import { mod } from '../../utils/utils';
+import indicators from '../indicators';
 
 const CYCLE_TIME = 8000;
 
@@ -459,7 +461,12 @@ class Home extends React.Component {
       activeLayers
     } = this.state;
     const currentStory = stories[storyIndex];
+    const { storyDate } = currentStory;
     const layers = this.getLayersWithState(mapLayers);
+
+    const { isReady, getData } = this.props.spotlightList;
+    const spotlightsCount = isReady() ? getData().length : 0;
+    const indicatorsCount = indicators.filter(i => i.LongForm).length;
 
     return (
       <App pageTitle='Home'>
@@ -491,9 +498,9 @@ class Home extends React.Component {
                   <IntroStatsTitle>Some numbers</IntroStatsTitle>
                   <IntroStatsList>
                     <dt>Areas</dt>
-                    <dd><Link to='/explore' title='Explore the areas'>07</Link></dd>
+                    <dd><Link to='/explore' title='Explore the areas'>{zeroPad(spotlightsCount)}</Link></dd>
                     <dt>Indicators</dt>
-                    <dd><Link to='/indicators' title='Learn about the indicators'>05</Link></dd>
+                    <dd><Link to='/indicators' title='Learn about the indicators'>{zeroPad(indicatorsCount)}</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
                 <IntroStories>
@@ -551,7 +558,7 @@ class Home extends React.Component {
                   onAction={this.onMapAction}
                   layers={layers}
                   activeLayers={activeLayers}
-                  date={new Date('03/01/20')}
+                  date={storyDate ? new Date(storyDate) : new Date('03/01/20')}
                   aoiState={null}
                   comparing={false}
                   disableControls
@@ -567,11 +574,13 @@ class Home extends React.Component {
 
 Home.propTypes = {
   fetchSpotlightSingle: T.func,
+  spotlightList: T.object,
   spotlight: T.object
 };
 
 function mapStateToProps (state, props) {
   return {
+    spotlightList: wrapApiResult(state.spotlight.list),
     spotlight: wrapApiResult(state.spotlight.single, true)
   };
 }

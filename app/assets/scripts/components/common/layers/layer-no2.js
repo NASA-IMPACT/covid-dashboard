@@ -10,7 +10,7 @@ export default {
   type: 'raster-timeseries',
   domain: [
     '2018-03-01',
-    '2020-04-01'
+    '2020-06-01'
   ],
   source: {
     type: 'raster',
