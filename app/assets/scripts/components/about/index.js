@@ -52,16 +52,16 @@ export default class About extends React.Component {
                 </p>
                 <p>
                   This dashboard features data collected and analyzed by NASA.
-                  Information about Earth systems is gathered by a fleet of powerful global Earth-Observing satellites, instruments
+                  Information about Earth systems is gathered by a fleet of powerful global Earth-observing satellites, instruments
                   aboard the International Space Station, from airborne science campaigns, and via ground observations. With this
-                  data we have been able to monitor some of those changes and this is allowing us to track and compare these
+                  data we have been able to monitor some of those changes, and this is allowing us to track and compare these
                   changes over time.
                 </p>
                 <p>
-                  NASA will further expand the impact of the data sets presented in this dashboard in collaboration with
-                  European Space Agency (ESA) and the Japan Aerospace Exploration Agency (JAXA), who also have created their own
+                  NASA will further expand the analysis of the data sets presented here in collaboration with the
+                  European Space Agency (ESA) and the Japan Aerospace Exploration Agency (JAXA). ESA and JAXA have created their own
                   online data portals to provide an even richer picture of what is happening on our home planet during this time of
-                  world crisis by developing a fourth dashboard that will combine the unique data of each agency for more comparisons
+                  crisis. A fourth, tri-agency dashboard will combine the unique data of each agency for more comparisons
                   and deeper understandings now and over time.
                 </p>
                 <p>
