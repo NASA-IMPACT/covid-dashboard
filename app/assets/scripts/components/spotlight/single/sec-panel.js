@@ -2,6 +2,8 @@ import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
 
+import { themeVal } from '../../../styles/utils/general';
+import { visuallyHidden } from '../../../styles/helpers';
 import LineChart from '../../common/line-chart/chart';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import ShadowScrollbar from '../../common/shadow-scrollbar';
@@ -11,7 +13,7 @@ import {
   PanelBlockTitle
 } from '../../common/panel-block';
 import { Accordion, AccordionFold } from '../../common/accordion';
-import Heading from '../../../styles/type/heading';
+import Heading, { headingAlt } from '../../../styles/type/heading';
 import Prose from '../../../styles/type/prose';
 import SummaryExpandable from '../../common/summary-expandable';
 
@@ -61,14 +63,53 @@ const PanelBodyInner = styled.div`
   figure {
     margin-top: -1rem;
   }
+
+  figcaption {
+    display: grid;
+    grid-gap: ${glsp(0.5)};
+  }
 `;
 
-const Attribution = styled.p`
+const CaptionTitle = styled.h6`
+  ${visuallyHidden()}
+`;
+
+const CaptionAttribution = styled.address`
   font-size: 0.874rem;
-  text-align: right;
+  text-align: center;
   font-style: italic;
   padding-right: ${glsp(2)};
   margin-bottom: ${glsp()};
+`;
+
+const CaptionLegend = styled.dl`
+  display: grid;
+  grid-gap: ${glsp(1 / 2)};
+  grid-template-columns: min-content min-content;
+  grid-auto-rows: auto;
+  grid-auto-flow: column;
+  justify-content: center;
+
+  dt {
+    display: flex;
+
+    span {
+      display: block;
+      width: 1rem;
+      height: 0.5rem;
+      font-size: 0;
+      border-radius: ${themeVal('shape.rounded')};
+      background: red;
+      box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
+      margin-top: 0.25rem;
+    }
+  }
+
+  dd {
+    ${headingAlt()}
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
 `;
 
 class SecPanel extends React.Component {
@@ -96,7 +137,17 @@ class SecPanel extends React.Component {
         />
         {ind.attribution && (
           <figcaption>
-            <Attribution>By: {ind.attribution}</Attribution>
+            <CaptionTitle>Legend</CaptionTitle>
+            <CaptionLegend>
+              <dt><span>#FF0000</span></dt>
+              <dd>Indicator</dd>
+              <dt><span>#FF0000</span></dt>
+              <dd>Baseline</dd>
+              <dt><span>#FF0000</span></dt>
+              <dd>Lockdown period</dd>
+            </CaptionLegend>
+            <CaptionTitle>Attribution</CaptionTitle>
+            <CaptionAttribution>By {ind.attribution}</CaptionAttribution>
           </figcaption>
         )}
       </figure>
