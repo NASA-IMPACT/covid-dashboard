@@ -141,19 +141,25 @@ class SecPanel extends React.Component {
             <CaptionLegend>
               {ind.data[0].indicator !== undefined && (
                 <>
-                  <dt><span style={{ backgroundColor: '#2276AC' }}>#2276AC</span></dt>
+                  <dt>
+                    <span style={{ backgroundColor: '#2276AC' }}>#2276AC</span>
+                  </dt>
                   <dd>Indicator</dd>
                 </>
               )}
               {ind.data[0].baseline !== undefined && (
                 <>
-                  <dt><span style={{ backgroundColor: '#2C3E5080' }}>#2C3E5080</span></dt>
+                  <dt>
+                    <span style={{ backgroundColor: '#2C3E5080' }}>#2C3E5080</span>
+                  </dt>
                   <dd>Baseline</dd>
                 </>
               )}
               {ind.highlight_bands && ind.highlight_bands.map((band, i) => (
                 <React.Fragment key={band.label}>
-                  <dt><span style={{ backgroundColor: getBandColor(i) }}>{getBandColor(i)}</span></dt>
+                  <dt>
+                    <span style={{ backgroundColor: getBandColor(i) }}>{getBandColor(i)}</span>
+                  </dt>
                   <dd>{band.label}</dd>
                 </React.Fragment>
               ))}

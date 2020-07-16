@@ -11,7 +11,7 @@ const bandColors = [
 
 const bandColorDefault = '#00000020';
 
-export const getBandColor = (idx) => bandColors[idx] || bandColorDefault
+export const getBandColor = (idx) => bandColors[idx] || bandColorDefault;
 
 export default {
   styles,
