@@ -135,39 +135,41 @@ class SecPanel extends React.Component {
           noBaselineConfidence
           noIndicatorConfidence
         />
-        {ind.attribution && (
-          <figcaption>
-            <CaptionTitle>Legend</CaptionTitle>
-            <CaptionLegend>
-              {ind.data[0].indicator !== undefined && (
-                <>
-                  <dt>
-                    <span style={{ backgroundColor: '#2276AC' }}>#2276AC</span>
-                  </dt>
-                  <dd>Indicator</dd>
-                </>
-              )}
-              {ind.data[0].baseline !== undefined && (
-                <>
-                  <dt>
-                    <span style={{ backgroundColor: '#2C3E5080' }}>#2C3E5080</span>
-                  </dt>
-                  <dd>Baseline</dd>
-                </>
-              )}
-              {ind.highlight_bands && ind.highlight_bands.map((band, i) => (
-                <React.Fragment key={band.label}>
-                  <dt>
-                    <span style={{ backgroundColor: getBandColor(i) }}>{getBandColor(i)}</span>
-                  </dt>
-                  <dd>{band.label}</dd>
-                </React.Fragment>
-              ))}
-            </CaptionLegend>
-            <CaptionTitle>Attribution</CaptionTitle>
-            <CaptionAttribution>By {ind.attribution}</CaptionAttribution>
-          </figcaption>
-        )}
+        <figcaption>
+          <CaptionTitle>Legend</CaptionTitle>
+          <CaptionLegend>
+            {ind.data[0].indicator !== undefined && (
+              <>
+                <dt>
+                  <span style={{ backgroundColor: '#2276AC' }}>#2276AC</span>
+                </dt>
+                <dd>Indicator</dd>
+              </>
+            )}
+            {ind.data[0].baseline !== undefined && (
+              <>
+                <dt>
+                  <span style={{ backgroundColor: '#2C3E5080' }}>#2C3E5080</span>
+                </dt>
+                <dd>Baseline</dd>
+              </>
+            )}
+            {ind.highlight_bands && ind.highlight_bands.map((band, i) => (
+              <React.Fragment key={band.label}>
+                <dt>
+                  <span style={{ backgroundColor: getBandColor(i) }}>{getBandColor(i)}</span>
+                </dt>
+                <dd>{band.label}</dd>
+              </React.Fragment>
+            ))}
+          </CaptionLegend>
+          {ind.attribution && (
+            <>
+              <CaptionTitle>Attribution</CaptionTitle>
+              <CaptionAttribution>By {ind.attribution}</CaptionAttribution>
+            </>
+          )}
+        </figcaption>
       </figure>
     );
   }
