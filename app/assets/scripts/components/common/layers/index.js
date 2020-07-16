@@ -59,7 +59,7 @@ const layerOverridesBySpotlight = {
     'nightlights-viirs': handleNightlightsViirs,
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-22', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-08', '2020-03-10', '2020-03-11', '2020-03-27', '2020-04-21']
+        domain: ['2020-01-22', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-08', '2020-03-10', '2020-03-11', '2020-04-21']
       }),
     'water-chlorophyll': (l, spotlightId) => {
       return {
