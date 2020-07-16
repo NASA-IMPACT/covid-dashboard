@@ -12,11 +12,6 @@ const styles = props => css`
     &:hover {
       cursor: pointer;
     }
-    .bisector-interact {
-      stroke: ${themeVal('color.baseAlphaC')};
-      stroke-width: 4px;
-      stroke-linecap: round;
-    }
     .bisector-select {
       stroke: ${themeVal('color.baseAlphaD')};
       stroke-width: 2px;
@@ -40,68 +35,63 @@ export default {
       .append('g')
       .attr('class', 'bisector');
 
-    const bisectorInteract = bisectorG.append('line')
-      .attr('class', 'bisector-interact')
-      .style('display', 'none');
+    bisectorG
+      .append('g')
+      .attr('class', 'interactive-bars');
 
     bisectorG.append('line')
       .attr('class', 'bisector-select')
+      .style('pointer-events', 'none')
       .style('display', 'none');
     // Using a foreign object is needed to include a div with the text.
     // The main reason for this is to be able to easily add a background to
     // the text.
     bisectorG.append('foreignObject')
       .attr('class', 'bisector-select-label')
+      .style('pointer-events', 'none')
       .attr('transform', 'rotate(-90)')
       .append('xhtml:div')
       .append('span')
       .text('Timeline date (closest)');
-
-    bisectorG.append('rect')
-      .attr('class', 'trigger-rect')
-      .style('fill', 'none')
-      .style('pointer-events', 'all')
-      .on('mouseover', function () {
-        const xPos = d3.mouse(this)[0];
-        const date = ctx.xScale.invert(xPos);
-        const closestDataPoint = bisectByDate(ctx.props.data, date);
-        bisectorInteract.style('display', '');
-        ctx.onInternalAction('bisector.show', { doc: closestDataPoint });
-      })
-      .on('mouseout', function () {
-        bisectorInteract.style('display', 'none');
-        ctx.onInternalAction('bisector.hide');
-      })
-      .on('mousemove', function () {
-        const xPos = d3.mouse(this)[0];
-        const date = ctx.xScale.invert(xPos);
-        const closestDataPoint = bisectByDate(ctx.props.data, date);
-        const xPosSnap = ctx.xScale(utcDate(closestDataPoint.date));
-        const { height } = ctx.getSize();
-        bisectorInteract
-          .attr('y2', 0)
-          .attr('y1', height)
-          .attr('x1', xPosSnap)
-          .attr('x2', xPosSnap);
-        ctx.onInternalAction('bisector.move', { doc: closestDataPoint });
-      // })
-      // .on('click', function () {
-      });
   },
 
   update: ctx => {
+    const { dataCanvas, props, xScale } = ctx;
     const { selectedDate } = ctx.props;
+    const { height } = ctx.getSize();
 
-    const { width, height } = ctx.getSize();
+    const interactiveBars = dataCanvas.select('.bisector .interactive-bars');
 
-    ctx.dataCanvas
-      .select('.bisector')
-      .raise()
-      .style('display', '')
-      .raise()
-      .select('.trigger-rect')
-      .attr('width', width)
-      .attr('height', height);
+    // Append the rectangles for the bar chart
+    const bars = interactiveBars.selectAll('.bar')
+      .data(props.data);
+
+    // Remove old.
+    bars.exit().remove();
+    // Handle new.
+    bars
+      .enter()
+      .append('rect')
+      .attr('class', 'bar')
+      .merge(bars)
+      // Update current.
+      .style('fill-opacity', 0)
+      .style('pointer-events', 'all')
+      .attr('x', d => xScale(utcDate(d.date)))
+      .attr('width', xScale.bandwidth())
+      .attr('y', 0)
+      .attr('height', height)
+      .on('mouseover', function () {
+        const bar = d3.select(this);
+        ctx.onInternalAction('bisector.show', { doc: bar.datum() });
+      })
+      .on('mouseout', function () {
+        d3.select(this).style('fill-opacity', 0);
+        ctx.onInternalAction('bisector.hide');
+      })
+      .on('mousemove', function () {
+        d3.select(this).style('fill-opacity', 0.16);
+      });
 
     const domain = ctx.xScale.domain();
     if (selectedDate && isWithinInterval(selectedDate, { start: domain[0], end: domain[domain.length - 1] })) {

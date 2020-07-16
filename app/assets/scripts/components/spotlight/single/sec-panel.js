@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { themeVal } from '../../../styles/utils/general';
 import { visuallyHidden } from '../../../styles/helpers';
 import LineChart from '../../common/line-chart/chart';
+import BarChart from '../../common/bar-chart/chart';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import ShadowScrollbar from '../../common/shadow-scrollbar';
 import {
@@ -21,7 +22,7 @@ import { glsp } from '../../../styles/utils/theme-values';
 import { utcDate } from '../../../utils/utils';
 import collecticon from '../../../styles/collecticons';
 import media, { isLargeViewport } from '../../../styles/utils/media-queries';
-import { getBandColor } from '../../common/line-chart/data-highlight-bands.layer';
+import { getBandColor } from '../../common/common-chart-utils/data-highlight-bands.layer';
 
 const PanelSelf = styled(Panel)`
   ${media.largeUp`
@@ -120,21 +121,35 @@ class SecPanel extends React.Component {
 
     return (
       <figure>
-        <LineChart
-          xDomain={xDomain}
-          yDomain={yDomain}
-          data={ind.data}
-          yUnit={ind.units}
-          selectedDate={selectedDate}
-          highlightBands={
-            ind.highlight_bands && ind.highlight_bands.length
-              ? ind.highlight_bands
-              : null
-          }
-          noBaseline={ind.data[0].baseline === undefined}
-          noBaselineConfidence
-          noIndicatorConfidence
-        />
+        {ind.id === 'ship-detections' ? (
+          <BarChart
+            yDomain={yDomain}
+            data={ind.data}
+            yUnit={ind.units}
+            selectedDate={selectedDate}
+            highlightBands={
+              ind.highlight_bands && ind.highlight_bands.length
+                ? ind.highlight_bands
+                : null
+            }
+          />
+        ) : (
+          <LineChart
+            xDomain={xDomain}
+            yDomain={yDomain}
+            data={ind.data}
+            yUnit={ind.units}
+            selectedDate={selectedDate}
+            highlightBands={
+              ind.highlight_bands && ind.highlight_bands.length
+                ? ind.highlight_bands
+                : null
+            }
+            noBaseline={ind.data[0].baseline === undefined}
+            noBaselineConfidence
+            noIndicatorConfidence
+          />
+        )}
         <figcaption>
           <CaptionTitle>Legend</CaptionTitle>
           <CaptionLegend>

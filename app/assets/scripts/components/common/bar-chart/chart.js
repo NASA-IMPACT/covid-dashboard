@@ -16,9 +16,7 @@ import { utcDate } from '../../../utils/utils';
 import { glsp } from '../../../styles/utils/theme-values';
 import { round } from '../../../utils/format';
 
-import debugLayer from './debug.layer';
 import dataBandsLayer from '../common-chart-utils/data-highlight-bands.layer';
-import dataBaselineLayer from './data-baseline.layer';
 import dataSeriesLayer from './data-series.layer';
 import bisectorLayer from './bisector.layer';
 import xaxisLayer from './xaxis.layer';
@@ -78,19 +76,17 @@ const ChartWrapper = styled(SizeAwareElement)`
     }
   }
 
-  ${debugLayer.styles}
   ${dataBandsLayer.styles}
-  ${dataBaselineLayer.styles}
   ${dataSeriesLayer.styles}
   ${bisectorLayer.styles}
   ${xaxisLayer.styles}
   ${yaxisLayer.styles}
 `;
 
-class DataBrowserChart extends React.Component {
+class BarChart extends React.Component {
   constructor (props) {
     super(props);
-    this.margin = { top: 16, right: 32, bottom: 48, left: 48 };
+    this.margin = { top: 16, right: 32, bottom: 56, left: 48 };
     // Control whether the chart was rendered.
     // The size aware element fires a onChange event once it is rendered
     // But at that time the chart is not ready yet so we can't update the size.
@@ -131,11 +127,6 @@ class DataBrowserChart extends React.Component {
           bisecting: false
         });
         break;
-      case 'bisector.move':
-        this.setState({
-          doc: payload.doc
-        });
-        break;
     }
   }
 
@@ -169,14 +160,12 @@ class DataBrowserChart extends React.Component {
       .attr('transform', `translate(${left},${top})`);
 
     // Debug
-    debugLayer.init(this);
 
     // Axis.
     xaxisLayer.init(this);
     yaxisLayer.init(this);
 
     dataBandsLayer.init(this);
-    dataBaselineLayer.init(this);
     dataSeriesLayer.init(this);
 
     bisectorLayer.init(this);
@@ -190,19 +179,15 @@ class DataBrowserChart extends React.Component {
     // ---------------------------------------------------
     // Functions
     this.xScale = d3
-      .scaleTime()
-      .domain(props.xDomain)
+      .scaleBand()
+      .paddingInner(0.1)
+      .domain(props.data.map(d => utcDate(d.date)))
       .range([0, width]);
 
     this.yScale = d3
       .scaleLinear()
-      .domain(props.yDomain)
+      .domain([0, props.yDomain[1]])
       .range([height, 10]);
-
-    this.line = d3.line()
-      .defined(d => d.value !== null)
-      .x(d => this.xScale(utcDate(d.date)))
-      .y(d => this.yScale(d.value));
 
     // ---------------------------------------------------
     // Size updates
@@ -212,9 +197,7 @@ class DataBrowserChart extends React.Component {
 
     dataCanvas.attr('width', width).attr('height', height);
 
-    debugLayer.update(this);
     dataBandsLayer.update(this);
-    dataBaselineLayer.update(this);
     dataSeriesLayer.update(this);
 
     bisectorLayer.update(this);
@@ -228,15 +211,13 @@ class DataBrowserChart extends React.Component {
     const { height, width } = this.getSize();
     const { bisecting, doc } = this.state;
     const {
-      noBaseline,
-      noBaselineConfidence,
-      noIndicator,
-      noIndicatorConfidence
+      noIndicator
     } = this.props;
     if (!this.dataCanvas || !doc) return;
 
     const docDate = utcDate(doc.date);
-    const xPos = this.xScale(docDate);
+    // Disregard the native popover margin in the bar chart case.
+    const xPos = this.xScale(docDate) + this.xScale.bandwidth() / 2 - 8;
 
     const matrix = this.dataCanvas.node().getScreenCTM();
     if (!matrix) return;
@@ -271,14 +252,8 @@ class DataBrowserChart extends React.Component {
             <dd>{format(docDate, 'MMM dd, yyyy')}</dd>
             {!noIndicator && (
               <>
-                <LegendLabel swatch={themeVal('color.primary')}><span>Indicator {!noIndicatorConfidence && <small>(confidence)</small>}</span></LegendLabel>
-                <dd>{round(doc.indicator)} {!noIndicatorConfidence && <small>({doc.indicator_conf_high} - {doc.indicator_conf_low})</small>}</dd>
-              </>
-            )}
-            {!noBaseline && (
-              <>
-                <LegendLabel swatch={themeVal('color.base')}><span>Baseline {!noBaselineConfidence && <small>(confidence)</small>}</span></LegendLabel>
-                <dd>{round(doc.baseline)} {!noBaselineConfidence && <small>({doc.baseline_conf_high} - {doc.baseline_conf_low})</small>}</dd>
+                <LegendLabel swatch={themeVal('color.primary')}><span>Indicator</span></LegendLabel>
+                <dd>{round(doc.indicator)}</dd>
               </>
             )}
           </dl>
@@ -302,13 +277,10 @@ class DataBrowserChart extends React.Component {
   }
 }
 
-DataBrowserChart.propTypes = {
-  xDomain: T.array,
+BarChart.propTypes = {
   yDomain: T.array,
-  noBaseline: T.bool,
-  noBaselineConfidence: T.bool,
-  noIndicator: T.bool,
-  noIndicatorConfidence: T.bool
+  data: T.array,
+  noIndicator: T.bool
 };
 
-export default DataBrowserChart;
+export default BarChart;
