@@ -21,6 +21,7 @@ import { glsp } from '../../../styles/utils/theme-values';
 import { utcDate } from '../../../utils/utils';
 import collecticon from '../../../styles/collecticons';
 import media, { isLargeViewport } from '../../../styles/utils/media-queries';
+import { getBandColor } from '../../common/line-chart/data-highlight-bands.layer';
 
 const PanelSelf = styled(Panel)`
   ${media.largeUp`
@@ -99,7 +100,6 @@ const CaptionLegend = styled.dl`
       height: 0.5rem;
       font-size: 0;
       border-radius: ${themeVal('shape.rounded')};
-      background: red;
       box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
       margin-top: 0.25rem;
     }
@@ -139,12 +139,24 @@ class SecPanel extends React.Component {
           <figcaption>
             <CaptionTitle>Legend</CaptionTitle>
             <CaptionLegend>
-              <dt><span>#FF0000</span></dt>
-              <dd>Indicator</dd>
-              <dt><span>#FF0000</span></dt>
-              <dd>Baseline</dd>
-              <dt><span>#FF0000</span></dt>
-              <dd>Lockdown period</dd>
+              {ind.data[0].indicator !== undefined && (
+                <>
+                  <dt><span style={{ backgroundColor: '#2276AC' }}>#2276AC</span></dt>
+                  <dd>Indicator</dd>
+                </>
+              )}
+              {ind.data[0].baseline !== undefined && (
+                <>
+                  <dt><span style={{ backgroundColor: '#2C3E5080' }}>#2C3E5080</span></dt>
+                  <dd>Baseline</dd>
+                </>
+              )}
+              {ind.highlight_bands && ind.highlight_bands.map((band, i) => (
+                <React.Fragment key={band.label}>
+                  <dt><span style={{ backgroundColor: getBandColor(i) }}>{getBandColor(i)}</span></dt>
+                  <dd>{band.label}</dd>
+                </React.Fragment>
+              ))}
             </CaptionLegend>
             <CaptionTitle>Attribution</CaptionTitle>
             <CaptionAttribution>By {ind.attribution}</CaptionAttribution>

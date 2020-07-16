@@ -9,6 +9,10 @@ const bandColors = [
   '#ffff0020'
 ];
 
+const bandColorDefault = '#00000020';
+
+export const getBandColor = (idx) => bandColors[idx] || bandColorDefault
+
 export default {
   styles,
   init: ctx => {
@@ -38,7 +42,7 @@ export default {
       .attr('class', 'band')
       .merge(bands)
       // Update current.
-      .attr('fill', (d, i) => bandColors[i] || '#00000020')
+      .attr('fill', (d, i) => getBandColor(i))
       .attr('x', d => xScale(utcDate(d.interval[0])))
       .attr('y', 0)
       .attr('width', d => xScale(utcDate(d.interval[1])) - xScale(utcDate(d.interval[0])))
