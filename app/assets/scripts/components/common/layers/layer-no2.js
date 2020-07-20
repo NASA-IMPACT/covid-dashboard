@@ -1,4 +1,4 @@
-import { format, sub } from 'date-fns';
+import { format } from 'date-fns';
 
 import config from '../../../config';
 
@@ -23,7 +23,14 @@ export default {
   compare: {
     enabled: true,
     help: 'Compare with baseline (5 years ago)',
-    mapLabel: date => `${format(sub(date, { years: 5 }), 'MMM yyyy')} vs ${format(date, 'MMM yyyy')}`
+    mapLabel: date => `Baseline vs ${format(date, 'MMM yyyy')}`,
+    yearDiff: 2,
+    source: {
+      type: 'raster',
+      tiles: [
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_01_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2&color_formula=gamma r {gamma}`
+      ]
+    }
   },
   swatch: indicatorGroupColors['air-quality'],
   legend: {
