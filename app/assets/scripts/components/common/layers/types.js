@@ -4,6 +4,7 @@ import bbox from '@turf/bbox';
 import { utcDate } from '../../../utils/utils';
 
 const dateFormats = {
+  monthOnly: 'MM',
   month: 'yyyyMM',
   day: 'yyyy_MM_dd'
 };
@@ -112,7 +113,7 @@ export const layerTypes = {
 
       // Update/init compare layer tiles.
       if (comparing) {
-        const sourceCompare = prepSource(layerInfo,
+        const sourceCompare = prepSource({ ...layerInfo, ...compare },
           compare.source || source,
           sub(date, { years: compare.yearDiff === undefined ? 5 : compare.yearDiff }),
           knobPos);
