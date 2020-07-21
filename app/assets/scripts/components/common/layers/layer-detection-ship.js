@@ -20,7 +20,7 @@ export default {
       ]
     }
   },
-  exclusiveWith: ['no2', 'co2-diff', 'co2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-multi', 'water-chlorophyll', 'water-spm'],
+  exclusiveWith: ['no2', 'no2-diff', 'co2-diff', 'co2', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: false,
   swatch: indicatorGroupColors.economic,
   timeUnit: 'day',
