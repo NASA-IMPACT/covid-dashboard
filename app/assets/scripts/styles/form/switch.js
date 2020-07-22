@@ -1,11 +1,14 @@
 import React from 'react';
 import T from 'prop-types';
 import styled, { css } from 'styled-components';
+import { rgba } from 'polished';
 
 import { visuallyHidden, disabled as disabledHelper } from '../helpers';
-import { themeVal } from '../utils/general';
+import { themeVal, stylizeFunction } from '../utils/general';
 import { buttonVariationHoverCss, buttonVariationBaseCss } from '../button/button';
 import collecticon from '../collecticons';
+
+const _rgba = stylizeFunction(rgba);
 
 /**
  * Renders a FormSwitch component.
@@ -119,7 +122,7 @@ export const FormSwitch = styled(FormSwitchElement)`
     width: 2.25rem;
     height: 1rem;
     border-radius: ${themeVal('shape.ellipsoid')};
-    background: ${themeVal('color.baseAlphaB')};
+    background: ${_rgba(themeVal('color.base'), 0.48)};
     box-shadow: inset 0 0 0 ${themeVal('layout.border')} ${themeVal('color.baseAlphaB')};
 
     &::before {
