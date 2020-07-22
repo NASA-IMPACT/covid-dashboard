@@ -1,14 +1,12 @@
 import React from 'react';
 import T from 'prop-types';
 import styled, { css } from 'styled-components';
-import { rgba } from 'polished';
 
 import { visuallyHidden, disabled as disabledHelper } from '../helpers';
-import { themeVal, stylizeFunction } from '../utils/general';
+import { themeVal } from '../utils/general';
 import { buttonVariationHoverCss, buttonVariationBaseCss } from '../button/button';
 import collecticon from '../collecticons';
-
-const _rgba = stylizeFunction(rgba);
+import { _rgba } from '../utils/theme-values';
 
 /**
  * Renders a FormSwitch component.
