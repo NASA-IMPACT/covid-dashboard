@@ -2,7 +2,10 @@ import React from 'react';
 import T from 'prop-types';
 import styled from 'styled-components';
 
+import { themeVal } from '../../../styles/utils/general';
+import { visuallyHidden } from '../../../styles/helpers';
 import LineChart from '../../common/line-chart/chart';
+import BarChart from '../../common/bar-chart/chart';
 import Panel, { PanelHeadline, PanelTitle } from '../../common/panel';
 import ShadowScrollbar from '../../common/shadow-scrollbar';
 import {
@@ -11,7 +14,7 @@ import {
   PanelBlockTitle
 } from '../../common/panel-block';
 import { Accordion, AccordionFold } from '../../common/accordion';
-import Heading from '../../../styles/type/heading';
+import Heading, { headingAlt } from '../../../styles/type/heading';
 import Prose from '../../../styles/type/prose';
 import SummaryExpandable from '../../common/summary-expandable';
 
@@ -19,6 +22,7 @@ import { glsp } from '../../../styles/utils/theme-values';
 import { utcDate } from '../../../utils/utils';
 import collecticon from '../../../styles/collecticons';
 import media, { isLargeViewport } from '../../../styles/utils/media-queries';
+import { getBandColor } from '../../common/common-chart-utils/data-highlight-bands.layer';
 
 const PanelSelf = styled(Panel)`
   ${media.largeUp`
@@ -61,14 +65,52 @@ const PanelBodyInner = styled.div`
   figure {
     margin-top: -1rem;
   }
+
+  figcaption {
+    display: grid;
+    grid-gap: ${glsp(0.5)};
+  }
 `;
 
-const Attribution = styled.p`
+const CaptionTitle = styled.h6`
+  ${visuallyHidden()}
+`;
+
+const CaptionAttribution = styled.address`
   font-size: 0.874rem;
-  text-align: right;
+  text-align: center;
   font-style: italic;
   padding-right: ${glsp(2)};
   margin-bottom: ${glsp()};
+`;
+
+const CaptionLegend = styled.dl`
+  display: grid;
+  grid-gap: ${glsp(1 / 2)};
+  grid-template-columns: min-content min-content;
+  grid-auto-rows: auto;
+  grid-auto-flow: column;
+  justify-content: center;
+
+  dt {
+    display: flex;
+
+    span {
+      display: block;
+      width: 1rem;
+      height: 0.5rem;
+      font-size: 0;
+      border-radius: ${themeVal('shape.rounded')};
+      box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
+      margin-top: 0.25rem;
+    }
+  }
+
+  dd {
+    ${headingAlt()}
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
 `;
 
 class SecPanel extends React.Component {
@@ -79,26 +121,70 @@ class SecPanel extends React.Component {
 
     return (
       <figure>
-        <LineChart
-          xDomain={xDomain}
-          yDomain={yDomain}
-          data={ind.data}
-          yUnit={ind.units}
-          selectedDate={selectedDate}
-          highlightBands={
-            ind.highlight_bands && ind.highlight_bands.length
-              ? ind.highlight_bands
-              : null
-          }
-          noBaseline={ind.data[0].baseline === undefined}
-          noBaselineConfidence
-          noIndicatorConfidence
-        />
-        {ind.attribution && (
-          <figcaption>
-            <Attribution>By: {ind.attribution}</Attribution>
-          </figcaption>
+        {ind.id === 'ship-detections' ? (
+          <BarChart
+            yDomain={yDomain}
+            data={ind.data}
+            yUnit={ind.units}
+            selectedDate={selectedDate}
+            highlightBands={
+              ind.highlight_bands && ind.highlight_bands.length
+                ? ind.highlight_bands
+                : null
+            }
+          />
+        ) : (
+          <LineChart
+            xDomain={xDomain}
+            yDomain={yDomain}
+            data={ind.data}
+            yUnit={ind.units}
+            selectedDate={selectedDate}
+            highlightBands={
+              ind.highlight_bands && ind.highlight_bands.length
+                ? ind.highlight_bands
+                : null
+            }
+            noBaseline={ind.data[0].baseline === undefined}
+            noBaselineConfidence
+            noIndicatorConfidence
+          />
         )}
+        <figcaption>
+          <CaptionTitle>Legend</CaptionTitle>
+          <CaptionLegend>
+            {ind.data[0].indicator !== undefined && (
+              <>
+                <dt>
+                  <span style={{ backgroundColor: '#2276AC' }}>#2276AC</span>
+                </dt>
+                <dd>Indicator</dd>
+              </>
+            )}
+            {ind.data[0].baseline !== undefined && (
+              <>
+                <dt>
+                  <span style={{ backgroundColor: '#2C3E5080' }}>#2C3E5080</span>
+                </dt>
+                <dd>Baseline</dd>
+              </>
+            )}
+            {ind.highlight_bands && ind.highlight_bands.map((band, i) => (
+              <React.Fragment key={band.label}>
+                <dt>
+                  <span style={{ backgroundColor: getBandColor(i) }}>{getBandColor(i)}</span>
+                </dt>
+                <dd>{band.label}</dd>
+              </React.Fragment>
+            ))}
+          </CaptionLegend>
+          {ind.attribution && (
+            <>
+              <CaptionTitle>Attribution</CaptionTitle>
+              <CaptionAttribution>By {ind.attribution}</CaptionAttribution>
+            </>
+          )}
+        </figcaption>
       </figure>
     );
   }
