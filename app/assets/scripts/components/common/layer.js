@@ -119,17 +119,28 @@ const LegendList = styled.dl`
     grid-row: 2;
     display: flex;
 
+    /* stylelint-disable-next-line no-descending-specificity */
+    > * {
+      width: 8rem;
+
+      /* stylelint-disable-next-line no-descending-specificity */
+      > * {
+        ${truncated()}
+        display: block;
+      }
+
+      &:last-child:not(:first-child) {
+        text-align: right;
+      }
+    }
+
     &:last-of-type:not(:first-of-type) {
       justify-content: flex-end;
+      text-align: right;
     }
 
     &:not(:first-of-type):not(:last-of-type) {
       ${visuallyHidden()}
-    }
-
-    /* stylelint-disable-next-line no-descending-specificity */
-    > * {
-      min-width: 0;
     }
 
     i {
@@ -166,7 +177,7 @@ const LayerBodyInner = styled(Prose)`
   backdrop-filter: saturate(48%);
   padding: ${glsp()};
 
-  /* stylelint-disable-next-line */
+  /* stylelint-disable-next-line no-descending-specificity */
   > * {
     margin-bottom: ${glsp(0.75)};
   }
@@ -201,7 +212,15 @@ class Layer extends React.Component {
                   </LegendSwatch>
                 </dt>
                 <dd>
-                  <span>{stop.label}</span>
+                  {/*
+                    The 2 spans are needed so that the text can be correctly
+                    truncated. The dd element is part of a grid and has an
+                    implicit width. The first span overflows the dd, setting
+                    the final width and the second span truncates the text.
+                  */}
+                  <span>
+                    <span>{stop.label}</span>
+                  </span>
                 </dd>
               </React.Fragment>
             ))}
