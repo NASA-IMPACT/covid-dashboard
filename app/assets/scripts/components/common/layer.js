@@ -137,7 +137,9 @@ const LegendSwatch = styled.span`
   font-size: 0;
   height: 0.5rem;
   border-radius: ${themeVal('shape.rounded')};
-  background: ${({ stops }) => makeGradient(stops)};
+  background: ${({ stops }) => typeof stops === 'string'
+    ? stops
+    : makeGradient(stops)};
   margin: 0 0 ${glsp(1 / 8)} 0;
   box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
   cursor: help;
@@ -183,6 +185,29 @@ class Layer extends React.Component {
     } = this.props;
 
     if (!legend) return null;
+
+    // The categorical legend uses stops differently than the others.
+    if (legend.type === 'categorical') {
+      return (
+        <LayerLegend>
+          <LayerLegendTitle>Legend</LayerLegendTitle>
+          <LegendList>
+            {legend.stops.map(stop => (
+              <React.Fragment key={stop.color}>
+                <dt>
+                  <LegendSwatch stops={stop.color} data-tip={stop.label}>
+                    {stop.color}
+                  </LegendSwatch>
+                </dt>
+                <dd>
+                  <span>{stop.label}</span>
+                </dd>
+              </React.Fragment>
+            ))}
+          </LegendList>
+        </LayerLegend>
+      );
+    }
 
     let defaultStops;
     // Two default styles:
@@ -242,7 +267,9 @@ class Layer extends React.Component {
         <LayerLegendTitle>Legend</LayerLegendTitle>
         <LegendList>
           <dt>
-            <LegendSwatch stops={stops} data-pop={printLegendVal(legend.min)}>#3F90C5 to #3F90C5</LegendSwatch>
+            <LegendSwatch stops={stops}>
+              {stops[0]} to {stops[stops.length - 1]}
+            </LegendSwatch>
           </dt>
           <dd>
             <span>{printLegendVal(legend.min)}</span>
