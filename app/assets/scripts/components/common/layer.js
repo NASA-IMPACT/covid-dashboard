@@ -20,15 +20,21 @@ const makeGradient = (stops) => {
   const steps = stops.map((s, i) => `${s} ${i * d}%`);
   return `linear-gradient(to right, ${steps.join(', ')})`;
 };
-const renderTitle = input => {
+
+const renderTitle = (input) => {
   const content = input.split('\u2082');
 
-  return content.reduce((accum, el, ind) => (
-    ind < content.length - 1 ? [...accum, el, <sub key={el}>2</sub>] : [...accum, el]
-  ), []);
+  return content.reduce(
+    (accum, el, ind) =>
+      ind < content.length - 1
+        ? [...accum, el, <sub key={el}>2</sub>]
+        : [...accum, el],
+    []
+  );
 };
 
-const printLegendVal = (val) => typeof val === 'number' ? formatThousands(val, { shorten: true }) : val;
+const printLegendVal = (val) =>
+  typeof val === 'number' ? formatThousands(val, { shorten: true }) : val;
 
 const LayerSelf = styled(AccordionFold)`
   position: relative;
@@ -121,6 +127,7 @@ const LegendList = styled.dl`
       ${visuallyHidden()}
     }
 
+    /* stylelint-disable-next-line no-descending-specificity */
     > * {
       min-width: 0;
     }
@@ -176,13 +183,7 @@ class Layer extends React.Component {
   }
 
   renderLegend () {
-    const {
-      dataOrder,
-      legend,
-      knobPos,
-      onLegendKnobChange,
-      id
-    } = this.props;
+    const { dataOrder, legend, knobPos, onLegendKnobChange, id } = this.props;
 
     if (!legend) return null;
 
@@ -214,7 +215,7 @@ class Layer extends React.Component {
     // - highlight-high - where a high value needs to be highlighted (high % of 65+)
     // - highlight-low - where low values are highlighted (m2 living area per person)
     switch (dataOrder) {
-      case ('highlight-low'):
+      case 'highlight-low':
         defaultStops = [
           'hsla(105, 91%, 67%, 0.69)',
           'hsla(173, 75%, 66%, 0.69)',
@@ -233,9 +234,8 @@ class Layer extends React.Component {
         ];
     }
 
-    const stops = legend.stops && legend.stops !== 'default'
-      ? legend.stops
-      : defaultStops;
+    const stops =
+      legend.stops && legend.stops !== 'default' ? legend.stops : defaultStops;
 
     if (legend.type === 'gradient-adjustable') {
       return (
