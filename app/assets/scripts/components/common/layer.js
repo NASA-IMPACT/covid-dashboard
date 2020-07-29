@@ -23,15 +23,9 @@ const makeGradient = (stops) => {
 const renderTitle = input => {
   const content = input.split('\u2082');
 
-  return (
-    <>
-      {
-        content.reduce((accum, el, ind) => (
-          ind < content.length - 1 ? [...accum, el, <sub key={el}>2</sub>] : [...accum, el]
-        ), [])
-      }
-    </>
-  );
+  return content.reduce((accum, el, ind) => (
+    ind < content.length - 1 ? [...accum, el, <sub key={el}>2</sub>] : [...accum, el]
+  ), []);
 };
 
 const printLegendVal = (val) => typeof val === 'number' ? formatThousands(val, { shorten: true }) : val;
@@ -100,12 +94,36 @@ const LayerToolbar = styled.div`
 const LayerLegend = styled.div`
   grid-row: 2;
   grid-column: 1 / span 2;
+`;
+
+const LegendList = styled.dl`
+  display: grid;
+  grid-gap: 0 ${glsp(1 / 8)};
+  grid-auto-columns: minmax(1rem, 1fr);
+  grid-auto-flow: column;
+
+  dt {
+    grid-row: 1;
+  }
 
   dd {
     ${headingAlt()}
     font-size: 0.75rem;
     line-height: 1rem;
+    grid-row: 2;
     display: flex;
+
+    &:last-of-type:not(:first-of-type) {
+      justify-content: flex-end;
+    }
+
+    &:not(:first-of-type):not(:last-of-type) {
+      ${visuallyHidden()}
+    }
+
+    > * {
+      min-width: 0;
+    }
 
     i {
       margin: 0 auto;
@@ -114,7 +132,7 @@ const LayerLegend = styled.div`
   }
 `;
 
-const LayerLegendGradientTrack = styled.dt`
+const LegendSwatch = styled.span`
   display: block;
   font-size: 0;
   height: 0.5rem;
@@ -122,6 +140,7 @@ const LayerLegendGradientTrack = styled.dt`
   background: ${({ stops }) => makeGradient(stops)};
   margin: 0 0 ${glsp(1 / 8)} 0;
   box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
+  cursor: help;
 `;
 
 const LayerLegendTitle = styled.h2`
@@ -197,7 +216,7 @@ class Layer extends React.Component {
       return (
         <LayerLegend>
           <LayerLegendTitle>Legend</LayerLegendTitle>
-          <dl>
+          <LegendList>
             <dt>
               <GradientChart
                 onAction={(a, p) => {
@@ -213,7 +232,7 @@ class Layer extends React.Component {
               <i> – </i>
               <span>{printLegendVal(legend.max)}</span>
             </dd>
-          </dl>
+          </LegendList>
         </LayerLegend>
       );
     }
@@ -221,14 +240,16 @@ class Layer extends React.Component {
     return (
       <LayerLegend>
         <LayerLegendTitle>Legend</LayerLegendTitle>
-        <dl>
-          <LayerLegendGradientTrack stops={stops}>Gradient</LayerLegendGradientTrack>
+        <LegendList>
+          <dt>
+            <LegendSwatch stops={stops} data-pop={printLegendVal(legend.min)}>#3F90C5 to #3F90C5</LegendSwatch>
+          </dt>
           <dd>
             <span>{printLegendVal(legend.min)}</span>
             <i> – </i>
             <span>{printLegendVal(legend.max)}</span>
           </dd>
-        </dl>
+        </LegendList>
       </LayerLegend>
     );
   }
