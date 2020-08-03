@@ -60,7 +60,6 @@ jobs:
           name: Build app
           command: |
             yarn build
-            # BASEURL="https://earthdata.nasa.gov/covid19" yarn build
       - persist_to_workspace:
           root: ~/repo
           paths:
@@ -99,6 +98,20 @@ jobs:
             --cache-control "max-age=86400"
           from: /workspace/dist
           to: 's3://covid-eo'
+  deploy-surge:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - attach_workspace:
+          at: /workspace
+      - run:
+          name: Deploy to surge
+          command: |
+            cp /workspace/dist/index.html /workspace/dist/200.html
+            DOMAIN=$(echo $CIRCLE_BRANCH | cut -c9-)
+            ./node_modules/surge/lib/cli.js --project /workspace/dist --domain covideo-${DOMAIN}.surge.sh
 
 workflows:
   version: 2
@@ -131,3 +144,9 @@ workflows:
           filters:
             branches:
               only: master
+      - deploy-surge:
+          requires:
+            - build
+          filters:
+            branches:
+              only: /feature\/.*/
