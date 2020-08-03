@@ -25,6 +25,7 @@ import BtnExample from './buttons';
 import FormsExample from './forms';
 import ColorsExample from './colors';
 import LineChartExample from './line-chart';
+import BarChartExample from './bar-chart';
 import ProseExample from './prose';
 
 import config from '../../config';
@@ -32,6 +33,19 @@ import config from '../../config';
 const PageConstrainer = styled(Constrainer)`
   > *:not(:last-child) {
     margin-bottom: ${glsp(2)};
+  }
+`;
+
+const SandboxInpageHeaderInner = styled(InpageHeaderInner)`
+  && {
+    grid-row-gap: 2rem;
+  }
+`;
+
+const SandboxInpageToolbar = styled(InpageToolbar)`
+  && {
+    grid-row: 2;
+    grid-column: 1;
   }
 `;
 
@@ -60,6 +74,11 @@ const sandboxPages = [
     name: 'Line chart',
     url: '/line-chart',
     cmp: LineChartExample
+  },
+  {
+    name: 'Bar chart',
+    url: '/bar-chart',
+    cmp: BarChartExample
   },
   {
     name: 'Prose',
@@ -95,16 +114,16 @@ export default class Sandbox extends React.Component {
       <App pageTitle='Sandbox'>
         <Inpage>
           <InpageHeader>
-            <InpageHeaderInner>
+            <SandboxInpageHeaderInner>
               <InpageHeadline>
                 <InpageTitle>Sandbox</InpageTitle>
               </InpageHeadline>
-              <InpageToolbar>
+              <SandboxInpageToolbar>
                 <ButtonGroup orientation='horizontal'>
                   {sandboxPages.map((p) => this.tabButton(p))}
                 </ButtonGroup>
-              </InpageToolbar>
-            </InpageHeaderInner>
+              </SandboxInpageToolbar>
+            </SandboxInpageHeaderInner>
           </InpageHeader>
           <InpageBody>
             <PageConstrainer>

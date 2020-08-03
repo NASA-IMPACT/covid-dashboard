@@ -241,10 +241,11 @@ class DataBrowserChart extends React.Component {
     const matrix = this.dataCanvas.node().getScreenCTM();
     if (!matrix) return;
 
+    const offsetY = window.scrollY;
     const translatedMatrix = matrix.translate(xPos, 0);
 
     const popoverWidth = 160;
-    const posY = translatedMatrix.f + height / 2;
+    const posY = translatedMatrix.f + offsetY + height / 2;
     const posX = translatedMatrix.e;
 
     const direction = posX + popoverWidth + 8 > matrix.e + width
