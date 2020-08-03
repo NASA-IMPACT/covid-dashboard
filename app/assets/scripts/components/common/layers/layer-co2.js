@@ -11,7 +11,7 @@ export default {
   timeUnit: 'day',
   domain: [
     '2020-01-01',
-    '2020-04-16'
+    '2020-05-17'
   ],
   source: {
     type: 'raster',
