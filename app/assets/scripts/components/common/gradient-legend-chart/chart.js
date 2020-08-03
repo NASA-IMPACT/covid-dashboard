@@ -10,6 +10,7 @@ import knobLayer from './knob.layer';
 
 const ChartWrapper = styled.div`
   flex-grow: 1;
+  margin: 0 -4px;
 
   svg {
     display: block;
