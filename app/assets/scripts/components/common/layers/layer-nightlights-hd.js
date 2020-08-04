@@ -8,7 +8,7 @@ export default {
   timeUnit: 'month',
   domain: [
     '2020-01-01',
-    '2020-05-01'
+    '2020-07-01'
   ],
   source: {
     type: 'raster',
