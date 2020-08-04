@@ -11,7 +11,7 @@ export default {
   timeUnit: 'day',
   domain: [
     '2020-01-01',
-    '2020-04-16'
+    '2020-05-17'
   ],
   source: {
     type: 'raster',
@@ -20,7 +20,7 @@ export default {
 
     ]
   },
-  exclusiveWith: ['no2', 'co2-diff', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
+  exclusiveWith: ['agriculture', 'no2', 'co2-diff', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: false,
   compare: {
     enabled: true,

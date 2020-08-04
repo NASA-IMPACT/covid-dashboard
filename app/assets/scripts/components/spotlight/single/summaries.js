@@ -13,7 +13,7 @@ const summaries = {
       <p>
         Lockdowns and social distancing measures implemented in response to the
         coronavirus pandemic led to significant but temporary reductions in
-        nitrogen dioxide (NO2) and carbon dioxide (CO2) emissions from fossil
+        nitrogen dioxide (NO<sub>2</sub>) and carbon dioxide (CO<sub>2</sub>) emissions from fossil
         fuel combustion and other human activities.
       </p>
     </>
