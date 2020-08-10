@@ -110,7 +110,7 @@ jobs:
           name: Deploy to surge
           command: |
             cp /workspace/dist/index.html /workspace/dist/200.html
-            DOMAIN=$(echo $CIRCLE_BRANCH | cut -c9-)
+            DOMAIN=$(echo $CIRCLE_BRANCH | cut -c7-)
             ./node_modules/surge/lib/cli.js --project /workspace/dist --domain covideo-${DOMAIN}.surge.sh
 
 workflows:
@@ -149,4 +149,4 @@ workflows:
             - build
           filters:
             branches:
-              only: /feature\/.*/
+              only: /stage\/.*/
