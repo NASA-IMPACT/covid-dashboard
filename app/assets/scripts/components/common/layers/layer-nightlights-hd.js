@@ -8,7 +8,7 @@ export default {
   timeUnit: 'month',
   domain: [
     '2020-01-01',
-    '2020-05-01'
+    '2020-07-01'
   ],
   source: {
     type: 'raster',
@@ -16,7 +16,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/BMHD_30M_MONTHLY/BMHD_VNP46A2_{spotlightId}_{date}_cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
     ]
   },
-  exclusiveWith: ['no2', 'no2-diff', 'co2-diff', 'co2', 'gibs-population', 'car-count', 'nightlights-viirs', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
+  exclusiveWith: ['agriculture', 'no2', 'no2-diff', 'co2-diff', 'co2', 'gibs-population', 'car-count', 'nightlights-viirs', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   swatch: indicatorGroupColors.economic,
   legend: {
     type: 'gradient',

@@ -10,6 +10,7 @@ import nightlightsHd from './layer-nightlights-hd';
 import detectionShip from './layer-detection-ship';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
+import agriculture from './layer-agriculture';
 
 const layers = [
   no2,
@@ -21,19 +22,20 @@ const layers = [
   nightlightsHd,
   detectionShip,
   waterChlorophyll,
-  waterSpm
+  waterSpm,
+  agriculture
 ];
 
 export default layers;
 
 const layersBySpotlight = {
-  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  du: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  gh: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship'],
-  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm'],
-  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  be: ['no2', 'no2-diff','co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
+  du: ['no2', 'no2-diff','co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
+  gh: ['no2', 'no2-diff','co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
+  la: ['no2', 'no2-diff','co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship'],
+  sf: ['no2', 'no2-diff','co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'water-chlorophyll', 'water-spm'],
+  tk: ['no2', 'no2-diff','co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
+  ny: ['no2', 'no2-diff','co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'water-chlorophyll', 'water-spm']
 };
 
 const layerOverridesBySpotlight = {
@@ -61,7 +63,7 @@ const layerOverridesBySpotlight = {
     'nightlights-viirs': handleNightlightsViirs,
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-22', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-08', '2020-03-10', '2020-03-11', '2020-04-21']
+        domain: ['2020-01-22', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-10', '2020-03-11', '2020-04-21']
       }),
     'water-chlorophyll': (l, spotlightId) => {
       return {
@@ -99,7 +101,7 @@ const layerOverridesBySpotlight = {
     },
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-20', '2020-01-21', '2020-01-22', '2020-02-02', '2020-02-03', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-18', '2020-03-22']
+        domain: ['2020-01-20', '2020-01-21', '2020-01-22', '2020-02-02', '2020-02-03', '2020-02-29', '2020-03-08', '2020-03-18', '2020-03-22', '2020-03-27']
       }),
     'water-spm': (l, spotlightId) => {
       return {
@@ -136,7 +138,7 @@ export function getSpotlightLayers (spotlightId) {
 }
 
 export function getGlobalLayers () {
-  const layersToUse = ['no2', 'no2-diff', 'co2', 'co2-diff', 'gibs-population'];
+  const layersToUse = ['no2','no2-diff',  'co2', 'co2-diff', 'gibs-population', 'agriculture'];
   return layers.filter((l) => layersToUse.includes(l.id));
 }
 

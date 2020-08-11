@@ -6,6 +6,7 @@ import { visuallyHidden, disabled as disabledHelper } from '../helpers';
 import { themeVal } from '../utils/general';
 import { buttonVariationHoverCss, buttonVariationBaseCss } from '../button/button';
 import collecticon from '../collecticons';
+import { _rgba } from '../utils/theme-values';
 
 /**
  * Renders a FormSwitch component.
@@ -119,7 +120,7 @@ export const FormSwitch = styled(FormSwitchElement)`
     width: 2.25rem;
     height: 1rem;
     border-radius: ${themeVal('shape.ellipsoid')};
-    background: ${themeVal('color.baseAlphaB')};
+    background: ${_rgba(themeVal('color.base'), 0.48)};
     box-shadow: inset 0 0 0 ${themeVal('layout.border')} ${themeVal('color.baseAlphaB')};
 
     &::before {
