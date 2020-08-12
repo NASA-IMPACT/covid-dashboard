@@ -40,7 +40,7 @@ import bm from './indicator-nightlights';
 import population from './indicator-population';
 import waterQuality from './indicator-water-quality';
 import shipping from './indicator-shipping';
-import cac from './indicator-cars-and-construction';
+import caco from './indicator-cars-and-construction';
 
 const indicators = [
   bm,
@@ -49,7 +49,7 @@ const indicators = [
   population,
   waterQuality,
   shipping,
-  cac
+  caco
 ];
 
 export default indicators;
