@@ -43,13 +43,13 @@ import shipping from './indicator-shipping';
 import caco from './indicator-cars-and-construction';
 
 const indicators = [
+  caco,
+  co2,
   bm,
   no2,
-  co2,
   population,
-  waterQuality,
   shipping,
-  caco
+  waterQuality
 ];
 
 export default indicators;
