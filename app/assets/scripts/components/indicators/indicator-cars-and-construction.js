@@ -268,14 +268,9 @@ class CarsAndConstructionLongForm extends React.Component {
               </Prose>
             </FoldDetails>
             <MediaImage
-              src={`${baseUrl}/assets/graphics/content/co2_april_1_20.png`}
-              alt='CO2 Diff April 1'
-            >
-              The difference in carbon dioxide (CO<sub>2</sub>) levels from
-              April 1, 2020 compared to previous years. Redder colors indicate
-              increases in CO<sub>2</sub>. Bluer colors indicate lower levels of
-              CO<sub>2</sub>. Image Credit: NASA
-            </MediaImage>
+              src={`${baseUrl}/assets/graphics/content/indicators/caco-1.png`}
+              alt='Detections'
+            />
           </Gridder>
         </IntroFold>
 
@@ -339,14 +334,9 @@ class CarsAndConstructionLongForm extends React.Component {
               </Prose>
             </FoldDetails>
             <MediaImage
-              src={`${baseUrl}/assets/graphics/content/co2_april_1_20.png`}
-              alt='CO2 Diff April 1'
-            >
-              The difference in carbon dioxide (CO<sub>2</sub>) levels from
-              April 1, 2020 compared to previous years. Redder colors indicate
-              increases in CO<sub>2</sub>. Bluer colors indicate lower levels of
-              CO<sub>2</sub>. Image Credit: NASA
-            </MediaImage>
+              src={`${baseUrl}/assets/graphics/content/indicators/caco-2.png`}
+              alt='Detections'
+            />
           </Gridder>
         </InterpretDataFold>
 
