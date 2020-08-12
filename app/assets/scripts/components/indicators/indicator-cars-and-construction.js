@@ -10,7 +10,6 @@ import { IntroLead } from '../../styles/datasets';
 import media from '../../styles/utils/media-queries';
 
 import { glsp } from '../../styles/utils/theme-values';
-import Heading from '../../styles/type/heading';
 import config from '../../config';
 
 const { baseUrl } = config;
@@ -30,16 +29,38 @@ const IntroFold = styled(Fold)`
     align-items: center;
   }
 
-  ${FoldDetails} {
-    grid-column: content-start / content-end;
+  ${MediaImage} {
+    grid-column: full-start / full-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-end;
+    `}
+
+    ${media.largeUp`
+      grid-column: full-start / content-8;
+      grid-row: 1;
+    `}
+
+    figcaption {
+      padding: 0 ${glsp()};
+      max-width: 30rem;
+      text-align: center;
+      margin: 0 auto;
+    }
   }
 
-  ${media.largeUp`
-    ${Prose} {
-        column-count: 2;
-        column-gap: ${glsp(2)};
-      }
-  `}
+  ${FoldDetails} {
+    grid-column: content-start / content-end;
+    text-align: left;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-8;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-8 / content-end;
+    `}
+  }
 `;
 
 const ResearchFold = styled(Fold)`
@@ -246,6 +267,15 @@ class CarsAndConstructionLongForm extends React.Component {
                 </p>
               </Prose>
             </FoldDetails>
+            <MediaImage
+              src={`${baseUrl}/assets/graphics/content/co2_april_1_20.png`}
+              alt='CO2 Diff April 1'
+            >
+              The difference in carbon dioxide (CO<sub>2</sub>) levels from
+              April 1, 2020 compared to previous years. Redder colors indicate
+              increases in CO<sub>2</sub>. Bluer colors indicate lower levels of
+              CO<sub>2</sub>. Image Credit: NASA
+            </MediaImage>
           </Gridder>
         </IntroFold>
 
@@ -257,10 +287,10 @@ class CarsAndConstructionLongForm extends React.Component {
             />
             <Prose>
               <p>
-                The Advanced Rapid Imaging and Analysis (ARIA) team at NASA's
-                Jet Propulsion Laboratory in Pasadena, California, in
-                collaboration with the Earth Observatory of Singapore (EOS), is
-                leading this research using innovative methods and
+                The Advanced Rapid Imaging and Analysis (ARIA) team at
+                NASA&apos;s Jet Propulsion Laboratory in Pasadena, California,
+                in collaboration with the Earth Observatory of Singapore (EOS),
+                is leading this research using innovative methods and
                 high-performance computing. The team is using SAR data from the
                 Copernicus Sentinel-1 mission, operated by the European Space
                 Agency (ESA), and the ALOS-2 mission, operated by the Japan
