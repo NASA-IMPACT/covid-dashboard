@@ -10,7 +10,9 @@ import { IntroLead } from '../../styles/datasets';
 import media from '../../styles/utils/media-queries';
 
 import { glsp } from '../../styles/utils/theme-values';
+import Heading from '../../styles/type/heading';
 import config from '../../config';
+import { indicatorGroupColors } from '../../styles/theme/theme';
 
 const { baseUrl } = config;
 
@@ -33,20 +35,13 @@ const IntroFold = styled(Fold)`
     grid-column: full-start / full-end;
 
     ${media.mediumUp`
-      grid-column: content-start / content-end;
+      grid-column: content-2 / content-7;
     `}
 
     ${media.largeUp`
-      grid-column: full-start / content-8;
+      grid-column: content-9 / full-end;
       grid-row: 1;
     `}
-
-    figcaption {
-      padding: 0 ${glsp()};
-      max-width: 30rem;
-      text-align: center;
-      margin: 0 auto;
-    }
   }
 
   ${FoldDetails} {
@@ -58,7 +53,12 @@ const IntroFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-8 / content-end;
+      grid-column: content-start / content-9;
+
+      ${Prose} {
+        column-count: 2;
+        column-gap: ${glsp(2)};
+      }
     `}
   }
 `;
@@ -75,8 +75,12 @@ const ResearchFold = styled(Fold)`
     grid-row: 1;
     grid-column: content-start / content-end;
 
-    ${media.largeUp`
+    ${media.mediumUp`
       grid-column: content-start / content-7;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-3 / content-11;
     `}
   }
 
@@ -84,11 +88,11 @@ const ResearchFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.mediumUp`
-      grid-column: content-start / content-8;
+      grid-column: content-start / content-7;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-3 / content-11;
     `}
   }
 `;
@@ -104,11 +108,11 @@ const InterpretDataFold = styled(Fold)`
     grid-column: full-start / full-end;
 
     ${media.mediumUp`
-      grid-column: content-start / content-end;
+      grid-column: content-2 / content-7;
     `}
 
     ${media.largeUp`
-      grid-column: full-start / content-7;
+      grid-column: content-start / content-7;
       grid-row: 1;
     `}
 
@@ -128,7 +132,7 @@ const InterpretDataFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-8 / content-end;
+      grid-column: content-7 / content-end;
     `}
   }
 `;
@@ -146,7 +150,7 @@ const CreditsFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-9;
     `}
   }
 
@@ -158,7 +162,7 @@ const CreditsFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-9;
     `}
   }
 `;
@@ -194,7 +198,7 @@ const FactsFold = styled(Fold)`
 const metadata = {
   id: 'caco',
   name: 'Cars and Construction',
-  color: '#2276AC'
+  color: indicatorGroupColors.economic.color
 };
 
 class CarsAndConstructionLongForm extends React.Component {
@@ -277,7 +281,7 @@ class CarsAndConstructionLongForm extends React.Component {
         <ResearchFold>
           <Gridder>
             <InpageHGroup
-              title='Scientific Research'
+              title='Scientific research'
               dashColor={metadata.color}
             />
             <Prose>
@@ -308,7 +312,7 @@ class CarsAndConstructionLongForm extends React.Component {
           <Gridder>
             <FoldDetails>
               <InpageHGroup
-                title='Interpreting the Data'
+                title='Interpreting the data'
                 dashColor={metadata.color}
               />
               <Prose>
@@ -359,6 +363,9 @@ class CarsAndConstructionLongForm extends React.Component {
               dashColor={metadata.color}
             />
             <Prose>
+              <Heading as='h3' size='medium'>
+                NASA Features
+              </Heading>
               <ul>
                 <li>
                   <a

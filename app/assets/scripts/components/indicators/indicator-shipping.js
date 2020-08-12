@@ -42,13 +42,6 @@ const IntroFold = styled(Fold)`
       grid-column: content-8 / full-end;
       grid-row: 1;
     `}
-
-    figcaption {
-      padding: 0 ${glsp()};
-      max-width: 30rem;
-      text-align: center;
-      margin: 0 auto;
-    }
   }
 
   ${FoldDetails} {
@@ -61,6 +54,11 @@ const IntroFold = styled(Fold)`
 
     ${media.largeUp`
       grid-column: content-start / content-8;
+
+      ${Prose} {
+        column-count: 2;
+        column-gap: ${glsp(2)};
+      }
     `}
   }
 `;
@@ -77,8 +75,12 @@ const ApproachFold = styled(Fold)`
     grid-row: 1;
     grid-column: content-start / content-end;
 
-    ${media.largeUp`
+    ${media.mediumUp`
       grid-column: content-start / content-7;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-3 / content-11;
     `}
   }
 
@@ -86,11 +88,11 @@ const ApproachFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.mediumUp`
-      grid-column: content-start / content-8;
+      grid-column: content-start / content-7;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-3 / content-11;
     `}
   }
 `;
@@ -113,13 +115,6 @@ const InterpretingDataFold = styled(Fold)`
       grid-row: 1;
       grid-column: content-start / content-8;
     `}
-
-    figcaption {
-      padding: 0 ${glsp()};
-      max-width: 30rem;
-      text-align: center;
-      margin: 0 auto;
-    }
   }
 
   ${FoldDetails} {
@@ -149,7 +144,7 @@ const CreditsFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-9;
     `}
   }
 
@@ -161,7 +156,7 @@ const CreditsFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-9;
     `}
   }
 `;
@@ -177,7 +172,7 @@ const AdditionalResourcesFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-9;
     `}
   }
 
@@ -189,7 +184,7 @@ const AdditionalResourcesFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-9;
     `}
   }
 `;
@@ -244,12 +239,10 @@ class ShippingLongForm extends React.Component {
               src={`${baseUrl}/assets/graphics/content/indicators/la-ship.png`}
               alt='Shiping detection in Los Angeles'
             >
-              <figcaption>
-                Los Angeles has the busiest port in the United States, which
-                this year saw a 19% reduction in shipping cargo volumes compared
-                to 2019, according to the Port of Los Angeles. Image Credit:
-                Planet Labs/NASA.
-              </figcaption>
+              Los Angeles has the busiest port in the United States, which
+              this year saw a 19% reduction in shipping cargo volumes compared
+              to 2019, according to the Port of Los Angeles. Image Credit:
+              Planet Labs/NASA.
             </MediaImage>
           </Gridder>
         </IntroFold>
@@ -277,7 +270,7 @@ class ShippingLongForm extends React.Component {
           <Gridder>
             <FoldDetails>
               <InpageHGroup
-                title='Interpreting Data'
+                title='Interpreting the data'
                 dashColor={metadata.color}
               />
               <Prose>
@@ -303,9 +296,8 @@ class ShippingLongForm extends React.Component {
                 <p>
                   Ship detections will be provided daily, except when prevented
                   by significant cloud cover. After the machine learning model
-                  detects the ships, a secondary human validation is
-                  performed before the detections are made available for the
-                  dashboard.
+                  detects the ships, a secondary human validation is performed
+                  before the detections are made available for the dashboard.
                 </p>
               </Prose>
             </FoldDetails>
@@ -313,11 +305,9 @@ class ShippingLongForm extends React.Component {
               src={`${baseUrl}/assets/graphics/content/indicators/supply-chain.png`}
               alt='Container Ship'
             >
-              <figcaption>
-                Supply chains around the world dependent on cargo shipping have
-                been interrupted by travel restrictions and quarantines designed
-                to stop the spread of the novel coronavirus. Image Credit: NOAA.
-              </figcaption>
+              Supply chains around the world dependent on cargo shipping have
+              been interrupted by travel restrictions and quarantines designed
+              to stop the spread of the novel coronavirus. Image Credit: NOAA.
             </MediaImage>
           </Gridder>
         </InterpretingDataFold>
@@ -361,7 +351,6 @@ class ShippingLongForm extends React.Component {
                     Commercial Smallsat Data Acquisition Program (CSDAP)
                   </a>
                 </li>
-
               </ul>
             </Prose>
           </Gridder>
