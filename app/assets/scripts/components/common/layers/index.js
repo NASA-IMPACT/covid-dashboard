@@ -7,7 +7,7 @@ import population from './layer-population';
 import nightlightsViirs from './layer-nightlights-viirs';
 import nightlightsHd from './layer-nightlights-hd';
 import detectionShip from './layer-detection-ship';
-import spm from './layer-spm';
+import slowdown from './layer-slowdown';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
 import agriculture from './layer-agriculture';
@@ -20,7 +20,7 @@ const layers = [
   nightlightsViirs,
   nightlightsHd,
   detectionShip,
-  spm,
+  slowdown,
   waterChlorophyll,
   waterSpm,
   agriculture
@@ -33,9 +33,9 @@ const layersBySpotlight = {
   du: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
   gh: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
   la: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship'],
-  sf: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'spm', 'detection-ship', 'water-chlorophyll', 'water-spm'],
+  sf: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm'],
   tk: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
-  ny: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'spm', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  ny: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm']
 };
 
 const layerOverridesBySpotlight = {
@@ -61,7 +61,7 @@ const layerOverridesBySpotlight = {
   },
   sf: {
     'nightlights-viirs': handleNightlightsViirs,
-    spm: (l, spotlightId) => ({
+    slowdown: (l, spotlightId) => ({
       ...l,
       domain: ['2020-03-02', '2020-04-03', '2020-04-19', '2020-05-04', '2020-05-05', '2020-05-21', '2020-05-24', '2020-05-28', '2020-06-01', '2020-06-03', '2020-06-06', '2020-06-13', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-25', '2020-06-28', '2020-06-3.', '2020-07-01', '2020-07-03']
     }),
@@ -97,7 +97,7 @@ const layerOverridesBySpotlight = {
   },
   ny: {
     'nightlights-viirs': handleNightlightsViirs,
-    spm: (l, spotlightId) => ({
+    slowdown: (l, spotlightId) => ({
       ...l,
       domain: ['2020-01-01', '2020-01-08', '2020-01-15', '2020-01-22', '2020-01-29', '2020-02-05', '2020-02-12', '2020-02-19', '2020-02-26', '2020-03-04', '2020-03-11', '2020-03-18', '2020-03-25', '2020-04-01', '2020-04-08', '2020-04-15', '2020-04-22', '2020-04-29', '2020-05-06', '2020-05-13', '2020-05-20', '2020-05-27', '2020-06-03', '2020-06-10', '2020-06-17', '2020-06-24', '2020-07-01', '2020-07-08', '2020-07-15', '2020-07-22', '2020-07-29']
     }),
