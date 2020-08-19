@@ -10,7 +10,7 @@ export default {
   type: 'raster-timeseries',
   domain: [
     '2018-03-01',
-    '2020-06-01'
+    '2020-07-01'
   ],
   source: {
     type: 'raster',
@@ -18,7 +18,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_{date}_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2&color_formula=gamma r {gamma}`
     ]
   },
-  exclusiveWith: ['agriculture', 'co2', 'co2-diff', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
+  exclusiveWith: ['agriculture', 'no2-diff', 'co2', 'co2-diff', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   enabled: true,
   compare: {
     enabled: true,
