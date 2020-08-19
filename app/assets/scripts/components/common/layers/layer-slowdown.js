@@ -5,12 +5,11 @@ import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 export default {
   id: 'slowdown',
   name: 'Slowdown Proxy Maps',
-  type: 'raster-timeseries',
-  domain: [/* spotlight dependent */],
+  type: 'raster',
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/slowdown_proxy_map/{spotlightId}.tif&resampling_method=bilinear&bidx=1&rescale=0%2C4015&color_map=blues`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/slowdown_proxy_map/{spotlightId}.tif&resampling_method=cubic&bidx=1&rescale=0%2C18&color_map=blues`
     ]
   },
   exclusiveWith: ['agriculture', 'co2', 'co2-diff', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
