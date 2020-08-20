@@ -172,7 +172,7 @@ export const layerTypes = {
     },
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
-      const { id, source } = layerInfo;
+      const { id, source, paint } = layerInfo;
 
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
@@ -182,7 +182,8 @@ export const layerTypes = {
           {
             id: id,
             type: 'raster',
-            source: id
+            source: id,
+            paint: paint || {}
           },
           'admin-0-boundary-bg'
         );
