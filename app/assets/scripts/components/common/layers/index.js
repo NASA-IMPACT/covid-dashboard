@@ -1,6 +1,7 @@
 import get from 'lodash.get';
 
 import no2 from './layer-no2';
+import no2Diff from './layer-no2-diff';
 import co2 from './layer-co2';
 import co2Diff from './layer-co2-diff';
 import population from './layer-population';
@@ -14,6 +15,7 @@ import agriculture from './layer-agriculture';
 
 const layers = [
   no2,
+  no2Diff,
   co2,
   co2Diff,
   population,
@@ -29,13 +31,13 @@ const layers = [
 export default layers;
 
 const layersBySpotlight = {
-  be: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
-  du: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
-  gh: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
-  la: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship'],
-  sf: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm'],
-  tk: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  ny: ['no2', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
+  du: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
+  gh: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
+  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship'],
+  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm'],
+  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
+  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm']
 };
 
 const layerOverridesBySpotlight = {
@@ -138,7 +140,7 @@ export function getSpotlightLayers (spotlightId) {
 }
 
 export function getGlobalLayers () {
-  const layersToUse = ['no2', 'co2', 'co2-diff', 'gibs-population', 'agriculture'];
+  const layersToUse = ['no2', 'no2-diff', 'co2', 'co2-diff', 'gibs-population', 'agriculture'];
   return layers.filter((l) => layersToUse.includes(l.id));
 }
 
