@@ -11,6 +11,7 @@ import detectionShip from './layer-detection-ship';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
 import agriculture from './layer-agriculture';
+import detectionPlane from './layer-detection-plane';
 
 const layers = [
   no2,
@@ -23,19 +24,20 @@ const layers = [
   detectionShip,
   waterChlorophyll,
   waterSpm,
-  agriculture
+  agriculture,
+  detectionPlane
 ];
 
 export default layers;
 
 const layersBySpotlight = {
-  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
+  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-plane'],
   du: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
   gh: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
-  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship'],
-  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'water-chlorophyll', 'water-spm'],
-  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
-  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'detection-plane'],
+  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm'],
+  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-plane'],
+  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm']
 };
 
 const layerOverridesBySpotlight = {
@@ -115,7 +117,11 @@ const layerOverridesBySpotlight = {
         // For NY, nightlights goes till June
         domain: [l.domain[0], '2020-06-01']
       };
-    }
+    },
+    'detection-plane': (l, spotlightId) =>
+      handleInferenceTimeseries(l, spotlightId, {
+        domain: ['2020-01-09', '2020-01-11', '2020-01-15', '2020-01-16', '2020-01-19', '2020-01-20', '2020-01-21', '2020-01-22', '2020-02-02', '2020-02-08', '2020-02-09', '2020-02-14', '2020-02-15', '2020-02-17', '2020-02-19', '2020-02-21', '2020-02-22', '2020-03-09', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-18', '2020-03-22', '2020-04-02', '2020-04-06', '2020-04-07', '2020-04-08', '2020-04-11', '2020-04-12', '2020-04-15', '2020-04-16', '2020-04-17', '2020-04-19', '2020-04-21', '2020-04-22', '2020-05-02', '2020-05-04', '2020-05-05', '2020-05-09', '2020-05-10', '2020-05-12', '2020-05-13', '2020-05-14', '2020-05-15', '2020-05-19']
+      })
   }
 };
 
