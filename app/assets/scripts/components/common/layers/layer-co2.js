@@ -41,13 +41,13 @@ export default {
     min: '< 408 ppm',
     max: '> 419 ppm',
     stops: [
-      '#5D4FA2',
-      '#2F75BE',
-      '#6DC7A3',
-      '#D7ED96',
-      '#FFEA9B',
-      '#FA894C',
-      '#B11E4D'
+      '#313695',
+      '#588cbf',
+      '#a3d2e5',
+      '#e8f6e8',
+      '#fee89c',
+      '#fba55c',
+      '#e24932'
     ]
   },
   info: 'This layer shows the average background concentration of carbon dioxide (CO₂) in our atmosphere for 2020. Redder colors indicate more CO₂. Whiter colors indicate less CO₂.'

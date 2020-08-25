@@ -11,7 +11,7 @@ export default {
       'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/GPW_Population_Density_2020/default/2020-05-14T00:00:00Z/GoogleMapsCompatible_Level7/{z}/{y}/{x}.png'
     ]
   },
-  exclusiveWith: ['agriculture', 'no2', 'co2-diff', 'co2', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
+  exclusiveWith: ['agriculture', 'no2', 'no2-diff', 'co2-diff', 'co2', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm'],
   swatch: indicatorGroupColors.economic,
   legend: {
     type: 'gradient',
