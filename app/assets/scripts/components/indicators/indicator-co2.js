@@ -34,12 +34,18 @@ const IntroFold = styled(Fold)`
     grid-column: content-start / content-end;
   }
 
-  ${media.largeUp`
-    ${Prose} {
-        column-count: 2;
-        column-gap: ${glsp(2)};
-      }
-  `}
+  ${Prose} {
+    grid-column: content-start / content-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-7;
+    `}
+    
+    ${media.largeUp`
+      column-count: 2;
+      column-gap: ${glsp(2)};
+    `}
+  }
 `;
 
 const ResearchFold = styled(Fold)`
@@ -54,8 +60,12 @@ const ResearchFold = styled(Fold)`
     grid-row: 1;
     grid-column: content-start / content-end;
 
-    ${media.largeUp`
+    ${media.mediumUp`
       grid-column: content-start / content-7;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-3 / content-11;
     `}
   }
 
@@ -63,11 +73,11 @@ const ResearchFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.mediumUp`
-      grid-column: content-start / content-8;
+      grid-column: content-start / content-7;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-3 / content-11;
     `}
   }
 `;
@@ -87,16 +97,9 @@ const InterpretDataFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: full-start / content-7;
+      grid-column: full-start / content-8;
       grid-row: 1;
     `}
-
-    figcaption {
-      padding: 0 ${glsp()};
-      max-width: 30rem;
-      text-align: center;
-      margin: 0 auto;
-    }
   }
 
   ${FoldDetails} {
@@ -125,7 +128,7 @@ const CreditsFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-9;
     `}
   }
 
@@ -137,7 +140,7 @@ const CreditsFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-9;
     `}
   }
 `;
@@ -153,7 +156,7 @@ const FactsFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-9;
     `}
   }
 
@@ -165,7 +168,7 @@ const FactsFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-9;
     `}
   }
 `;
@@ -245,7 +248,7 @@ class CO2LongForm extends React.Component {
         <ResearchFold>
           <Gridder>
             <InpageHGroup
-              title='Scientific Research'
+              title='Scientific research'
               dashColor={metadata.color}
             />
             <Prose>
@@ -296,7 +299,7 @@ class CO2LongForm extends React.Component {
           <Gridder>
             <FoldDetails>
               <InpageHGroup
-                title='Interpreting the Data'
+                title='Interpreting the data'
                 dashColor={metadata.color}
               />
               <Prose>
