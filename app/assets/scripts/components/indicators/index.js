@@ -34,6 +34,7 @@
  * 3) Add the page to the indicators array
  *
  */
+import agriculture from './indicator-agriculture';
 import no2 from './indicator-no2';
 import co2 from './indicator-co2';
 import bm from './indicator-nightlights';
@@ -45,6 +46,7 @@ import caco from './indicator-cars-and-construction';
 const indicators = [
   caco,
   co2,
+  agriculture,
   bm,
   no2,
   population,
