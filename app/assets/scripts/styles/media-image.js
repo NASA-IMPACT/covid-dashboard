@@ -4,6 +4,7 @@ import { PropTypes as T } from 'prop-types';
 
 import { glsp, _rgba } from './utils/theme-values';
 import { themeVal } from './utils/general';
+import media from './utils/media-queries';
 
 const MediaImageFigure = ({
   className,
@@ -32,7 +33,7 @@ const MediaImage = styled(MediaImageFigure)`
   width: 100%;
 
   > *:not(:last-child) {
-    margin-bottom: ${glsp()}
+    margin-bottom: ${glsp()};
   }
 
   img {
@@ -43,9 +44,17 @@ const MediaImage = styled(MediaImageFigure)`
   figcaption {
     font-size: 0.875rem;
     line-height: 1.5rem;
+    text-align: center;
+    padding: ${glsp(0, 1)};
+    max-width: 40rem;
+    margin: 0 auto;
+
+    ${media.largeUp`
+      padding: ${glsp(0, 2)};
+    `}
 
     > *:not(:last-child) {
-      margin-bottom: ${glsp()}
+      margin-bottom: ${glsp()};
     }
   }
 `;
@@ -64,14 +73,24 @@ export const MediaCompare = styled.figure`
     > div:nth-child(4) > div:nth-child(1),
     > div:nth-child(5) > div:nth-child(1) {
       border-radius: ${themeVal('shape.rounded')};
-      background-color: ${_rgba(themeVal('color.baseDark'), 0.64)} !important;
+      background-color: ${_rgba(
+        themeVal('color.baseDark'),
+        0.64
+      )} !important;
     }
   }
 
   figcaption {
     font-size: 0.875rem;
     line-height: 1.5rem;
-    max-width: 30rem;
+    text-align: center;
+    padding: ${glsp(0, 1)};
+    max-width: 40rem;
+    margin: 0 auto;
+
+    ${media.largeUp`
+      padding: ${glsp(0, 2)};
+    `}
   }
 
   /* stylelint-disable-next-line */

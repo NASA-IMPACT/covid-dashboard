@@ -8,6 +8,7 @@ import population from './layer-population';
 import nightlightsViirs from './layer-nightlights-viirs';
 import nightlightsHd from './layer-nightlights-hd';
 import detectionShip from './layer-detection-ship';
+import slowdown from './layer-slowdown';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
 import agriculture from './layer-agriculture';
@@ -21,6 +22,7 @@ const layers = [
   nightlightsViirs,
   nightlightsHd,
   detectionShip,
+  slowdown,
   waterChlorophyll,
   waterSpm,
   agriculture
@@ -29,13 +31,13 @@ const layers = [
 export default layers;
 
 const layersBySpotlight = {
-  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
-  du: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
-  gh: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
-  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship'],
-  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'water-chlorophyll', 'water-spm'],
-  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture'],
-  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
+  du: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
+  gh: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
+  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship'],
+  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm'],
+  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
+  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm']
 };
 
 const layerOverridesBySpotlight = {
