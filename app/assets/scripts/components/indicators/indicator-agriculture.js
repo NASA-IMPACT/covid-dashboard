@@ -10,7 +10,10 @@ import media from '../../styles/utils/media-queries';
 
 import { glsp } from '../../styles/utils/theme-values';
 import Heading from '../../styles/type/heading';
+import MediaImage from '../../styles/media-image';
+// import config from '../../config';
 
+// const { baseUrl } = config;
 const LeadFold = styled(Fold)`
   padding-bottom: 0;
 
@@ -75,15 +78,29 @@ const InterpretDataFold = styled(Fold)`
     align-items: center;
   }
 
+  ${MediaImage} {
+    grid-column: full-start / full-end;
+
+    ${media.mediumUp`
+      grid-column: content-start / content-end;
+    `}
+
+    ${media.largeUp`
+      grid-row: 1;
+      grid-column: content-8 / full-end;
+    `}
+  }
+
   ${FoldDetails} {
     grid-column: content-start / content-end;
+    text-align: left;
 
     ${media.mediumUp`
       grid-column: content-start / content-8;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-8;
     `}
   }
 `;
@@ -141,7 +158,7 @@ class AgLongForm extends React.Component {
             <FoldDetails>
               <Prose>
                 <p>
-                  Goverments and agricultural organizations typically rely on
+                  Governments and agricultural organizations typically rely on
                   in-person surveys to track key farming milestones like sowing,
                   crop progress, and harvesting. Due to social distancing
                   measures during the COVID-19 pandemic, groups are increasingly
@@ -153,7 +170,7 @@ class AgLongForm extends React.Component {
                   coronavirus has unevenly impacted global food supply chains.
                   In higher income countries with more isolated agricultural
                   communities and less intensive cultivation techniques, the
-                  virus’s spread has had a minimal effect on key staple crops
+                  virus&apos;s spread has had a minimal effect on key staple crops
                   like wheat, maize, rice, and soybeans. Yet, in some middle
                   and lower income countries where mandatory shelter-in-place
                   orders have strained the cultivation of labor-intensive
@@ -165,12 +182,13 @@ class AgLongForm extends React.Component {
                   Researchers are using data from the{' '}
                   <a
                     href='https://cropmonitor.org/'
+                    title='Visit GEOGLAM page'
                     target='_blank'
                     rel='noopener noreferrer'
                   >
                     Group on Earth Observation’s Global Agricultural Monitoring
-                    Intiative (GEOGLAM) global Crop Monitor{' '}
-                  </a>
+                    Intiative (GEOGLAM) global Crop Monitor
+                  </a>{' '}
                   during the COVID-19 pandemic to predict unexpected
                   agricultural shortfalls in order to strengthen global food
                   security. The GEOGLAM Crop Monitor combines Earth
@@ -195,36 +213,37 @@ class AgLongForm extends React.Component {
                 changes in agricultural land use, as well as agricultural
                 productivity and sustainability. During the pandemic,
                 researchers can leverage this data to rapidly map and depict
-                how the nature and distribution of a country’s agricultural
+                how the nature and distribution of a country&apos;s agricultural
                 fields might be changing during the pandemic. In addition,
                 ongoing work within{' '}
                 <a
                   href='https://nasaharvest.org/'
+                  title='Visit NASA Harvest page'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
                   NASA Harvest
                 </a>
-                a partnership between NASA and the University of Maryland
-                within{' '}
+                , NASA&apos;s food and agriculture program under{' '}
                 <a
                   href='https://appliedsciences.nasa.gov/'
+                  title='Visit NASA Earth Science Applied Sciences Program page'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  NASA’s Earth Science Applied Sciences Program
-                </a>
-                , seeks to enable and advance the adoption of satellite Earth
-                observations by public and private organizations to benefit
-                food security, agriculture, and human and environmental
-                resiliency worldwide.
+                  NASA&apos;s Earth Science Applied Sciences Program
+                </a>{' '}
+                implemented through the University of Maryland, seeks to enable
+                and advance the adoption of satellite Earth observations by
+                public and private organizations to benefit food security,
+                agriculture, and human and environmental resiliency worldwide.
               </p>
               <p>
-                Researchers and the GEOGLAM Crop Monitor use a variety of
-                methods to assess crop conditions, including Normalized
-                Difference Vegetation Index (NDVI), precipitation, soil
-                moisture, evapotranspiration, and temperature. Each of these
-                aspects can be observed using satellites.
+                Researchers use a variety of methods to assess crop conditions,
+                including Normalized Difference Vegetation Index (NDVI),
+                precipitation, soil moisture, evapotranspiration, and
+                temperature. Each of these aspects can be observed using
+                satellites.
               </p>
               <p>
                 NDVI is used to monitor the amount of healthy vegetation in a
@@ -241,11 +260,12 @@ class AgLongForm extends React.Component {
                 water from plants and the land surface, is measured using the{' '}
                 <a
                   href='https://servirglobal.net/Global/Evaporative-Stress-Index/'
+                  title='Learn more about ESI'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  Evaporative Stress Index (ESI){' '}
-                </a>
+                  Evaporative Stress Index (ESI)
+                </a>{' '}
                 to monitor normal evapotranspiration rates and detect potential
                 drought in a region. And temperature is an important factor to
                 assess crop growth because certain crops have specific
@@ -267,11 +287,12 @@ class AgLongForm extends React.Component {
               <Prose>
                 <p>
                   The agricultural data presented in the dashboard are taken
-                  from the GEOGLAM Crop Monitor developed to provide open,
+                  from the GEOGLAM Crop Monitor and developed to provide open,
                   timely, science-driven information on crop conditions in
                   support of market transparency for the{' '}
                   <a
                     href='http://www.amis-outlook.org/amis-about'
+                    title='Visit AMIS page'
                     target='_blank'
                     rel='noopener noreferrer'
                   >
@@ -283,15 +304,29 @@ class AgLongForm extends React.Component {
                   international, multi-source, consensus assessment of global
                   crop growing conditions, status, and climatic factors likely
                   to impact production, such as temperature and precipitation
-                  changes.
+                  changes. These data also underlie the Crop Monitor for Early
+                  Warning (CM4EW), which provides crop condition assessments
+                  for key staple crops and early warning of potential impacts
+                  to crop production that may affect food supply and access
+                  for the most vulnerable populations.
                 </p>
                 <p>
-                  Within the Crop Monitor data, each timestep shows the
+                  &quot;Assessing the global supply situation and being
+                  able to predict unexpected shortfalls is the single most
+                  important task to guarantee global food security,&quot;
+                  explained Abdolreza Abbassian, Secretary of AMIS and a U.N.
+                  Food and Agriculture Organization senior economist. &quot;
+                  However, such assessments must be evidence-based and
+                  credible, and this is where reliance on timely information
+                  from remote sensing plays a fundamental role.&quot;
+                </p>
+                <p>
+                  Within the GEOGLAM Crop Monitor data, each timestep shows the
                   global synthesis crop condition map of all crops being
                   monitored. Each color represents a different crop condition.
                   Blue is “Exceptional,” where crop conditions are much better
                   than average. This label is used only during the
-                  grain-filling through harvest stages. Green is favourable,
+                  grain-filling through harvest stages. Green is favorable,
                   where crop conditions range from slightly below to slightly
                   above average at reporting time. Yellow is Watch, where crop
                   conditions are not far from average but there is a potential
@@ -326,6 +361,13 @@ class AgLongForm extends React.Component {
                 </p>
               </Prose>
             </FoldDetails>
+            {/* <MediaImage
+              src={`${baseUrl}/assets/graphics/content/cropmonitor-july.png`}
+              alt='Crop Monitor for AMIS July'
+            >
+              Crop Monitor for AMIS and Early Warning July synthesis map. Image
+              Credit: GEOGLAM Crop Monitor
+            </MediaImage> */}
           </Gridder>
         </InterpretDataFold>
 
