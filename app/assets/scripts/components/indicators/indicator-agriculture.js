@@ -182,12 +182,13 @@ class AgLongForm extends React.Component {
                   Researchers are using data from the{' '}
                   <a
                     href='https://cropmonitor.org/'
+                    title='Visit GEOGLAM page'
                     target='_blank'
                     rel='noopener noreferrer'
                   >
                     Group on Earth Observation’s Global Agricultural Monitoring
-                    Intiative (GEOGLAM) global Crop Monitor{' '}
-                  </a>
+                    Intiative (GEOGLAM) global Crop Monitor
+                  </a>{' '}
                   during the COVID-19 pandemic to predict unexpected
                   agricultural shortfalls in order to strengthen global food
                   security. The GEOGLAM Crop Monitor combines Earth
@@ -217,6 +218,7 @@ class AgLongForm extends React.Component {
                 ongoing work within{' '}
                 <a
                   href='https://nasaharvest.org/'
+                  title='Visit NASA Harvest page'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
@@ -225,11 +227,12 @@ class AgLongForm extends React.Component {
                 , NASA&apos;s food and agriculture program under{' '}
                 <a
                   href='https://appliedsciences.nasa.gov/'
+                  title='Visit NASA Earth Science Applied Sciences Program page'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
                   NASA&apos;s Earth Science Applied Sciences Program
-                </a>
+                </a>{' '}
                 implemented through the University of Maryland, seeks to enable
                 and advance the adoption of satellite Earth observations by
                 public and private organizations to benefit food security,
@@ -257,11 +260,12 @@ class AgLongForm extends React.Component {
                 water from plants and the land surface, is measured using the{' '}
                 <a
                   href='https://servirglobal.net/Global/Evaporative-Stress-Index/'
+                  title='Learn more about ESI'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  Evaporative Stress Index (ESI){' '}
-                </a>
+                  Evaporative Stress Index (ESI)
+                </a>{' '}
                 to monitor normal evapotranspiration rates and detect potential
                 drought in a region. And temperature is an important factor to
                 assess crop growth because certain crops have specific
@@ -288,6 +292,7 @@ class AgLongForm extends React.Component {
                   support of market transparency for the{' '}
                   <a
                     href='http://www.amis-outlook.org/amis-about'
+                    title='Visit AMIS page'
                     target='_blank'
                     rel='noopener noreferrer'
                   >
