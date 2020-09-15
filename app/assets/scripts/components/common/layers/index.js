@@ -12,6 +12,8 @@ import slowdown from './layer-slowdown';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
 import agriculture from './layer-agriculture';
+import waterGlChl from './layer-wq-gl-chl';
+import waterGlSpm from './layer-wq-gl-spm';
 
 const layers = [
   no2,
@@ -25,7 +27,9 @@ const layers = [
   slowdown,
   waterChlorophyll,
   waterSpm,
-  agriculture
+  agriculture,
+  waterGlChl,
+  waterGlSpm
 ];
 
 export default layers;
@@ -37,7 +41,8 @@ const layersBySpotlight = {
   la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship'],
   sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm'],
   tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
-  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm']
+  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm'],
+  wble: ['waterGlChl', 'waterGlSpm']
 };
 
 const layerOverridesBySpotlight = {
