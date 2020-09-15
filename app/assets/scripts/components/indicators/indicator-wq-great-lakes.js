@@ -10,8 +10,6 @@ import media from '../../styles/utils/media-queries';
 import { indicatorGroupColors } from '../../styles/theme/theme';
 
 const IntroFold = styled(Fold)`
-  // padding-bottom: 0;
-
   ${Prose} {
     grid-column: content-start / content-end;
 
