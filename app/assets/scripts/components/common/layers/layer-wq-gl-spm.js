@@ -14,7 +14,7 @@ export default {
       `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/wq-greatlakes/sm_anomaly_wble_{date}.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
     ]
   },
-  exclusiveWith: [],
+  exclusiveWith: ['water-wq-gl-chl'],
   swatch: indicatorGroupColors['water-quality'],
   legend: {
     type: 'gradient',

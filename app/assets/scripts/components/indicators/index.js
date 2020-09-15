@@ -42,7 +42,6 @@ import population from './indicator-population';
 import waterQuality from './indicator-water-quality';
 import shipping from './indicator-shipping';
 import caco from './indicator-cars-and-construction';
-import wqGreatLakes from './indicator-wq-great-lakes';
 
 const indicators = [
   caco,
@@ -52,8 +51,7 @@ const indicators = [
   no2,
   population,
   shipping,
-  waterQuality,
-  wqGreatLakes
+  waterQuality
 ];
 
 export default indicators;

@@ -42,7 +42,7 @@ const layersBySpotlight = {
   sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm'],
   tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs'],
   ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm'],
-  wble: ['waterGlChl', 'waterGlSpm']
+  wble: ['water-wq-gl-chl', 'water-wq-gl-spm']
 };
 
 const layerOverridesBySpotlight = {
