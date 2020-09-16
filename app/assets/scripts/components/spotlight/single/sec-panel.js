@@ -215,7 +215,7 @@ class SecPanel extends React.Component {
         }
         bodyContent={
           <BodyScroll>
-            {summary && <SummaryExpandable>{summary}</SummaryExpandable>}
+            {summary && <SummaryExpandable initialExpanded={!groups.length}>{summary}</SummaryExpandable>}
 
             <Accordion allowMultiple initialState={[true]}>
               {({ checkExpanded, setExpanded }) =>

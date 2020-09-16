@@ -38,7 +38,7 @@ class SummaryExpandable extends Component {
     super(props);
 
     this.state = {
-      isExpanded: false
+      isExpanded: props.initialExpanded
     };
   }
 
@@ -63,7 +63,8 @@ class SummaryExpandable extends Component {
 
 SummaryExpandable.propTypes = {
   className: T.string,
-  children: T.node
+  children: T.node,
+  initialExpanded: T.bool
 };
 
 export default SummaryExpandable;
