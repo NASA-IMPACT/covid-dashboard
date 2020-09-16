@@ -104,7 +104,19 @@ class SpotlightAreasSingle extends React.Component {
 
     // Set query state definition for url state storing.
     const common = getCommonQsState(props);
-    common.layers.default = 'nightlights-hd';
+
+    switch (props.match.params.spotlightId) {
+      case 'togo':
+        common.layers.default = 'togo-ag';
+        break;
+      case 'wble':
+        common.layers.default = 'water-wq-gl-chl';
+        break;
+      default:
+        common.layers.default = 'nightlights-hd';
+        break;
+    }
+
     this.qsState = new QsState(common);
 
     // The active layers can only be enabled once the map loads. The toggle

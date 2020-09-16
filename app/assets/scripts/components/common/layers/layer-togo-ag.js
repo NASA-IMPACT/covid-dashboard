@@ -16,5 +16,22 @@ export default {
   enabled: true,
   exclusiveWith: [],
   swatch: indicatorGroupColors.agriculture,
-  info: null
+  legend: {
+    type: 'gradient',
+    min: 'low',
+    max: 'high',
+    stops: [
+      '#000000',
+      '#1a0b40',
+      '#4b0c6b',
+      '#791c6d',
+      '#a42c60',
+      '#cf4446',
+      '#ed6825',
+      '#fb9b06',
+      '#f6d13c',
+      '#fbfda2'
+    ]
+  },
+  info: 'Dark purple colors indicate lower probability of cropland while lighter yellow colors indicate higher probability of cropland within each pixel.'
 };
