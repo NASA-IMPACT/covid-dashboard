@@ -1,6 +1,6 @@
 {
   "name": "covid-dashboard",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Frontend application for the Covid Dashboard",
   "repository": {
     "type": "git",
