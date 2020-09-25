@@ -8,21 +8,21 @@ export default {
   type: 'raster-timeseries',
   domain: [
     '2018-03-01',
-    '2020-07-01'
+    '2020-08-01'
   ],
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMDifference/OMI_trno2_0.10x0.10_{date}_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=-3e15%2C3e15&color_map=rdbu_r&color_formula=gamma r {gamma}`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMDifference/OMI_trno2_0.10x0.10_{date}_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=-3e15%2C3e15&color_map=rdbu_r`
     ]
   },
   exclusiveWith: ['co2', 'co2-diff', 'gibs-population', 'car-count', 'nightlights-viirs', 'nightlights-hd', 'detection-ship', 'detection-multi', 'water-chlorophyll', 'water-spm', 'no2'],
   enabled: false,
   swatch: indicatorGroupColors['air-quality'],
   legend: {
-    type: 'gradient-adjustable',
-    min: 'less',
-    max: 'more',
+    type: 'gradient',
+    min: '< -3',
+    max: '> 3',
     stops: [
       '#3A88BD',
       '#C9E0ED',
@@ -32,5 +32,5 @@ export default {
 
     ]
   },
-  info: 'This layer shows changes in nitrogen dioxide (NO₂) levels. Redder colors indicate increases in NO₂. Bluer colors indicate lower levels of NO₂.'
+  info: 'This layer shows changes in nitrogen dioxide (NO₂) levels in µmol/m₂. Redder colors indicate increases in NO₂. Bluer colors indicate lower levels of NO₂.'
 };

@@ -39,16 +39,11 @@ const IntroFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: full-start / content-8;
+      grid-column: full-start / content-7;
       grid-row: 1;
     `}
 
     figcaption {
-      margin: 0 auto;
-      padding: 0 ${glsp()};
-      max-width: 40rem;
-      text-align: center;
-
       ${media.mediumUp`
         /* Image has a white border which must be taken into account. */
         margin-top: -${glsp()};
@@ -65,7 +60,7 @@ const IntroFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-8 / content-end;
+      grid-column: content-7 / content-end;
     `}
   }
 `;
@@ -82,8 +77,12 @@ const ResearchFold = styled(Fold)`
     grid-row: 1;
     grid-column: content-start / content-end;
 
-    ${media.largeUp`
+    ${media.mediumUp`
       grid-column: content-start / content-7;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-start / content-9;
     `}
   }
 
@@ -91,11 +90,11 @@ const ResearchFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.mediumUp`
-      grid-column: content-start / content-8;
+      grid-column: content-start / content-7;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-9;
     `}
   }
 `;
@@ -112,8 +111,12 @@ const InterpretingDataFold = styled(Fold)`
     grid-row: 1;
     grid-column: content-start / content-end;
 
-    ${media.largeUp`
+    ${media.mediumUp`
       grid-column: content-start / content-7;
+    `}
+
+    ${media.largeUp`
+      grid-column: content-5 / content-13;
     `}
   }
 
@@ -121,11 +124,11 @@ const InterpretingDataFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.mediumUp`
-      grid-column: content-start / content-8;
+      grid-column: content-start / content-7;
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-5 / content-end;
     `}
   }
 `;
@@ -141,7 +144,7 @@ const AdditionalResourcesFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-9;
     `}
   }
 
@@ -153,7 +156,7 @@ const AdditionalResourcesFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-9;
     `}
   }
 `;
@@ -219,7 +222,7 @@ class WQLongForm extends React.Component {
         <ResearchFold>
           <Gridder>
             <InpageHGroup
-              title='Scientific Research'
+              title='Scientific research'
               dashColor={metadata.color}
             />
             <Prose>
@@ -250,7 +253,7 @@ class WQLongForm extends React.Component {
         <InterpretingDataFold>
           <Gridder>
             <InpageHGroup
-              title='Interpreting the Data'
+              title='Interpreting the data'
               dashColor={metadata.color}
             />
             <Prose>

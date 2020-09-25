@@ -44,13 +44,6 @@ const IntroFold = styled(Fold)`
       grid-column: full-start / content-8;
       grid-row: 1;
     `}
-
-    figcaption {
-      padding: 0 ${glsp()};
-      max-width: 30rem;
-      text-align: center;
-      margin: 0 auto;
-    }
   }
 
   ${FoldDetails} {
@@ -107,13 +100,6 @@ const InterpretDataFold = styled(Fold)`
       grid-row: 1;
       grid-column: content-start / content-8;
     `}
-
-    figcaption {
-      padding: 0 ${glsp()};
-      max-width: 30rem;
-      text-align: center;
-      margin: 0 auto;
-    }
   }
 
   ${FoldDetails} {
@@ -141,7 +127,7 @@ const FactsFold = styled(Fold)`
     grid-column: content-start / content-end;
 
     ${media.largeUp`
-      grid-column: content-start / content-7;
+      grid-column: content-start / content-9;
     `}
   }
 
@@ -153,7 +139,7 @@ const FactsFold = styled(Fold)`
     `}
 
     ${media.largeUp`
-      grid-column: content-start / content-10;
+      grid-column: content-start / content-9;
     `}
   }
 `;
@@ -214,7 +200,7 @@ class NO2LongForm extends React.Component {
         <ResearchFold>
           <Gridder>
             <InpageHGroup
-              title='Scientific Research'
+              title='Scientific research'
               dashColor={metadata.color}
             />
             <Prose numColumns={2}>
@@ -248,7 +234,7 @@ class NO2LongForm extends React.Component {
           <Gridder>
             <FoldDetails>
               <InpageHGroup
-                title='Interpreting the Data'
+                title='Interpreting the data'
                 dashColor={metadata.color}
               />
               <Prose>

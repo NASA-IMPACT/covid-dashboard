@@ -34,20 +34,24 @@
  * 3) Add the page to the indicators array
  *
  */
+import agriculture from './indicator-agriculture';
 import no2 from './indicator-no2';
 import co2 from './indicator-co2';
 import bm from './indicator-nightlights';
 import population from './indicator-population';
 import waterQuality from './indicator-water-quality';
 import shipping from './indicator-shipping';
+import caco from './indicator-cars-and-construction';
 
 const indicators = [
+  caco,
+  co2,
+  agriculture,
   bm,
   no2,
-  co2,
   population,
-  waterQuality,
-  shipping
+  shipping,
+  waterQuality
 ];
 
 export default indicators;
