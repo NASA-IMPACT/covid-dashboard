@@ -12,13 +12,16 @@ const {
 } = makeActions('LAYER_DATA', true);
 
 export function fetchLayerData (id) {
-  return makeFetchThunk({
-    url: `${config.api}/indicators/${id}/overview.json`,
+  const result = makeFetchThunk({
+    url: 'https://cumulus-map-internal.s3.amazonaws.com/cloud-optimized/collections/imerg.json',
     cache: true,
     statePath: ['layerData', id],
     requestFn: requestLayerData.bind(null, id),
     receiveFn: receiveLayerData.bind(null, id)
   });
+  return result;
 }
 
-export default makeAPIReducer('LAYER_DATA', true);
+const layerDataReducer = makeAPIReducer('LAYER_DATA', true);
+
+export default layerDataReducer;

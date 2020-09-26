@@ -500,9 +500,11 @@ GlobalExplore.propTypes = {
 };
 
 function mapStateToProps (state, props) {
+  const apiLayers = wrapApiResult(state.layerData);
+  const defaultLayers = getGlobalLayers();
   return {
     spotlightList: wrapApiResult(state.spotlight.list),
-    mapLayers: getGlobalLayers(),
+    mapLayers: apiLayers.isReady() ? [apiLayers.data] : defaultLayers,
     cogTimeData: wrapApiResult(state.cogTimeData, true)
   };
 }

@@ -13,6 +13,7 @@ import history from './utils/history';
 import config from './config';
 import { fetchSpotlightList } from './redux/spotlight';
 import { fetchIndicatorGroups } from './redux/indicators';
+import { fetchLayerData } from './redux/layer-data';
 
 import GlobalStyles from './styles/global';
 import ErrorBoundary from './fatal-error-boundary';
@@ -34,6 +35,7 @@ import Development from './components/development';
 // Load the spotlight areas list.
 store.dispatch(fetchSpotlightList());
 store.dispatch(fetchIndicatorGroups());
+store.dispatch(fetchLayerData());
 
 const { gaTrackingCode } = config;
 

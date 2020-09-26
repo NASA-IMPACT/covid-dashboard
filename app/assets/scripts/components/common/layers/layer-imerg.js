@@ -11,7 +11,7 @@ export default {
   timeUnit: 'day',
   domain: [
     '2000-06-01',
-    '2000-06-20'
+    '2013-02-13'
   ],
   source: {
     type: 'raster',
