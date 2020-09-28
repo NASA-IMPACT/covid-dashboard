@@ -239,22 +239,28 @@ export const layerTypes = {
       const { vector, raster } = source;
 
       const inferPaint = {
-        'line-color': '#f2a73a',
-        'line-opacity': 0.8,
-        'line-width': 2
+        'circle-color': '#f2a73a',
+        'circle-opacity': 0.8,
+        'circle-radius': 5
       };
       const formatDate = format(utcDate(domain[domain.length - 1]), dateFormats[layerInfo.timeUnit]);
       const vectorL = {
         ...vector,
         data: vector.data.replace('{date}', formatDate)
       };
-      const rasterL = {
-        ...raster,
-        tiles: raster.tiles.map(tile => tile.replace('{date}', formatDate))
-      };
+      let rasterL;
+      if (raster) {
+        rasterL = {
+          ...raster,
+          tiles: raster.tiles.map(tile => tile.replace('{date}', formatDate))
+        };
+      }
 
-      toggleOrAddLayer(mbMap, vecId, vectorL, 'line', inferPaint, 'admin-0-boundary-bg');
-      toggleOrAddLayer(mbMap, rastId, rasterL, 'raster', {}, vecId);
+
+      toggleOrAddLayer(mbMap, vecId, vectorL, 'circle', inferPaint, 'admin-0-boundary-bg');
+      if (rasterL) {
+        toggleOrAddLayer(mbMap, rastId, rasterL, 'raster', {}, vecId);
+      };
 
       fetch(vectorL.data)
         .then(res => res.json())

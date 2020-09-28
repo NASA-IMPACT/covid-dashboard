@@ -504,7 +504,7 @@ function mapStateToProps (state, props) {
   const defaultLayers = getGlobalLayers();
   return {
     spotlightList: wrapApiResult(state.spotlight.list),
-    mapLayers: apiLayers.isReady() ? [apiLayers.data] : defaultLayers,
+    mapLayers: apiLayers.isReady() ? apiLayers.data : defaultLayers,
     cogTimeData: wrapApiResult(state.cogTimeData, true)
   };
 }

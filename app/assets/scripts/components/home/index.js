@@ -486,11 +486,7 @@ class Home extends React.Component {
                   <IntroWelcomeTitle>Welcome</IntroWelcomeTitle>
                   <Prose>
                     <p>
-                      As communities around the world have changed their behavior in response
-                      to the spread of COVID-19, NASA satellites have observed changes in the
-                      environment. This <strong>experimental</strong> dashboard reflects a rapid response to
-                      COVID-19 that is currently underway and will continue to evolve as more
-                      data becomes available. <Link to='/about' title='Read more on the about page'>Read more...</Link>
+                      The Multi-Mission Algorithm and Analysis Platform (MAAP) is a collaborative science platform for biomass research. The platform is a collaboration between science and engineering teams at NASA and ESA. This <strong>experimental</strong> dashboard enables exploration of the data made available in the platform.
                     </p>
                   </Prose>
                 </IntroWelcome>
@@ -499,8 +495,6 @@ class Home extends React.Component {
                   <IntroStatsList>
                     <dt>Areas</dt>
                     <dd><Link to='/explore' title='Explore the areas'>{zeroPad(spotlightsCount)}</Link></dd>
-                    <dt>Indicators</dt>
-                    <dd><Link to='/indicators' title='Learn about the indicators'>{zeroPad(indicatorsCount)}</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
                 <IntroStories>

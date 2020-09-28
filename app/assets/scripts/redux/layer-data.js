@@ -13,7 +13,7 @@ const {
 
 export function fetchLayerData (id) {
   const result = makeFetchThunk({
-    url: 'https://cumulus-map-internal.s3.amazonaws.com/cloud-optimized/collections/imerg.json',
+    url: 'https://cumulus-map-internal.s3.amazonaws.com/cloud-optimized/collections/datasets.json',
     cache: true,
     statePath: ['layerData', id],
     requestFn: requestLayerData.bind(null, id),

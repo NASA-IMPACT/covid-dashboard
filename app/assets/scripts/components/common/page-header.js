@@ -533,37 +533,6 @@ class PageHeader extends React.Component {
                   <li>
                     <Button
                       element={NavLinkFilter}
-                      to='/indicators'
-                      exact
-                      variation='achromic-plain'
-                      title='View the Indicators page'
-                      useIcon={isMediumDown ? null : ['chevron-down--small', 'after']}
-                    >
-                      Indicators
-                    </Button>
-                    <PrimeMenuBlock>
-                      <PrimeMenuBlockTitle>Indicators</PrimeMenuBlockTitle>
-                      <PrimeSubmenu aria-label='submenu'>
-                        {indicatorsList
-                          .filter((d) => !!d.LongForm)
-                          .map((d) => (
-                            <li key={d.id}>
-                              <Button
-                                element={NavLinkFilter}
-                                to={`/indicators/${d.id}`}
-                                variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
-                                title='Learn about the indicator'
-                              >
-                                {d.name}
-                              </Button>
-                            </li>
-                          ))}
-                      </PrimeSubmenu>
-                    </PrimeMenuBlock>
-                  </li>
-                  <li>
-                    <Button
-                      element={NavLinkFilter}
                       to='/about'
                       variation='achromic-plain'
                       title='Learn more'

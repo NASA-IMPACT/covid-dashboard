@@ -1,4 +1,4 @@
-# COVID-19 Dashboard
+# Cloud-Optimized Data Dashboard
 As communities around the world have changed their behavior in response to the spread of COVID-19, NASA satellites have observed changes in the environment. This experimental dashboard reflects a rapid response to COVID-19 that is currently underway and will continue to evolve as more data becomes available.
 
 Visit the live site on: https://earthdata.nasa.gov/covid19/
