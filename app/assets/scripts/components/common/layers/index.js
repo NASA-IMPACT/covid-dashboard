@@ -8,6 +8,7 @@ import population from './layer-population';
 import nightlightsViirs from './layer-nightlights-viirs';
 import nightlightsHd from './layer-nightlights-hd';
 import detectionShip from './layer-detection-ship';
+import recovery from './layer-recovery';
 import slowdown from './layer-slowdown';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
@@ -24,6 +25,7 @@ const layers = [
   nightlightsViirs,
   nightlightsHd,
   detectionShip,
+  recovery,
   slowdown,
   waterChlorophyll,
   waterSpm,
@@ -35,13 +37,13 @@ const layers = [
 export default layers;
 
 const layersBySpotlight = {
-  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-plane'],
-  du: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
-  gh: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown'],
-  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'detection-plane'],
-  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm'],
-  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'detection-plane'],
-  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm'],
+  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'recovery', 'detection-plane'],
+  du: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'recovery'],
+  gh: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'recovery'],
+  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'detection-plane', 'recovery'],
+  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'recovery', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm'],
+  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'recovery', 'detection-plane'],
+  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm', 'recovery'],
   togo: ['togo-ag']
 };
 
