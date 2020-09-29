@@ -221,7 +221,7 @@ export const layerTypes = {
           mbMap.fitBounds(bbox(geo));
         })
         .catch(err => {
-          throw err;
+          console.log(err)
         });
 
       replaceVectorData(mbMap, vecId, vectorData);
@@ -272,7 +272,7 @@ export const layerTypes = {
           mbMap.fitBounds(bbox(geo));
         })
         .catch(err => {
-          throw err;
+          console.log(err)
         });
     }
   }
