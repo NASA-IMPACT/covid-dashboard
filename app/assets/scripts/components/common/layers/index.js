@@ -13,6 +13,7 @@ import slowdown from './layer-slowdown';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
 import agriculture from './layer-agriculture';
+import detectionPlane from './layer-detection-plane';
 import agTogo from './layer-togo-ag';
 
 const layers = [
@@ -29,25 +30,31 @@ const layers = [
   waterChlorophyll,
   waterSpm,
   agriculture,
+  detectionPlane,
   agTogo
 ];
 
 export default layers;
 
 const layersBySpotlight = {
-  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'recovery'],
+  be: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'recovery', 'detection-plane'],
   du: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'recovery'],
   gh: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'recovery'],
-  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'recovery'],
-  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'recovery', 'detection-ship', 'water-chlorophyll', 'water-spm'],
-  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'recovery'],
-  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'water-chlorophyll', 'water-spm', 'recovery'],
+  la: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'detection-ship', 'detection-plane', 'recovery'],
+  sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'recovery', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm'],
+  tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'recovery', 'detection-plane'],
+  ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm', 'recovery'],
   togo: ['togo-ag']
 };
 
 const layerOverridesBySpotlight = {
   be: {
-    'nightlights-viirs': handleNightlightsViirs
+    'nightlights-viirs': handleNightlightsViirs,
+    'detection-plane': (l, spotlightId) =>
+      handleInferenceTimeseries(l, spotlightId, {
+        domain: ['2020-01-09', '2020-01-12', '2020-01-14', '2020-02-10', '2020-02-18', '2020-03-12', '2020-03-13', '2020-03-19', '2020-04-11', '2020-05-05', '2020-05-14']
+      })
+
   },
   du: {
     'nightlights-viirs': handleNightlightsViirs
@@ -64,6 +71,10 @@ const layerOverridesBySpotlight = {
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
         domain: ['2020-01-22', '2020-02-02', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-15', '2020-03-21', '2020-03-22', '2020-03-27', '2020-04-23', '2020-04-24']
+      }),
+    'detection-plane': (l, spotlightId) =>
+      handleInferenceTimeseries(l, spotlightId, {
+        domain: ['2020-01-10', '2020-01-14', '2020-02-01', '2020-02-03', '2020-03-22', '2020-04-15', '2020-04-21', '2020-05-04', '2020-05-05']
       })
   },
   sf: {
@@ -83,7 +94,11 @@ const layerOverridesBySpotlight = {
         ...l,
         domain: ['2020-03-02', '2020-04-03', '2020-04-19', '2020-05-04', '2020-05-05', '2020-05-21', '2020-05-24', '2020-05-28', '2020-06-01', '2020-06-03', '2020-06-06', '2020-06-13', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-25', '2020-06-28', '2020-07-01', '2020-07-03']
       };
-    }
+    },
+    'detection-plane': (l, spotlightId) =>
+      handleInferenceTimeseries(l, spotlightId, {
+        domain: ['2020-01-11', '2020-01-12', '2020-01-13', '2020-02-06', '2020-02-07', '2020-02-10', '2020-02-15', '2020-02-18', '2020-02-20', '2020-03-09', '2020-03-10', '2020-03-12', '2020-03-19', '2020-04-02', '2020-04-03', '2020-04-07', '2020-04-15', '2020-04-22', '2020-05-04', '2020-05-05', '2020-05-07', '2020-05-19']
+      })
   },
   tk: {
     'nightlights-viirs': handleNightlightsViirs,
@@ -96,7 +111,11 @@ const layerOverridesBySpotlight = {
           tiles: l.source.tiles.map(t => t.replace('&rescale=-100%2C100', ''))
         }
       };
-    }
+    },
+    'detection-plane': (l, spotlightId) =>
+      handleInferenceTimeseries(l, spotlightId, {
+        domain: ['2020-01-19', '2020-02-01', '2020-02-05', '2020-03-18', '2020-03-19', '2020-04-09', '2020-04-10', '2020-05-02']
+      })
   },
   ny: {
     'nightlights-viirs': handleNightlightsViirs,
@@ -122,7 +141,11 @@ const layerOverridesBySpotlight = {
         // For NY, nightlights goes till June
         domain: [l.domain[0], '2020-06-01']
       };
-    }
+    },
+    'detection-plane': (l, spotlightId) =>
+      handleInferenceTimeseries(l, spotlightId, {
+        domain: ['2020-01-16', '2020-01-20', '2020-02-17', '2020-02-19', '2020-03-09', '2020-03-15', '2020-04-06', '2020-04-15', '2020-05-05', '2020-05-14']
+      })
   }
 };
 

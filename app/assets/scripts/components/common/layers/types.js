@@ -214,6 +214,16 @@ export const layerTypes = {
       const vectorData = vector.data.replace('{date}', formatDate);
       const rasterTiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
 
+      // inference data moves around, recenter on each update
+      fetch(vectorData)
+        .then(res => res.json())
+        .then(geo => {
+          mbMap.fitBounds(bbox(geo));
+        })
+        .catch(err => {
+          console.log(err); // eslint-disable-line no-console
+        });
+
       replaceVectorData(mbMap, vecId, vectorData);
       replaceRasterTiles(mbMap, rastId, rasterTiles);
     },
@@ -262,7 +272,7 @@ export const layerTypes = {
           mbMap.fitBounds(bbox(geo));
         })
         .catch(err => {
-          throw err;
+          console.log(err); // eslint-disable-line no-console
         });
     }
   }
