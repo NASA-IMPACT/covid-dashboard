@@ -221,7 +221,7 @@ export const layerTypes = {
           mbMap.fitBounds(bbox(geo));
         })
         .catch(err => {
-          console.log(err)
+          console.log(err); // eslint-disable-line no-console
         });
 
       replaceVectorData(mbMap, vecId, vectorData);
@@ -272,7 +272,7 @@ export const layerTypes = {
           mbMap.fitBounds(bbox(geo));
         })
         .catch(err => {
-          console.log(err)
+          console.log(err); // eslint-disable-line no-console
         });
     }
   }
