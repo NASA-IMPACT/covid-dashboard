@@ -13,11 +13,12 @@ const {
 
 export function fetchLayerData (id) {
   const result = makeFetchThunk({
-    url: 'https://cumulus-map-internal.s3.amazonaws.com/cloud-optimized/collections/datasets.json',
+    url: `${config.api}/datasets`,
     cache: true,
     statePath: ['layerData', id],
     requestFn: requestLayerData.bind(null, id),
-    receiveFn: receiveLayerData.bind(null, id)
+    receiveFn: receiveLayerData.bind(null, id),
+    mutator: d => d.datasets
   });
   return result;
 }

@@ -9,7 +9,7 @@ const dateFormats = {
   day: 'yyyy_MM_dd'
 };
 
-const prepDateSource = (source, date, timeUnit = 'month') => {
+const prepDateSource = (source, date, timeUnit = 'day') => {
   return {
     ...source,
     tiles: source.tiles.map((t) => t.replace('{date}', format(date, dateFormats[timeUnit])))
