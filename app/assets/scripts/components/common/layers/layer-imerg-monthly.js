@@ -5,18 +5,18 @@ import config from '../../../config';
 import { indicatorGroupColors } from '../../../styles/theme/theme.js';
 
 export default {
-  id: 'imerg',
+  id: 'imerg-monthly',
   name: 'GPM IMERG Precipitation',
   type: 'raster-timeseries',
-  timeUnit: 'day',
+  timeUnit: 'month',
   domain: [
     '2000-06-01',
-    '2013-02-13'
+    '2020-05-31'
   ],
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://cumulus-map-internal/cloud-optimized/GPM_3IMERGDF/3B-DAY.MS.MRG.3IMERG.{date}-S000000-E235959.V06.tif&rescale=0%2C100&color_map=rdylbu_r&color_formula=gamma r {gamma}`
+      `${config.api}/{z}/{x}/{y}@1x?url=https://{config.BUCKET}.amazonaws.s3.com/cloud-optimized/GPM_3IMERGM/3B-MO.MS.MRG.3IMERG.{date}-S000000-E235959.tif&rescale=0%2C1&color_map=rdylbu_r&color_formula=gamma r {gamma}`
 
     ]
   },
