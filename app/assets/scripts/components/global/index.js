@@ -120,8 +120,8 @@ const dateMax = (...args) =>
   args.reduce((curr, d) => (curr.getTime() > d.getTime() ? curr : d));
 
 const cogLayers = {
-  imerg: {
-    title: 'GPM IMERG Multi-satellite precipitation estimate',
+  'imerg-monthly': {
+    title: 'GPM IMERG Monthly Multi-satellite precipitation estimate',
     unit: 'mm/hr'
   }
 };
