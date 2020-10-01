@@ -1,15 +1,15 @@
 import get from 'lodash.get';
 
-import imerg from './layer-imerg';
+import imergMonthly from './layer-imerg-monthly';
 
 const layers = [
-  imerg
+  imergMonthly
 ];
 
 export default layers;
 
 const layersBySpotlight = {
-  af: ['imerg']
+  af: ['imergMonthly']
 };
 
 const layerOverridesBySpotlight = {
@@ -53,7 +53,7 @@ export function getSpotlightLayers (spotlightId) {
 }
 
 export function getGlobalLayers () {
-  const layersToUse = ['imerg'];
+  const layersToUse = ['imerg-monthly'];
   return layers.filter((l) => layersToUse.includes(l.id));
 }
 
