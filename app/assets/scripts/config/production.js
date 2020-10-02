@@ -7,7 +7,7 @@ module.exports = {
     gaTrackingCode: '',
     twitterHandle: '',
     mbToken: 'pk.eyJ1IjoiY292aWQtbmFzYSIsImEiOiJja2F6eHBobTUwMzVzMzFueGJuczF6ZzdhIn0.8va1fkyaWgM57_gZ2rBMMg',
-    api: 'https://8ib71h0627.execute-api.us-east-1.amazonaws.com/v1',
+    api: 'https://f4rn94o9z7.execute-api.us-east-1.amazonaws.com/v1',
     map: {
       center: [0, 0],
       zoom: 2,

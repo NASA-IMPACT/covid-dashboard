@@ -14,7 +14,7 @@ export const invalidateCogTimeData = cogTimeDataActions.invalidate;
 export function fetchCogTimeData (id, timeframe, area) {
   return async function (dispatch) {
     dispatch(cogTimeDataActions.request(id));
-    const { start, end, timeUnit } = timeframe;
+    const { start, end, timeUnit = 'month' } = timeframe;
     const dateFormat = timeUnit === 'month'
       ? 'yyyyMM'
       : 'yyyy_MM_dd';

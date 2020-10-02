@@ -75,6 +75,14 @@ yarn stage
 This will package the app and place all the contents in the `dist` directory.
 The app can then be run by any web server.
 
+__For MAAP:__
+
+Using static website hosting, with both Index and Error documents pointing to index.html and public access enabled.
+```bash
+aws s3 cp --recursive --acl public-read \
+  dist/ s3://maap-cloud-optimized-data-dashboard/
+```
+
 **When building the site for deployment provide the base url trough the `BASEURL` environment variable. Omit the leading slash. (E.g. https://example.com)**
 
 # License

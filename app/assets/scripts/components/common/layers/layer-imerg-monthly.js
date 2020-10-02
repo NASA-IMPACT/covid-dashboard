@@ -16,7 +16,7 @@ export default {
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=https://{config.BUCKET}.amazonaws.s3.com/cloud-optimized/GPM_3IMERGM/3B-MO.MS.MRG.3IMERG.{date}-S000000-E235959.tif&rescale=0%2C1&color_map=rdylbu_r&color_formula=gamma r {gamma}`
+      `${config.api}/{z}/{x}/{y}@1x?url=https://cumulus-map-internal.s3.amazonaws.com/cloud-optimized/GPM_3IMERGM/3B-MO.MS.MRG.3IMERG.{date}-S000000-E235959.tif&rescale=0%2C1&color_map=rdylbu_r&color_formula=gamma r {gamma}`
 
     ]
   },
