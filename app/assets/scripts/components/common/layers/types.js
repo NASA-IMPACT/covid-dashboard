@@ -240,8 +240,8 @@ export const layerTypes = {
 
       const inferPaint = {
         'circle-color': '#f2a73a',
-        'circle-opacity': 0.8,
-        'circle-radius': 5
+        'circle-opacity': 0.7,
+        'circle-radius': 3
       };
       const formatDate = format(utcDate(domain[domain.length - 1]), dateFormats[layerInfo.timeUnit]);
       const vectorL = {
