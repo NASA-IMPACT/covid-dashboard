@@ -17,6 +17,7 @@ import { fetchIndicatorGroups } from './redux/indicators';
 import GlobalStyles from './styles/global';
 import ErrorBoundary from './fatal-error-boundary';
 import { GlobalLoading } from './components/common/global-loading';
+import LayerDataLoader from './layer-data-loader';
 
 // Views
 import Home from './components/home';
@@ -50,7 +51,8 @@ class Root extends React.Component {
     super(props);
 
     this.state = {
-      windowHeight: window.innerHeight
+      windowHeight: window.innerHeight,
+      dataReady: false
     };
 
     window.addEventListener('resize', () => {
@@ -75,39 +77,37 @@ class Root extends React.Component {
           <ThemeProvider theme={theme.main}>
             <ErrorBoundary>
               <GlobalStyles innerHeight={this.state.windowHeight} />
-              <Switch>
-                <Route exact path='/' component={Home} />
-                <Route
-                  exact
-                  path='/getstarted'
-                  component={GetStartedHub}
-                />
-                <Route
-                  exact
-                  path='/explore'
-                  component={SpotlightHub}
-                />
-                <Route
-                  exact
-                  path='/explore/global'
-                  component={GlobalExplore}
-                />
-                <Route
-                  exact
-                  path='/explore/:spotlightId'
-                  component={SpotlightSingle}
-                />
-                <Route exact path='/indicators' component={IndicatorsHub} />
-                <Route
-                  exact
-                  path='/indicators/:indicatorId'
-                  component={IndicatorsSingle}
-                />
-                <Route path='/sandbox' component={Sandbox} />
-                <Route path='/about' component={About} />
-                <Route path='/development' component={Development} />
-                <Route path='*' component={UhOh} />
-              </Switch>
+
+              {/* See note in LayerDataLoader file */}
+              <LayerDataLoader onReady={() => this.setState({ dataReady: true })} />
+
+              {this.state.dataReady && (
+                <Switch>
+                  <Route exact path='/' component={Home} />
+                  <Route exact path='/getstarted' component={GetStartedHub} />
+                  <Route exact path='/explore' component={SpotlightHub} />
+                  <Route
+                    exact
+                    path='/explore/global'
+                    component={GlobalExplore}
+                  />
+                  <Route
+                    exact
+                    path='/explore/:spotlightId'
+                    component={SpotlightSingle}
+                  />
+                  <Route exact path='/indicators' component={IndicatorsHub} />
+                  <Route
+                    exact
+                    path='/indicators/:indicatorId'
+                    component={IndicatorsSingle}
+                  />
+                  <Route path='/sandbox' component={Sandbox} />
+                  <Route path='/about' component={About} />
+                  <Route path='/development' component={Development} />
+                  <Route path='*' component={UhOh} />
+                </Switch>
+              )}
               <GlobalLoading />
               <ReactTooltip effect='solid' className='type-primary' />
             </ErrorBoundary>
