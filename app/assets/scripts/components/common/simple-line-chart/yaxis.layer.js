@@ -23,7 +23,7 @@ export default {
     const { left, top } = ctx.margin;
     const { width } = ctx.getSize();
 
-    const yAxis = d3fc.axisLeft(yScale).ticks(5, '.1e');
+    const yAxis = d3fc.axisLeft(yScale).ticks(5, '.3~g');
 
     svg.select('.y.axis')
       .attr('transform', `translate(${left - 8},${top})`)
