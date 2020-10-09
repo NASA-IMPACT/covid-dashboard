@@ -127,7 +127,7 @@ class SpotlightAreasHub extends React.Component {
                         target='_blank'
                         rel='noopener noreferrer'
                         title='View more'
-                        >
+                      >
                         Willem Heerbaart
                       </a>, available under cc-by-2.0
                     </li>
