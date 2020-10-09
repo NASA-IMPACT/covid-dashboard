@@ -113,6 +113,27 @@ class SpotlightAreasHub extends React.Component {
                     ))}
                 </EntriesList>
               </HubFold>
+              <HubFold>
+                <InpageHGroup
+                  title='Attribution'
+                  dashColor={metadata.color}
+                />
+                <Prose>
+                  <ul>
+                    <li>
+                      Togo image by{' '}
+                      <a
+                        href='https://commons.wikimedia.org/wiki/File:ECOWAS_Bank_for_Investment_and_Development_headquarters_in_Lom%C3%A9.jpg'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        title='View more'
+                        >
+                        Willem Heerbaart
+                      </a>, available under cc-by-2.0
+                    </li>
+                  </ul>
+                </Prose>
+              </HubFold>
             </PageConstrainer>
           </InpageBody>
         </Inpage>
