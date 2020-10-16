@@ -11,7 +11,7 @@ export default {
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/wq-greatlakes/sm/sm_anomaly_greatlakes_{date}.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/wq-greatlakes-sm/sm_anomaly_greatlakes_{date}.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
     ]
   },
   exclusiveWith: ['water-wq-gl-chl'],
