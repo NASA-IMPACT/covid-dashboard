@@ -193,36 +193,12 @@ function handleSpotlightId (l, spotlightId) {
 }
 
 function handleNightlightsViirs (l, spotlightId) {
-  const spotlightName = {
-    be: 'Beijing',
-    gh: 'EUPorts',
-    du: 'EUPorts',
-    la: 'LosAngeles',
-    ny: 'NewYork',
-    sf: 'SanFrancisco',
-    tk: 'Tokyo'
-  }[spotlightId];
+  const spotlightName = spotlightId === 'du' || spotlightId === 'gh'
+      ? 'EUPorts'
+      : spotlightId;
 
   return {
     ...l,
-    domain: l.domain.filter((d) => {
-      if (spotlightName === 'Beijing') {
-        const dates = ['2020-03-18'];
-        return !dates.includes(d);
-      } else if (spotlightName === 'EUPorts') {
-        const dates = [
-          '2020-05-05',
-          '2020-05-07',
-          '2020-05-11',
-          '2020-05-13',
-          '2020-05-16',
-          '2020-05-18',
-          '2020-05-19'
-        ];
-        return !dates.includes(d);
-      }
-      return true;
-    }),
     source: {
       ...l.source,
       tiles: l.source.tiles.map((t) =>
