@@ -13,6 +13,8 @@ import slowdown from './layer-slowdown';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
 import agriculture from './layer-agriculture';
+import waterGlChl from './layer-wq-gl-chl';
+import waterGlSpm from './layer-wq-gl-spm';
 import detectionPlane from './layer-detection-plane';
 import agTogo from './layer-togo-ag';
 
@@ -30,6 +32,8 @@ const layers = [
   waterChlorophyll,
   waterSpm,
   agriculture,
+  waterGlChl,
+  waterGlSpm,
   detectionPlane,
   agTogo
 ];
@@ -44,7 +48,8 @@ const layersBySpotlight = {
   sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'recovery', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm'],
   tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'recovery', 'detection-plane'],
   ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm', 'recovery'],
-  togo: ['togo-ag']
+  togo: ['togo-ag'],
+  wble: ['water-wq-gl-chl', 'water-wq-gl-spm']
 };
 
 const layerOverridesBySpotlight = {
