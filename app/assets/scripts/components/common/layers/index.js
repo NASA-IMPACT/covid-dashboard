@@ -194,8 +194,8 @@ function handleSpotlightId (l, spotlightId) {
 
 function handleNightlightsViirs (l, spotlightId) {
   const spotlightName = spotlightId === 'du' || spotlightId === 'gh'
-      ? 'EUPorts'
-      : spotlightId;
+    ? 'EUPorts'
+    : spotlightId;
 
   return {
     ...l,
