@@ -13,6 +13,8 @@ import slowdown from './layer-slowdown';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
 import agriculture from './layer-agriculture';
+import waterGlChl from './layer-wq-gl-chl';
+import waterGlSpm from './layer-wq-gl-spm';
 import detectionPlane from './layer-detection-plane';
 import agTogo from './layer-togo-ag';
 
@@ -30,6 +32,8 @@ const layers = [
   waterChlorophyll,
   waterSpm,
   agriculture,
+  waterGlChl,
+  waterGlSpm,
   detectionPlane,
   agTogo
 ];
@@ -44,7 +48,8 @@ const layersBySpotlight = {
   sf: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'agriculture', 'slowdown', 'recovery', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm'],
   tk: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'recovery', 'detection-plane'],
   ny: ['no2', 'no2-diff', 'co2', 'co2-diff', 'nightlights-hd', 'nightlights-viirs', 'slowdown', 'detection-ship', 'detection-plane', 'water-chlorophyll', 'water-spm', 'recovery'],
-  togo: ['togo-ag']
+  togo: ['togo-ag'],
+  wble: ['water-wq-gl-chl', 'water-wq-gl-spm']
 };
 
 const layerOverridesBySpotlight = {
@@ -70,7 +75,7 @@ const layerOverridesBySpotlight = {
       }),
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-22', '2020-02-02', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-15', '2020-03-21', '2020-03-22', '2020-03-27', '2020-04-23', '2020-04-24']
+        domain: ['2020-01-01', '2020-01-06', '2020-01-07', '2020-01-09', '2020-01-10', '2020-01-12', '2020-01-13', '2020-01-14', '2020-01-17', '2020-01-18', '2020-01-19', '2020-01-22', '2020-01-23', '2020-01-24', '2020-01-27', '2020-01-28', '2020-01-29', '2020-01-30', '2020-01-31', '2020-02-02', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-15', '2020-03-21', '2020-03-22', '2020-03-27', '2020-04-23', '2020-04-24', '2020-05-01', '2020-05-02', '2020-05-03', '2020-05-04', '2020-05-05', '2020-05-06', '2020-05-07', '2020-05-08', '2020-05-09', '2020-05-11', '2020-05-12', '2020-05-13', '2020-05-14', '2020-05-15', '2020-05-16', '2020-05-17', '2020-05-19', '2020-05-20', '2020-05-21']
       }),
     'detection-plane': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
@@ -81,7 +86,7 @@ const layerOverridesBySpotlight = {
     'nightlights-viirs': handleNightlightsViirs,
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-22', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-10', '2020-03-11', '2020-04-21']
+        domain: ['2020-01-02', '2020-01-03', '2020-01-05', '2020-01-07', '2020-01-10', '2020-01-11', '2020-01-12', '2020-01-13', '2020-01-14', '2020-01-17', '2020-01-18', '2020-01-23', '2020-01-27', '2020-01-30', '2020-01-31', '2020-05-01', '2020-05-03', '2020-05-04', '2020-05-05', '2020-05-06', '2020-05-07', '2020-05-08', '2020-01-02', '2020-01-03', '2020-01-05', '2020-01-07', '2020-01-10', '2020-01-11', '2020-01-12', '2020-01-13', '2020-01-14', '2020-01-17', '2020-01-18', '2020-01-22', '2020-01-23', '2020-01-27', '2020-01-30', '2020-01-31', '2020-02-03', '2020-02-27', '2020-02-29', '2020-03-03', '2020-03-08', '2020-03-10', '2020-03-11', '2020-04-21', '2020-05-01', '2020-05-03', '2020-05-04', '2020-05-05', '2020-05-06', '2020-05-07', '2020-05-08', '2020-05-09', '2020-05-15', '2020-05-16', '2020-05-17', '2020-05-19', '2020-05-20', '2020-05-21']
       }),
     'water-chlorophyll': (l, spotlightId) => {
       return {
@@ -127,7 +132,7 @@ const layerOverridesBySpotlight = {
     },
     'detection-ship': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-20', '2020-01-21', '2020-01-22', '2020-02-02', '2020-02-03', '2020-02-29', '2020-03-08', '2020-03-18', '2020-03-22', '2020-03-27']
+        domain: ['2020-01-02', '2020-01-09', '2020-01-11', '2020-01-16', '2020-01-17', '2020-01-19', '2020-01-23', '2020-01-24', '2020-01-30', '2020-05-02', '2020-05-05', '2020-01-02', '2020-01-09', '2020-01-11', '2020-01-16', '2020-01-17', '2020-01-19', '2020-01-20', '2020-01-21', '2020-01-22', '2020-01-23', '2020-01-24', '2020-01-30', '2020-02-02', '2020-02-03', '2020-02-29', '2020-03-08', '2020-03-18', '2020-03-22', '2020-03-27', '2020-05-02', '2020-05-05', '2020-05-09', '2020-05-10', '2020-05-13', '2020-05-14', '2020-05-16', '2020-05-19', '2020-05-20', '2020-05-21']
       }),
     'water-spm': (l, spotlightId) => {
       return {
@@ -193,36 +198,12 @@ function handleSpotlightId (l, spotlightId) {
 }
 
 function handleNightlightsViirs (l, spotlightId) {
-  const spotlightName = {
-    be: 'Beijing',
-    gh: 'EUPorts',
-    du: 'EUPorts',
-    la: 'LosAngeles',
-    ny: 'NewYork',
-    sf: 'SanFrancisco',
-    tk: 'Tokyo'
-  }[spotlightId];
+  const spotlightName = spotlightId === 'du' || spotlightId === 'gh'
+    ? 'EUPorts'
+    : spotlightId;
 
   return {
     ...l,
-    domain: l.domain.filter((d) => {
-      if (spotlightName === 'Beijing') {
-        const dates = ['2020-03-18'];
-        return !dates.includes(d);
-      } else if (spotlightName === 'EUPorts') {
-        const dates = [
-          '2020-05-05',
-          '2020-05-07',
-          '2020-05-11',
-          '2020-05-13',
-          '2020-05-16',
-          '2020-05-18',
-          '2020-05-19'
-        ];
-        return !dates.includes(d);
-      }
-      return true;
-    }),
     source: {
       ...l.source,
       tiles: l.source.tiles.map((t) =>
