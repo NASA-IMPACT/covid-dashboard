@@ -84,6 +84,25 @@ const summaries = {
       </p>
     </>
   ),
+  togo: (
+    <>
+      <p>
+        The effects of COVID-19 shutdowns in Togo, including many months of curfews, severely limited the ability of hundreds of thousands of the country’s small farmers to produce an adequate food supply, as well as to cultivate formerly robust crops, such as soy and cotton.
+      </p>
+      <p>
+        To help its farmers, the Togolese government used a cropland data map developed by NASA’s food security and agriculture program, known as NASA Harvest, to develop a loan program that would help fund the cost of farming essentials.
+      </p>
+      <p>
+        In the past, farmers eligible for such loans would have been identified using Togo’s census data. However, the existing census only accounts for growers who list their primary occupation as farming. This vastly underestimates the number of informal smallholder growers impacted by the pandemic, who rely on subsistence farming to live. This is where satellite data can help fill in the gaps.
+      </p>
+      <p>
+        When rapid action was needed and mobility across the country was limited due to the COVID-19 outbreak, satellite data offered an effective and rapid way to map the country’s distribution of croplands and characterize the nature of agricultural fields during the pandemic.
+      </p>
+      <p>
+        NASA Harvest developed a national-level, satellite-derived cropland map for Togo at 10-meter resolution within a 10-day timeframe using data from the European Space Agency’s Copernicus Sentinel 2 satellite, the NASA-USGS Landsat satellites, and with data from commercial partner Planet Inc. These data, alongside poverty and census information, rapidly and effectively identified priority areas for the loan program. With the cropland maps, Togolese government officials had trustworthy information on the physical size and geographic location of agricultural lands that census data might have missed.
+      </p>
+    </>
+  ),
   tk: (
     <>
       <p>

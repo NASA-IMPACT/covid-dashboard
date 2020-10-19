@@ -11,9 +11,9 @@ import media from '../../styles/utils/media-queries';
 import { glsp } from '../../styles/utils/theme-values';
 import Heading from '../../styles/type/heading';
 import MediaImage from '../../styles/media-image';
-// import config from '../../config';
+import config from '../../config';
 
-// const { baseUrl } = config;
+const { baseUrl } = config;
 const LeadFold = styled(Fold)`
   padding-bottom: 0;
 
@@ -361,13 +361,13 @@ class AgLongForm extends React.Component {
                 </p>
               </Prose>
             </FoldDetails>
-            {/* <MediaImage
-              src={`${baseUrl}/assets/graphics/content/cropmonitor-july.png`}
-              alt='Crop Monitor for AMIS July'
+            <MediaImage
+              src={`${baseUrl}/assets/graphics/content/AMIS_EW_synthesis_202008.jpg`}
+              alt='Crop Monitor for AMIS August'
             >
-              Crop Monitor for AMIS and Early Warning July synthesis map. Image
+              Crop Monitor for AMIS and Early Warning August synthesis map. Image
               Credit: GEOGLAM Crop Monitor
-            </MediaImage> */}
+            </MediaImage>
           </Gridder>
         </InterpretDataFold>
 

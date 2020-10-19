@@ -11,12 +11,12 @@ export default {
   timeUnit: 'day',
   domain: [
     '2020-01-01',
-    '2020-05-17'
+    '2020-07-16'
   ],
   source: {
     type: 'raster',
     tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/xco2_15day_mean.{date}.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r&color_formula=gamma r {gamma}`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.{date}.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r&color_formula=gamma r {gamma}`
 
     ]
   },
@@ -30,7 +30,7 @@ export default {
     source: {
       type: 'raster',
       tiles: [
-      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/xco2_15day_base.{date}.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r&color_formula=gamma r {gamma}`
+      `${config.api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-base/xco2_16day_base.{date}.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r&color_formula=gamma r {gamma}`
       ]
     }
   },
