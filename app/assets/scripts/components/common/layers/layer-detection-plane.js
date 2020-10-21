@@ -7,7 +7,7 @@ export default {
   type: 'inference-timeseries',
   domain: [
     '2020-01-01',
-    '2020-04-30'
+    '2020-05-17'
   ],
   source: {
     vector: {

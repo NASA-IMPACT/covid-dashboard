@@ -119,9 +119,10 @@ const layerOverridesBySpotlight = {
     },
     'detection-plane': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-19', '2020-02-01', '2020-02-05', '2020-03-18', '2020-03-19', '2020-04-09', '2020-04-10', '2020-05-02']
+        domain: ['2020-01-19', '2020-02-01', '2020-02-10', '2020-02-05', '2020-03-12', '2020-03-18', '2020-03-19', '2020-04-09', '2020-04-10', '2020-04-22', '2020-04-23', '2020-05-02', '2020-05-17']
       })
   },
+
   ny: {
     'nightlights-viirs': handleNightlightsViirs,
     'water-chlorophyll': (l, spotlightId) => {
@@ -154,7 +155,7 @@ const layerOverridesBySpotlight = {
   }
 };
 
-export function getSpotlightLayers (spotlightId) {
+export function getSpotlightLayers(spotlightId) {
   const layersToUse = layersBySpotlight[spotlightId] || [];
 
   // Filter by the layers to include &
@@ -172,7 +173,7 @@ export function getSpotlightLayers (spotlightId) {
     });
 }
 
-export function getGlobalLayers () {
+export function getGlobalLayers() {
   const layersToUse = ['no2', 'no2-diff', 'co2', 'co2-diff', 'gibs-population', 'agriculture'];
   return layers.filter((l) => layersToUse.includes(l.id));
 }
@@ -181,7 +182,7 @@ export function getGlobalLayers () {
 // // // // // // // // // // // // // // // // // // // // // // // // // // //
 // Layer helper functions below.
 
-function handleSpotlightId (l, spotlightId) {
+function handleSpotlightId(l, spotlightId) {
   // If we're dealing with a layer with a standard source, replace the
   // spotlightId in the source tiles. Other layers will be handled by the
   // override functions.
@@ -197,7 +198,7 @@ function handleSpotlightId (l, spotlightId) {
     : l;
 }
 
-function handleNightlightsViirs (l, spotlightId) {
+function handleNightlightsViirs(l, spotlightId) {
   const spotlightName = spotlightId === 'du' || spotlightId === 'gh'
     ? 'EUPorts'
     : spotlightId;
@@ -213,7 +214,7 @@ function handleNightlightsViirs (l, spotlightId) {
   };
 }
 
-function handleInferenceTimeseries (l, spotlightId, options) {
+function handleInferenceTimeseries(l, spotlightId, options) {
   return {
     ...l,
     domain: options.domain,
