@@ -155,7 +155,7 @@ const layerOverridesBySpotlight = {
   }
 };
 
-export function getSpotlightLayers(spotlightId) {
+export function getSpotlightLayers (spotlightId) {
   const layersToUse = layersBySpotlight[spotlightId] || [];
 
   // Filter by the layers to include &
@@ -173,7 +173,7 @@ export function getSpotlightLayers(spotlightId) {
     });
 }
 
-export function getGlobalLayers() {
+export function getGlobalLayers () {
   const layersToUse = ['no2', 'no2-diff', 'co2', 'co2-diff', 'gibs-population', 'agriculture'];
   return layers.filter((l) => layersToUse.includes(l.id));
 }
@@ -182,7 +182,7 @@ export function getGlobalLayers() {
 // // // // // // // // // // // // // // // // // // // // // // // // // // //
 // Layer helper functions below.
 
-function handleSpotlightId(l, spotlightId) {
+function handleSpotlightId (l, spotlightId) {
   // If we're dealing with a layer with a standard source, replace the
   // spotlightId in the source tiles. Other layers will be handled by the
   // override functions.
@@ -198,7 +198,7 @@ function handleSpotlightId(l, spotlightId) {
     : l;
 }
 
-function handleNightlightsViirs(l, spotlightId) {
+function handleNightlightsViirs (l, spotlightId) {
   const spotlightName = spotlightId === 'du' || spotlightId === 'gh'
     ? 'EUPorts'
     : spotlightId;
@@ -214,7 +214,7 @@ function handleNightlightsViirs(l, spotlightId) {
   };
 }
 
-function handleInferenceTimeseries(l, spotlightId, options) {
+function handleInferenceTimeseries (l, spotlightId, options) {
   return {
     ...l,
     domain: options.domain,
