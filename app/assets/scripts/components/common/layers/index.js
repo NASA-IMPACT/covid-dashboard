@@ -119,9 +119,10 @@ const layerOverridesBySpotlight = {
     },
     'detection-plane': (l, spotlightId) =>
       handleInferenceTimeseries(l, spotlightId, {
-        domain: ['2020-01-19', '2020-02-01', '2020-02-05', '2020-03-18', '2020-03-19', '2020-04-09', '2020-04-10', '2020-05-02']
+        domain: ['2020-01-19', '2020-02-01', '2020-02-05', '2020-02-10', '2020-03-12', '2020-03-18', '2020-03-19', '2020-04-09', '2020-04-10', '2020-04-22', '2020-04-23', '2020-05-02', '2020-05-17']
       })
   },
+
   ny: {
     'nightlights-viirs': handleNightlightsViirs,
     'water-chlorophyll': (l, spotlightId) => {
