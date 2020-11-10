@@ -13,6 +13,8 @@ import slowdown from './layer-slowdown';
 import waterChlorophyll from './layer-water-chlorophyll';
 import waterSpm from './layer-water-spm';
 import agriculture from './layer-agriculture';
+import waterGlChl from './layer-wq-gl-chl';
+import waterGlSpm from './layer-wq-gl-spm';
 import detectionPlane from './layer-detection-plane';
 import agTogo from './layer-togo-ag';
 
@@ -30,6 +32,8 @@ const layerOverrides = [
   waterChlorophyll,
   waterSpm,
   agriculture,
+  waterGlChl,
+  waterGlSpm,
   detectionPlane,
   agTogo
 ];
