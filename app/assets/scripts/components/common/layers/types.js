@@ -194,10 +194,9 @@ export const layerTypes = {
     update: (ctx, layerInfo, prevProps) => {
       const { props, mbMap } = ctx;
       const { date } = props;
-      const { id, source } = layerInfo;
+      const { id, source, backgroundSource } = layerInfo;
       const vecId = `${id}-vector`;
       const rastId = `${id}-raster`;
-      const { vector, raster } = source;
 
       // Do not update if:
       if (
@@ -211,8 +210,8 @@ export const layerTypes = {
       if (!mbMap.getSource(vecId) || !mbMap.getSource(rastId)) return;
 
       const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
-      const vectorData = vector.data.replace('{date}', formatDate);
-      const rasterTiles = raster.tiles.map(tile => tile.replace('{date}', formatDate));
+      const vectorData = source.data.replace('{date}', formatDate);
+      const rasterTiles = backgroundSource.tiles.map(tile => tile.replace('{date}', formatDate));
 
       // inference data moves around, recenter on each update
       fetch(vectorData)
@@ -243,10 +242,9 @@ export const layerTypes = {
     },
     show: (ctx, layerInfo) => {
       const { mbMap } = ctx;
-      const { id, source, domain } = layerInfo;
+      const { id, source, backgroundSource, domain } = layerInfo;
       const vecId = `${id}-vector`;
       const rastId = `${id}-raster`;
-      const { vector, raster } = source;
 
       const inferPaint = {
         'line-color': '#f2a73a',
@@ -255,12 +253,12 @@ export const layerTypes = {
       };
       const formatDate = format(utcDate(domain[domain.length - 1]), dateFormats[layerInfo.timeUnit]);
       const vectorL = {
-        ...vector,
-        data: vector.data.replace('{date}', formatDate)
+        ...source,
+        data: source.data.replace('{date}', formatDate)
       };
       const rasterL = {
-        ...raster,
-        tiles: raster.tiles.map(tile => tile.replace('{date}', formatDate))
+        ...backgroundSource,
+        tiles: backgroundSource.tiles.map(tile => tile.replace('{date}', formatDate))
       };
 
       toggleOrAddLayer(mbMap, vecId, vectorL, 'line', inferPaint, 'admin-0-boundary-bg');
