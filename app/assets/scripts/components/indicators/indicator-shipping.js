@@ -277,13 +277,13 @@ class ShippingLongForm extends React.Component {
                 <p>
                   NASA researchers have access to the high-resolution imagery
                   from Planet Labs, through the Commercial SmallSat Data
-                  Acquisition Program (
+                  Acquisition program (
                   <a
                     href='https://earthdata.nasa.gov/esds/small-satellite-data-buy-program'
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    CSDAP
+                    CSDA
                   </a>
                   ), which acquires data from commercial sources that support
                   NASA&apos;s Earth science research goals. The PlanetScope
@@ -316,7 +316,7 @@ class ShippingLongForm extends React.Component {
             <InpageHGroup title='Credits' dashColor={metadata.color} />
             <Prose>
               <p>
-                The CSDAP and IMPACT are elements of NASA’s Earth Science Data
+                The CSDA and IMPACT are elements of NASA’s Earth Science Data
                 Systems program.
               </p>
             </Prose>
@@ -348,7 +348,7 @@ class ShippingLongForm extends React.Component {
                     target='_blank'
                     rel='noopener noreferrer'
                   >
-                    Commercial Smallsat Data Acquisition Program (CSDAP)
+                    Commercial Smallsat Data Acquisition program (CSDA)
                   </a>
                 </li>
               </ul>
