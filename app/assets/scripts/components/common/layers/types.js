@@ -1,8 +1,6 @@
 import { format, sub } from 'date-fns';
 import bbox from '@turf/bbox';
 
-import { utcDate } from '../../../utils/utils';
-
 const dateFormats = {
   monthOnly: 'MM',
   month: 'yyyyMM',
@@ -208,8 +206,7 @@ export const layerTypes = {
 
       // The source we're updating is not present.
       if (!mbMap.getSource(vecId) || !mbMap.getSource(rastId)) return;
-
-      const formatDate = format(utcDate(date), dateFormats[layerInfo.timeUnit]);
+      const formatDate = format(date, dateFormats[layerInfo.timeUnit]);
       const vectorData = source.data.replace('{date}', formatDate);
       const rasterTiles = backgroundSource.tiles.map(tile => tile.replace('{date}', formatDate));
 
@@ -241,17 +238,19 @@ export const layerTypes = {
       }
     },
     show: (ctx, layerInfo) => {
-      const { mbMap } = ctx;
-      const { id, source, backgroundSource, domain } = layerInfo;
+      const { props, mbMap } = ctx;
+      const { date } = props;
+      const { id, source, backgroundSource } = layerInfo;
       const vecId = `${id}-vector`;
       const rastId = `${id}-raster`;
+      if (!date) return;
 
       const inferPaint = {
         'line-color': '#f2a73a',
         'line-opacity': 0.8,
         'line-width': 2
       };
-      const formatDate = format(utcDate(domain[domain.length - 1]), dateFormats[layerInfo.timeUnit]);
+      const formatDate = format(date, dateFormats[layerInfo.timeUnit]);
       const vectorL = {
         ...source,
         data: source.data.replace('{date}', formatDate)
