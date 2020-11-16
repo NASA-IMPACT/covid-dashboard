@@ -26,6 +26,7 @@ import GetStartedHub from './components/getstarted/hub';
 import SpotlightHub from './components/spotlight/hub';
 import SpotlightSingle from './components/spotlight/single';
 import IndicatorsHub from './components/indicators/hub';
+import StoriesHub from './components/stories/hub';
 import IndicatorsSingle from './components/indicators/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
@@ -79,7 +80,9 @@ class Root extends React.Component {
               <GlobalStyles innerHeight={this.state.windowHeight} />
 
               {/* See note in LayerDataLoader file */}
-              <LayerDataLoader onReady={() => this.setState({ dataReady: true })} />
+              <LayerDataLoader
+                onReady={() => this.setState({ dataReady: true })}
+              />
 
               {this.state.dataReady && (
                 <Switch>
@@ -102,6 +105,7 @@ class Root extends React.Component {
                     path='/indicators/:indicatorId'
                     component={IndicatorsSingle}
                   />
+                  <Route exact path='/stories' component={StoriesHub} />
                   <Route path='/sandbox' component={Sandbox} />
                   <Route path='/about' component={About} />
                   <Route path='/development' component={Development} />
