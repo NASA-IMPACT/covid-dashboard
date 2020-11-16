@@ -593,11 +593,11 @@ class PageHeader extends React.Component {
                       <PrimeMenuBlockTitle>Stories</PrimeMenuBlockTitle>
                       <PrimeSubmenu aria-label='submenu'>
                         {storiesList
-                          .map((d) => (
-                            <li key={d.id}>
+                          .map((s) => (
+                            <li key={s.id}>
                               <Button
                                 element={NavLinkFilter}
-                                to={`/stories/${d.id}`}
+                                to={`/stories/${s.id}/${s.chapters[0].id}`}
                                 variation={
                                   isMediumDown
                                     ? 'achromic-plain'
@@ -605,7 +605,7 @@ class PageHeader extends React.Component {
                                 }
                                 title='Learn about this story'
                               >
-                                {d.name}
+                                {s.name}
                               </Button>
                             </li>
                           ))}

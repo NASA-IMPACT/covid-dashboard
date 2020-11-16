@@ -19,9 +19,11 @@ import {
   EntriesList,
   EntryNavLink,
   EntryNavLinkTitle,
-  EntryNavLinkMedia
+  EntryNavLinkMedia,
+  EntryNavLinkInfo
 } from '../../../styles/hub-pages';
 import storiesList from '../';
+import { format } from 'date-fns';
 
 const metadata = {
   color: '#2276AC'
@@ -71,10 +73,16 @@ const StoriesHub = (props) => {
                 {storiesList.map((item) => (
                   <li key={item.id}>
                     <EntryNavLink
-                      to={`/stories/${item.id}`}
+                      to={`/stories/${item.id}/${item.chapters[0].id}`}
                       title={`View story ${item.name}`}
                     >
-                      <EntryNavLinkTitle>{item.name}</EntryNavLinkTitle>
+                      <EntryNavLinkTitle>
+                        {item.name}
+                      </EntryNavLinkTitle>
+                      <EntryNavLinkInfo>
+                        <p>{item.chapters.length} chapters</p>
+                        <p>{format(new Date(item.publishDate), 'MMM do, yyyy')}</p>
+                      </EntryNavLinkInfo>
                       <EntryNavLinkMedia>
                         <img src='https://via.placeholder.com/480x240' width='960' height='480' alt='Indicator thumbnail' />
                       </EntryNavLinkMedia>

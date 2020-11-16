@@ -120,3 +120,8 @@ export const EntryNavLinkTitle = styled.strong`
   position: relative;
   z-index: 2;
 `;
+
+export const EntryNavLinkInfo = styled.div`
+  position: relative;
+  z-index: 2;
+`;
