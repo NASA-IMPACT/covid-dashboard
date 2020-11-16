@@ -496,7 +496,9 @@ class PageHeader extends React.Component {
                       exact
                       variation='achromic-plain'
                       title='View the Explore page'
-                      useIcon={isMediumDown ? null : ['chevron-down--small', 'after']}
+                      useIcon={
+                        isMediumDown ? null : ['chevron-down--small', 'after']
+                      }
                     >
                       Explore
                     </Button>
@@ -508,7 +510,9 @@ class PageHeader extends React.Component {
                             element={NavLinkFilter}
                             to='/explore/global'
                             exact
-                            variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                            variation={
+                              isMediumDown ? 'achromic-plain' : 'primary-plain'
+                            }
                             title='Explore the global map'
                           >
                             Global
@@ -520,7 +524,11 @@ class PageHeader extends React.Component {
                               <Button
                                 element={NavLinkFilter}
                                 to={`/explore/${ss.id}`}
-                                variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                                variation={
+                                  isMediumDown
+                                    ? 'achromic-plain'
+                                    : 'primary-plain'
+                                }
                                 title={`Explore ${ss.label}`}
                               >
                                 {ss.label}
@@ -537,7 +545,9 @@ class PageHeader extends React.Component {
                       exact
                       variation='achromic-plain'
                       title='View the Indicators page'
-                      useIcon={isMediumDown ? null : ['chevron-down--small', 'after']}
+                      useIcon={
+                        isMediumDown ? null : ['chevron-down--small', 'after']
+                      }
                     >
                       Indicators
                     </Button>
@@ -551,7 +561,11 @@ class PageHeader extends React.Component {
                               <Button
                                 element={NavLinkFilter}
                                 to={`/indicators/${d.id}`}
-                                variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                                variation={
+                                  isMediumDown
+                                    ? 'achromic-plain'
+                                    : 'primary-plain'
+                                }
                                 title='Learn about the indicator'
                               >
                                 {d.name}
@@ -560,6 +574,16 @@ class PageHeader extends React.Component {
                           ))}
                       </PrimeSubmenu>
                     </PrimeMenuBlock>
+                  </li>
+                  <li>
+                    <Button
+                      element={NavLinkFilter}
+                      to='/Stories'
+                      variation='achromic-plain'
+                      title='View Stories'
+                    >
+                      Stories
+                    </Button>
                   </li>
                   <li>
                     <Button
@@ -590,7 +614,9 @@ class PageHeader extends React.Component {
                       title='View share options'
                       hideText
                       useIcon='share-2'
-                      onClick={e => { e.preventDefault(); }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                      }}
                     >
                       Share
                     </Button>
@@ -600,7 +626,9 @@ class PageHeader extends React.Component {
                         <li>
                           <Button
                             element='a'
-                            variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                            variation={
+                              isMediumDown ? 'achromic-plain' : 'primary-plain'
+                            }
                             useIcon='brand-facebook'
                             href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
                             title='Share on Facebook'
@@ -612,7 +640,9 @@ class PageHeader extends React.Component {
                         <li>
                           <Button
                             element='a'
-                            variation={isMediumDown ? 'achromic-plain' : 'primary-plain'}
+                            variation={
+                              isMediumDown ? 'achromic-plain' : 'primary-plain'
+                            }
                             useIcon='brand-twitter'
                             href={`https://twitter.com/intent/tweet?url=${url}`}
                             title='Share on Twitter'
