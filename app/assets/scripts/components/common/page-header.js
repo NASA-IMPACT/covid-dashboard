@@ -17,6 +17,7 @@ import { surfaceElevatedD } from '../../styles/skins';
 import { wrapApiResult } from '../../redux/reduxeed';
 import { headingAlt } from '../../styles/type/heading';
 import indicatorsList from '../indicators';
+import storiesList from '../stories';
 
 import Button from '../../styles/button/button';
 import { CopyField } from './copy-field';
@@ -578,12 +579,38 @@ class PageHeader extends React.Component {
                   <li>
                     <Button
                       element={NavLinkFilter}
-                      to='/Stories'
+                      to='/stories'
+                      exact
                       variation='achromic-plain'
-                      title='View Stories'
+                      title='View the Stories page'
+                      useIcon={
+                        isMediumDown ? null : ['chevron-down--small', 'after']
+                      }
                     >
                       Stories
                     </Button>
+                    <PrimeMenuBlock>
+                      <PrimeMenuBlockTitle>Stories</PrimeMenuBlockTitle>
+                      <PrimeSubmenu aria-label='submenu'>
+                        {storiesList
+                          .map((d) => (
+                            <li key={d.id}>
+                              <Button
+                                element={NavLinkFilter}
+                                to={`/stories/${d.id}`}
+                                variation={
+                                  isMediumDown
+                                    ? 'achromic-plain'
+                                    : 'primary-plain'
+                                }
+                                title='Learn about this story'
+                              >
+                                {d.name}
+                              </Button>
+                            </li>
+                          ))}
+                      </PrimeSubmenu>
+                    </PrimeMenuBlock>
                   </li>
                   <li>
                     <Button

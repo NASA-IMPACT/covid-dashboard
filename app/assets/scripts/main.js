@@ -27,6 +27,7 @@ import SpotlightHub from './components/spotlight/hub';
 import SpotlightSingle from './components/spotlight/single';
 import IndicatorsHub from './components/indicators/hub';
 import StoriesHub from './components/stories/hub';
+import StoriesSingle from './components/stories/single';
 import IndicatorsSingle from './components/indicators/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
@@ -106,6 +107,11 @@ class Root extends React.Component {
                     component={IndicatorsSingle}
                   />
                   <Route exact path='/stories' component={StoriesHub} />
+                  <Route
+                    exact
+                    path='/stories/:storyId'
+                    component={StoriesSingle}
+                  />
                   <Route path='/sandbox' component={Sandbox} />
                   <Route path='/about' component={About} />
                   <Route path='/development' component={Development} />
