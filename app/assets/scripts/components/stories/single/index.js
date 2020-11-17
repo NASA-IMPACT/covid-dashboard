@@ -3,17 +3,16 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import T from 'prop-types';
 import { connect } from 'react-redux';
+import { glsp } from '../../../styles/utils/theme-values';
+import { truncated } from '../../../styles/helpers';
 
 import App from '../../common/app';
 import UhOh from '../../uhoh';
 import {
   Inpage,
   InpageHeader,
-  InpageHeaderInner,
   InpageHeadline,
-  InpageSubtitle,
   InpageBody,
-  InpageToolbar
 } from '../../../styles/inpage';
 import SecPanel from './sec-panel';
 import MbMap from '../../common/mb-map-explore/mb-map';
@@ -32,6 +31,53 @@ import Dropdown, {
   DropMenu,
   DropMenuItem
 } from '../../common/dropdown';
+
+const InpageHeaderInnerAlt = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  padding: ${glsp(0.25, 1)};
+
+  ${media.mediumUp`
+    padding: ${glsp()};
+  `}
+
+  ${media.largeUp`
+    padding: ${glsp()};
+  `}
+`;
+
+const InpageTitleAlt = styled.h1`
+  font-size: 1rem;
+  line-height: 1.25rem;
+  font-weight: ${themeVal('type.base.light')};
+  margin: ${glsp(0, 0, -0.5, 0)};
+`;
+
+const InpageSecTitle = styled.h2`
+  min-width: 0;
+  
+  > a {
+    margin-left: ${glsp(-0.75)};
+
+    span {
+      ${truncated()}
+      max-width: 100%;
+    }
+  }
+`;
+
+const InpageToolbarAlt = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  margin-left: auto;
+  padding-left: ${glsp()};
+
+  > *:last-child {
+    margin-right: ${glsp(-0.5)};
+  }
+`;
 
 const ExploreCanvas = styled.div`
   display: grid;
@@ -104,41 +150,44 @@ class StoriesSingle extends React.Component {
       <App hideFooter pageTitle={story.name}>
         <Inpage>
           <InpageHeader>
-            <InpageHeaderInner>
+            <InpageHeaderInnerAlt>
               <InpageHeadline>
-                <Dropdown
-                  alignment='center'
-                  direction='down'
-                  triggerElement={
-                    <Button
-                      variation='achromic-plain'
-                      title='View story chapters'
-                      useIcon={['chevron-down--small', 'after']}
-                    >
-                      {chapter.name}
-                    </Button>
-                  }
-                >
-                  <DropTitle>Chapters</DropTitle>
-                  <DropMenu role='menu' selectable>
-                    {story.chapters.map((c) => (
-                      <li key={c.id}>
-                        <DropMenuItem
-                          as={Link}
-                          active={c.id === chapterId}
-                          to={`/stories/${story.id}/${c.id}`}
-                          title='View chapter of this story'
-                          data-dropdown='click.close'
-                        >
-                          {c.name}
-                        </DropMenuItem>
-                      </li>
-                    ))}
-                  </DropMenu>
-                </Dropdown>
-                <InpageSubtitle>Story: {story.name}</InpageSubtitle>
+                <InpageTitleAlt>{story.name}</InpageTitleAlt>
+                <InpageSecTitle>
+                  <Dropdown
+                    alignment='center'
+                    direction='down'
+                    triggerElement={
+                      <Button
+                        as='a'
+                        variation='achromic-plain'
+                        title='View story chapters'
+                        useIcon={['chevron-down--small', 'after']}
+                      >
+                        <span>{chapter.name}</span>
+                      </Button>
+                    }
+                  >
+                    <DropTitle>Chapters</DropTitle>
+                    <DropMenu role='menu' selectable>
+                      {story.chapters.map((c) => (
+                        <li key={c.id}>
+                          <DropMenuItem
+                            as={Link}
+                            active={c.id === chapterId}
+                            to={`/stories/${story.id}/${c.id}`}
+                            title='View chapter of this story'
+                            data-dropdown='click.close'
+                          >
+                            {c.name}
+                          </DropMenuItem>
+                        </li>
+                      ))}
+                    </DropMenu>
+                  </Dropdown>
+                </InpageSecTitle>
               </InpageHeadline>
-              <InpageToolbar>
+              <InpageToolbarAlt>
                 <Button
                   element={Link}
                   title='View previous chapter of this story'
@@ -169,8 +218,8 @@ class StoriesSingle extends React.Component {
                 >
                   Next
                 </Button>
-              </InpageToolbar>
-            </InpageHeaderInner>
+              </InpageToolbarAlt>
+            </InpageHeaderInnerAlt>
           </InpageHeader>
           <InpageBody>
             <ExploreCanvas panelSec={this.state.panelSec}>
