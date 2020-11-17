@@ -101,7 +101,7 @@ class StoriesSingle extends React.Component {
     const nextChapter = story.chapters[chapterIdx + 1];
 
     return (
-      <App pageTitle={story.name}>
+      <App hideFooter pageTitle={story.name}>
         <Inpage>
           <InpageHeader>
             <InpageHeaderInner>
