@@ -12,7 +12,7 @@ import {
   Inpage,
   InpageHeader,
   InpageHeadline,
-  InpageBody,
+  InpageBody
 } from '../../../styles/inpage';
 import SecPanel from './sec-panel';
 import MbMap from '../../common/mb-map-explore/mb-map';
@@ -67,18 +67,6 @@ const InpageSecTitle = styled.h2`
   }
 `;
 
-const InpageToolbarAlt = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: flex-end;
-  margin-left: auto;
-  padding-left: ${glsp()};
-
-  > *:last-child {
-    margin-right: ${glsp(-0.5)};
-  }
-`;
-
 const ExploreCanvas = styled.div`
   display: grid;
   height: 100%;
@@ -91,6 +79,18 @@ const ExploreCanvas = styled.div`
 
   > * {
     grid-row: 1;
+  }
+`;
+
+const InpageToolbarAlt = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+  margin-left: auto;
+  padding-left: ${glsp()};
+
+  > *:last-child {
+    margin-right: ${glsp(-0.5)};
   }
 `;
 
@@ -124,7 +124,7 @@ class StoriesSingle extends React.Component {
   }
 
   async onMapAction (action, payload) {
-    console.log('onMapAction', action, payload);
+    // console.log('onMapAction', action, payload);
   }
 
   render () {
