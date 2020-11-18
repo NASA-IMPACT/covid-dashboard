@@ -31,6 +31,7 @@ import Dropdown, {
   DropMenu,
   DropMenuItem
 } from '../../common/dropdown';
+import ShadowScrollbar from '../../common/shadow-scrollbar';
 
 const InpageHeaderInnerAlt = styled.div`
   display: flex;
@@ -48,16 +49,18 @@ const InpageHeaderInnerAlt = styled.div`
 `;
 
 const InpageTitleAlt = styled.h1`
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: ${themeVal('type.base.light')};
-  margin: ${glsp(0, 0, -0.5, 0)};
+  margin: ${glsp(0, 0, -0.25, 0)};
 `;
 
 const InpageSecTitle = styled.h2`
   min-width: 0;
   
-  > a {
+  > ${Button} {
+    font-size: 1.5rem;
+    line-height: 2.25rem;
     margin-left: ${glsp(-0.75)};
 
     span {
@@ -65,6 +68,20 @@ const InpageSecTitle = styled.h2`
       max-width: 100%;
     }
   }
+`;
+
+const ChapterDropdown = styled(Dropdown)`
+  max-width: 20rem;
+  overflow: hidden;
+  padding: 0;
+
+  > div {
+    height: 100%;
+  }
+`;
+
+const DropdownScrollInner = styled.div`
+  padding: ${glsp()};
 `;
 
 const ExploreCanvas = styled.div`
@@ -92,6 +109,11 @@ const InpageToolbarAlt = styled.div`
   > *:last-child {
     margin-right: ${glsp(-0.5)};
   }
+`;
+
+const ChapterCount = styled.strong`
+  line-height: 2rem;
+  margin-right: ${glsp(0.5)};
 `;
 
 const ExploreCarto = styled.section`
@@ -154,40 +176,45 @@ class StoriesSingle extends React.Component {
               <InpageHeadline>
                 <InpageTitleAlt>{story.name}</InpageTitleAlt>
                 <InpageSecTitle>
-                  <Dropdown
-                    alignment='center'
+                  <ChapterDropdown
+                    alignment='left'
                     direction='down'
                     triggerElement={
                       <Button
-                        as='a'
+                        element='a'
                         variation='achromic-plain'
                         title='View story chapters'
                         useIcon={['chevron-down--small', 'after']}
                       >
-                        <span>{chapter.name}</span>
+                        {chapter.name}
                       </Button>
                     }
                   >
-                    <DropTitle>Chapters</DropTitle>
-                    <DropMenu role='menu' selectable>
-                      {story.chapters.map((c) => (
-                        <li key={c.id}>
-                          <DropMenuItem
-                            as={Link}
-                            active={c.id === chapterId}
-                            to={`/stories/${story.id}/${c.id}`}
-                            title='View chapter of this story'
-                            data-dropdown='click.close'
-                          >
-                            {c.name}
-                          </DropMenuItem>
-                        </li>
-                      ))}
-                    </DropMenu>
-                  </Dropdown>
+                    <ShadowScrollbar scrollbarsProps={{ autoHeight: true, autoHeightMax: 400 }}>
+                      <DropdownScrollInner>
+                        <DropTitle>Chapters</DropTitle>
+                        <DropMenu role='menu' selectable>
+                          {story.chapters.map((c) => (
+                            <li key={c.id}>
+                              <DropMenuItem
+                                as={Link}
+                                active={c.id === chapterId}
+                                to={`/stories/${story.id}/${c.id}`}
+                                title='View chapter of this story'
+                                data-dropdown='click.close'
+                              >
+                                {c.name}
+                              </DropMenuItem>
+                            </li>
+                          ))}
+                        </DropMenu>
+                      </DropdownScrollInner>
+                    </ShadowScrollbar>
+                  </ChapterDropdown>
                 </InpageSecTitle>
               </InpageHeadline>
               <InpageToolbarAlt>
+                <ChapterCount>Chapter {chapterIdx + 1} of {story.chapters.length}</ChapterCount>
                 <Button
                   element={Link}
                   title='View previous chapter of this story'
@@ -237,6 +264,7 @@ class StoriesSingle extends React.Component {
               </ExploreCarto>
 
               <SecPanel
+                chapter={chapter}
                 onPanelChange={({ revealed }) => {
                   this.resizeMap();
                   this.setState({ panelSec: revealed });

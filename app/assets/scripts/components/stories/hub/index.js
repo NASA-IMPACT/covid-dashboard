@@ -81,7 +81,7 @@ const StoriesHub = (props) => {
                       </EntryNavLinkTitle>
                       <EntryNavLinkInfo>
                         <p>{item.chapters.length} chapters</p>
-                        <p>{format(new Date(item.publishDate), 'MMM do, yyyy')}</p>
+                        <p>Published on {format(new Date(item.publishDate), 'MMM do, yyyy')}</p>
                       </EntryNavLinkInfo>
                       <EntryNavLinkMedia>
                         <img src='https://via.placeholder.com/480x240' width='960' height='480' alt='Indicator thumbnail' />

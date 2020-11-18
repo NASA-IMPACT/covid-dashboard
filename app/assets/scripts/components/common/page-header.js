@@ -359,6 +359,11 @@ const PrimeSubmenu = styled.ul`
   ${media.largeUp`
     padding: 0;
   `}
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  ${Button} > span {
+    white-space: break-spaces;
+  }
 `;
 
 const ShareLi = styled.li`

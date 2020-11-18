@@ -23,7 +23,7 @@ const BodyScrollInner = styled.div`
 `;
 
 function SecPanel (props) {
-  const { onPanelChange, content } = props;
+  const { chapter, onPanelChange, content } = props;
 
   return (
     <PanelSelf
@@ -33,7 +33,7 @@ function SecPanel (props) {
       initialState={isLargeViewport()}
       headerContent={
         <PanelHeadline>
-          <PanelTitle>Story</PanelTitle>
+          <PanelTitle>{chapter.name}</PanelTitle>
         </PanelHeadline>
       }
       bodyContent={
@@ -46,6 +46,7 @@ function SecPanel (props) {
 }
 
 SecPanel.propTypes = {
+  chapter: T.object,
   content: T.node,
   onPanelChange: T.func
 };
