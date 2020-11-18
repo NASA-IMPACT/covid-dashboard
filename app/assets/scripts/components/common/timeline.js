@@ -21,27 +21,27 @@ const checkSameDate = (date, compareDate, interval) => {
   }
 };
 
-const getNextDate = (domain, date, timeUnit) => {
+const getNextDate = (domain, date, timeUnit, isPeriodic) => {
+  // If we only have start and end, round based on time unit.
+  if (isPeriodic) {
+    return add(date, getOperationParam(timeUnit));
   // If we're working with a discrete domain, get the closest value.
-  if (domain.length > 2) {
+  } else {
     const currIdx = domain.findIndex(d => isSameDay(d, date));
     if (currIdx < 0 || currIdx >= domain.length - 1) return null;
     return domain[currIdx + 1];
-  } else {
-    // If we only have start and end, round based on time unit.
-    return add(date, getOperationParam(timeUnit));
   }
 };
 
-const getPrevDate = (domain, date, timeUnit) => {
+const getPrevDate = (domain, date, timeUnit, isPeriodic) => {
+  // If we only have start and end, round based on time unit.
+  if (isPeriodic) {
+    return sub(date, getOperationParam(timeUnit));
   // If we're working with a discrete domain, get the closest value.
-  if (domain.length > 2) {
+  } else {
     const currIdx = domain.findIndex(d => isSameDay(d, date));
     if (currIdx <= 0) return null;
     return domain[currIdx - 1];
-  } else {
-    // If we only have start and end, round based on time unit.
-    return sub(date, getOperationParam(timeUnit));
   }
 };
 
@@ -161,6 +161,7 @@ class Timeline extends React.Component {
     const swatch = layers[0].swatch.color;
 
     const timeUnit = layers[0].timeUnit || 'month';
+    const isPeriodic = layers[0].isPeriodic || false;
 
     return (
       <ExploreDataBrowser>
@@ -196,7 +197,7 @@ class Timeline extends React.Component {
                 title='Previous entry'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: getPrevDate(dateDomain, date, timeUnit) })}
+                  onAction('date.set', { date: getPrevDate(dateDomain, date, timeUnit, isPeriodic) })}
               >
                 Previous entry
               </Button>
@@ -208,7 +209,7 @@ class Timeline extends React.Component {
                 title='Next entry'
                 hideText
                 onClick={() =>
-                  onAction('date.set', { date: getNextDate(dateDomain, date, timeUnit) })}
+                  onAction('date.set', { date: getNextDate(dateDomain, date, timeUnit, isPeriodic) })}
               >
                 Next entry
               </Button>
@@ -222,6 +223,7 @@ class Timeline extends React.Component {
               timeUnit={timeUnit}
               onAction={onAction}
               xDomain={dateDomain}
+              isPeriodic={isPeriodic}
               swatch={swatch}
             />
           </DataBrowserBodyScroll>
