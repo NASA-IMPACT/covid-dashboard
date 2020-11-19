@@ -15,10 +15,12 @@
  */
 import air from './story-air';
 import climate from './story-climate';
+import lcluc from './story-lcluc';
 
 const stories = [
   air,
-  climate
+  climate,
+  lcluc
 ];
 
 export default stories;
