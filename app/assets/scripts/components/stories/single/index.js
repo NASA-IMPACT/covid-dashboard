@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import T from 'prop-types';
 import { connect } from 'react-redux';
-import { glsp } from '../../../styles/utils/theme-values';
-import { truncated } from '../../../styles/helpers';
+import get from 'lodash.get';
 
 import App from '../../common/app';
 import UhOh from '../../uhoh';
@@ -16,7 +15,15 @@ import {
 } from '../../../styles/inpage';
 import SecPanel from './sec-panel';
 import MbMap from '../../common/mb-map-explore/mb-map';
+import Button from '../../../styles/button/button';
+import Dropdown, {
+  DropTitle,
+  DropMenu,
+  DropMenuItem
+} from '../../common/dropdown';
+import ShadowScrollbar from '../../common/shadow-scrollbar';
 
+import history from '../../../utils/history';
 import { getStory } from '../';
 import { themeVal } from '../../../styles/utils/general';
 import media from '../../../styles/utils/media-queries';
@@ -25,14 +32,8 @@ import {
   getLayersWithState,
   resizeMap
 } from '../../../utils/map-explore-utils';
-import Button from '../../../styles/button/button';
-import Dropdown, {
-  DropTitle,
-  DropMenu,
-  DropMenuItem
-} from '../../common/dropdown';
-import ShadowScrollbar from '../../common/shadow-scrollbar';
-import get from 'lodash.get';
+import { glsp } from '../../../styles/utils/theme-values';
+import { truncated } from '../../../styles/helpers';
 
 const InpageHeaderInnerAlt = styled.div`
   display: flex;
@@ -226,15 +227,41 @@ class StoriesSingle extends React.Component {
     this.getLayersWithState = getLayersWithState.bind(this);
 
     this.onMapAction = this.onMapAction.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+
     // Ref to the map component to be able to trigger a resize when the panels
     // are shown/hidden.
     this.mbMapRef = React.createRef();
+
+    // Store prev and next urls. This is needed for the keyboard navigation.
+    this.prevItemUrl = null;
+    this.nextItemUrl = null;
 
     this.state = {
       ...getInitialMapExploreState(),
       mapLayers: [],
       panelSec: false
     };
+  }
+
+  componentDidMount () {
+    window.addEventListener('keyup', this.onKeyPress);
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('keyup', this.onKeyPress);
+  }
+
+  onKeyPress (e) {
+    // Right arrow
+    if (e.keyCode === 39 && this.nextItemUrl) {
+      history.push(this.nextItemUrl);
+    }
+
+    // Left arrow
+    if (e.keyCode === 37 && this.prevItemUrl) {
+      history.push(this.prevItemUrl);
+    }
   }
 
   async onMapAction (action, payload) {
@@ -340,6 +367,11 @@ class StoriesSingle extends React.Component {
     const itemName = getCurrentItemName(chapter, section);
     // Number of the chapter plus the chapter's section.
     const itemNum = getCurrentItemNum(chapterIdx, sectionIdx);
+
+    // Store the next and previous items as class properties so we don't have to
+    // search for them every time.
+    this.prevItemUrl = prevItem ? createItemUrl(story, prevItem) : null;
+    this.nextItemUrl = nextItem ? createItemUrl(story, nextItem) : null;
 
     const panelContent = get(section, 'contentComp') || chapter.contentComp;
 
