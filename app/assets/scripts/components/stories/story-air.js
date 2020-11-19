@@ -51,7 +51,7 @@ export default {
     },
     {
       id: 'lockdowns-no2',
-      name: '“Like Flipping a Switch”: Lockdowns and NO2',
+      name: '“Like Flipping a Switch”: Lockdowns and NO₂',
       contentComp: (
         <>
           <p>
@@ -62,7 +62,7 @@ export default {
     },
     {
       id: 'lockdowns-no2-continued',
-      name: '“Like Flipping a Switch”: Lockdowns and NO2',
+      name: '“Like Flipping a Switch”: Lockdowns and NO₂',
       contentComp: (
         <>
           <p>
