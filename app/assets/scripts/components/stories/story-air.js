@@ -30,46 +30,58 @@ export default {
     {
       id: 'cities-experiencing-clearer-air',
       name: 'Cities Experiencing Clearer Air During Lockdowns',
-      contentComp: (
-        <>
-          <p>
-            When Chinese authorities suspended travel and closed businesses in late January 2020 in response to the novel coronavirus, Beijing’s nearly 21 million residents saw huge drops in their local nitrogen dioxide levels. In February 2020, concentrations fell by nearly 30% compared to the previous five-year average.
-          </p>
-        </>
-      )
-    },
-    {
-      id: 'cities-experiencing-clearer-air-continued',
-      name: 'Cities Experiencing Clearer Air During Lockdowns',
-      contentComp: (
-        <>
-          <p>
-            Cities across South America experienced similar declines in NO<sub>2</sub>. Lima, Peru had some of the most substantial reductions, with nitrogen dioxide levels falling approximately 70% below normal levels.
-          </p>
-        </>
-      )
+      sections: [
+        {
+          id: 'part1',
+          name: 'Part 1',
+          contentComp: (
+            <>
+              <p>
+                When Chinese authorities suspended travel and closed businesses in late January 2020 in response to the novel coronavirus, Beijing’s nearly 21 million residents saw huge drops in their local nitrogen dioxide levels. In February 2020, concentrations fell by nearly 30% compared to the previous five-year average.
+              </p>
+            </>
+          )
+        },
+        {
+          id: 'part2',
+          name: 'Part 2',
+          contentComp: (
+            <>
+              <p>
+                Cities across South America experienced similar declines in NO<sub>2</sub>. Lima, Peru had some of the most substantial reductions, with nitrogen dioxide levels falling approximately 70% below normal levels.
+              </p>
+            </>
+          )
+        }
+      ]
     },
     {
       id: 'lockdowns-no2',
       name: '“Like Flipping a Switch”: Lockdowns and NO₂',
-      contentComp: (
-        <>
-          <p>
-            You might think immediate improvements in air quality during shutdowns would be obvious. However, in reality, the way our atmosphere behaves isn’t so clear-cut. Nitrogen dioxide is only one component of air quality: sulfur dioxide, ozone, formaldehyde, and carbon dioxide along with a host of other atmospheric constituents also influence the quality of the air we breathe. The difference in nitrogen dioxide is that it has a relatively short lifetime in the atmosphere. In other words, once it’s emitted, it only lasts a few hours before it disappears. Therefore, once communities entered lockdowns and their mobility was severely restricted, the effect on NO<sub>2</sub> concentrations was the equivalent of flipping a switch. Be that as it may, this isn’t the case with all air pollutants.
-          </p>
-        </>
-      )
-    },
-    {
-      id: 'lockdowns-no2-continued',
-      name: '“Like Flipping a Switch”: Lockdowns and NO₂',
-      contentComp: (
-        <>
-          <p>
-            Even with the strong correlation between NO<sub>2</sub> and the combustion of fossil fuels, the relationship between nitrogen dioxide and lockdowns isn’t straightforward either. Atmospheric concentrations of nitrogen dioxide naturally fluctuate throughout the year, and weather patterns also influence its concentrations. For example, nitrogen dioxide typically falls dramatically during spring and summer months, and rain and wind increase its dispersion, lowering local concentrations.Therefore, during the COVID-19 pandemic, scientists are careful to attribute observed changes solely to changes in our behavior and are also looking to determine whether some of the reductions are the result of natural variation.
-          </p>
-        </>
-      )
+      sections: [
+        {
+          id: 'part1',
+          name: 'Part 1',
+          contentComp: (
+            <>
+              <p>
+                You might think immediate improvements in air quality during shutdowns would be obvious. However, in reality, the way our atmosphere behaves isn’t so clear-cut. Nitrogen dioxide is only one component of air quality: sulfur dioxide, ozone, formaldehyde, and carbon dioxide along with a host of other atmospheric constituents also influence the quality of the air we breathe. The difference in nitrogen dioxide is that it has a relatively short lifetime in the atmosphere. In other words, once it’s emitted, it only lasts a few hours before it disappears. Therefore, once communities entered lockdowns and their mobility was severely restricted, the effect on NO<sub>2</sub> concentrations was the equivalent of flipping a switch. Be that as it may, this isn’t the case with all air pollutants.
+              </p>
+            </>
+          )
+        },
+        {
+          id: 'part2',
+          name: 'Part 2',
+          contentComp: (
+            <>
+              <p>
+                Even with the strong correlation between NO<sub>2</sub> and the combustion of fossil fuels, the relationship between nitrogen dioxide and lockdowns isn’t straightforward either. Atmospheric concentrations of nitrogen dioxide naturally fluctuate throughout the year, and weather patterns also influence its concentrations. For example, nitrogen dioxide typically falls dramatically during spring and summer months, and rain and wind increase its dispersion, lowering local concentrations.Therefore, during the COVID-19 pandemic, scientists are careful to attribute observed changes solely to changes in our behavior and are also looking to determine whether some of the reductions are the result of natural variation.
+              </p>
+            </>
+          )
+        }
+      ]
     },
     {
       id: 'seeing-air-pollution-from-space',
@@ -96,24 +108,30 @@ export default {
     {
       id: 'measuring-pollution-on-the-ground',
       name: 'Measuring Air Pollution on the Ground at Airports',
-      contentComp: (
-        <>
-          <p>
-            New research during the pandemic is also looking at how COVID-related travel bans are impacting air quality around airports. Current conditions create a unique opportunity to study airport-related pollutants, especially nitrogen dioxide and formaldehyde. While travel bans and strict regulations around air travel are in place, air traffic has yet to return to normal levels, and many planes remain grounded. Here we see Planet Labs imagery using artificial intelligence to detect grounded airplanes at the Baltimore-Washington International Airport (BWI). During the pandemic, BWI reported that air traffic there had been reduced by around 60 percent. Scientists expect this footprint and the footprint of air travel across the world will likely return to its former shape as travel policies are gradually relaxed.
-          </p>
-        </>
-      )
-    },
-    {
-      id: 'measuring-pollution-on-the-ground-continued',
-      name: 'Measuring Air Pollution on the Ground at Airports, Continued',
-      contentComp: (
-        <>
-          <p>
-            Dr. Jennifer Kaiser, the principal investigator behind the research studying air quality at airports during the pandemic, explained that during lockdowns, people are seeing better air quality with less traffic. Therefore, they may also wonder if this is what the future could look like if we relied more heavily on electric vehicles than we do now. Yet, airplanes are not going to be electric anytime soon, Kaiser explained. So, she and her team have installed two sensors at both BWI and the Hartsfield-Jackson Atlanta International Airport to identify air pollutant levels around airports during the pandemic. The sensors, which are part of NASA’s Pandora Project, use spectrometers to identify chemicals in the air. Kaiser and her team are comparing the on-the-ground sensor information with satellite information from TROPOMI. So far, she and her group have found that rebounds in nitrogen dioxide at airports have been slower to occur than those from automobile traffic.
-          </p>
-        </>
-      )
+      sections: [
+        {
+          id: 'part1',
+          name: 'Part 1',
+          contentComp: (
+            <>
+              <p>
+                New research during the pandemic is also looking at how COVID-related travel bans are impacting air quality around airports. Current conditions create a unique opportunity to study airport-related pollutants, especially nitrogen dioxide and formaldehyde. While travel bans and strict regulations around air travel are in place, air traffic has yet to return to normal levels, and many planes remain grounded. Here we see Planet Labs imagery using artificial intelligence to detect grounded airplanes at the Baltimore-Washington International Airport (BWI). During the pandemic, BWI reported that air traffic there had been reduced by around 60 percent. Scientists expect this footprint and the footprint of air travel across the world will likely return to its former shape as travel policies are gradually relaxed.
+              </p>
+            </>
+          )
+        },
+        {
+          id: 'part2',
+          name: 'Part 2',
+          contentComp: (
+            <>
+              <p>
+                Dr. Jennifer Kaiser, the principal investigator behind the research studying air quality at airports during the pandemic, explained that during lockdowns, people are seeing better air quality with less traffic. Therefore, they may also wonder if this is what the future could look like if we relied more heavily on electric vehicles than we do now. Yet, airplanes are not going to be electric anytime soon, Kaiser explained. So, she and her team have installed two sensors at both BWI and the Hartsfield-Jackson Atlanta International Airport to identify air pollutant levels around airports during the pandemic. The sensors, which are part of NASA’s Pandora Project, use spectrometers to identify chemicals in the air. Kaiser and her team are comparing the on-the-ground sensor information with satellite information from TROPOMI. So far, she and her group have found that rebounds in nitrogen dioxide at airports have been slower to occur than those from automobile traffic.
+              </p>
+            </>
+          )
+        }
+      ]
     },
     {
       id: 'seeing-rebounds',

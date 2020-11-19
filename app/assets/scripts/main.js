@@ -109,7 +109,7 @@ class Root extends React.Component {
                   <Route exact path='/stories' component={StoriesHub} />
                   <Route
                     exact
-                    path='/stories/:storyId/:chapterId'
+                    path='/stories/:storyId/:chapterId/:sectionId?'
                     component={StoriesSingle}
                   />
                   <Route path='/sandbox' component={Sandbox} />

@@ -32,6 +32,7 @@ import Dropdown, {
   DropMenuItem
 } from '../../common/dropdown';
 import ShadowScrollbar from '../../common/shadow-scrollbar';
+import get from 'lodash.get';
 
 const InpageHeaderInnerAlt = styled.div`
   display: flex;
@@ -57,7 +58,7 @@ const InpageTitleAlt = styled.h1`
 
 const InpageSecTitle = styled.h2`
   min-width: 0;
-  
+
   > ${Button} {
     font-size: 1.5rem;
     line-height: 2.25rem;
@@ -82,6 +83,10 @@ const ChapterDropdown = styled(Dropdown)`
 
 const DropdownScrollInner = styled.div`
   padding: ${glsp()};
+
+  li li a {
+    padding-left: 2rem;
+  }
 `;
 
 const ExploreCanvas = styled.div`
@@ -126,6 +131,93 @@ const ExploreCarto = styled.section`
   overflow: hidden;
 `;
 
+const findById = (haystack = [], id) => {
+  const idx = haystack.findIndex((c) => c.id === id);
+  return [idx === -1 ? null : idx, haystack[idx]];
+};
+
+const getPreviousItem = (chapters, currChapterIdx, currSectionIdx = 0) => {
+  // Try to get the previous section.
+  const chapter = chapters[currChapterIdx];
+  const prevSec = get(chapter, ['sections', currSectionIdx - 1]);
+  if (prevSec) {
+    return {
+      chapter,
+      section: prevSec
+    };
+  }
+
+  // There's no previous section. Get the previous chapter.
+  const prevChapter = chapters[currChapterIdx - 1];
+  // There's no previous chapter.
+  if (!prevChapter) return null;
+
+  // If the chapter has sections return the last
+  if (prevChapter.sections) {
+    const lastSection = prevChapter.sections[prevChapter.sections.length - 1];
+    return {
+      chapter: prevChapter,
+      section: lastSection
+    };
+  } else {
+    return {
+      chapter: prevChapter
+    };
+  }
+};
+
+const getNextItem = (chapters, currChapterIdx, currSectionIdx = 0) => {
+  // Try to get the next section.
+  const chapter = chapters[currChapterIdx];
+  const nextSec = get(chapter, ['sections', currSectionIdx + 1]);
+  if (nextSec) {
+    return {
+      chapter,
+      section: nextSec
+    };
+  }
+
+  // There's no next section. Get the next chapter.
+  const nextChapter = chapters[currChapterIdx + 1];
+  // There's no next chapter.
+  if (!nextChapter) return null;
+
+  // If the chapter has sections return the first
+  if (nextChapter.sections) {
+    return {
+      chapter: nextChapter,
+      section: nextChapter.sections[0]
+    };
+  } else {
+    return {
+      chapter: nextChapter
+    };
+  }
+};
+
+const createItemUrl = (story, item) => {
+  if (!item) return '/stories';
+
+  const { chapter, section } = item;
+  const base = `/stories/${story.id}/${chapter.id}`;
+  return section ? `${base}/${section.id}` : base;
+};
+
+const getCurrentItemNum = (chapterIdx, sectionIdx = null) => {
+  const sec = sectionIdx !== null ? `.${sectionIdx + 1}` : '';
+  return `${chapterIdx + 1}${sec}`;
+};
+
+const getCurrentItemName = (chapter, section = null) => {
+  return section ? (
+    <>
+      {chapter.name} ({section.name})
+    </>
+  ) : (
+    <>{chapter.name}</>
+  );
+};
+
 class StoriesSingle extends React.Component {
   constructor (props) {
     super(props);
@@ -149,24 +241,107 @@ class StoriesSingle extends React.Component {
     // console.log('onMapAction', action, payload);
   }
 
+  renderChapterDropdown (itemNum, itemName) {
+    const {
+      story,
+      match: {
+        params: { chapterId, sectionId }
+      }
+    } = this.props;
+
+    return (
+      <ChapterDropdown
+        alignment='left'
+        direction='down'
+        triggerElement={
+          <Button
+            element='a'
+            variation='achromic-plain'
+            title='View story chapters'
+            useIcon={['chevron-down--small', 'after']}
+          >
+            {itemNum}) {itemName}
+          </Button>
+        }
+      >
+        <ShadowScrollbar
+          scrollbarsProps={{ autoHeight: true, autoHeightMax: 400 }}
+        >
+          <DropdownScrollInner>
+            <DropTitle>Chapters</DropTitle>
+            <DropMenu role='menu' selectable>
+              {story.chapters.map((chapter) => {
+                const baseUrl = `/stories/${story.id}/${chapter.id}`;
+                const chapterUrl = chapter.sections
+                  ? `${baseUrl}/${chapter.sections[0].id}`
+                  : baseUrl;
+
+                return (
+                  <li key={chapter.id}>
+                    <DropMenuItem
+                      as={Link}
+                      active={chapter.id === chapterId && !sectionId}
+                      to={chapterUrl}
+                      title='View chapter of this story'
+                      data-dropdown='click.close'
+                    >
+                      {chapter.name}
+                    </DropMenuItem>
+                    {chapter.sections && (
+                      <ul>
+                        {chapter.sections.map((section) => (
+                          <li key={section.id}>
+                            <DropMenuItem
+                              as={Link}
+                              active={section.id === sectionId}
+                              to={`${baseUrl}/${section.id}`}
+                              title='View chapter of this story'
+                              data-dropdown='click.close'
+                            >
+                              {section.name}
+                            </DropMenuItem>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </DropMenu>
+          </DropdownScrollInner>
+        </ShadowScrollbar>
+      </ChapterDropdown>
+    );
+  }
+
   render () {
     const { mapLayers, activeLayers } = this.state;
     const {
       story,
       match: {
-        params: { chapterId }
+        params: { chapterId, sectionId }
       }
     } = this.props;
     const layers = this.getLayersWithState(mapLayers);
 
     if (!story) return <UhOh />;
 
-    const chapterIdx = story.chapters.findIndex((c) => c.id === chapterId);
-    const chapter = story.chapters[chapterIdx];
+    const [chapterIdx, chapter] = findById(story.chapters, chapterId);
     if (!chapter) return <UhOh />;
 
-    const prevChapter = story.chapters[chapterIdx - 1];
-    const nextChapter = story.chapters[chapterIdx + 1];
+    // Some chapters have sections. See if it exists.
+    const [sectionIdx, section] = findById(chapter.sections, sectionId);
+    if (sectionId && !section) return <UhOh />;
+
+    const prevItem = getPreviousItem(story.chapters, chapterIdx, sectionIdx);
+    const nextItem = getNextItem(story.chapters, chapterIdx, sectionIdx);
+
+    // Name of the chapter plus the chapter's section.
+    const itemName = getCurrentItemName(chapter, section);
+    // Number of the chapter plus the chapter's section.
+    const itemNum = getCurrentItemNum(chapterIdx, sectionIdx);
+
+    const panelContent = get(section, 'contentComp') || chapter.contentComp;
 
     return (
       <App hideFooter pageTitle={story.name}>
@@ -176,72 +351,32 @@ class StoriesSingle extends React.Component {
               <InpageHeadline>
                 <InpageTitleAlt>{story.name}</InpageTitleAlt>
                 <InpageSecTitle>
-                  <ChapterDropdown
-                    alignment='left'
-                    direction='down'
-                    triggerElement={
-                      <Button
-                        element='a'
-                        variation='achromic-plain'
-                        title='View story chapters'
-                        useIcon={['chevron-down--small', 'after']}
-                      >
-                        {chapter.name}
-                      </Button>
-                    }
-                  >
-                    <ShadowScrollbar scrollbarsProps={{ autoHeight: true, autoHeightMax: 400 }}>
-                      <DropdownScrollInner>
-                        <DropTitle>Chapters</DropTitle>
-                        <DropMenu role='menu' selectable>
-                          {story.chapters.map((c) => (
-                            <li key={c.id}>
-                              <DropMenuItem
-                                as={Link}
-                                active={c.id === chapterId}
-                                to={`/stories/${story.id}/${c.id}`}
-                                title='View chapter of this story'
-                                data-dropdown='click.close'
-                              >
-                                {c.name}
-                              </DropMenuItem>
-                            </li>
-                          ))}
-                        </DropMenu>
-                      </DropdownScrollInner>
-                    </ShadowScrollbar>
-                  </ChapterDropdown>
+                  {this.renderChapterDropdown(itemNum, itemName)}
                 </InpageSecTitle>
               </InpageHeadline>
               <InpageToolbarAlt>
-                <ChapterCount>Chapter {chapterIdx + 1} of {story.chapters.length}</ChapterCount>
+                <ChapterCount>
+                  Chapter {itemNum} of {story.chapters.length}
+                </ChapterCount>
                 <Button
                   element={Link}
                   title='View previous chapter of this story'
-                  to={
-                    prevChapter
-                      ? `/stories/${story.id}/${prevChapter.id}`
-                      : '/stories'
-                  }
+                  to={createItemUrl(story, prevItem)}
                   variation='achromic-plain'
                   useIcon='chevron-left--small'
                   hideText
-                  disabled={!prevChapter}
+                  disabled={!prevItem}
                 >
                   Previous
                 </Button>
                 <Button
                   element={Link}
                   title='View next chapter of this story'
-                  to={
-                    nextChapter
-                      ? `/stories/${story.id}/${nextChapter.id}`
-                      : '/stories'
-                  }
+                  to={createItemUrl(story, nextItem)}
                   variation='achromic-plain'
                   useIcon='chevron-right--small'
                   hideText
-                  disabled={!nextChapter}
+                  disabled={!nextItem}
                 >
                   Next
                 </Button>
@@ -264,12 +399,12 @@ class StoriesSingle extends React.Component {
               </ExploreCarto>
 
               <SecPanel
-                chapter={chapter}
+                title={itemName}
                 onPanelChange={({ revealed }) => {
                   this.resizeMap();
                   this.setState({ panelSec: revealed });
                 }}
-                content={chapter.contentComp}
+                content={panelContent}
               />
             </ExploreCanvas>
           </InpageBody>
