@@ -14,7 +14,14 @@ export default {
             When governments began implementing lockdowns at the start of the COVID-19 pandemic, scientists wondered how the atmosphere would respond to the sudden change in human behavior. With people largely confined to their homes to slow the spread of the virus, there were likely to be fewer cars, planes, and ships burning and emitting fossil fuels. Nearly a year into the pandemic, these scenarios have largely played out: during the strictest lockdown periods, locations around the world experienced substantial reductions in transportation-related fossil fuel emissions. However, those declines have ultimately proven to be short-lived, and the impacts on specific air pollutants have been varied. Today, air quality levels are beginning to approach pre-pandemic levels, and scientists are just beginning to dive into the new measurements collected throughout this unprecedented time.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['no2-diff'],
+          date: '01/03/20'
+        }
+      }
     },
     {
       id: 'what-makes-aq-good-or-bad',
@@ -92,7 +99,13 @@ export default {
             NASA is able to observe global nitrogen dioxide levels using the OMI instrument (pronounced OH-me) aboard the Aura satellite. A joint endeavor between NASA and the Royal Netherlands Meteorological Institute (KNMI), OMI has been taking continuous global measurements of nitrogen dioxide since 2004. So, when the pandemic hit, OMI was ready to observe subsequent changes in NO<sub>2</sub> levels, and it continues to capture these measurements throughout various stages of the pandemic. NASA scientists are also leveraging other space-based instruments from international partners to study NO<sub>2</sub>. Specifically, the TROPOMI instrument aboard the European Commission’s Copernicus Sentinel-5P satellite helps us see nitrogen dioxide levels in greater detail. TROPOMI and OMI measurements make a great team: TROPOMI provides higher spatial resolution data than OMI, but OMI’s longer data record provides crucial context for TROPOMI observations.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['no2']
+        }
+      }
     },
     {
       id: 'reinforcing-measurements-nighttime-lights',
