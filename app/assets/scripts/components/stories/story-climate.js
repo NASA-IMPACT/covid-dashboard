@@ -47,7 +47,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
-          layers: ['c02']
+          layers: ['co2']
         }
       }
     },
