@@ -318,21 +318,35 @@ class StoriesSingle extends React.Component {
         // Reset to full world.
         this.mbMapRef.current.mbMap.setZoom(0);
       }
-      const mapLayers = getSpotlightLayers(spotlight || 'global');
+      const mapLayers = [
+        ...getSpotlightLayers(spotlight || 'global'),
+        // Include any layer that was defined on the story. These will be custom
+        // layers specific for this chapter. Mostly external TMS
+        ...layers.reduce(
+          (acc, l) => (typeof l === 'string' ? acc : [...acc, l]),
+          []
+        )
+      ];
+
+      // Get only the layer ids to be used below.
+      const layersToEnable = layers.map(l => typeof l === 'string' ? l : l.id);
 
       // The common map functions are being reused so we can take advantage of
       // their layer enabling features.
-      this.setState({
-        // Reset the enabled layers, so the toggling will always enable them.
-        activeLayers: [],
-        mapLayers: mapLayers,
-        timelineDate: date ? utcDate(date) : null
-      }, () => {
-        for (const id of layers) {
-          const l = mapLayers.find((layer) => layer.id === id);
-          toggleLayerCommon.call(this, l);
+      this.setState(
+        {
+          // Reset the enabled layers, so the toggling will always enable them.
+          activeLayers: [],
+          mapLayers: mapLayers,
+          timelineDate: date ? utcDate(date) : null
+        },
+        () => {
+          for (const id of layersToEnable) {
+            const l = mapLayers.find((layer) => layer.id === id);
+            toggleLayerCommon.call(this, l);
+          }
         }
-      });
+      );
     }
   }
 
