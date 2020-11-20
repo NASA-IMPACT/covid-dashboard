@@ -320,7 +320,10 @@ class StoriesSingle extends React.Component {
                           <li key={section.id}>
                             <DropMenuItem
                               as={Link}
-                              active={section.id === sectionId}
+                              active={
+                                chapter.id === chapterId &&
+                                section.id === sectionId
+                              }
                               to={`${baseUrl}/${section.id}`}
                               title='View chapter of this story'
                               data-dropdown='click.close'
