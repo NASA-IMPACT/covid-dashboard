@@ -31,7 +31,7 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['no2-diff'],
-          date: '01/03/20'
+          date: '2020-03-01T00:00:00Z'
         }
       }
     },
@@ -60,8 +60,8 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['water-wq-gl-chl'],
-          date: '01/04/20',
-          bbox: [ -84.3695, 45.2013, -81.7492, 41.2530 ]
+          date: '2020-04-01T00:00:00Z',
+          bbox: [-84.3695, 45.2013, -81.7492, 41.2530]
         }
       }
     },
@@ -88,7 +88,7 @@ export default {
       contentComp: (
         <>
           <p>
-            COVID-19 lockdown policies have also made it harder for officials from the U.S. Department of Agriculture (USDA) to travel to farms and collect information about crop planting, progress, and conditions like adequate soil moisture. Especially in cases where ground data is inaccessible, information provided by Earth observing satellites has been critical to filling in agricultural data gaps. Hannah Kerner, an assistant research professor at the University of Maryland in College Park, and her team at NASA Harvest are using satellite data from the joint NASA-U.S. Geological Survey Landsat satellite, the ESA (the European Space Agency) Copernicus Sentinel-2 satellite, and the NASA Moderate Resolution Imaging Spectroradiometer (MODIS) instruments aboard its Terra and Aqua satellites to help supplement USDA’s information. They are also using commercial partner Planet’s high-resolution, space-based imagery. "We're using satellite data and machine learning to map where and which crops are growing," Kerner said. Specifically, they’re monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
+            COVID-19 lockdown policies have also made it harder for officials from the U.S. Department of Agriculture (USDA) to travel to farms and collect information about crop planting, progress, and conditions like adequate soil moisture. Especially in cases where ground data is inaccessible, information provided by Earth observing satellites has been critical to filling in agricultural data gaps. Hannah Kerner, an assistant research professor at the University of Maryland in College Park, and her team at NASA Harvest are using satellite data from the joint NASA-U.S. Geological Survey Landsat satellite, the ESA (the European Space Agency) Copernicus Sentinel-2 satellite, and the NASA Moderate Resolution Imaging Spectroradiometer (MODIS) instruments aboard its Terra and Aqua satellites to help supplement USDA’s information. They are also using commercial partner Planet’s high-resolution, space-based imagery. &quot;We&apos;re using satellite data and machine learning to map where and which crops are growing,&quot; Kerner said. Specifically, they’re monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
           </p>
         </>
       )

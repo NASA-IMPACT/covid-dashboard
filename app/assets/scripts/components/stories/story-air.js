@@ -19,7 +19,7 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['no2-diff'],
-          date: '01/03/20'
+          date: '2020-03-01T00:00:00Z'
         }
       }
     },
