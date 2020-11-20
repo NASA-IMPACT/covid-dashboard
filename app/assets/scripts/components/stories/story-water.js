@@ -26,7 +26,14 @@ export default {
             California was one of the first places in the United States to impose COVID-19 related restrictions. A shelter-in-place mandate went into effect for six counties in the San Francisco metropolitan area on March 17, 2020. NASA scientists are using satellite data to investigate the connection between observed changes in air quality during this time and water quality. Nitrogen compounds, commonly found in air pollutants, can contribute to the formation of algal blooms in water and also cause water bodies to become more acidic. Remote sensing observations have shown both the clearing of air and improvements in water quality during lockdowns, said Nima Pahlevan, a remote sensing scientist at NASA’s Goddard Space Flight Center. His research is using satellite data to detect anomalies in levels of algae (chlorophyll-a) and total suspended solids across multiple sites, including the San Francisco Bay. The lessons learned from this work will help inform similar work in other coastal cities at global scales.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['no2-diff'],
+          date: '2020-03-01T00:00:00Z'
+        }
+      }
     },
     {
       id: 'examining-the-chesapeake',
@@ -48,7 +55,15 @@ export default {
             Researchers are using NASA’s ocean color satellites to observe similar changes in water quality within the Great Lakes region. The Great Lakes is home to about 8% of the U.S. population, and the region produces approximately $14.5 billion in agricultural sales each year. From April to June 2020, researchers observed slight increases in chlorophyll and suspended sediment concentrations in the Western Basin of Lake Erie, the portion of the lake most affected by humans and agriculture, compared to the baseline average from 2010 to 2019. However, scientists are still unsure whether these changes are due to COVID-19 related behavioral changes, since they still fall within the historical range of chlorophyll and suspended sediment levels in the lake. Research is ongoing to determine what effects may be seen in the Great Lakes during the COVID-19 pandemic.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['water-wq-gl-chl'],
+          date: '2020-04-01T00:00:00Z',
+          bbox: [-84.3695, 45.2013, -81.7492, 41.2530]
+        }
+      }
     },
     {
       id: 'glamrous-tool',
@@ -59,7 +74,13 @@ export default {
             As we’ve seen, agriculture and water are inherently linked. However, during this time, scientists are not only examining agriculture’s impact on water quality, but also using remote sensing tools to ensure crops have adequate access to water and other key nutrients during social distancing measures. To do this, new groups have begun leveraging the Group on Earth Observations Global Agricultural Monitoring (GEOGLAM) tool. Typically used to increase agricultural market transparency and bolster food security by producing timely, actionable information on agricultural conditions, GEOGLAM has been used during the pandemic to safely monitor and track agricultural conditions when local curfews and stay-at-home orders have prevented people from performing these duties on the ground. For example, the Togolese government has used GEOGLAM during the pandemic to safely track agricultural conditions throughout the country and distribute much-needed aid to small farmers.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['geoglam']
+        }
+      }
     },
     {
       id: 'counting-crops',
@@ -67,7 +88,7 @@ export default {
       contentComp: (
         <>
           <p>
-            COVID-19 lockdown policies have also made it harder for officials from the U.S. Department of Agriculture (USDA) to travel to farms and collect information about crop planting, progress, and conditions like adequate soil moisture. Especially in cases where ground data is inaccessible, information provided by Earth observing satellites has been critical to filling in agricultural data gaps. Hannah Kerner, an assistant research professor at the University of Maryland in College Park, and her team at NASA Harvest are using satellite data from the joint NASA-U.S. Geological Survey Landsat satellite, the ESA (the European Space Agency) Copernicus Sentinel-2 satellite, and the NASA Moderate Resolution Imaging Spectroradiometer (MODIS) instruments aboard its Terra and Aqua satellites to help supplement USDA’s information. They are also using commercial partner Planet’s high-resolution, space-based imagery. "We're using satellite data and machine learning to map where and which crops are growing," Kerner said. Specifically, they’re monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
+            COVID-19 lockdown policies have also made it harder for officials from the U.S. Department of Agriculture (USDA) to travel to farms and collect information about crop planting, progress, and conditions like adequate soil moisture. Especially in cases where ground data is inaccessible, information provided by Earth observing satellites has been critical to filling in agricultural data gaps. Hannah Kerner, an assistant research professor at the University of Maryland in College Park, and her team at NASA Harvest are using satellite data from the joint NASA-U.S. Geological Survey Landsat satellite, the ESA (the European Space Agency) Copernicus Sentinel-2 satellite, and the NASA Moderate Resolution Imaging Spectroradiometer (MODIS) instruments aboard its Terra and Aqua satellites to help supplement USDA’s information. They are also using commercial partner Planet’s high-resolution, space-based imagery. &quot;We&apos;re using satellite data and machine learning to map where and which crops are growing,&quot; Kerner said. Specifically, they’re monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
           </p>
         </>
       )

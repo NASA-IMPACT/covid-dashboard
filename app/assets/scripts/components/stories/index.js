@@ -16,7 +16,7 @@
 import air from './story-air';
 import climate from './story-climate';
 import lcluc from './story-lcluc';
-import water from './story-water'
+import water from './story-water';
 
 const stories = [
   air,

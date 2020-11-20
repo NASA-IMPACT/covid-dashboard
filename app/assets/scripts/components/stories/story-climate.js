@@ -25,7 +25,14 @@ export default {
             At the peak of initial pandemic-related shutdowns, cities experienced significant reductions in fossil fuel use compared to previous years. This was largely due to ordinances that asked large portions of the population to stay at home. As a result of these measures, there were fewer cars on the road, planes in the sky, and ships at sea, and business and industrial activity was significantly curtailed, leading to far fewer fossil fuel emissions. Estimates based on global fossil fuel consumption from the Global Carbon Project confirmed these reductions. However, while NASA scientists could easily detect decreases in other fossil fuel combustion byproducts from space, such as nitrogen dioxide, corresponding reductions in carbon dioxide were not as readily apparent. It took much careful analysis to produce the map shown here, depicting global carbon dioxide changes in March 2020, at the height of the initial onset of the pandemic in the United States.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['co2-diff'],
+          date: '2020-03-01T00:00:00Z'
+        }
+      }
     },
     {
       id: 'difference-between-co2-no2',
@@ -36,7 +43,13 @@ export default {
             Unlike nitrogen dioxide, which is chemically destroyed in the atmosphere a few hours after being emitted, carbon dioxide can last for centuries. This allows it to be transported far from its emission source by winds and causes it to be mixed with the surrounding air to produce a smooth global distribution pattern, such as the one seen here. Atmospheric carbon dioxide concentrations only vary by a few percent over the entire planet – from about 408 to 419 parts per million (ppm). This makes it very difficult to discern the impact of temporary changes in emissions during coronavirus-related shutdowns, as scientists expected that any observed fluctuations would be no larger than 0.1%. Teasing out the impacts of reductions in carbon dioxide emissions for specific locations required the ingenuity of NASA and its partners in the Japan Aerospace Exploration Agency (JAXA), along with advanced modeling, and the development of new analysis techniques.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['c02']
+        }
+      }
     },
     {
       id: 'co2-natural-carbon-cycle',
@@ -111,7 +124,13 @@ export default {
             The research is also providing new insights into the types of sensors and analysis tools needed to track changes in carbon dioxide from space. These capabilities will be increasingly important as society seeks to decarbonize economies. Results of these COVID-related studies will benefit development of several next-generation satellites launching in the next few years, including Japan’s GOSAT-GW satellite, the Copernicus CO2M constellation, and NASA’s GeoCarb, the first geostationary greenhouse gas satellite.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['co2-diff']
+        }
+      }
     }
   ]
 };
