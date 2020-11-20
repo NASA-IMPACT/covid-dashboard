@@ -260,11 +260,10 @@ export async function handleMapAction (action, payload) {
  * @param {object} layer Layer data
  */
 export function getUpdatedActiveLayersState (state, layer) {
-  const { exclusiveWith, id } = layer;
+  const { exclusiveWith = [], id } = layer;
   const { activeLayers, layersState } = state;
   // Hide any layers that are not compatible with the current one.
   // This means that when this layer gets enabled some layers must be disabled.
-  const exclusiveWithLayers = exclusiveWith || [];
   const isEnabled = activeLayers.includes(id);
 
   // If the layer is enabled is just a matter of removing it from the array.
@@ -276,11 +275,11 @@ export function getUpdatedActiveLayersState (state, layer) {
 
   // Remove incompatible layers.
   const diff = activeLayers.filter(
-    (v) => !exclusiveWithLayers.includes(v)
+    (v) => !exclusiveWith.includes(v)
   );
 
   // Disable the comparison on any exclusive layer.
-  const newLayersState = exclusiveWithLayers.reduce((acc, id) => {
+  const newLayersState = exclusiveWith.reduce((acc, id) => {
     return get(layersState, [id, 'comparing'])
       ? {
         ...acc,

@@ -23,17 +23,20 @@ import Dropdown, {
 } from '../../common/dropdown';
 import ShadowScrollbar from '../../common/shadow-scrollbar';
 
-import history from '../../../utils/history';
-import { getStory } from '../';
 import { themeVal } from '../../../styles/utils/general';
 import media from '../../../styles/utils/media-queries';
+import { glsp } from '../../../styles/utils/theme-values';
+import { truncated } from '../../../styles/helpers';
+import history from '../../../utils/history';
+import { getStory } from '../';
 import {
   getInitialMapExploreState,
   getLayersWithState,
-  resizeMap
+  resizeMap,
+  toggleLayerCommon
 } from '../../../utils/map-explore-utils';
-import { glsp } from '../../../styles/utils/theme-values';
-import { truncated } from '../../../styles/helpers';
+import { getSpotlightLayers } from '../../common/layers';
+import { utcDate } from '../../../utils/utils';
 
 const InpageHeaderInnerAlt = styled.div`
   display: flex;
@@ -248,8 +251,89 @@ class StoriesSingle extends React.Component {
     window.addEventListener('keyup', this.onKeyPress);
   }
 
+  componentDidUpdate (prevProps) {
+    const {
+      match: {
+        params: { storyId, chapterId, sectionId }
+      }
+    } = this.props;
+    const {
+      match: {
+        params: {
+          storyId: storyIdPrev,
+          chapterId: chapterIdPrev,
+          sectionId: sectionIdPrev
+        }
+      }
+    } = prevProps;
+
+    // Did the story, chapter or section change?
+    // If so there are new visuals to display.
+    if (
+      storyId !== storyIdPrev ||
+      chapterId !== chapterIdPrev ||
+      sectionId !== sectionIdPrev
+    ) {
+      const {
+        chapter: [, chapter],
+        section: [, section]
+      } = this.getChapterAndSection();
+
+      this.updateItemVisuals(section || chapter);
+    }
+  }
+
   componentWillUnmount () {
     window.removeEventListener('keyup', this.onKeyPress);
+  }
+
+  getChapterAndSection () {
+    const {
+      story,
+      match: {
+        params: { chapterId, sectionId }
+      }
+    } = this.props;
+    const [chapterIdx, chapter] = findById(story.chapters, chapterId);
+    const [sectionIdx, section] = findById(chapter.sections, sectionId);
+
+    return {
+      chapter: [chapterIdx, chapter],
+      section: [sectionIdx, section]
+    };
+  }
+
+  // Update the current item's visuals.
+  // What the visuals are, are defined in the story file.
+  updateItemVisuals (item) {
+    const { visual } = item;
+    // If there are no visuals, or the map hasn't loaded, there's nothing to do.
+    if (!visual || !this.state.mapLoaded) return;
+
+    if (visual.type === 'map-layer') {
+      const { bbox, layers = [], date, spotlight } = visual.data;
+      if (bbox) {
+        this.mbMapRef.current.mbMap.fitBounds(bbox);
+      } else {
+        // Reset to full world.
+        this.mbMapRef.current.mbMap.setZoom(0);
+      }
+      const mapLayers = getSpotlightLayers(spotlight || 'global');
+
+      // The common map functions are being reused so we can take advantage of
+      // their layer enabling features.
+      this.setState({
+        // Reset the enabled layers, so the toggling will always enable them.
+        activeLayers: [],
+        mapLayers: mapLayers,
+        timelineDate: date ? utcDate(date) : null
+      }, () => {
+        for (const id of layers) {
+          const l = mapLayers.find((layer) => layer.id === id);
+          toggleLayerCommon.call(this, l);
+        }
+      });
+    }
   }
 
   onKeyPress (e) {
@@ -265,7 +349,18 @@ class StoriesSingle extends React.Component {
   }
 
   async onMapAction (action, payload) {
-    // console.log('onMapAction', action, payload);
+    switch (action) {
+      case 'map.loaded': {
+        this.setState({ mapLoaded: true }, () => {
+          const {
+            chapter: [, chapter],
+            section: [, section]
+          } = this.getChapterAndSection();
+          this.updateItemVisuals(section || chapter);
+        });
+        break;
+      }
+    }
   }
 
   renderChapterDropdown (itemNum, itemName) {
@@ -345,7 +440,7 @@ class StoriesSingle extends React.Component {
   }
 
   render () {
-    const { mapLayers, activeLayers } = this.state;
+    const { mapLayers, activeLayers, timelineDate } = this.state;
     const {
       story,
       match: {
@@ -426,7 +521,7 @@ class StoriesSingle extends React.Component {
                   onAction={this.onMapAction}
                   layers={layers}
                   activeLayers={activeLayers}
-                  date={new Date()}
+                  date={timelineDate}
                   mapPos={null}
                   aoiState={null}
                   comparing={false}

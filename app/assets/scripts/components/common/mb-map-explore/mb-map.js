@@ -156,7 +156,13 @@ class MbMap extends React.Component {
     const currId = this.props.layers.map((l) => l.id).join('.');
     const prevIds = prevProps.layers.map((l) => l.id).join('.');
     if (currId !== prevIds) {
-      this.props.activeLayers.forEach((layerId) => {
+      // The 'layers' update before the 'activeLayers', therefore we have to
+      // check the current 'activeLayers' against the previous 'layers'. However
+      // when the 'layers' update, the prevProps.activeLayers will be the same
+      // as this.props.activeLayers. By using the prevProps.activeLayers we fix
+      // the problem when 'layers' update at the same time as 'activeLayers'
+      // which happens for the stories.
+      prevProps.activeLayers.forEach((layerId) => {
         const layerInfo = prevProps.layers.find((l) => l.id === layerId);
         const fns = layerTypes[layerInfo.type];
         if (fns) {
