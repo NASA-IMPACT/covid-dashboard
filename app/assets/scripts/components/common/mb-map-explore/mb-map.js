@@ -437,18 +437,19 @@ class MbMap extends React.Component {
     }
 
     this.mbMap.on('load', () => {
-      this.props.onAction('map.loaded');
+      const allProps = this.props;
+      const { spotlightList, comparing, onAction } = allProps;
+      onAction('map.loaded');
 
-      if (this.props.comparing) {
+      if (comparing) {
         // Fake previous props to simulate the enabling of the compare option.
         this.enableCompare({
-          ...this.props,
+          ...allProps,
           comparing: false
         });
       }
 
       // If spotlight list is available on map mount, add it to the map
-      const { spotlightList } = this.props;
       if (spotlightList && spotlightList.isReady()) {
         this.updateSpotlights(spotlightList.getData());
       }
