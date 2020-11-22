@@ -111,10 +111,18 @@ export const layerTypes = {
 
       // Update/init compare layer tiles.
       if (comparing) {
-        const sourceCompare = prepSource({ ...layerInfo, ...compare },
+        const compareDate =
+          typeof compare.compareDate === 'function'
+            ? compare.compareDate(date)
+            // Default compare date is 5y ago.
+            : sub(date, { years: 5 });
+
+        const sourceCompare = prepSource(
+          { ...layerInfo, ...compare },
           compare.source || source,
-          sub(date, { years: compare.yearDiff === undefined ? 5 : compare.yearDiff }),
-          knobPos);
+          compareDate,
+          knobPos
+        );
         if (mbMapComparing.getSource(id)) {
           replaceRasterTiles(mbMapComparing, id, sourceCompare.tiles);
         } else {
