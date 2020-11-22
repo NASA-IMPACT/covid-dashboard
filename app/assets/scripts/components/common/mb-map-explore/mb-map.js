@@ -258,7 +258,7 @@ class MbMap extends React.Component {
   updateSpotlights () {
     // Check if spotlights are available
     const { spotlightList } = this.props;
-    if (!spotlightList && !spotlightList.isReady()) return;
+    if (!spotlightList || !spotlightList.isReady()) return;
 
     // Get spotlights from API data
     const spotlights = spotlightList.getData();
