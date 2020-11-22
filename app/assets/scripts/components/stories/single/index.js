@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import T from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash.get';
+import find from 'lodash.find';
 
 import App from '../../common/app';
 import UhOh from '../../uhoh';
@@ -22,6 +23,7 @@ import Dropdown, {
   DropMenuItem
 } from '../../common/dropdown';
 import ShadowScrollbar from '../../common/shadow-scrollbar';
+import MapMessage from '../../common/map-message';
 
 import { themeVal } from '../../../styles/utils/general';
 import media from '../../../styles/utils/media-queries';
@@ -31,9 +33,12 @@ import history from '../../../utils/history';
 import { getStory } from '../';
 import {
   getInitialMapExploreState,
+  getLayerState,
   getLayersWithState,
   resizeMap,
-  toggleLayerCommon
+  setLayerState,
+  toggleLayerCommon,
+  toggleLayerCompare
 } from '../../../utils/map-explore-utils';
 import { getSpotlightLayers } from '../../common/layers';
 import { utcDate } from '../../../utils/utils';
@@ -228,6 +233,8 @@ class StoriesSingle extends React.Component {
     // Functions from helper file.
     this.resizeMap = resizeMap.bind(this);
     this.getLayersWithState = getLayersWithState.bind(this);
+    this.setLayerState = setLayerState.bind(this);
+    this.getLayerState = getLayerState.bind(this);
 
     this.onMapAction = this.onMapAction.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -311,12 +318,12 @@ class StoriesSingle extends React.Component {
     if (!visual || !this.state.mapLoaded) return;
 
     if (visual.type === 'map-layer') {
-      const { bbox, layers = [], date, spotlight } = visual.data;
+      const { bbox, layers = [], date, spotlight, compare } = visual.data;
       if (bbox) {
         this.mbMapRef.current.mbMap.fitBounds(bbox);
       } else {
         // Reset to full world.
-        this.mbMapRef.current.mbMap.setZoom(0);
+        this.mbMapRef.current.mbMap.jumpTo({ center: [0, 0], zoom: 1.5 });
       }
       const mapLayers = [
         ...getSpotlightLayers(spotlight || 'global'),
@@ -328,24 +335,69 @@ class StoriesSingle extends React.Component {
         )
       ];
 
-      // Get only the layer ids to be used below.
-      const layersToEnable = layers.map(l => typeof l === 'string' ? l : l.id);
+      let layerComparing = null;
+      // Map the layer ids to layer definition objects.
+      const layersToEnable = layers.map((l, idx) => {
+        let returningLayer = l;
+        if (typeof l === 'string') {
+          const layerDef = mapLayers.find((layer) => layer.id === l);
+          if (!layerDef) {
+            throw new Error(`Layer definition not found for story layer with id [${l}]`);
+          }
+          returningLayer = layerDef;
+        }
+
+        // Handle the compare option which works as following:
+        //   Note: Compare can only be enabled in one layer, so henceforth, layer
+        //   refers to the first entry in the `layers` array.
+        // If the compare is `true`, we check if the layer has a compare property
+        // defined. This will be the case for non custom layers (i.e. The ones
+        // that come with the app). If the property is defined, we use that
+        // definition and comparison is enabled. Otherwise an error is thrown.
+        // If the compare is an object, this will be used to extend the layer's
+        // compare definition (if it exists).
+        if (idx === 0 && compare) {
+          if (typeof compare === 'object') {
+            const returningLayerCompare =
+              typeof returningLayer.compare === 'object'
+                ? returningLayer.compare
+                : {};
+
+            returningLayer.compare = { ...returningLayerCompare, ...compare };
+          // If compare is true ensure that there is a compare object.
+          } else if (compare === true && typeof returningLayer.compare !== 'object') {
+            throw new Error(`Compare is set as 'true' for story layer with is [${returningLayer.id}], but the layer does not have a compare property.
+If this is a system layer, check that a compare property is defined. In alternative provide a compare property with the needed properties.`);
+          }
+
+          // Store the layer that will have comparison enabled to use layer with
+          // the map utils functions.
+          layerComparing = returningLayer;
+        }
+
+        return returningLayer;
+      });
 
       // The common map functions are being reused so we can take advantage of
       // their layer enabling features.
-      this.setState(
-        {
-          // Reset the enabled layers, so the toggling will always enable them.
-          activeLayers: [],
-          mapLayers: mapLayers,
-          timelineDate: date ? utcDate(date) : null
-        },
-        () => {
-          for (const id of layersToEnable) {
-            const l = mapLayers.find((layer) => layer.id === id);
-            toggleLayerCommon.call(this, l);
-          }
+      this.setState(state => ({
+        // Reset the enabled layers, so the toggling will always enable them.
+        activeLayers: [],
+        // Reset the layer state. If we reset the active layers it is safe to
+        // assume that the layer state will be empty.
+        /* eslint-disable-next-line react/no-unused-state */
+        layersState: {},
+        mapLayers: mapLayers,
+        timelineDate: date ? utcDate(date) : null
+      }),
+      () => {
+        for (const l of layersToEnable) {
+          toggleLayerCommon.call(this, l);
         }
+        if (layerComparing) {
+          toggleLayerCompare.call(this, layerComparing);
+        }
+      }
       );
     }
   }
@@ -487,6 +539,18 @@ class StoriesSingle extends React.Component {
 
     const panelContent = get(section, 'contentComp') || chapter.contentComp;
 
+    // Check if there's any layer that's comparing.
+    const comparingLayer = find(layers, 'comparing');
+    const isComparing = !!comparingLayer;
+
+    const mapLabel = get(comparingLayer, 'compare.mapLabel');
+    const compareMessage =
+      isComparing && mapLabel
+        ? typeof mapLabel === 'function'
+          ? mapLabel(this.state.timelineDate)
+          : mapLabel
+        : '';
+
     return (
       <App hideFooter pageTitle={story.name}>
         <Inpage>
@@ -530,6 +594,9 @@ class StoriesSingle extends React.Component {
           <InpageBody>
             <ExploreCanvas panelSec={this.state.panelSec}>
               <ExploreCarto>
+                <MapMessage active={isComparing && !!compareMessage}>
+                  <p>{compareMessage}</p>
+                </MapMessage>
                 <MbMap
                   ref={this.mbMapRef}
                   onAction={this.onMapAction}
@@ -538,7 +605,7 @@ class StoriesSingle extends React.Component {
                   date={timelineDate}
                   mapPos={null}
                   aoiState={null}
-                  comparing={false}
+                  comparing={isComparing}
                 />
               </ExploreCarto>
 
