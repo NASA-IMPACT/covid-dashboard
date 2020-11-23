@@ -175,6 +175,37 @@ export const layerTypes = {
     }
   },
   raster: {
+    update: (ctx, layerInfo, prevProps) => {
+      const { mbMapComparing, mbMapComparingLoaded, props } = ctx;
+      const { id, compare, paint } = layerInfo;
+      const { comparing } = props;
+
+      // Do not update if:
+      if (
+        // Compare didn't change.
+        comparing === prevProps.comparing
+      ) { return; }
+
+      // If we're comparing, and the compare map is not loaded.
+      if (comparing && !mbMapComparingLoaded) return;
+
+      // END update checks.
+
+      if (mbMapComparing.getSource(id)) {
+        mbMapComparing.setLayoutProperty(id, 'visibility', 'visible');
+      } else {
+        mbMapComparing.addSource(id, compare.source);
+        mbMapComparing.addLayer(
+          {
+            id: id,
+            type: 'raster',
+            source: id,
+            paint: paint || {}
+          },
+          'admin-0-boundary-bg'
+        );
+      }
+    },
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
