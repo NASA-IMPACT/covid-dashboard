@@ -188,21 +188,19 @@ export default {
             Because nitrogen dioxide is primarily emitted from burning fossil fuels, changes in its atmospheric concentration can be tied to changes in human activity if the data are properly processed and interpreted. These connections are underscored when comparing different NASA datasets, like observations in changing nightlights during the pandemic. Here we see the illuminated web of highways connecting the Los Angeles metropolitan region. Researchers are using night light observations to track variations in energy use, migration, and transportation in response to social distancing and lockdown measures. These data, collected by the VIIRS instrument aboard the joint NASA-National Oceanic and Atmospheric Administration (NOAA) Suomi-NPP satellite, correlate with changes seen in car traffic on the ground – and, therefore, nitrogen dioxide reductions. While this research is still ongoing, the 31% reduction in NO<sub>2</sub> levels in Los Angeles during the height of pandemic-related lockdowns compared to recent years seems to correspond with a 15% reduction in nighttime lights over highways during the same period.
           </p>
         </>
-      )
-      // visual: {
-      //   type: 'map-layer',
-      //   data: {
-      //     layers: ['nightlights-viirs'],
-      //     date: '2020-03-01T00:00:00Z',
-      //     spotlightId: 'la',
-      //     compare: {
-      //       mapLabel: () => 'February 1, 2020 compared to March 1, 2020',
-      //       layers: ['nightlights-viirs'],
-      //       date: '2020-02-01T00:00:00Z',
-      //       spotlightId: 'la'
-      //     }
-      //   }
-      // }
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['nightlights-viirs'],
+          date: '2020-03-01T00:00:00Z',
+          spotlight: 'la',
+          compare: {
+            mapLabel: () => 'February 1, 2020 compared to March 1, 2020',
+            compareDate: () => new Date('2020-02-01T00:00:00Z')
+          }
+        }
+      }
     },
     {
       id: 'measuring-pollution-on-the-ground',
