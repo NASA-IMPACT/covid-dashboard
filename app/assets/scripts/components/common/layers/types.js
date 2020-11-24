@@ -183,7 +183,9 @@ export const layerTypes = {
       // Do not update if:
       if (
         // Compare didn't change.
-        comparing === prevProps.comparing
+        comparing === prevProps.comparing ||
+        // There's no comparing map.
+        !mbMapComparing
       ) { return; }
 
       // If we're comparing, and the compare map is not loaded.
