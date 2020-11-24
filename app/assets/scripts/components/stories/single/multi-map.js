@@ -119,6 +119,7 @@ const MapContainer = styled.section`
   }
 
   > div {
+    box-shadow: 0 0 0 1px ${themeVal('color.baseAlphaC')};
     height: 100%;
   }
 `;
