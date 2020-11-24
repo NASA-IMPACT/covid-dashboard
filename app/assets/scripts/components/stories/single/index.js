@@ -24,6 +24,7 @@ import Dropdown, {
 } from '../../common/dropdown';
 import ShadowScrollbar from '../../common/shadow-scrollbar';
 import MapMessage from '../../common/map-message';
+import MultiMap from './multi-map';
 
 import { themeVal } from '../../../styles/utils/general';
 import media from '../../../styles/utils/media-queries';
@@ -242,6 +243,8 @@ class StoriesSingle extends React.Component {
     // Ref to the map component to be able to trigger a resize when the panels
     // are shown/hidden.
     this.mbMapRef = React.createRef();
+    // Ref for the multimaps.
+    this.multimapRef = React.createRef();
 
     // Store prev and next urls. This is needed for the keyboard navigation.
     this.prevItemUrl = null;
@@ -294,6 +297,19 @@ class StoriesSingle extends React.Component {
     window.removeEventListener('keyup', this.onKeyPress);
   }
 
+  // The multimap is a small multiple map component for the stories. It will
+  // initialize all the needed map and it has a function to resize them all
+  // which is used when the panel is hidden/show.
+  resizeMultimap () {
+    const component = this.multimapRef.current;
+    if (component) {
+      // Delay execution to give the panel animation time to finish.
+      setTimeout(() => {
+        component.resizeMaps();
+      }, 200);
+    }
+  }
+
   getChapterAndSection () {
     const {
       story,
@@ -342,7 +358,9 @@ class StoriesSingle extends React.Component {
         if (typeof l === 'string') {
           const layerDef = mapLayers.find((layer) => layer.id === l);
           if (!layerDef) {
-            throw new Error(`Layer definition not found for story layer with id [${l}]`);
+            throw new Error(
+              `Layer definition not found for story layer with id [${l}]`
+            );
           }
           returningLayer = layerDef;
         }
@@ -364,8 +382,11 @@ class StoriesSingle extends React.Component {
                 : {};
 
             returningLayer.compare = { ...returningLayerCompare, ...compare };
-          // If compare is true ensure that there is a compare object.
-          } else if (compare === true && typeof returningLayer.compare !== 'object') {
+            // If compare is true ensure that there is a compare object.
+          } else if (
+            compare === true &&
+            typeof returningLayer.compare !== 'object'
+          ) {
             throw new Error(`Compare is set as 'true' for story layer with is [${returningLayer.id}], but the layer does not have a compare property.
 If this is a system layer, check that a compare property is defined. In alternative provide a compare property with the needed properties.`);
           }
@@ -380,24 +401,25 @@ If this is a system layer, check that a compare property is defined. In alternat
 
       // The common map functions are being reused so we can take advantage of
       // their layer enabling features.
-      this.setState(state => ({
-        // Reset the enabled layers, so the toggling will always enable them.
-        activeLayers: [],
-        // Reset the layer state. If we reset the active layers it is safe to
-        // assume that the layer state will be empty.
-        /* eslint-disable-next-line react/no-unused-state */
-        layersState: {},
-        mapLayers: mapLayers,
-        timelineDate: date ? utcDate(date) : null
-      }),
-      () => {
-        for (const l of layersToEnable) {
-          toggleLayerCommon.call(this, l);
+      this.setState(
+        (state) => ({
+          // Reset the enabled layers, so the toggling will always enable them.
+          activeLayers: [],
+          // Reset the layer state. If we reset the active layers it is safe to
+          // assume that the layer state will be empty.
+          /* eslint-disable-next-line react/no-unused-state */
+          layersState: {},
+          mapLayers: mapLayers,
+          timelineDate: date ? utcDate(date) : null
+        }),
+        () => {
+          for (const l of layersToEnable) {
+            toggleLayerCommon.call(this, l);
+          }
+          if (layerComparing) {
+            toggleLayerCompare.call(this, layerComparing);
+          }
         }
-        if (layerComparing) {
-          toggleLayerCompare.call(this, layerComparing);
-        }
-      }
       );
     }
   }
@@ -524,6 +546,7 @@ If this is a system layer, check that a compare property is defined. In alternat
     const [sectionIdx, section] = findById(chapter.sections, sectionId);
     if (sectionId && !section) return <UhOh />;
 
+    const currItem = chapter || section;
     const prevItem = getPreviousItem(story.chapters, chapterIdx, sectionIdx);
     const nextItem = getNextItem(story.chapters, chapterIdx, sectionIdx);
 
@@ -550,6 +573,8 @@ If this is a system layer, check that a compare property is defined. In alternat
           ? mapLabel(this.state.timelineDate)
           : mapLabel
         : '';
+
+    const { type: visualType, data: visualData } = (currItem.visual || {});
 
     return (
       <App hideFooter pageTitle={story.name}>
@@ -593,26 +618,42 @@ If this is a system layer, check that a compare property is defined. In alternat
           </InpageHeader>
           <InpageBody>
             <ExploreCanvas panelSec={this.state.panelSec}>
-              <ExploreCarto>
-                <MapMessage active={isComparing && !!compareMessage}>
-                  <p>{compareMessage}</p>
-                </MapMessage>
-                <MbMap
-                  ref={this.mbMapRef}
-                  onAction={this.onMapAction}
-                  layers={layers}
-                  activeLayers={activeLayers}
-                  date={timelineDate}
-                  mapPos={null}
-                  aoiState={null}
-                  comparing={isComparing}
-                />
-              </ExploreCarto>
+              {visualType === 'map-layer' && (
+                <ExploreCarto>
+                  <MapMessage active={isComparing && !!compareMessage}>
+                    <p>{compareMessage}</p>
+                  </MapMessage>
+                  <MbMap
+                    ref={this.mbMapRef}
+                    onAction={this.onMapAction}
+                    layers={layers}
+                    activeLayers={activeLayers}
+                    date={timelineDate}
+                    mapPos={null}
+                    aoiState={null}
+                    comparing={isComparing}
+                  />
+                </ExploreCarto>
+              )}
+              {visualType === 'multi-map' && (
+                <ExploreCarto>
+                  <MultiMap
+                    ref={this.multimapRef}
+                    // Because refs for the different maps are created
+                    // dynamically, the component needs to be remounted if the
+                    // number of maps change.
+                    key={`maps-${visualData.maps.length}`}
+                    maps={visualData.maps}
+                    bbox={visualData.bbox}
+                  />
+                </ExploreCarto>
+              )}
 
               <SecPanel
                 title={itemName}
                 onPanelChange={({ revealed }) => {
                   this.resizeMap();
+                  this.resizeMultimap();
                   this.setState({ panelSec: revealed });
                 }}
                 content={panelContent}
