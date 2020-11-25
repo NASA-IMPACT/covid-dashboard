@@ -654,6 +654,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                     key={`maps-${visualData.maps.length}`}
                     maps={visualData.maps}
                     bbox={visualData.bbox}
+                    mapStyle={visualData.mapStyle}
                   />
                 </ExploreCarto>
               )}

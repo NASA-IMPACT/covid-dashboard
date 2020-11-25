@@ -127,7 +127,7 @@ const MapContainer = styled.section`
 // The small multiple map is setup upon initialization. There's no way to
 // dynamically update it. The mapbox map is set as the passed in ref value.
 const SmallMultipleMap = React.forwardRef((props, ref) => {
-  const { source, id, label, bbox } = props;
+  const { source, id, label, bbox, mapStyle } = props;
   const mapContainer = useRef(null);
 
   // Initialize map
@@ -135,7 +135,7 @@ const SmallMultipleMap = React.forwardRef((props, ref) => {
     const mbMap = (ref.current = new mapboxgl.Map({
       attributionControl: false,
       container: mapContainer.current,
-      style: config.map.styleUrl,
+      style: mapStyle || config.map.styleUrl,
       logoPosition: 'bottom-right',
       pitchWithRotate: false,
       dragRotate: false
@@ -155,7 +155,8 @@ const SmallMultipleMap = React.forwardRef((props, ref) => {
           type: 'raster',
           source: id
         },
-        'admin-0-boundary-bg'
+        // Adding the layer under labels is only for the default style.
+        mapStyle ? '' : 'admin-0-boundary-bg'
       );
     });
 
@@ -176,6 +177,7 @@ SmallMultipleMap.propTypes = {
   source: T.object,
   id: T.string,
   label: T.string,
+  mapStyle: T.string,
   bbox: T.array
 };
 
@@ -187,7 +189,7 @@ SmallMultipleMap.propTypes = {
 // different key property.
 /* eslint-disable-next-line react/display-name */
 const MultiMap = React.forwardRef((props, ref) => {
-  const { maps, bbox } = props;
+  const { maps, bbox, mapStyle } = props;
 
   // On small screens the maps are rendered side by side and the container is
   // programmatically scrolled to the correct place when the navigation is used.
@@ -245,6 +247,7 @@ const MultiMap = React.forwardRef((props, ref) => {
             ref={theRefs.current[idx]}
             key={m.id}
             bbox={bbox}
+            mapStyle={mapStyle}
             id={m.id}
             {...m}
           />
@@ -256,6 +259,7 @@ const MultiMap = React.forwardRef((props, ref) => {
 
 MultiMap.propTypes = {
   bbox: T.array,
+  mapStyle: T.string,
   maps: T.array
 };
 
