@@ -1,5 +1,8 @@
 import React from 'react';
 
+import config from '../../config';
+const { api } = config;
+
 export default {
   id: 'air-quality',
   name: 'Air Quality During COVID-19 Shutdowns',
@@ -33,32 +36,67 @@ export default {
           </p>
         </>
       )
+      // Data visual: Los Angeles, USA, February 2020; Landsat Image
     },
     {
       id: 'cities-experiencing-clearer-air',
       name: 'Cities Experiencing Clearer Air During Lockdowns',
       sections: [
         {
-          id: 'part1',
-          name: 'Part 1',
+          id: 'beijing',
+          name: 'Beijing',
           contentComp: (
             <>
               <p>
                 When Chinese authorities suspended travel and closed businesses in late January 2020 in response to the novel coronavirus, Beijing’s nearly 21 million residents saw huge drops in their local nitrogen dioxide levels. In February 2020, concentrations fell by nearly 30% compared to the previous five-year average.
               </p>
             </>
-          )
+          ),
+          visual: {
+            type: 'map-layer',
+            data: {
+              layers: ['no2'],
+              date: '2020-02-01T00:00:00Z',
+              bbox: [115.84, 39.62, 116.85, 40.22],
+              compare: {
+                mapLabel: () => '5 year average compared to February 2020',
+                source: {
+                  type: 'raster',
+                  tiles: [
+                    `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_02_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+                  ]
+                }
+              }
+            }
+          }
         },
         {
-          id: 'part2',
-          name: 'Part 2',
+          id: 'lima',
+          name: 'Lima',
           contentComp: (
             <>
               <p>
                 Cities across South America experienced similar declines in NO<sub>2</sub>. Lima, Peru had some of the most substantial reductions, with nitrogen dioxide levels falling approximately 70% below normal levels.
               </p>
             </>
-          )
+          ),
+          visual: {
+            type: 'map-layer',
+            data: {
+              layers: ['no2'],
+              date: '2020-05-01T00:00:00Z',
+              bbox: [-77.97, -12.75, -76.08, -11.43],
+              compare: {
+                mapLabel: () => '5 year average compared to May 2020',
+                source: {
+                  type: 'raster',
+                  tiles: [
+                    `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_05_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+                  ]
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -75,7 +113,24 @@ export default {
                 You might think immediate improvements in air quality during shutdowns would be obvious. However, in reality, the way our atmosphere behaves isn’t so clear-cut. Nitrogen dioxide is only one component of air quality: sulfur dioxide, ozone, formaldehyde, and carbon dioxide along with a host of other atmospheric constituents also influence the quality of the air we breathe. The difference in nitrogen dioxide is that it has a relatively short lifetime in the atmosphere. In other words, once it’s emitted, it only lasts a few hours before it disappears. Therefore, once communities entered lockdowns and their mobility was severely restricted, the effect on NO<sub>2</sub> concentrations was the equivalent of flipping a switch. Be that as it may, this isn’t the case with all air pollutants.
               </p>
             </>
-          )
+          ),
+          visual: {
+            type: 'map-layer',
+            data: {
+              layers: ['no2'],
+              date: '2020-04-01T00:00:00Z',
+              bbox: [-37.17, 34.16, 53.78, 68.84],
+              compare: {
+                mapLabel: () => '5 year average compared to April 2020',
+                source: {
+                  type: 'raster',
+                  tiles: [
+                    `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_04_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+                  ]
+                }
+              }
+            }
+          }
         },
         {
           id: 'part2',
@@ -86,7 +141,24 @@ export default {
                 Even with the strong correlation between NO<sub>2</sub> and the combustion of fossil fuels, the relationship between nitrogen dioxide and lockdowns isn’t straightforward either. Atmospheric concentrations of nitrogen dioxide naturally fluctuate throughout the year, and weather patterns also influence its concentrations. For example, nitrogen dioxide typically falls dramatically during spring and summer months, and rain and wind increase its dispersion, lowering local concentrations.Therefore, during the COVID-19 pandemic, scientists are careful to attribute observed changes solely to changes in our behavior and are also looking to determine whether some of the reductions are the result of natural variation.
               </p>
             </>
-          )
+          ),
+          visual: {
+            type: 'map-layer',
+            data: {
+              layers: ['no2'],
+              date: '2020-04-01T00:00:00Z',
+              bbox: [-37.17, 34.16, 53.78, 68.84],
+              compare: {
+                mapLabel: () => '5 year average compared to April 2020',
+                source: {
+                  type: 'raster',
+                  tiles: [
+                    `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_04_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+                  ]
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -116,7 +188,19 @@ export default {
             Because nitrogen dioxide is primarily emitted from burning fossil fuels, changes in its atmospheric concentration can be tied to changes in human activity if the data are properly processed and interpreted. These connections are underscored when comparing different NASA datasets, like observations in changing nightlights during the pandemic. Here we see the illuminated web of highways connecting the Los Angeles metropolitan region. Researchers are using night light observations to track variations in energy use, migration, and transportation in response to social distancing and lockdown measures. These data, collected by the VIIRS instrument aboard the joint NASA-National Oceanic and Atmospheric Administration (NOAA) Suomi-NPP satellite, correlate with changes seen in car traffic on the ground – and, therefore, nitrogen dioxide reductions. While this research is still ongoing, the 31% reduction in NO<sub>2</sub> levels in Los Angeles during the height of pandemic-related lockdowns compared to recent years seems to correspond with a 15% reduction in nighttime lights over highways during the same period.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['nightlights-viirs'],
+          date: '2020-03-01T00:00:00Z',
+          spotlight: 'la',
+          compare: {
+            mapLabel: () => 'February 1, 2020 compared to March 1, 2020',
+            compareDate: () => new Date('2020-02-01T00:00:00Z')
+          }
+        }
+      }
     },
     {
       id: 'measuring-pollution-on-the-ground',
@@ -132,6 +216,7 @@ export default {
               </p>
             </>
           )
+          // Data visual: Planet Labs grounded plane imagery at BWI/ATL airport
         },
         {
           id: 'part2',
@@ -143,6 +228,7 @@ export default {
               </p>
             </>
           )
+          // Data visual: Pandora NO2/formaldehyde levels at BWI/ATL airport
         }
       ]
     },
@@ -155,7 +241,19 @@ export default {
             After the initial shock of COVID-related shutdowns in the spring, communities worldwide have begun to reopen and gradually increase mobility. Cars have returned to the road, and travel restrictions have been slowly easing. These resumptions in behavior have subsequently corresponded with relative increases in nitrogen dioxide levels and other air pollutants, as air quality levels begin to return to pre-pandemic levels. Therefore, any long-term gains in overall air quality from the temporary reductions during short-term lockdowns appears to be minimal with regard to nitrogen dioxide. Looking to the future, NASA scientists will continue to monitor nitrogen dioxide levels and long-term trends around the world and at home. NASA is expected to launch its Tropospheric Emissions: Monitoring of Pollution, (TEMPO) instrument in 2022, which will provide hourly, high-resolution measurements of nitrogen dioxide, ozone, and other air pollutants across North America, revolutionizing future air quality forecasts.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['no2'],
+          bbox: [115.84, 39.62, 116.85, 40.22],
+          compare: {
+            mapLabel: () => 'February 2020 compared current NO₂ levels',
+            layers: ['no2'],
+            date: '2020-02-01T00:00:00Z'
+          }
+        }
+      }
     }
   ]
 };

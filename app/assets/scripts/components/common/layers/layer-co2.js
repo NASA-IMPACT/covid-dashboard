@@ -9,8 +9,8 @@ export default {
   compare: {
     enabled: true,
     help: 'Compare with baseline',
-    yearDiff: 0,
     mapLabel: date => `${format(date, 'dd MMM yyyy')}: Base vs Mean`,
+    compareDate: date => date,
     source: {
       type: 'raster',
       tiles: [
