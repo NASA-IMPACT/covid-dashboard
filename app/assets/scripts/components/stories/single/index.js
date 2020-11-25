@@ -289,7 +289,16 @@ class StoriesSingle extends React.Component {
         section: [, section]
       } = this.getChapterAndSection();
 
-      this.updateItemVisuals(section || chapter);
+      const currItem = section || chapter;
+      const currVisType = get(currItem, 'visual.type');
+
+      // If the visual type changes to a non map value we have to reset the map
+      // loaded state.
+      if (currVisType !== 'map-layer') {
+        this.setState({ mapLoaded: false });
+      }
+
+      this.updateItemVisuals(currItem);
     }
   }
 
@@ -546,7 +555,7 @@ If this is a system layer, check that a compare property is defined. In alternat
     const [sectionIdx, section] = findById(chapter.sections, sectionId);
     if (sectionId && !section) return <UhOh />;
 
-    const currItem = chapter || section;
+    const currItem = section || chapter;
     const prevItem = getPreviousItem(story.chapters, chapterIdx, sectionIdx);
     const nextItem = getNextItem(story.chapters, chapterIdx, sectionIdx);
 
