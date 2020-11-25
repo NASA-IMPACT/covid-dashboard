@@ -1,5 +1,8 @@
 import React from 'react';
 
+import config from '../../config';
+const { api } = config;
+
 export default {
   id: 'changing-lanscapes',
   name: 'Changing landscapes during the COVID-19 pandemic',
@@ -80,7 +83,75 @@ export default {
             Social distancing measures during the pandemic also affected how humans interact with the natural environment. For example, satellites observed a reduction in managed forest fires, otherwise known as prescribed burns, on federal lands during the pandemic. Prescribed fires are an important way to reduce fuel loads and maintain biodiversity. In March 2020, the U.S. Forest Service and other federal agencies temporarily suspended all prescribed burns on federal lands in the Southeast United States. State agencies in Mississippi, South Carolina, and North Carolina also issued spring burning bans in response to the COVID-19 pandemic. The Forest Service’s suspension aimed to prevent virus exposure to employees and to reduce smoke exposure to vulnerable communities, since COVID-19 is a respiratory illness. Researchers at NASA’s Goddard Space Flight Center detected a 42% reduction in active fires this spring compared to previous years.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'multi-map',
+        data: {
+          bbox: [-75, 24, -107, 40],
+          maps: [
+            {
+              id: 'mar',
+              label: 'March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M3_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                ]
+              }
+            },
+            {
+              id: 'apr',
+              label: 'April 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M4_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                ]
+              }
+            },
+            {
+              id: 'may',
+              label: 'May 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M5_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                ]
+              }
+            },
+            {
+              id: 'jun', // The id is mandatory and must be unique in all maps.
+              label: 'June 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M6_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                ]
+              }
+            },
+            {
+              id: 'jul', // The id is mandatory and must be unique in all maps.
+              label: 'July 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M7_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                ]
+              }
+            },
+            {
+              id: 'jun', // The id is mandatory and must be unique in all maps.
+              label: 'August 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M8_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'what-we-learned',
