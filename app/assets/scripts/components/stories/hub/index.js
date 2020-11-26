@@ -1,6 +1,8 @@
 import React from 'react';
 import T from 'prop-types';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+
 
 import App from '../../common/app';
 import {
@@ -24,10 +26,27 @@ import {
 } from '../../../styles/hub-pages';
 import storiesList from '../';
 import { format } from 'date-fns';
+import media from '../../../styles/utils/media-queries';
 
 const metadata = {
   color: '#2276AC'
 };
+
+export const StoriesList = styled(EntriesList)`
+  grid-template-columns: 1fr;
+
+  ${media.mediumUp`
+    grid-template-columns: 1fr 1fr;
+  `}
+`;
+
+export const StoriesNavLink = styled(EntryNavLink)`
+  min-height: 12rem;
+
+  ${media.mediumUp`
+    min-height: 16rem;
+  `}
+`;
 
 const StoriesHub = (props) => {
   const { storiesList } = props;
@@ -69,10 +88,10 @@ const StoriesHub = (props) => {
                 title='Stories'
                 dashColor={metadata.color}
               />
-              <EntriesList>
+              <StoriesList>
                 {storiesList.map((item) => (
                   <li key={item.id}>
-                    <EntryNavLink
+                    <StoriesNavLink
                       to={`/stories/${item.id}/${item.chapters[0].id}`}
                       title={`View story ${item.name}`}
                     >
@@ -86,10 +105,10 @@ const StoriesHub = (props) => {
                       <EntryNavLinkMedia>
                         <img src='https://via.placeholder.com/480x240' width='960' height='480' alt='Indicator thumbnail' />
                       </EntryNavLinkMedia>
-                    </EntryNavLink>
+                    </StoriesNavLink>
                   </li>
                 ))}
-              </EntriesList>
+              </StoriesList>
             </HubFold>
           </PageConstrainer>
         </InpageBody>
