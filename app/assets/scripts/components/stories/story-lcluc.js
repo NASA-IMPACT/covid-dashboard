@@ -88,64 +88,65 @@ export default {
         type: 'multi-map',
         data: {
           bbox: [-75, 24, -107, 40],
+          mapStyle: 'mapbox://styles/covid-nasa/ckhyrwyqa10fn19pu38wdrpjo',
           maps: [
             {
-              id: 'mar',
+              id: 'fire-mar',
               label: 'March 2020',
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M3_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M3_0.25-dashboard.tif&resampling_method=bilinear&rescale=-10,10&color_map=bwr`
                 ]
               }
             },
             {
-              id: 'apr',
+              id: 'fire-apr',
               label: 'April 2020',
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M4_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M4_0.25-dashboard.tif&resampling_method=bilinear&rescale=-10,10&color_map=bwr`
                 ]
               }
             },
             {
-              id: 'may',
+              id: 'fire-may',
               label: 'May 2020',
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M5_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M5_0.25-dashboard.tif&resampling_method=bilinear&rescale=-10,10&color_map=bwr`
                 ]
               }
             },
             {
-              id: 'jun', // The id is mandatory and must be unique in all maps.
+              id: 'fire-jun',
               label: 'June 2020',
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M6_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M6_0.25-dashboard.tif&resampling_method=bilinear&rescale=-10,10&color_map=bwr`
                 ]
               }
             },
             {
-              id: 'jul', // The id is mandatory and must be unique in all maps.
+              id: 'fire-jul',
               label: 'July 2020',
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M7_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M7_0.25-dashboard.tif&resampling_method=bilinear&rescale=-10,10&color_map=bwr`
                 ]
               }
             },
             {
-              id: 'jun', // The id is mandatory and must be unique in all maps.
+              id: 'fire-aug',
               label: 'August 2020',
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M8_0.25.tif&resampling_method=bilinear&rescale=-10%2C10&bidx=1&color_map=bwr`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/fire-anomalies/MODIS-AF_anomalies_USA_Y2020_M8_0.25-dashboard.tif&resampling_method=bilinear&rescale=-10,10&color_map=bwr`
                 ]
               }
             }
