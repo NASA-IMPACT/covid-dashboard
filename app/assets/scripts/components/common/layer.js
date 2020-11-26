@@ -6,35 +6,13 @@ import ReactTooltip from 'react-tooltip';
 import { themeVal } from '../../styles/utils/general';
 import { visuallyHidden, truncated } from '../../styles/helpers';
 import { glsp } from '../../styles/utils/theme-values';
-import { headingAlt } from '../../styles/type/heading';
-import { formatThousands } from '../../utils/format';
+import { replaceSub2 } from '../../utils/format';
 
 import Prose from '../../styles/type/prose';
 import { FormSwitch } from '../../styles/form/switch';
 import Button from '../../styles/button/button';
 import { AccordionFold } from './accordion';
-import GradientChart from './gradient-legend-chart/chart';
-
-const makeGradient = (stops) => {
-  const d = 100 / stops.length - 1;
-  const steps = stops.map((s, i) => `${s} ${i * d}%`);
-  return `linear-gradient(to right, ${steps.join(', ')})`;
-};
-
-const renderTitle = (input) => {
-  const content = input.split('\u2082');
-
-  return content.reduce(
-    (accum, el, ind) =>
-      ind < content.length - 1
-        ? [...accum, el, <sub key={el}>2</sub>]
-        : [...accum, el],
-    []
-  );
-};
-
-const printLegendVal = (val) =>
-  typeof val === 'number' ? formatThousands(val, { shorten: true }) : val;
+import LayerLegend from './layer-legend';
 
 const LayerSelf = styled(AccordionFold)`
   position: relative;
@@ -97,76 +75,6 @@ const LayerToolbar = styled.div`
   }
 `;
 
-const LayerLegend = styled.div`
-  grid-row: 2;
-  grid-column: 1 / span 2;
-`;
-
-const LegendList = styled.dl`
-  display: grid;
-  grid-gap: 0 ${glsp(1 / 8)};
-  grid-auto-columns: minmax(1rem, 1fr);
-  grid-auto-flow: column;
-
-  dt {
-    grid-row: 1;
-  }
-
-  dd {
-    ${headingAlt()}
-    font-size: 0.75rem;
-    line-height: 1rem;
-    grid-row: 2;
-    display: flex;
-
-    /* stylelint-disable-next-line no-descending-specificity */
-    > * {
-      width: 8rem;
-
-      /* stylelint-disable-next-line no-descending-specificity */
-      > * {
-        ${truncated()}
-        display: block;
-      }
-
-      &:last-child:not(:first-child) {
-        text-align: right;
-      }
-    }
-
-    &:last-of-type:not(:first-of-type) {
-      justify-content: flex-end;
-      text-align: right;
-    }
-
-    &:not(:first-of-type):not(:last-of-type) {
-      ${visuallyHidden()}
-    }
-
-    i {
-      margin: 0 auto;
-      opacity: 0;
-    }
-  }
-`;
-
-const LegendSwatch = styled.span`
-  display: block;
-  font-size: 0;
-  height: 0.5rem;
-  border-radius: ${themeVal('shape.rounded')};
-  background: ${({ stops }) => typeof stops === 'string'
-    ? stops
-    : makeGradient(stops)};
-  margin: 0 0 ${glsp(1 / 8)} 0;
-  box-shadow: inset 0 0 0 1px ${themeVal('color.baseAlphaB')};
-  cursor: help;
-`;
-
-const LayerLegendTitle = styled.h2`
-  ${visuallyHidden()}
-`;
-
 const LayerBodyInner = styled(Prose)`
   position: relative;
   z-index: 8;
@@ -193,113 +101,6 @@ class Layer extends React.Component {
     ReactTooltip.rebuild();
   }
 
-  renderLegend () {
-    const { dataOrder, legend, knobPos, onLegendKnobChange, id } = this.props;
-
-    if (!legend) return null;
-
-    // The categorical legend uses stops differently than the others.
-    if (legend.type === 'categorical') {
-      return (
-        <LayerLegend>
-          <LayerLegendTitle>Legend</LayerLegendTitle>
-          <LegendList>
-            {legend.stops.map(stop => (
-              <React.Fragment key={stop.color}>
-                <dt>
-                  <LegendSwatch stops={stop.color} data-tip={stop.label}>
-                    {stop.color}
-                  </LegendSwatch>
-                </dt>
-                <dd>
-                  {/*
-                    The 2 spans are needed so that the text can be correctly
-                    truncated. The dd element is part of a grid and has an
-                    implicit width. The first span overflows the dd, setting
-                    the final width and the second span truncates the text.
-                  */}
-                  <span>
-                    <span>{stop.label}</span>
-                  </span>
-                </dd>
-              </React.Fragment>
-            ))}
-          </LegendList>
-        </LayerLegend>
-      );
-    }
-
-    let defaultStops;
-    // Two default styles:
-    // - highlight-high - where a high value needs to be highlighted (high % of 65+)
-    // - highlight-low - where low values are highlighted (m2 living area per person)
-    switch (dataOrder) {
-      case 'highlight-low':
-        defaultStops = [
-          'hsla(105, 91%, 67%, 0.69)',
-          'hsla(173, 75%, 66%, 0.69)',
-          'hsla(180, 92%, 56%, 0.68)',
-          'hsla(188, 28%, 52%, 0.69)',
-          'hsla(212, 54%, 42%, 0.63)'
-        ];
-        break;
-      default:
-        defaultStops = [
-          'hsla(212, 54%, 42%, 0.63)',
-          'hsla(188, 28%, 52%, 0.69)',
-          'hsla(180, 92%, 56%, 0.68)',
-          'hsla(173, 75%, 66%, 0.69)',
-          'hsla(105, 91%, 67%, 0.69)'
-        ];
-    }
-
-    const stops =
-      legend.stops && legend.stops !== 'default' ? legend.stops : defaultStops;
-
-    if (legend.type === 'gradient-adjustable') {
-      return (
-        <LayerLegend>
-          <LayerLegendTitle>Legend</LayerLegendTitle>
-          <LegendList>
-            <dt>
-              <GradientChart
-                onAction={(a, p) => {
-                  onLegendKnobChange(p);
-                }}
-                stops={stops}
-                knobPos={knobPos !== undefined ? knobPos : 50}
-                id={id}
-              />
-            </dt>
-            <dd>
-              <span>{printLegendVal(legend.min)}</span>
-              <i> – </i>
-              <span>{printLegendVal(legend.max)}</span>
-            </dd>
-          </LegendList>
-        </LayerLegend>
-      );
-    }
-
-    return (
-      <LayerLegend>
-        <LayerLegendTitle>Legend</LayerLegendTitle>
-        <LegendList>
-          <dt>
-            <LegendSwatch stops={stops}>
-              {stops[0]} to {stops[stops.length - 1]}
-            </LegendSwatch>
-          </dt>
-          <dd>
-            <span>{printLegendVal(legend.min)}</span>
-            <i> – </i>
-            <span>{printLegendVal(legend.max)}</span>
-          </dd>
-        </LegendList>
-      </LayerLegend>
-    );
-  }
-
   render () {
     const {
       id,
@@ -315,6 +116,10 @@ class Layer extends React.Component {
       compareHelp,
       onCompareClick,
       onToggleClick,
+      dataOrder,
+      legend,
+      knobPos,
+      onLegendKnobChange,
       isExpanded,
       setExpanded
     } = this.props;
@@ -327,7 +132,7 @@ class Layer extends React.Component {
         renderHeader={({ isFoldExpanded, setFoldExpanded }) => (
           <LayerHeader>
             <LayerHeadline>
-              <LayerTitle title={label}>{renderTitle(label)}</LayerTitle>
+              <LayerTitle title={label}>{replaceSub2(label)}</LayerTitle>
               <LayerSubtitle>{typesSubtitles[type] || 'Layer'}</LayerSubtitle>
               <LayerSwatch swatch={swatchColor}>
                 <small>Color: {swatchName || 'Waikawa Gray'}</small>
@@ -369,7 +174,13 @@ class Layer extends React.Component {
                 Toggle layer visibility
               </FormSwitch>
             </LayerToolbar>
-            {this.renderLegend()}
+            <LayerLegend
+              dataOrder={dataOrder}
+              legend={legend}
+              knobPos={knobPos}
+              onLegendKnobChange={onLegendKnobChange}
+              id={id}
+            />
           </LayerHeader>
         )}
         renderBody={() => (
