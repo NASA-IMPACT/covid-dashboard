@@ -155,8 +155,8 @@ const SmallMultipleMap = React.forwardRef((props, ref) => {
           type: 'raster',
           source: id
         },
-        // Adding the layer under labels is only for the default style.
-        mapStyle ? '' : 'admin-0-boundary-bg'
+        // Assumption is that any style used has 'admin-0-boundary-bg' layer.
+        'admin-0-boundary-bg'
       );
     });
 
