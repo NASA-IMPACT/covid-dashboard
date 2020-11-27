@@ -79,7 +79,7 @@ export const EntryNavLinkMedia = styled.figure`
 export const EntryNavLink = styled(NavLink)`
   display: flex;
   flex-flow: column;
-  justify-content: end;
+  justify-content: flex-end;
   position: relative;
   padding: ${glsp()};
   border-radius: ${themeVal('shape.rounded')};
