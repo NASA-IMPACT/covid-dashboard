@@ -175,7 +175,7 @@ export default {
       }
     },
     {
-      id: 'glamrous-tool',
+      id: 'glamorous-tool',
       name: "A GLAMorous Tool to Assess COVID's Effects",
       contentComp: (
         <>
@@ -303,6 +303,14 @@ export default {
             During the COVID-19 pandemic, scientists will continue to use remote
             sensing data to observe any changes in water quality due to changes
             in human behavior.
+          </p>
+          <p>
+            <Link
+              to='/stories/changing-landscapes/changing-behavior'
+              title='Read how COVID affect changing landscapes'
+            >
+              Learn More About Changing Human Behavior During the COVID-19 Pandemic
+            </Link>
           </p>
         </>
       )

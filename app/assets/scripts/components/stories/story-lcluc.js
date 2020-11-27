@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import config from '../../config';
 const { api } = config;
 
 export default {
-  id: 'changing-lanscapes',
+  id: 'changing-landscapes',
   name: 'Changing landscapes during the COVID-19 pandemic',
   publishDate: '2020/12/01',
   chapters: [
@@ -182,6 +183,14 @@ export default {
         <>
           <p>
             How we interact with the environment has a noticeable effect on the land, air, and water. Scientists will continue to monitor the social and environmental changes associated with the pandemic, which provides a unique opportunity to characterize and study the effect we have on our planet.
+          </p>
+          <p>
+            <Link
+              to='/stories/air-quality/aq-and-covid'
+              title='Explore How COVID-19 Is Affecting Earth&apos;s Air Quality'
+            >
+              Explore How COVID-19 Is Affecting Earth&apos;s Air Quality
+            </Link>
           </p>
         </>
       )

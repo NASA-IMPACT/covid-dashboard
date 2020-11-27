@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default {
   id: 'climate',
@@ -123,6 +124,14 @@ export default {
           </p>
           <p>
             The research is also providing new insights into the types of sensors and analysis tools needed to track changes in carbon dioxide from space. These capabilities will be increasingly important as society seeks to decarbonize economies. Results of these COVID-related studies will benefit development of several next-generation satellites launching in the next few years, including Japan’s GOSAT-GW satellite, the Copernicus CO2M constellation, and NASA’s GeoCarb, the first geostationary greenhouse gas satellite.
+          </p>
+          <p>
+            <Link
+              to='/stories/water-quality/water-quality-during-pandemic'
+              title='Read how COVID affect changing landscapes'
+            >
+              Explore How COVID-19 Is Affecting Water Quality
+            </Link>
           </p>
         </>
       ),

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import config from '../../config';
 const { api } = config;
@@ -260,6 +261,14 @@ export default {
         <>
           <p>
             After the initial shock of COVID-related shutdowns in the spring, communities worldwide began to reopen and gradually increase mobility. Cars returned to the road, and travel restrictions slowly eased. These resumptions corresponded with relative increases in nitrogen dioxide levels and other air pollutants, as air quality levels began to return to pre-pandemic levels. This demonstrates how quickly atmospheric nitrogen dioxide responds to reductions in emissions. They will persist as long as emissions persist and decline rapidly if emissions are reduced. NASA scientists will continue to monitor nitrogen dioxide levels and long-term trends around the world. NASA is expected to launch its Tropospheric Emissions: Monitoring of Pollution, (TEMPO) instrument in 2022, which will provide hourly, high-resolution measurements of nitrogen dioxide, ozone, and other air pollutants across North America, improving future air quality forecasts.
+          </p>
+          <p>
+            <Link
+              to='/stories/climate/climate-change-and-covid'
+              title='Explore How COVID-19 Is Affecting Earth&apos;s Climate'
+            >
+              Explore How COVID-19 Is Affecting Earth&apos;s Climate
+            </Link>
           </p>
         </>
       ),
