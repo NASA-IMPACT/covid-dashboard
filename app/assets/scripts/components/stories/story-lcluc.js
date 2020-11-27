@@ -16,8 +16,29 @@ export default {
           <p>
             While NASA satellites can’t see the novel coronavirus from space, they can see how people are reacting to it. Throughout the COVID-19 pandemic, governments have implemented, eased, and re-implemented restrictions limiting mobility and international travel to help slow the spread of the virus. As a result of these measures, people have largely stayed home, and the ways in which we interact with the built and natural environment have changed. These changes have reverberated throughout Earth’s systems and are being captured in different ways within the satellite record.
           </p>
+          <p>
+            Imagery: Landsat 8, February 25, 2020
+          </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [113.7442, 30.2021, 114.859, 30.9092],
+          layers: [
+            {
+              id: 'ls8-wuhan',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_123039_20200209_20200211_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'dimmer-world',

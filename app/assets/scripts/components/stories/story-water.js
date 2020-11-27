@@ -14,8 +14,29 @@ export default {
           <p>
             While some researchers are teasing out the COVID-19 pandemic’s impact on <Link to='/stories/climate' title='Read how COVID affect the climate'>climate</Link> and <Link to='/stories/air-quality' title='Read how COVID affect the climate'>air quality</Link>, others are studying the effects it may have on water quality. Human activity greatly influences the quality of our water, and changes in our behavior during the COVID-19 pandemic may be beginning to affect local and regional water quality around the world. Runoff from agriculture and cities can overload coastal waters with excess nutrients, ships in ports and other waterways can mix up sediment and increase turbidity, and even air pollution can end up in our water. Although there are various indications that overall water quality is changing during pandemic-related lockdowns, the exact cause of these changes, as well as their long-term effect, are under investigation. Researchers are relying on satellite-based observations and on-the-ground validation to study global water quality during the COVID-19 pandemic.
           </p>
+          <p>
+            Imagery: Landsat 8, April 17, 2020
+          </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-76.7298, 37.4813, -75.5433, 38.4051],
+          layers: [
+            {
+              id: 'ls8-chesapeake',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_014034_20200417_20200423_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'air-water-quality-and-covid',
@@ -31,7 +52,8 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['no2-diff'],
-          date: '2020-03-01T00:00:00Z'
+          date: '2020-03-01T00:00:00Z',
+          bbox: [-122.63570045, 37.11988178, -121.53518996, 38.35512939]
         }
       }
     },
@@ -43,8 +65,29 @@ export default {
           <p>
             Teasing out the changes in chlorophyll-a and sediments (turbidity) due to COVID-related restrictions from normal variations due to weather and economic changes is challenging. Both chlorophyll-a concentrations and turbidity fluctuate based on a variety of factors, including natural geography and the weather. In coastal areas strongly influenced by human activities and agricultural practices, such as the Chesapeake Bay, higher chlorophyll-a concentrations can result from the discharge of urban sewage and fertilizers. In this case, any positive effects on water quality we may have seen from pandemic-related shutdowns may be hidden due to the effects from agricultural run-off.
           </p>
+          <p>
+            Imagery: Landsat 8, April 8 2020
+          </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-76.8370, 38.4783, -75.7397, 39.1928],
+          layers: [
+            {
+              id: 'ls8-chesapeake2',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_015033_20200408_20200422_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'shades-of-green',
@@ -90,8 +133,29 @@ export default {
           <p>
             COVID-19 lockdown policies have also made it harder for officials from the U.S. Department of Agriculture (USDA) to travel to farms and collect information about crop planting, progress, and conditions like adequate soil moisture. Especially in cases where ground data is inaccessible, information provided by Earth observing satellites has been critical to filling in agricultural data gaps. Hannah Kerner, an assistant research professor at the University of Maryland in College Park, and her team at NASA Harvest are using satellite data from the joint NASA-U.S. Geological Survey Landsat satellite, the ESA (the European Space Agency) Copernicus Sentinel-2 satellite, and the NASA Moderate Resolution Imaging Spectroradiometer (MODIS) instruments aboard its Terra and Aqua satellites to help supplement USDA’s information. They are also using commercial partner Planet’s high-resolution, space-based imagery. &quot;We&apos;re using satellite data and machine learning to map where and which crops are growing,&quot; Kerner said. Specifically, they’re monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
           </p>
+          <p>
+            Imagery: Landsat 8, March 4 2020
+          </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-93.7916, 41.5923, -92.9731, 42.0248],
+          layers: [
+            {
+              id: 'ls8-iowa',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_026031_20200304_20200314_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'understanding-impacts-venetian-lagoon',

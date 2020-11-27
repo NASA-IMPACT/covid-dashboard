@@ -38,7 +38,25 @@ export default {
             Imagery: Landsat 8, February 26, 2020.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-118.529, 33.835, -118.034, 34.168],
+          layers: [
+            {
+              id: 'ls8-sf',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_041036_20200226_20200313_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'cities-experiencing-clearer-air',
