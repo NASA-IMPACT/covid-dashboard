@@ -280,7 +280,7 @@ const PrimeMenuBlock = styled.section`
     border-radius: ${themeVal('shape.rounded')};
     padding: ${glsp()};
     color: ${themeVal('type.base.color')};
-    width: 14rem;
+    width: 16rem;
   `}
 `;
 

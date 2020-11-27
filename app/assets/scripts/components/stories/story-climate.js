@@ -4,6 +4,7 @@ export default {
   id: 'climate',
   name: 'Understanding the Long-Term Impacts of COVID-19 on Climate',
   publishDate: '2020/12/01',
+  thumbnail: 'thumbnail-climate.jpg',
   chapters: [
     {
       id: 'climate-change-and-covid',
