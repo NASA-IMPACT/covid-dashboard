@@ -77,7 +77,7 @@ export default {
             data: {
               layers: ['no2'],
               date: '2020-02-01T00:00:00Z',
-              bbox: [115.84, 39.62, 116.85, 40.22],
+              bbox: [114.84, 38.32, 117.85, 41.22],
               compare: {
                 mapLabel: () => '5 year average compared to February 2020',
                 source: {
@@ -105,7 +105,7 @@ export default {
             data: {
               layers: ['no2'],
               date: '2020-05-01T00:00:00Z',
-              bbox: [-77.97, -12.75, -76.08, -11.43],
+              bbox: [-77.97, -12.75, -76.08, -11.13],
               compare: {
                 mapLabel: () => '5 year average compared to May 2020',
                 source: {
@@ -214,6 +214,7 @@ export default {
         data: {
           layers: ['nightlights-viirs'],
           date: '2020-03-01T00:00:00Z',
+          bbox: [-118.6759, 33.4267, -117.0733, 34.3439],
           spotlight: 'la',
           compare: {
             mapLabel: () => 'February 1, 2020 compared to March 1, 2020',
@@ -266,7 +267,7 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['no2'],
-          bbox: [115.84, 39.62, 116.85, 40.22],
+          bbox: [114.84, 38.32, 117.85, 41.22],
           compare: {
             mapLabel: () => 'February 2020 compared current NO₂ levels',
             layers: ['no2'],
