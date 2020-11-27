@@ -28,6 +28,7 @@ import MapMessage from '../../common/map-message';
 import MultiMap from './multi-map';
 import LayerLegend from '../../common/layer-legend';
 import Heading from '../../../styles/type/heading';
+import collecticon from '../../../styles/collecticons';
 
 import { themeVal } from '../../../styles/utils/general';
 import media from '../../../styles/utils/media-queries';
@@ -150,8 +151,22 @@ const MapLayerLegend = styled.div`
   grid-gap: ${glsp(0.5)};
 `;
 
-const LayerInfo = styled.p`
+const LayerInfo = styled.div`
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-gap: ${glsp(0.5)};
   font-size: 0.875rem;
+  padding-top: ${glsp(0.5)};
+
+  &::before {
+    ${collecticon('circle-information')}
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  p {
+    grid-row: 1;
+  }
 `;
 
 const StoryContent = styled.div`
@@ -535,7 +550,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                   id={l.id}
                 />
                 <LayerInfo>
-                  {l.info}
+                  <p>{l.info}</p>
                 </LayerInfo>
               </div>
             );
