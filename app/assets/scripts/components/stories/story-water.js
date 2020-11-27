@@ -42,8 +42,29 @@ export default {
             observations and on-the-ground validation to study global water
             quality during the COVID-19 pandemic.
           </p>
+          <p>
+            Imagery: Landsat 8, April 17, 2020
+          </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-76.7298, 37.4813, -75.5433, 38.4051],
+          layers: [
+            {
+              id: 'ls8-chesapeake',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_014034_20200417_20200423_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'air-water-quality-and-covid',
@@ -74,7 +95,8 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['no2-diff'],
-          date: '2020-03-01T00:00:00Z'
+          date: '2020-03-01T00:00:00Z',
+          bbox: [-122.63570045, 37.11988178, -121.53518996, 38.35512939]
         }
       }
     },
@@ -96,8 +118,29 @@ export default {
             may have seen from pandemic-related shutdowns may be hidden due to
             the effects from agricultural run-off.
           </p>
+          <p>
+            Imagery: Landsat 8, April 8 2020
+          </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-76.8370, 38.4783, -75.7397, 39.1928],
+          layers: [
+            {
+              id: 'ls8-chesapeake2',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_015033_20200408_20200422_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'shades-of-green',
@@ -188,8 +231,29 @@ export default {
             impacts on markets and food security, including corn and soybeans in
             the U.S. (pictured here) and winter wheat in Russia.
           </p>
+          <p>
+            Imagery: Landsat 8, March 4 2020
+          </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-93.7916, 41.5923, -92.9731, 42.0248],
+          layers: [
+            {
+              id: 'ls8-iowa',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_026031_20200304_20200314_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'understanding-impacts-venetian-lagoon',
