@@ -5,6 +5,7 @@ import T from 'prop-types';
 import { connect } from 'react-redux';
 import get from 'lodash.get';
 import find from 'lodash.find';
+import ReactTooltip from 'react-tooltip';
 
 import App from '../../common/app';
 import UhOh from '../../uhoh';
@@ -25,6 +26,9 @@ import Dropdown, {
 import ShadowScrollbar from '../../common/shadow-scrollbar';
 import MapMessage from '../../common/map-message';
 import MultiMap from './multi-map';
+import LayerLegend from '../../common/layer-legend';
+import Heading from '../../../styles/type/heading';
+import collecticon from '../../../styles/collecticons';
 
 import { themeVal } from '../../../styles/utils/general';
 import media from '../../../styles/utils/media-queries';
@@ -43,6 +47,7 @@ import {
 } from '../../../utils/map-explore-utils';
 import { getSpotlightLayers } from '../../common/layers';
 import { utcDate } from '../../../utils/utils';
+import { replaceSub2 } from '../../../utils/format';
 
 const InpageHeaderInnerAlt = styled.div`
   display: flex;
@@ -141,6 +146,34 @@ const ExploreCarto = styled.section`
   overflow: hidden;
 `;
 
+const MapLayerLegend = styled.div`
+  display: grid;
+  grid-gap: ${glsp(0.5)};
+`;
+
+const LayerInfo = styled.div`
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-gap: ${glsp(0.5)};
+  font-size: 0.875rem;
+  padding-top: ${glsp(0.5)};
+
+  &::before {
+    ${collecticon('circle-information')}
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  p {
+    grid-row: 1;
+  }
+`;
+
+const StoryContent = styled.div`
+  display: grid;
+  grid-gap: ${glsp()};
+`;
+
 const findById = (haystack = [], id) => {
   const idx = haystack.findIndex((c) => c.id === id);
   return [idx === -1 ? null : idx, haystack[idx]];
@@ -228,6 +261,18 @@ const getCurrentItemName = (chapter, section = null) => {
   );
 };
 
+const getMapLayers = (spotlightId, layers) => {
+  return [
+    ...getSpotlightLayers(spotlightId || 'global'),
+    // Include any layer that was defined on the story. These will be custom
+    // layers specific for this chapter. Mostly external TMS
+    ...layers.reduce(
+      (acc, l) => (typeof l === 'string' ? acc : [...acc, l]),
+      []
+    )
+  ];
+};
+
 class StoriesSingle extends React.Component {
   constructor (props) {
     super(props);
@@ -284,6 +329,9 @@ class StoriesSingle extends React.Component {
       chapterId !== chapterIdPrev ||
       sectionId !== sectionIdPrev
     ) {
+      // Update tooltips when the data changes.
+      ReactTooltip.rebuild();
+
       const {
         chapter: [, chapter],
         section: [, section]
@@ -350,15 +398,7 @@ class StoriesSingle extends React.Component {
         // Reset to full world.
         this.mbMapRef.current.mbMap.jumpTo({ center: [0, 0], zoom: 1.5 });
       }
-      const mapLayers = [
-        ...getSpotlightLayers(spotlight || 'global'),
-        // Include any layer that was defined on the story. These will be custom
-        // layers specific for this chapter. Mostly external TMS
-        ...layers.reduce(
-          (acc, l) => (typeof l === 'string' ? acc : [...acc, l]),
-          []
-        )
-      ];
+      const mapLayers = getMapLayers(spotlight, layers);
 
       let layerComparing = null;
       // Map the layer ids to layer definition objects.
@@ -457,6 +497,66 @@ If this is a system layer, check that a compare property is defined. In alternat
         });
         break;
       }
+    }
+  }
+
+  renderLegend (item) {
+    const { visual } = item;
+    // If there are no visuals there's nothing to do.
+    if (!visual) return;
+
+    if (visual.type === 'map-layer') {
+      const { layers = [], spotlight } = visual.data;
+
+      const mapLayers = getMapLayers(spotlight, layers);
+      // Map the layer ids to layer definition objects.
+      const layersWithLegend = layers
+        .map((l, idx) => {
+          if (typeof l === 'string') {
+            const layerDef = mapLayers.find((layer) => layer.id === l);
+            if (!layerDef) {
+              throw new Error(
+                `Layer definition not found for story layer with id [${l}]`
+              );
+            }
+            return layerDef;
+          }
+          return l;
+        })
+        .filter((l) => !!l.legend);
+
+      if (!layersWithLegend.length) return null;
+
+      return (
+        <MapLayerLegend>
+          <Heading as='h2' size='medium'>
+            About the data
+          </Heading>
+          {layersWithLegend.map((l) => {
+            const { type } = l.legend;
+            const legend = {
+              ...l.legend,
+              // We don't have adjustable gradients here, so convert to normal one.
+              type: type === 'gradient-adjustable' ? 'gradient' : type
+            };
+            return (
+              <div key={l.id}>
+                <Heading as='h3' size='small'>
+                  {replaceSub2(l.name)}
+                </Heading>
+                <LayerLegend
+                  dataOrder={l.dataOrder}
+                  legend={legend}
+                  id={l.id}
+                />
+                <LayerInfo>
+                  <p>{l.info}</p>
+                </LayerInfo>
+              </div>
+            );
+          })}
+        </MapLayerLegend>
+      );
     }
   }
 
@@ -583,7 +683,7 @@ If this is a system layer, check that a compare property is defined. In alternat
           : mapLabel
         : '';
 
-    const { type: visualType, data: visualData } = (currItem.visual || {});
+    const { type: visualType, data: visualData } = currItem.visual || {};
 
     return (
       <App hideFooter pageTitle={story.name}>
@@ -666,7 +766,12 @@ If this is a system layer, check that a compare property is defined. In alternat
                   this.resizeMultimap();
                   this.setState({ panelSec: revealed });
                 }}
-                content={panelContent}
+                content={
+                  <StoryContent>
+                    <div>{panelContent}</div>
+                    {this.renderLegend(currItem)}
+                  </StoryContent>
+                }
               />
             </ExploreCanvas>
           </InpageBody>
