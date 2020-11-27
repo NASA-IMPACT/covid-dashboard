@@ -560,7 +560,7 @@ If this is a system layer, check that a compare property is defined. In alternat
     }
   }
 
-  renderChapterDropdown (itemNum, itemName) {
+  renderChapterDropdown (itemName) {
     const {
       story,
       match: {
@@ -579,7 +579,7 @@ If this is a system layer, check that a compare property is defined. In alternat
             title='View story chapters'
             useIcon={['chevron-down--small', 'after']}
           >
-            {itemNum}) {itemName}
+            {itemName}
           </Button>
         }
       >
@@ -693,7 +693,7 @@ If this is a system layer, check that a compare property is defined. In alternat
               <InpageHeadline>
                 <InpageTitleAlt>{story.name}</InpageTitleAlt>
                 <InpageSecTitle>
-                  {this.renderChapterDropdown(itemNum, itemName)}
+                  {this.renderChapterDropdown(itemName)}
                 </InpageSecTitle>
               </InpageHeadline>
               <InpageToolbarAlt>
