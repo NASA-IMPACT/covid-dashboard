@@ -150,6 +150,10 @@ const MapLayerLegend = styled.div`
   grid-gap: ${glsp(0.5)};
 `;
 
+const LayerInfo = styled.p`
+  font-size: 0.875rem;
+`;
+
 const StoryContent = styled.div`
   display: grid;
   grid-gap: ${glsp()};
@@ -511,7 +515,7 @@ If this is a system layer, check that a compare property is defined. In alternat
       return (
         <MapLayerLegend>
           <Heading as='h2' size='medium'>
-            Layer legend
+            About the data
           </Heading>
           {layersWithLegend.map((l) => {
             const { type } = l.legend;
@@ -530,6 +534,9 @@ If this is a system layer, check that a compare property is defined. In alternat
                   legend={legend}
                   id={l.id}
                 />
+                <LayerInfo>
+                  {l.info}
+                </LayerInfo>
               </div>
             );
           })}
