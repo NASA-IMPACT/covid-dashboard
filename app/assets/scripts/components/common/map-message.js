@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes as T } from 'prop-types';
 import styled, { css } from 'styled-components';
-import { Transition } from 'react-transition-group';
+import { Transition, TransitionGroup } from 'react-transition-group';
 
 import { themeVal } from '../../styles/utils/general';
 import { glsp } from '../../styles/utils/theme-values';
@@ -35,22 +35,36 @@ const Message = styled.div`
 
 class MapMessage extends Component {
   render () {
+    const {
+      id,
+      children,
+      active
+    } = this.props;
+
     return (
-      <Transition
-        in={this.props.active}
-        timeout={fadeDuration}
-      >
-        {state => (
-          <Message show={state === 'entered' || state === 'entering'}>
-            {this.props.children}
-          </Message>
+      <TransitionGroup component={null}>
+        {active && (
+          <Transition
+            key={id}
+            timeout={fadeDuration}
+          >
+            {state => {
+              return (
+                <Message show={state === 'entered' || state === 'entering'}>
+                  {children}
+                </Message>
+              );
+            }}
+          </Transition>
+
         )}
-      </Transition>
+      </TransitionGroup>
     );
   }
 }
 
 MapMessage.propTypes = {
+  id: T.string,
   children: T.node,
   active: T.bool
 };
