@@ -16,14 +16,14 @@ export default {
             While some researchers are teasing out the COVID-19 pandemic’s
             impact on{' '}
             <Link
-              to='/stories/climate'
+              to='/stories/climate/climate-change-and-covid'
               title='Read how COVID affect the climate'
             >
               climate
             </Link>{' '}
             and{' '}
             <Link
-              to='/stories/air-quality'
+              to='/stories/air-quality/aq-and-covid'
               title='Read how COVID affect the climate'
             >
               air quality
@@ -170,6 +170,7 @@ export default {
         data: {
           layers: ['water-wq-gl-chl'],
           date: '2020-04-01T00:00:00Z',
+          spotlight: 'gl',
           bbox: [-84.3695, 45.2013, -81.7492, 41.253]
         }
       }
@@ -201,7 +202,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
-          layers: ['geoglam']
+          layers: ['agriculture']
         }
       }
     },
