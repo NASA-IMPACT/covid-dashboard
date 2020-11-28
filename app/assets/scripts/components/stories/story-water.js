@@ -175,7 +175,7 @@ export default {
       }
     },
     {
-      id: 'glamrous-tool',
+      id: 'glamorous-tool',
       name: "A GLAMorous Tool to Assess COVID's Effects",
       contentComp: (
         <>
@@ -247,7 +247,7 @@ export default {
               source: {
                 type: 'raster',
                 tiles: [
-                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_026031_20200304_20200314_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_026031_20200304_20200314_01_T1&bands=B6,B5,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
                 ]
               }
             }
@@ -303,6 +303,14 @@ export default {
             During the COVID-19 pandemic, scientists will continue to use remote
             sensing data to observe any changes in water quality due to changes
             in human behavior.
+          </p>
+          <p>
+            <Link
+              to='/stories/changing-landscapes/changing-behavior'
+              title='Read how COVID affect changing landscapes'
+            >
+              Learn More About Changing Human Behavior During the COVID-19 Pandemic
+            </Link>
           </p>
         </>
       )
