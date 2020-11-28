@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import config from '../../config';
+const { api } = config;
+
 export default {
   id: 'water-quality',
   name: 'Water Quality during the COVID-19 Pandemic',
@@ -202,6 +205,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
+          mapStyle: 'mapbox://styles/covid-nasa/ckhyrjsj40ctz19nc5akczgsk',
           layers: ['agriculture']
         }
       }
@@ -269,7 +273,26 @@ export default {
             tourism, such as Belize, these changes are not as readily apparent.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [12.0327, 44.7896, 13.8208, 45.7885],
+          layers: [
+            {
+              id: 'tsm-nas',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/tsm/nas-2020_03_21.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
+                ]
+              }
+            }
+          ]
+        }
+        // label: 'May 2020',
+      }
     },
     {
       id: 'water-quality-belize',
