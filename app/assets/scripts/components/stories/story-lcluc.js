@@ -62,7 +62,25 @@ export default {
             At different stages of the pandemic, nonessential businesses like shopping malls closed temporarily, while essential businesses like grocery stores were allowed to remain open. The effect of nonessential business closures on surface transportation around the world was so significant that it could be seen from space. For example, the imagery shown here provides a stark picture of empty parking lots near deserted commercial districts in and around Los Angeles. Blue areas represent places where slowdowns were most severe. Scientists obtained these data by combining remote sensing technology known as synthetic aperture radar, or SAR, with high-resolution imagery from Planet Labs. By comparing SAR images of the same areas before and after pandemic-related lockdowns, decreases in car activity in Los Angeles near airports, sports stadiums, and shopping malls were visible from space.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-118.6759, 33.4267, -117.0733, 34.3439],
+          spotlight: 'la',
+          layers: [
+            'slowdown',
+            {
+              id: 'planet-background',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [`${api}/planet/{z}/{x}/{y}?date=2020_03_22&site=la`]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'changes-in-ports',
@@ -73,7 +91,25 @@ export default {
             It wasn’t just ground transportation in Los Angeles that was affected by COVID-related shutdowns – its ports also showed less activity. During the pandemic, supply chains around the world dependent on cargo shipping saw interruptions as many ports closed, shipments canceled, and in some locations, altered routes prevented the efficient movement of cargo. According to the Port of Los Angeles, its port saw a 19% reduction in shipping cargo volume during the early months of the pandemic, compared to the same time period in 2019. The image here shows a reduction in the number of ships at the port, which could potentially also affect the area’s overall water quality.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-118.6759, 33.4267, -117.0733, 34.3439],
+          spotlight: 'la',
+          layers: [
+            // ports,
+            {
+              id: 'planet-background',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [`${api}/planet/{z}/{x}/{y}?date=2020_03_22&site=la`]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'changes-in-urban-heat',
@@ -84,7 +120,25 @@ export default {
             Sudden changes in surface transportation may also be changing how cities trap and emit heat. Satellite and thermal data from the joint NASA-U.S. Geological Survey Landsat satellite and NASA’s ECOsystem Spaceborne Thermal Radiometer Experiment on Space Station (ECOSTRESS) instrument aboard the International Space Station show decreases in air pollution and the prevalence of empty parking lots changed how much solar radiation is absorbed and reflected from ground surfaces during the pandemic. In March, surface traffic in the San Francisco Bay Area dropped by 70%. Scientists found that the reduction in traffic corresponded to a 30% decrease in fine particulate and ozone pollution when compared to previous years.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-122.6357, 37.1198, -121.5351, 38.3551],
+          spotlight: 'sf',
+          layers: [
+            'slowdown',
+            {
+              id: 'planet-background',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [`${api}/planet/{z}/{x}/{y}?date=2020_03_11&site=sf`]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'changes-in-urban-heat-continued',
