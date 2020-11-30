@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import config from '../../config';
+const { api } = config;
+
 export default {
   id: 'climate',
   name: 'Understanding the Long-Term Impacts of COVID-19 on Climate',
@@ -16,7 +19,23 @@ export default {
             Throughout the COVID-19 pandemic, communities have seen significant reductions in automobile traffic, energy consumption, and other related activities. The sudden change in our everyday lives has led to substantial yet temporary reductions in fossil fuel use across the globe during this extraordinary time. Given these sharp decreases, and the observed associated declines in pollutants associated with fossil fuel combustion, such as nitrogen dioxide (NO<sub>2</sub>), scientists have wondered whether corresponding decreases in carbon dioxide (CO<sub>2</sub>), which is also primarily emitted from the burning of fossil fuels, could be observed from satellites and what impact, if any, such decreases could have on future climate projections.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['no2-diff'],
+          date: '2020-03-01T00:00:00Z',
+          compare: {
+            mapLabel: () => 'NO₂ Baseline (5 years) compared to NO₂ Difference for March 2020',
+            source: {
+              type: 'raster',
+              tiles: [
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_03_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+              ]
+            }
+          }
+        }
+      }
     },
     {
       id: 'co2-emissions-during-lockdowns',
@@ -65,15 +84,32 @@ export default {
       )
     },
     {
-      id: 'tracking-carbon-dioxide-with-oco2-gosat',
-      name: 'Tracking Carbon Dioxide Changes with OCO-2 and GOSAT',
+      id: 'oco2-and-gosat',
+      name: 'OCO-2 and GOSAT Provide Two Complementary Ways to Track Changes in CO2',
       contentComp: (
         <>
           <p>
             Two Earth-observing satellites – NASA’s Orbiting Carbon Observatory-2 (OCO-2) and Japan’s Greenhouse gases Observing SATellite (GOSAT) – have tracked changes in atmospheric carbon dioxide emissions resulting from the COVID-19 pandemic. New measurements collected in 2020 were compared with results from previous years to glean insights into any small variations. Each satellite plays a unique role in studying carbon dioxide. OCO-2, which launched in 2014, collects measurements at relatively high spatial resolution (one square mile) along a narrow ground track as it orbits Earth from pole to pole, monitoring regional-scale changes in carbon dioxide. In contrast, GOSAT, which launched in 2009, collects measurements at isolated points, but can be targeted to track changes in carbon dioxide and methane (CH4) emissions in large urban areas such as Beijing, Tokyo, and Los Angeles. OCO-2 collects about a million measurements a day as it flies over Earth’s sunlit hemisphere, while GOSAT collects about 10,000. However, thick clouds and airborne particles such as dust, smoke or smog reduce the number of reliable estimates each day to about 600 for GOSAT and 85,000 for OCO-2. So, while these satellites provide a large number of measurements over the globe each day, their spatial sampling can still be quite sparse.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['co2'],
+          date: '2020-03-01T00:00:00Z',
+          bbox: [-125.1562, 29.3055, -72.5097, 48.8068],
+          compare: {
+            mapLabel: () => '5 year average compared to March 1st 2020',
+            source: {
+              type: 'raster',
+              tiles: [
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-base/xco2_16day_base.2020_03_01.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+              ]
+            }
+          }
+        }
+      }
     },
     {
       id: 'looking-for-needle-in-haystack',
@@ -84,7 +120,23 @@ export default {
             Searching for small changes in regional atmospheric carbon dioxide emissions against the backdrop of existing atmospheric CO<sub>2</sub> is like looking for a needle in a haystack. To do this, scientists incorporated OCO-2 data from November 2019 through September 2020 into a NASA computer model that simulates how Earth’s atmosphere moves. The resulting gap-free global map was able to compensate for OCO-2’s relatively sparse CO<sub>2</sub> measurements. Scientists then compared the modeled projection with an averaged set of OCO-2 data collected over the same months during each year from 2015 through 2019. This method helped distinguish between changes in carbon dioxide due to emissions and those associated with year-to-year variations in wind transport, which can mask the smaller reductions in carbon dioxide that scientists expected to observe as a result of pandemic-related restrictions. What they saw were small reductions of 0.5ppm (about 0.125%) in carbon dioxide over China, Europe and the United States, at times corresponding to the largest reported emissions reductions in those regions. They also saw an increase in regional emissions over China as it emerged from COVID-19 lockdowns in late April.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['co2'],
+          date: '2020-04-01T00:00:00Z',
+          compare: {
+            mapLabel: () => 'CO₂ difference vs. CO₂ average - April 1st 2020',
+            source: {
+              type: 'raster',
+              tiles: [
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-diff/xco2_16day_diff.2020_04_01.tif&resampling_method=bilinear&bidx=1&rescale=-0.000001%2C0.000001&color_map=rdbu_r`
+              ]
+            }
+          }
+        }
+      }
     },
     {
       id: 'looking-for-needle-in-haystack-continued',
@@ -95,7 +147,14 @@ export default {
             Scientists were also able to infer regional-scale differences in carbon dioxide that were completely unrelated to the pandemic. Increased carbon dioxide observed at high northern latitudes was likely due to intense wildfires across Siberia in April 2020. In addition, a 1ppm decline in carbon dioxide concentrations across central India and southern and eastern Africa in February was likely due to the additional absorption of carbon dioxide by land ecosystems and the Indian Ocean Dipole, an El Niño-like disturbance across the Indian Ocean basin.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['co2-diff'],
+          date: '2020-01-15T00:00:00Z'
+        }
+      }
     },
     {
       id: 'getting-a-closer-view',
@@ -106,7 +165,55 @@ export default {
             The biggest changes in economic activity associated with the pandemic – and, subsequently, the largest reductions in fossil fuel emissions – occurred in large urban areas. Tracking these changes from space is challenging for a couple of reasons: first, since cities cover only a tiny fraction of Earth’s surface, spacecraft don’t fly directly over them very often, and second, cities are frequently covered by clouds and passing weather systems that can easily transport carbon dioxide in and out of these areas. GOSAT can easily target cities and has the unique ability to distinguish between changes in carbon dioxide that occur near Earth’s surface, which are more likely to originate from a city, and those at higher altitudes, which are more likely to have been transported from somewhere else. Scientists used this capability to devise a new technique to tease out changes in carbon dioxide emissions due to the pandemic based on their altitude. Using this new process, scientists were able to determine that for all months studied in 2020, the average concentration of carbon dioxide over Beijing, Tokyo, New York, Mumbai, Delhi and Dhaka was reduced compared to the previous years studied.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'multi-map',
+        data: {
+          bbox: [116.17, 40.11, 116.6, 39.7],
+          maps: [
+            {
+              id: 'gosat-january',
+              label: 'January 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/GOSAT_XCO2_202001_be_BG_circle_cog.tif&resampling_method=bilinear`
+                ]
+              }
+            },
+            {
+              id: 'gosat-february',
+              label: 'February 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/GOSAT_XCO2_202002_be_BG_circle_cog.tif&resampling_method=bilinear`
+                ]
+              }
+            },
+            {
+              id: 'gosat-march',
+              label: 'March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/GOSAT_XCO2_202003_be_BG_circle_cog.tif&resampling_method=bilinear`
+                ]
+              }
+            },
+            {
+              id: 'gosat-april',
+              label: 'April 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/GOSAT_XCO2_202004_be_BG_circle_cog.tif&resampling_method=bilinear`
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'what-we-have-learned',
