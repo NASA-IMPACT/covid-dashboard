@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'water-quality',
-  name: 'Water Quality during the COVID-19 Pandemic',
+  name: 'Water Quality',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-water.jpg',
   chapters: [

@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'air-quality',
-  name: 'Air Quality During COVID-19 Shutdowns',
+  name: 'Air Quality',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-air.jpg',
   chapters: [

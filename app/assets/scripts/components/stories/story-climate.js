@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'climate',
-  name: 'Understanding the Long-Term Impacts of COVID-19 on Climate',
+  name: 'Climate Change',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-climate.jpg',
   chapters: [

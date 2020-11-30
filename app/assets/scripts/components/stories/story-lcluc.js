@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'changing-landscapes',
-  name: 'Changing landscapes during the COVID-19 pandemic',
+  name: 'Changing Landscapes',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-changing-landscapes.jpg',
   chapters: [
