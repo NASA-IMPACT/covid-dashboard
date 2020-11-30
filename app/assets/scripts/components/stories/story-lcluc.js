@@ -84,7 +84,35 @@ export default {
             Sudden changes in surface transportation may also be changing how cities trap and emit heat. Satellite and thermal data from the joint NASA-U.S. Geological Survey Landsat satellite and NASA’s ECOsystem Spaceborne Thermal Radiometer Experiment on Space Station (ECOSTRESS) instrument aboard the International Space Station show decreases in air pollution and the prevalence of empty parking lots changed how much solar radiation is absorbed and reflected from ground surfaces during the pandemic. In March, surface traffic in the San Francisco Bay Area dropped by 70%. Scientists found that the reduction in traffic corresponded to a 30% decrease in fine particulate and ozone pollution when compared to previous years.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'multi-map',
+        data: {
+          bbox: [-121.99956, 37.33972, -121.81417, 37.48344],
+          maps: [
+            {
+              id: 'st-2018',
+              label: 'April 2018',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/ls8-surface-temperature/LC08_CU_002009_20180414_20190615_C01_V01_ST.cog.tif&resampling_method=bilinear&rescale=2881,3182&color_map=coolwarm`
+                ]
+              }
+            },
+            {
+              id: 'st-2020',
+              label: 'April 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/ls8-surface-temperature/LC08_CU_002009_20200403_20200412_C01_V01_ST.cog.tif&resampling_method=bilinear&rescale=2881,3182&color_map=coolwarm`
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'changes-in-urban-heat-continued',
