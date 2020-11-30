@@ -8,6 +8,7 @@ export default {
   id: 'air-quality',
   name: 'Air Quality During COVID-19 Shutdowns',
   publishDate: '2020/12/01',
+  thumbnail: 'thumbnail-air.jpg',
   chapters: [
     {
       id: 'aq-and-covid',
