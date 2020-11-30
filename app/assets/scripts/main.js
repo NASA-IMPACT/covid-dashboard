@@ -106,10 +106,10 @@ class Root extends React.Component {
                     path='/indicators/:indicatorId'
                     component={IndicatorsSingle}
                   />
-                  <Route exact path='/stories' component={StoriesHub} />
+                  <Route exact path='/discoveries' component={StoriesHub} />
                   <Route
                     exact
-                    path='/stories/:storyId/:chapterId/:sectionId?'
+                    path='/discoveries/:storyId/:chapterId/:sectionId?'
                     component={StoriesSingle}
                   />
                   <Route path='/sandbox' component={Sandbox} />

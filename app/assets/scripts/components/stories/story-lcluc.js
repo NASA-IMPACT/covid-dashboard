@@ -187,7 +187,7 @@ export default {
           </p>
           <p>
             <Link
-              to='/stories/air-quality/aq-and-covid'
+              to='/discoveries/air-quality/aq-and-covid'
               title='Explore How COVID-19 Is Affecting Earth&apos;s Air Quality'
             >
               Explore How COVID-19 Is Affecting Earth&apos;s Air Quality

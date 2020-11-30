@@ -54,12 +54,12 @@ const StoriesHub = (props) => {
   const { storiesList } = props;
 
   return (
-    <App pageTitle='Stories hub'>
+    <App pageTitle='Discovery hub'>
       <Inpage>
         <InpageHeader>
           <InpageHeaderInner>
             <InpageHeadline>
-              <InpageTitle>Stories</InpageTitle>
+              <InpageTitle>Discoveries</InpageTitle>
             </InpageHeadline>
           </InpageHeaderInner>
         </InpageHeader>
@@ -85,12 +85,12 @@ const StoriesHub = (props) => {
               </Prose>
             </HubFold>
             <HubFold>
-              <InpageHGroup title='Stories' dashColor={metadata.color} />
+              <InpageHGroup title='Discoveries' dashColor={metadata.color} />
               <StoriesList>
                 {storiesList.map((item) => (
                   <li key={item.id}>
                     <StoriesNavLink
-                      to={`/stories/${item.id}/${item.chapters[0].id}`}
+                      to={`/discoveries/${item.id}/${item.chapters[0].id}`}
                       title={`View story ${item.name}`}
                     >
                       <EntryNavLinkTitle>{item.name}</EntryNavLinkTitle>
@@ -103,10 +103,10 @@ const StoriesHub = (props) => {
                       </EntryNavLinkInfo>
                       <EntryNavLinkMedia>
                         <img
-                          src={`${baseUrl}/assets/graphics/content/stories/${item.thumbnail}`}
+                          src={`${baseUrl}/assets/graphics/content/discoveries/${item.thumbnail}`}
                           width='960'
                           height='480'
-                          alt='Story thumbnail'
+                          alt='Discovery thumbnail'
                         />
                       </EntryNavLinkMedia>
                     </StoriesNavLink>

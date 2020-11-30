@@ -584,25 +584,25 @@ class PageHeader extends React.Component {
                   <li>
                     <Button
                       element={NavLinkFilter}
-                      to='/stories'
+                      to='/discoveries'
                       exact
                       variation='achromic-plain'
-                      title='View the Stories page'
+                      title='View the Discoveries page'
                       useIcon={
                         isMediumDown ? null : ['chevron-down--small', 'after']
                       }
                     >
-                      Stories
+                      Discoveries
                     </Button>
                     <PrimeMenuBlock>
-                      <PrimeMenuBlockTitle>Stories</PrimeMenuBlockTitle>
+                      <PrimeMenuBlockTitle>Discoveries</PrimeMenuBlockTitle>
                       <PrimeSubmenu aria-label='submenu'>
                         {storiesList
                           .map((s) => (
                             <li key={s.id}>
                               <Button
                                 element={NavLinkFilter}
-                                to={`/stories/${s.id}/${s.chapters[0].id}`}
+                                to={`/discoveries/${s.id}/${s.chapters[0].id}`}
                                 variation={
                                   isMediumDown
                                     ? 'achromic-plain'

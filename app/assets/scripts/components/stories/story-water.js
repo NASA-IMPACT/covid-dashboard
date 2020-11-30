@@ -18,14 +18,14 @@ export default {
           <p>
           While some researchers are studying the COVID-19 pandemic’s impact on{' '}
             <Link
-              to='/stories/climate/climate-change-and-covid'
+              to='/discoveries/climate/climate-change-and-covid'
               title='Read how COVID affect the climate'
             >
               climate
             </Link>{' '}
             and{' '}
             <Link
-              to='/stories/air-quality/aq-and-covid'
+              to='/discoveries/air-quality/aq-and-covid'
               title='Read how COVID affect the climate'
             >
               air quality
@@ -217,7 +217,7 @@ export default {
           </p>
           <p>
             <Link
-              to='/stories/changing-landscapes/changing-behavior'
+              to='/discoveries/changing-landscapes/changing-behavior'
               title='Read how COVID affect changing landscapes'
             >
               Learn More About Changing Human Behavior During the COVID-19 Pandemic
