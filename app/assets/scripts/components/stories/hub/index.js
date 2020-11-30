@@ -54,12 +54,12 @@ const StoriesHub = (props) => {
   const { storiesList } = props;
 
   return (
-    <App pageTitle='Stories hub'>
+    <App pageTitle='Discovery hub'>
       <Inpage>
         <InpageHeader>
           <InpageHeaderInner>
             <InpageHeadline>
-              <InpageTitle>Stories</InpageTitle>
+              <InpageTitle>Discoveries</InpageTitle>
             </InpageHeadline>
           </InpageHeaderInner>
         </InpageHeader>
@@ -68,29 +68,17 @@ const StoriesHub = (props) => {
             <HubFold>
               <Prose>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Vestibulum fringilla vulputate porttitor. Donec feugiat
-                  aliquam libero, id finibus risus mattis quis. Morbi ornare sit
-                  amet mi ut efficitur. Proin sodales tellus enim, quis feugiat
-                  purus facilisis quis. Praesent facilisis, quam et eleifend
-                  finibus, erat urna porttitor sem, at suscipit urna libero eu
-                  felis. Duis ullamcorper lectus ut tempus interdum. Donec
-                  lobortis, ante sit amet euismod sollicitudin, nisi lectus
-                  finibus enim, id mollis eros sapien in neque. Aenean fermentum
-                  mauris sed nunc posuere venenatis. Vestibulum mi ex, sagittis
-                  a semper non, pretium a purus. Orci varius natoque penatibus
-                  et magnis dis parturient montes, nascetur ridiculus mus. Donec
-                  id libero lobortis, scelerisque est vitae, fringilla sapien.
+                  Explore the guided narratives below to discover how NASA satellites and other Earth observing resources reveal how the COVID-19 pandemic is affecting Earth’s air, land, water, and climate.
                 </p>
               </Prose>
             </HubFold>
             <HubFold>
-              <InpageHGroup title='Stories' dashColor={metadata.color} />
+              <InpageHGroup title='Discoveries' dashColor={metadata.color} />
               <StoriesList>
                 {storiesList.map((item) => (
                   <li key={item.id}>
                     <StoriesNavLink
-                      to={`/stories/${item.id}/${item.chapters[0].id}`}
+                      to={`/discoveries/${item.id}/${item.chapters[0].id}`}
                       title={`View story ${item.name}`}
                     >
                       <EntryNavLinkTitle>{item.name}</EntryNavLinkTitle>
@@ -103,10 +91,10 @@ const StoriesHub = (props) => {
                       </EntryNavLinkInfo>
                       <EntryNavLinkMedia>
                         <img
-                          src={`${baseUrl}/assets/graphics/content/stories/${item.thumbnail}`}
+                          src={`${baseUrl}/assets/graphics/content/discoveries/${item.thumbnail}`}
                           width='960'
                           height='480'
-                          alt='Story thumbnail'
+                          alt='Discovery thumbnail'
                         />
                       </EntryNavLinkMedia>
                     </StoriesNavLink>

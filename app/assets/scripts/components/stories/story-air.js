@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'air-quality',
-  name: 'Air Quality During COVID-19 Shutdowns',
+  name: 'Air Quality',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-air.jpg',
   chapters: [
@@ -265,7 +265,7 @@ export default {
           </p>
           <p>
             <Link
-              to='/stories/climate/climate-change-and-covid'
+              to='/discoveries/climate/climate-change-and-covid'
               title='Explore How COVID-19 Is Affecting Earth&apos;s Climate'
             >
               Explore How COVID-19 Is Affecting Earth&apos;s Climate

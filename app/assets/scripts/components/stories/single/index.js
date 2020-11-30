@@ -239,10 +239,10 @@ const getNextItem = (chapters, currChapterIdx, currSectionIdx = 0) => {
 };
 
 const createItemUrl = (story, item) => {
-  if (!item) return '/stories';
+  if (!item) return '/discoveries';
 
   const { chapter, section } = item;
-  const base = `/stories/${story.id}/${chapter.id}`;
+  const base = `/discoveries/${story.id}/${chapter.id}`;
   return section ? `${base}/${section.id}` : base;
 };
 
@@ -590,7 +590,7 @@ If this is a system layer, check that a compare property is defined. In alternat
             <DropTitle>Chapters</DropTitle>
             <DropMenu role='menu' selectable>
               {story.chapters.map((chapter) => {
-                const baseUrl = `/stories/${story.id}/${chapter.id}`;
+                const baseUrl = `/discoveries/${story.id}/${chapter.id}`;
                 const chapterUrl = chapter.sections
                   ? `${baseUrl}/${chapter.sections[0].id}`
                   : baseUrl;

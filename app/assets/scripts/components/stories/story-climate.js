@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'climate',
-  name: 'Understanding the Long-Term Impacts of COVID-19 on Climate',
+  name: 'Climate Change',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-climate.jpg',
   chapters: [
@@ -18,7 +18,7 @@ export default {
           <p>
             Throughout the COVID-19 pandemic, communities have seen significant reductions in automobile traffic, energy consumption, and other related activities. The sudden change in our everyday lives has led to substantial, yet temporary, reductions in fossil fuel use across the globe. The combustion of fossil fuels produces greenhouse gases, such as carbon dioxide (CO<sub>2</sub>) and methane (CH<sub>4</sub>), which play a major role in regulating Earth’s climate. These sharp, global decreases are giving scientists an unprecedented opportunity to study how changes in human activities impact the global carbon cycle and to better understand the relative roles natural carbon cycle variations and humans play in driving climate change. Given the observed associated declines in other air pollutants associated with fossil fuel combustion, such as {' '}
             <Link
-              to='/stories/air-quality/aq-and-covid'
+              to='/discoveries/air-quality/aq-and-covid'
               title='Read how COVID affect the climate'
             >
               nitrogen dioxide
@@ -253,7 +253,7 @@ export default {
           </p>
           <p>
             <Link
-              to='/stories/water-quality/water-quality-during-pandemic'
+              to='/discoveries/water-quality/water-quality-during-pandemic'
               title='Read how COVID affect changing landscapes'
             >
               Explore How COVID-19 Is Affecting Water Quality

@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'changing-landscapes',
-  name: 'Changing landscapes during the COVID-19 pandemic',
+  name: 'Changing Landscapes',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-changing-landscapes.jpg',
   chapters: [
@@ -187,7 +187,7 @@ export default {
           </p>
           <p>
             <Link
-              to='/stories/air-quality/aq-and-covid'
+              to='/discoveries/air-quality/aq-and-covid'
               title='Explore How COVID-19 Is Affecting Earth&apos;s Air Quality'
             >
               Explore How COVID-19 Is Affecting Earth&apos;s Air Quality
