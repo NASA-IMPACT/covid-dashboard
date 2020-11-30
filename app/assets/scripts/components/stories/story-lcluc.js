@@ -89,6 +89,8 @@ export default {
         type: 'multi-map',
         data: {
           bbox: [-121.99956, 37.33972, -121.81417, 37.48344],
+          // units are in kelvin with a rescale factor of 0.1
+          // current rescale values translate to 15 & 45 celsius
           maps: [
             {
               id: 'st-2018',
