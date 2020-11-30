@@ -53,9 +53,9 @@ class SpotlightAreasHub extends React.Component {
               <HubFold>
                 <Prose>
                   <p>
-                    The global trajectory of the coronavirus and different
+                    The global trajectory of the novel coronavirus and different
                     levels of response to its spread have led to regional
-                    changes to air and water quality, night lights, and other
+                    changes in air and water quality, night lights, and other
                     economic indicators.
                   </p>
                   <p>
@@ -70,7 +70,7 @@ class SpotlightAreasHub extends React.Component {
                     reveal significant changes in response to coronavirus
                     lockdown measures. For instance, larger urban areas where
                     more people live and work see more significant fluctuations
-                    in NO2, while locations with active ports reveal changes in
+                    in NO<sub>2</sub>, while locations with active ports reveal changes in
                     water quality. This unique vantage point from space allows
                     researchers to track global and regional changes on our
                     planet, particularly during times of stress and crisis.

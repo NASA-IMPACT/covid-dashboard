@@ -51,14 +51,12 @@ class IndicatorsHub extends React.Component {
                 <Prose>
                   <p>
                     Although NASA cannot see the novel coronavirus from space,
-                    we can observe how human actions in response to the
-                    coronavirus affect the world around us. We refer to these
-                    as indicators.
+                    we can observe how human actions in response to it affect the world around us. We refer to these as indicators.
                   </p>
                   <p>
                     This dashboard explores key indicators to track and compare
                     changes over time including: Water quality, nighttime
-                    lights, carbon dioxide (CO2), nitrogen dioxide (NO2), and
+                    lights, carbon dioxide (CO<sub>2</sub>), nitrogen dioxide (NO<sub>2</sub>), and
                     ship activity in major ports.
                   </p>
                   <p>
