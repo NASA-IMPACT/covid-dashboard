@@ -340,13 +340,23 @@ class StoriesSingle extends React.Component {
       const currItem = section || chapter;
       const currVisType = get(currItem, 'visual.type');
 
+      /* eslint-disable-next-line prefer-const */
+      let newState = {
+        // Reset map data on story change
+        activeLayers: [],
+        /* eslint-disable-next-line react/no-unused-state */
+        layersState: {}
+      };
+
       // If the visual type changes to a non map value we have to reset the map
       // loaded state.
       if (currVisType !== 'map-layer') {
-        this.setState({ mapLoaded: false });
+        newState.mapLoaded = false;
       }
 
-      this.updateItemVisuals(currItem);
+      this.setState(newState, () => {
+        this.updateItemVisuals(currItem);
+      });
     }
   }
 
