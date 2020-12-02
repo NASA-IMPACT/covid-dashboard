@@ -255,23 +255,21 @@ export default {
             type: 'multi-map',
             data: {
               bbox: [-84.5549, 33.5242, -84.2198, 33.9889],
-              data: {
-                name: 'NO₂ levels',
-                legend: {
-                  type: 'gradient',
-                  min: '1',
-                  max: '3.5',
-                  stops: [
-                    '#99c5e0',
-                    '#f9eaa9',
-                    '#f7765d',
-                    '#c13b72',
-                    '#461070',
-                    '#050308'
-                  ]
-                },
-                info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.'
+              name: 'NO₂ levels',
+              legend: {
+                type: 'gradient',
+                min: '1',
+                max: '3.5',
+                stops: [
+                  '#99c5e0',
+                  '#f9eaa9',
+                  '#f7765d',
+                  '#c13b72',
+                  '#461070',
+                  '#050308'
+                ]
               },
+              info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
               maps: [
                 {
                   id: 'no2-mar-2019',
