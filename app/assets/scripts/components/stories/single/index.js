@@ -769,6 +769,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                     // dynamically, the component needs to be remounted if the
                     // number of maps change.
                     key={`maps-${visualData.maps.length}`}
+                    mapsPerRow={visualData.mapsPerRow}
                     maps={visualData.maps}
                     bbox={visualData.bbox}
                     mapStyle={visualData.mapStyle}
