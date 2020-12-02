@@ -270,6 +270,7 @@ export default {
                 ]
               },
               info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
+              mapsPerRow: 5,
               maps: [
                 {
                   id: 'no2-mar-2019',
