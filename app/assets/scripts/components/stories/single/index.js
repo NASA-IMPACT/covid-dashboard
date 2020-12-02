@@ -515,12 +515,14 @@ If this is a system layer, check that a compare property is defined. In alternat
     // If there are no visuals there's nothing to do.
     if (!visual) return;
 
+    let layersWithLegend = [];
+
     if (visual.type === 'map-layer') {
       const { layers = [], spotlight } = visual.data;
 
       const mapLayers = getMapLayers(spotlight, layers);
       // Map the layer ids to layer definition objects.
-      const layersWithLegend = layers
+      layersWithLegend = layers
         .map((l, idx) => {
           if (typeof l === 'string') {
             const layerDef = mapLayers.find((layer) => layer.id === l);
@@ -534,40 +536,45 @@ If this is a system layer, check that a compare property is defined. In alternat
           return l;
         })
         .filter((l) => !!l.legend);
-
-      if (!layersWithLegend.length) return null;
-
-      return (
-        <MapLayerLegend>
-          <Heading as='h2' size='medium'>
-            About the data
-          </Heading>
-          {layersWithLegend.map((l) => {
-            const { type } = l.legend;
-            const legend = {
-              ...l.legend,
-              // We don't have adjustable gradients here, so convert to normal one.
-              type: type === 'gradient-adjustable' ? 'gradient' : type
-            };
-            return (
-              <div key={l.id}>
-                <Heading as='h3' size='small'>
-                  {replaceSub2(l.name)}
-                </Heading>
-                <LayerLegend
-                  dataOrder={l.dataOrder}
-                  legend={legend}
-                  id={l.id}
-                />
-                <LayerInfo>
-                  <p>{l.info}</p>
-                </LayerInfo>
-              </div>
-            );
-          })}
-        </MapLayerLegend>
-      );
     }
+
+    if (visual.type === 'multi-map' && visual.data.legend) {
+      const { legend, name } = visual.data;
+      layersWithLegend = [{
+        id: item.id,
+        legend,
+        name: name || 'Multi map'
+      }];
+    }
+
+    if (!layersWithLegend.length) return null;
+
+    return (
+      <MapLayerLegend>
+        <Heading as='h2' size='medium'>
+          About the data
+        </Heading>
+        {layersWithLegend.map((l) => {
+          const { type } = l.legend;
+          const legend = {
+            ...l.legend,
+            // We don't have adjustable gradients here, so convert to normal one.
+            type: type === 'gradient-adjustable' ? 'gradient' : type
+          };
+          return (
+            <div key={l.id}>
+              <Heading as='h3' size='small'>
+                {replaceSub2(l.name)}
+              </Heading>
+              <LayerLegend dataOrder={l.dataOrder} legend={legend} id={l.id} />
+              <LayerInfo>
+                <p>{l.info}</p>
+              </LayerInfo>
+            </div>
+          );
+        })}
+      </MapLayerLegend>
+    );
   }
 
   renderChapterDropdown (itemName) {
