@@ -96,10 +96,10 @@ export default {
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/chla-chesapeake/anomaly-chl-bc-2020_03_26.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/chla-chesapeake/anomaly-chl-bc-2020_03_26.tif&resampling_method=bilinear&bidx=1&rescale=0%2C100&color_map=rdbu_r`
                 ]
               },
-              name: 'Chlorophyll Anomaly',
+              name: 'Chlorophyll-a Anomaly',
               legend: {
                 type: 'gradient',
                 min: 'less',
@@ -113,7 +113,7 @@ export default {
                   '#67001F'
                 ]
               },
-              info: 'Chlorophyll is an indicator of algae growth. Redder colors indicate increases in chlorophyll-a and worse water quality. Bluer colors indicate decreases in chlorophyll-a and improved water quality. White areas indicate no change.'
+              info: 'Chlorophyll-a is an indicator of algae growth. Redder color indicates elevated chlorophyl-a and eutrophication and possible worse water quality conditions compared to normal. Bluer colors indicate decrease in chlorophyll-a and reduced eutrophication with respect to normal conditions. White areas indicate no change.'
             }
           ]
         }
