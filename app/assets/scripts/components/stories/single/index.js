@@ -505,7 +505,7 @@ If this is a system layer, check that a compare property is defined. In alternat
     // If there are no visuals there's nothing to do.
     if (!visual) return;
 
-    let layersWithLegend = null;
+    let layersWithLegend = [];
 
     if (visual.type === 'map-layer') {
       const { layers = [], spotlight } = visual.data;
@@ -528,7 +528,7 @@ If this is a system layer, check that a compare property is defined. In alternat
         .filter((l) => !!l.legend);
     }
 
-    if (visual.type === 'multi-map') {
+    if (visual.type === 'multi-map' && visual.data.legend) {
       const { legend, name } = visual.data;
       layersWithLegend = [{
         id: item.id,
@@ -537,7 +537,7 @@ If this is a system layer, check that a compare property is defined. In alternat
       }];
     }
 
-    if (!layersWithLegend) return null;
+    if (!layersWithLegend.length) return null;
 
     return (
       <MapLayerLegend>
