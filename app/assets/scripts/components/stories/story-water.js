@@ -83,25 +83,37 @@ export default {
           <p>
             Chlorophyll-a concentrations and water turbidity fluctuate based on a variety of factors, including natural geography and the weather, making it difficult to identify changes due to COVID-19 restrictions. In coastal areas such as the Chesapeake Bay, which are strongly influenced by human activities such as agricultural practices, higher chlorophyll-a concentrations can result from the discharge of urban sewage and fertilizers. In the Chesapeake Bay, agricultural run-off may mask any improvements in water quality from pandemic-related shutdowns.
           </p>
-          <p>
-            Imagery: Landsat 8, April 8 2020
-          </p>
         </>
       ),
       visual: {
         type: 'map-layer',
         data: {
-          bbox: [-76.8370, 38.4783, -75.7397, 39.1928],
+          bbox: [-77.0581, 36.8400, -75.0256, 39.8718],
           layers: [
             {
-              id: 'ls8-chesapeake2',
+              id: 'chla-chesapeake',
               type: 'raster',
               source: {
                 type: 'raster',
                 tiles: [
-                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_015033_20200408_20200422_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/chla-chesapeake/anomaly-chl-bc-2020_03_26.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
                 ]
-              }
+              },
+              name: 'Chlorophyll Anomaly',
+              legend: {
+                type: 'gradient',
+                min: 'less',
+                max: 'more',
+                stops: [
+                  '#3A88BD',
+                  '#C9E0ED',
+                  '#E4EEF3',
+                  '#FDDCC9',
+                  '#DE725B',
+                  '#67001F'
+                ]
+              },
+              info: 'Chlorophyll is an indicator of algae growth. Redder colors indicate increases in chlorophyll-a and worse water quality. Bluer colors indicate decreases in chlorophyll-a and improved water quality. White areas indicate no change.'
             }
           ]
         }
@@ -204,7 +216,6 @@ export default {
             }
           ]
         }
-        // label: 'May 2020',
       }
     },
     {
