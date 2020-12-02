@@ -250,8 +250,131 @@ export default {
                 Scientists behind the research studying air quality at airports during the pandemic explained that because people are seeing better air quality with less traffic during shutdowns, they may also wonder if this is what the future could look like if we relied more heavily on electric vehicles. Unlike cars, however, airplanes are not expected to become electric anytime soon. Therefore, Scientists installed two sensors at the Baltimore-Washington International Airport and two sensors at the Hartsfield-Jackson Atlanta International Airport to better characterize how airplanes contribute to air pollution. Researchers are comparing the on-the-ground sensor information with satellite information from TROPOMI. So far, they have found that nitrogen dioxide hotspots in Atlanta shifted from the airport, seen here, to the city center from April-June 2020. By September, however, satellites revealed the airport had reemerged as a dominant nitrogen dioxide emission source.
               </p>
             </>
-          )
-          // Data visual: Pandora NO2/formaldehyde levels at BWI/ATL airport
+          ),
+          visual: {
+            type: 'multi-map',
+            data: {
+              bbox: [-84.5549, 33.5242, -84.2198, 33.9889],
+              name: 'NO₂ levels',
+              legend: {
+                type: 'gradient',
+                min: '1',
+                max: '3.5',
+                stops: [
+                  '#99c5e0',
+                  '#f9eaa9',
+                  '#f7765d',
+                  '#c13b72',
+                  '#461070',
+                  '#050308'
+                ]
+              },
+              info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
+              mapsPerRow: 5,
+              maps: [
+                {
+                  id: 'no2-mar-2019',
+                  label: 'March 15 - April 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_03.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-may-2019',
+                  label: 'May 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_05.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-jun-2019',
+                  label: 'June 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_06.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-jul-2019',
+                  label: 'July 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_07.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-aug-2019',
+                  label: 'August 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_08.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-mar-2020',
+                  label: 'March 15 - April 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_03.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-may-2020',
+                  label: 'May 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_05.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-jun-2020',
+                  label: 'June 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_06.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-jul-2020',
+                  label: 'July 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_07.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-aug-2020',
+                  label: 'August 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_08.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                }
+              ]
+            }
+          }
         }
       ]
     },
