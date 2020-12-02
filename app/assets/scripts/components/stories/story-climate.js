@@ -171,7 +171,8 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['co2-diff'],
-          date: '2020-01-15T00:00:00Z'
+          date: '2020-01-15T00:00:00Z',
+          bbox: [-24.9609, -36.5978, 100.8984, 47.9899]
         }
       }
     },
