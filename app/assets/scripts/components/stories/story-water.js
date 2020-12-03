@@ -1,10 +1,17 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import Heading from '../../styles/type/heading';
+import { glsp } from '../../styles/utils/theme-values';
 
 import config from '../../config';
 const { api } = config;
+
+const MapLayerLegend = styled.div`
+  display: grid;
+  grid-gap: ${glsp(0.5)};
+`;
 
 export default {
   id: 'water-quality',
@@ -34,27 +41,16 @@ export default {
             </Link>
             , others are studying the effects it may have on water quality. Human activity influences water quality, and behavior changes during the COVID-19 pandemic may be beginning to affect local and regional water quality around the world. Though in many cases that relationship is hard to identify, runoff from agriculture and cities can overload coastal waters with excess nutrients, ships in ports and other waterways can mix up sediment and increase turbidity, and even air pollution can end up in the water. Although there are various indications that overall water quality is improving in many places during pandemic-related shutdowns, the cause of these changes and their long-term effects are under investigation by researchers using satellite-based observations and on-the-ground validation.
           </p>
-          <p>
-            Imagery: Landsat 8, April 17, 2020
-          </p>
         </>
       ),
       visual: {
         type: 'map-layer',
         data: {
-          bbox: [-76.7298, 37.4813, -75.5433, 38.4051],
-          layers: [
-            {
-              id: 'ls8-chesapeake',
-              type: 'raster',
-              source: {
-                type: 'raster',
-                tiles: [
-                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_014034_20200417_20200423_01_T1&bands=B4,B3,B2&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
-                ]
-              }
-            }
-          ]
+          bbox: [-122.63570045, 37.11988178, -121.53518996, 38.35512939],
+          layers: ['water-spm'],
+          mapLabel: 'April 3, 2020',
+          date: '2020-04-03T00:00:00Z',
+          spotlight: 'sf'
         }
       }
     },
@@ -72,6 +68,7 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['no2-diff'],
+          mapLabel: 'March 2020',
           date: '2020-03-01T00:00:00Z',
           bbox: [-122.63570045, 37.11988178, -121.53518996, 38.35512939]
         }
@@ -91,6 +88,7 @@ export default {
         type: 'map-layer',
         data: {
           bbox: [-77.0581, 36.8400, -75.0256, 39.8718],
+          mapLabel: 'March 26, 2020',
           layers: [
             {
               id: 'chla-chesapeake',
@@ -135,6 +133,7 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['water-wq-gl-chl'],
+          mapLabel: 'April 1, 2020',
           date: '2020-04-01T00:00:00Z',
           spotlight: 'gl',
           bbox: [-84.3695, 45.2013, -81.7492, 41.253]
@@ -155,6 +154,7 @@ export default {
         type: 'map-layer',
         data: {
           mapStyle: 'mapbox://styles/covid-nasa/ckhyrjsj40ctz19nc5akczgsk',
+          mapLabel: 'Most recent GEOGLAM data',
           layers: ['agriculture']
         }
       }
@@ -167,15 +167,21 @@ export default {
           <p>
             CEarth-observing satellites have been critical to filling in information about crop planting and conditions, particularly where social distancing and shutdowns have made it difficult to collect ground data. NASA Harvest researchers at the University of Maryland in College Park are using data from U.S. and European satellites to supplement data collected on the ground by the U.S. Department of Agriculture. Using satellite data and machine learning, the researchers are monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
           </p>
-          <p>
-            Imagery: Landsat 8, March 4 2020
-          </p>
+          <MapLayerLegend>
+            <Heading as='h2' size='medium'>
+              About the data
+            </Heading>
+            <p>
+              Landsat-8, visualized using the agriculture band combination (6, 5, 2).
+            </p>
+          </MapLayerLegend>
         </>
       ),
       visual: {
         type: 'map-layer',
         data: {
           bbox: [-93.7916, 41.5923, -92.9731, 42.0248],
+          mapLabel: 'March 4, 2020',
           layers: [
             {
               id: 'ls8-iowa',
@@ -260,10 +266,14 @@ export default {
               Learn More About Changing Human Behavior During the COVID-19 Pandemic
             </Link>
           </p>
-          <Heading as='h2' size='medium'>
-            About the data
-          </Heading>
-          <p>Landsat-8, visualized using the bathymetric band combination (4,3,1).</p>
+          <MapLayerLegend>
+            <Heading as='h2' size='medium'>
+              About the data
+            </Heading>
+            <p>
+              Landsat-8, visualized using the bathymetric band combination (4,3,1).
+            </p>
+          </MapLayerLegend>
         </>
       ),
       visual: {
