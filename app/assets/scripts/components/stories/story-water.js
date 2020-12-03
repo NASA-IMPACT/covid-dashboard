@@ -214,9 +214,33 @@ export default {
                 tiles: [
                   `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/tsm/nas-2020_03_21.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
                 ]
-              }
+              },
+              name: 'Turbidity',
+              legend: {
+                type: 'gradient',
+                min: 'less',
+                max: 'more',
+                stops: [
+                  '#3A88BD',
+                  '#C9E0ED',
+                  '#E4EEF3',
+                  '#FDDCC9',
+                  '#DE725B',
+                  '#67001F'
+                ]
+              },
+              info: 'Turbidity refers to the amount of sediment or particles suspended in water. Redder colors indicate more sediment and murkier water. Bluer colors indicate less sediment and clearer water.'
             }
-          ]
+          ],
+          compare: {
+            mapLabel: () => 'March 2020 compared to April 2020',
+            source: {
+              type: 'raster',
+              tiles: [
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/tsm/nas-2020_04_18.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
+              ]
+            }
+          }
         }
       }
     },
