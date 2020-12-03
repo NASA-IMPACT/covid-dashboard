@@ -56,7 +56,7 @@ export default {
     },
     {
       id: 'air-water-quality-and-covid',
-      name: 'Ar Quality, Water Quality and COVID-19',
+      name: 'Air Quality, Water Quality and COVID-19',
       contentComp: (
         <>
           <p>

@@ -23,6 +23,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
+          mapLabel: () => 'March 2020',
           layers: ['no2-diff'],
           date: '2020-03-01T00:00:00Z'
         }
@@ -242,8 +243,8 @@ export default {
           // Data visual: Planet Labs grounded plane imagery at BWI/ATL airport
         },
         {
-          id: 'part2',
-          name: 'Part 2',
+          id: 'atlanta',
+          name: 'Atlanta',
           contentComp: (
             <>
               <p>
@@ -269,16 +270,16 @@ export default {
                   '#050308'
                 ]
               },
-              info: 'Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
+              info: 'Levels in 10¹⁵ molecules cm⁻². Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
               mapsPerRow: 5,
               maps: [
                 {
                   id: 'no2-mar-2019',
-                  label: 'March 15 - April 2019',
+                  label: 'Mar 22 - Apr 2019',
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_03.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_03.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
@@ -288,47 +289,47 @@ export default {
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_05.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_05.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
                 {
                   id: 'no2-jun-2019',
-                  label: 'June 2019',
+                  label: 'Jun 2019',
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_06.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_06.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
                 {
                   id: 'no2-jul-2019',
-                  label: 'July 2019',
+                  label: 'Jul 2019',
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_07.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_07.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
                 {
                   id: 'no2-aug-2019',
-                  label: 'August 2019',
+                  label: 'Aug 2019',
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_08.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_08.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
                 {
                   id: 'no2-mar-2020',
-                  label: 'March 15 - April 2020',
+                  label: 'Mar 22 - Apr 2020',
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_03.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_03.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
@@ -338,37 +339,37 @@ export default {
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_05.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_05.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
                 {
                   id: 'no2-jun-2020',
-                  label: 'June 2020',
+                  label: 'Jun 2020',
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_06.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_06.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
                 {
                   id: 'no2-jul-2020',
-                  label: 'July 2020',
+                  label: 'Jul 2020',
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_07.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_07.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 },
                 {
                   id: 'no2-aug-2020',
-                  label: 'August 2020',
+                  label: 'Aug 2020',
                   source: {
                     type: 'raster',
                     tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_08.cog.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_08.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                     ]
                   }
                 }
@@ -380,7 +381,7 @@ export default {
     },
     {
       id: 'seeing-rebounds',
-      name: 'Seeing Rebounds in NO',
+      name: 'Seeing Rebounds in NO₂',
       contentComp: (
         <>
           <p>
