@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import Heading from '../../styles/type/heading';
+
 import config from '../../config';
 const { api } = config;
 
@@ -234,8 +236,32 @@ export default {
               Learn More About Changing Human Behavior During the COVID-19 Pandemic
             </Link>
           </p>
+          <Heading as='h2' size='medium'>
+            About the data
+          </Heading>
+          <p>Landsat-8, visualized using the bathymetric band combination (4,3,1).</p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [-89.9533, 16.5, -87.2012, 18.2],
+          mapLabel: () => 'March 3, 2020',
+          layers: [
+            {
+              id: 'ls8-belize',
+              type: 'raster',
+              info: 'asd',
+              source: {
+                type: 'raster',
+                tiles: [
+                  'https://c50qa6bhpe.execute-api.us-west-2.amazonaws.com/scenes/landsat/tiles/{z}/{x}/{y}.png?sceneid=LC08_L1TP_019048_20200303_20200314_01_T1&bands=B4,B3,B1&color_formula=gamma RGB 3.5, saturation 1.7, sigmoidal RGB 15 0.35'
+                ]
+              }
+            }
+          ]
+        }
+      }
     }
   ]
 };
