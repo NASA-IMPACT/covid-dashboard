@@ -273,6 +273,30 @@ const getMapLayers = (spotlightId, layers) => {
   ];
 };
 
+const getMapMessage = (layers, item, date) => {
+  const renderMsg = (mapLabel) =>
+    mapLabel
+      ? typeof mapLabel === 'function'
+        ? mapLabel(date)
+        : mapLabel
+      : '';
+
+  // The map label can come directly from a layer's visual which is the case
+  // when there's only one map. Or it can also come from the compare map, when a
+  // map is being compared. The item0s mapLabel will take precedence.
+  const itemMapLabel = get(item, 'visual.data.mapLabel');
+  if (itemMapLabel) {
+    return [true, renderMsg(itemMapLabel)];
+  }
+
+  // Check if there's any layer that's comparing.
+  const comparingLayer = find(layers, 'comparing');
+  const isComparing = !!comparingLayer;
+  const compareMapLabel = get(comparingLayer, 'compare.mapLabel');
+
+  return [isComparing, renderMsg(compareMapLabel)];
+};
+
 class StoriesSingle extends React.Component {
   constructor (props) {
     super(props);
@@ -692,13 +716,11 @@ If this is a system layer, check that a compare property is defined. In alternat
     const comparingLayer = find(layers, 'comparing');
     const isComparing = !!comparingLayer;
 
-    const mapLabel = get(comparingLayer, 'compare.mapLabel');
-    const compareMessage =
-      isComparing && mapLabel
-        ? typeof mapLabel === 'function'
-          ? mapLabel(this.state.timelineDate)
-          : mapLabel
-        : '';
+    const [showMapMessage, mapMessage] = getMapMessage(
+      layers,
+      currItem,
+      this.state.timelineDate
+    );
 
     const { type: visualType, data: visualData } = currItem.visual || {};
 
@@ -746,8 +768,11 @@ If this is a system layer, check that a compare property is defined. In alternat
             <ExploreCanvas panelSec={this.state.panelSec}>
               {visualType === 'map-layer' && (
                 <ExploreCarto>
-                  <MapMessage active={isComparing && !!compareMessage}>
-                    <p>{compareMessage}</p>
+                  <MapMessage
+                    active={showMapMessage && !!mapMessage}
+                    id={itemNum}
+                  >
+                    <p>{mapMessage}</p>
                   </MapMessage>
                   <MbMap
                     ref={this.mbMapRef}
