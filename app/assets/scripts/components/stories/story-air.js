@@ -315,7 +315,7 @@ export default {
                 },
                 {
                   id: 'no2-aug-2019',
-                  label: 'Aug 2019',
+                  label: 'Aug - Sep 2019',
                   source: {
                     type: 'raster',
                     tiles: [
@@ -365,7 +365,7 @@ export default {
                 },
                 {
                   id: 'no2-aug-2020',
-                  label: 'Aug 2020',
+                  label: 'Aug - Sep 2020',
                   source: {
                     type: 'raster',
                     tiles: [
