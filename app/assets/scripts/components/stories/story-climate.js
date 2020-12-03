@@ -73,9 +73,31 @@ export default {
         </>
       ),
       visual: {
-        type: 'map-layer',
+        type: 'multi-map',
         data: {
-          layers: ['co2']
+          mapsPerRow: 1,
+          maps: [
+            {
+              id: 'no2',
+              label: 'NO₂ March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_202003_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'co2',
+              label: 'CO₂ March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_03_01.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            }
+          ]
         }
       }
     },
