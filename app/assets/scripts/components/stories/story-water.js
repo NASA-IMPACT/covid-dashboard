@@ -81,7 +81,7 @@ export default {
       contentComp: (
         <>
           <p>
-            Chlorophyll-a concentrations and water turbidity fluctuate based on a variety of factors, including natural geography and the weather, making it difficult to identify changes due to COVID-19 restrictions. In coastal areas such as the Chesapeake Bay, which are strongly influenced by human activities such as agricultural practices, higher chlorophyll-a concentrations can result from the discharge of urban sewage and fertilizers. In the Chesapeake Bay, agricultural run-off may mask any improvements in water quality from pandemic-related shutdowns.
+            Chlorophyll-a concentrations and water turbidity fluctuate based on a variety of factors, including natural geography and the weather, making it difficult to identify changes due to COVID-19 restrictions. In coastal areas such as the Chesapeake Bay, which are strongly influenced by human activities such as agricultural practices, higher chlorophyll-a concentrations can result from the discharge of fertilizers. Agricultural run-off may mask any improvements in water quality from pandemic-related shutdowns.
           </p>
         </>
       ),
@@ -113,7 +113,7 @@ export default {
                   '#67001F'
                 ]
               },
-              info: 'Chlorophyll-a is an indicator of algae growth. Redder color indicates elevated chlorophyl-a and eutrophication and possible worse water quality conditions compared to normal. Bluer colors indicate decrease in chlorophyll-a and reduced eutrophication with respect to normal conditions. White areas indicate no change.'
+              info: 'Chlorophyll-a is an indicator of algae growth. Redder color indicate increases chlorophyll-a and worse water quality. Bluer colors indicate decreases in chlorophyll-a and improved water quality. White areas indicate no change.'
             }
           ]
         }
