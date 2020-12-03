@@ -76,6 +76,7 @@ export default {
         type: 'multi-map',
         data: {
           mapsPerRow: 1,
+          bbox: [-148.7109, -47.7540, 179.6484, 62.2679],
           maps: [
             {
               id: 'no2',
@@ -342,6 +343,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
+          mapLabel: () => 'Most recent CO₂ difference',
           layers: ['co2-diff']
         }
       }
