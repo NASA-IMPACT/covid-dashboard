@@ -67,10 +67,10 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
-          layers: ['no2-diff'],
-          mapLabel: 'March 2020',
+          layers: ['no2'],
           date: '2020-03-01T00:00:00Z',
-          bbox: [-122.63570045, 37.11988178, -121.53518996, 38.35512939]
+          bbox: [-122.63570045, 37.11988178, -121.53518996, 38.35512939],
+          compare: true
         }
       }
     },
