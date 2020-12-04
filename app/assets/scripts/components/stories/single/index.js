@@ -71,7 +71,7 @@ const InpageHeaderInnerAlt = styled.div`
 `;
 
 const InpageTitleAlt = styled.h1`
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1.25rem;
   font-weight: ${themeVal('type.base.light')};
   margin: ${glsp(0, 0, -0.25, 0)};
@@ -81,8 +81,8 @@ const InpageSecTitle = styled.h2`
   min-width: 0;
 
   > ${Button} {
-    font-size: 1.5rem;
-    line-height: 2.25rem;
+    font-size: 1.25rem;
+    line-height: 2rem;
     margin-left: ${glsp(-0.75)};
 
     span {
@@ -130,7 +130,7 @@ const InpageToolbarAlt = styled.div`
   flex-flow: row nowrap;
   align-items: flex-end;
   margin-left: auto;
-  padding-left: ${glsp()};
+  padding: ${glsp(0.25, 0, 0.25, 1)};
 
   > *:last-child {
     margin-right: ${glsp(-0.5)};
@@ -139,6 +139,8 @@ const InpageToolbarAlt = styled.div`
 
 const ChapterCount = styled.strong`
   display: none;
+  line-height: 2rem;
+  margin-right: ${glsp(0.5)};
 
   ${media.mediumUp`
     display: block;
