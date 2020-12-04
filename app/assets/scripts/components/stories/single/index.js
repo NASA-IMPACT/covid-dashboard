@@ -563,10 +563,11 @@ If this is a system layer, check that a compare property is defined. In alternat
     }
 
     if (visual.type === 'multi-map' && visual.data.legend) {
-      const { legend, name } = visual.data;
+      const { legend, name, info } = visual.data;
       layersWithLegend = [{
         id: item.id,
         legend,
+        info,
         name: name || 'Multi map'
       }];
     }
