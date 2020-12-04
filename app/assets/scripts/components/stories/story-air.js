@@ -245,20 +245,82 @@ export default {
       name: 'Measuring Air Pollution on the Ground at Airports',
       sections: [
         {
-          id: 'part1',
-          name: 'Part 1',
+          id: 'atlanta-planet',
+          name: 'Airplanes',
           contentComp: (
             <>
               <p>
                 New research during the pandemic is also looking at how COVID-related travel bans are impacting air quality around airports. Current conditions create a unique opportunity to study airport-related pollutants, especially nitrogen dioxide and formaldehyde. While travel bans and strict regulations around air travel have been in place, air traffic has yet to return to previous levels, and many planes remain grounded. Here we see Planet Labs imagery using artificial intelligence to detect grounded airplanes at the Hartsfield-Jackson Atlanta International airport in March 2020. During this time, the airport reported a decline of 85% in passenger traffic.
               </p>
             </>
-          )
-          // Data visual: Planet Labs grounded plane imagery at BWI/ATL airport
+          ),
+          visual: {
+            type: 'multi-map',
+            data: {
+              bbox: [-84.5549, 33.5242, -84.2198, 33.9889],
+              name: 'NO₂ levels',
+              legend: {
+                type: 'gradient',
+                min: '1',
+                max: '3.5',
+                stops: [
+                  '#99c5e0',
+                  '#f9eaa9',
+                  '#f7765d',
+                  '#c13b72',
+                  '#461070',
+                  '#050308'
+                ]
+              },
+              info: 'Levels in 10¹⁵ molecules cm⁻². Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
+              maps: [
+                {
+                  id: 'jun',
+                  label: 'June 2, 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200602T140812_1_1054_3B_Visual.tif`
+                    ]
+                  }
+                },
+                {
+                  id: 'jul',
+                  label: 'July 14, 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200714T155856_1035_3B_Visual.tif`
+                    ]
+                  }
+                },
+                {
+                  id: 'aug',
+                  label: 'August 4, 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200804T160153_100c_3B_Visual.tif`
+                    ]
+                  }
+                },
+                {
+                  id: 'sep',
+                  label: 'September 20, 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200920T163110_05_1064_3B_Visual.tif`
+                    ]
+                  }
+                }
+              ]
+            }
+          }
         },
         {
-          id: 'atlanta',
-          name: 'Atlanta',
+          id: 'atlanta-no2',
+          name: 'NO₂',
           contentComp: (
             <>
               <p>
