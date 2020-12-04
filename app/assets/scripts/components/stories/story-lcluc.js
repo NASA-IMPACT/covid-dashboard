@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import config from '../../config';
+import { LayerInfo } from './single/about-data';
 const { api } = config;
 
 export default {
@@ -14,19 +15,20 @@ export default {
       id: 'changing-behavior',
       name: 'Changing Behavior and Changing Landscapes',
       contentComp: (
-        <>
-          <p>
-            Throughout the COVID-19 pandemic, governments have implemented, eased, and re-implemented restrictions limiting mobility and international travel to help slow the spread of the virus. As a result, people have largely stayed home, and the ways in which we interact with the human-made and natural environments have changed. These changes have reverberated throughout Earth’s systems and are observed in different ways by NASA satellites.
-          </p>
-          <p>
-            Imagery: Landsat 8, February 25, 2020
-          </p>
-        </>
+        <p>
+          Throughout the COVID-19 pandemic, governments have implemented, eased, and re-implemented restrictions limiting mobility and international travel to help slow the spread of the virus. As a result, people have largely stayed home, and the ways in which we interact with the human-made and natural environments have changed. These changes have reverberated throughout Earth’s systems and are observed in different ways by NASA satellites.
+        </p>
       ),
       visual: {
         type: 'map-layer',
+        about: (
+          <LayerInfo>
+            <p>Landsat-8 imagery, visualized with the RGB bands.</p>
+          </LayerInfo>
+        ),
         data: {
           bbox: [113.7442, 30.2021, 114.859, 30.9092],
+          mapLabel: () => 'Feb 25, 2020',
           layers: [
             {
               id: 'ls8-wuhan',
@@ -57,31 +59,79 @@ export default {
       id: 'changes-in-traffic',
       name: 'Changes in Traffic and Parking Lot Patterns',
       contentComp: (
-        <>
-          <p>
-            At different stages of the pandemic, nonessential businesses like shopping malls closed temporarily, while essential businesses like grocery stores were allowed to remain open. The effect of nonessential business closures on surface transportation around the world was so significant that it could be seen from space. For example, the imagery shown here provides a stark picture of empty parking lots near deserted commercial districts in and around Los Angeles. Blue areas represent places where slowdowns were most severe. Scientists obtained these data by combining remote sensing technology known as synthetic aperture radar, or SAR, with high-resolution imagery from Planet Labs. By comparing SAR images of the same areas before and after pandemic-related lockdowns, decreases in car activity in Los Angeles near airports, sports stadiums, and shopping malls were visible from space.
-          </p>
-        </>
-      )
+        <p>
+          At different stages of the pandemic, nonessential businesses like shopping malls closed temporarily, while essential businesses like grocery stores were allowed to remain open. The effect of nonessential business closures on surface transportation around the world was so significant that it could be seen from space. For example, the imagery shown here provides a stark picture of empty parking lots near deserted commercial districts in and around Los Angeles. Blue areas represent places where slowdowns were most severe. Scientists obtained these data by combining remote sensing technology known as synthetic aperture radar, or SAR, with high-resolution imagery from Planet Labs. By comparing SAR images of the same areas before and after pandemic-related lockdowns, decreases in car activity in Los Angeles near airports, sports stadiums, and shopping malls were visible from space.
+        </p>
+      ),
+      visual: {
+        type: 'map-layer',
+        about: (
+          <LayerInfo>
+            <p>Slowdown Proxy Maps show areas with the greatest reduction in car activity shaded in blue. Darker blues indicate areas of greater change.</p>
+          </LayerInfo>
+        ),
+        data: {
+          bbox: [-118.2645, 34.0486, -118.2059, 34.0930],
+          spotlight: 'la',
+          layers: ['slowdown']
+        }
+      }
     },
     {
       id: 'changes-in-ports',
       name: 'Tracking Changes in Ports',
       contentComp: (
-        <>
-          <p>
-            It wasn’t just ground transportation in Los Angeles that was affected by COVID-related shutdowns – its ports also showed less activity. During the pandemic, supply chains around the world dependent on cargo shipping saw interruptions as many ports closed, shipments canceled, and in some locations, altered routes prevented the efficient movement of cargo. According to the Port of Los Angeles, its port saw a 19% reduction in shipping cargo volume during the early months of the pandemic, compared to the same time period in 2019. The image here shows a reduction in the number of ships at the port, which could potentially also affect the area’s overall water quality.
-          </p>
-        </>
-      )
+        <p>
+          It wasn’t just ground transportation in Los Angeles that was affected by COVID-related shutdowns – its ports also showed less activity. During the pandemic, supply chains around the world dependent on cargo shipping saw interruptions as many ports closed, shipments canceled, and in some locations, altered routes prevented the efficient movement of cargo. According to the Port of Los Angeles, its port saw a 19% reduction in shipping cargo volume during the early months of the pandemic, compared to the same time period in 2019. The image here shows a reduction in the number of ships at the port, which could potentially also affect the area’s overall water quality.
+        </p>
+      ),
+      visual: {
+        type: 'map-layer',
+        about: (
+          <LayerInfo>
+            <p>Ships detected in PlanetScope imagery are shown in orange.</p>
+          </LayerInfo>
+        ),
+        data: {
+          // bbox: [-118.6759, 33.4267, -117.0733, 34.3439],
+          spotlight: 'la',
+          mapLabel: () => 'March 11, 2020',
+          date: '2020-03-11T00:00:00Z',
+          layers: [
+            'detections-ship'
+          ]
+        }
+      }
     },
     {
       id: 'changes-in-urban-heat',
       name: 'Changes in Urban Heat During Bay Area Shelter-In-Place Orders',
       contentComp: (
+        <p>
+          Sudden changes in surface transportation may also be changing how cities trap and emit heat. Satellite and thermal data from the joint NASA-U.S. Geological Survey Landsat satellite and NASA’s ECOsystem Spaceborne Thermal Radiometer Experiment on Space Station (ECOSTRESS) instrument aboard the International Space Station show decreases in air pollution and the prevalence of empty parking lots changed how much solar radiation is absorbed and reflected from ground surfaces during the pandemic. In March, surface traffic in the San Francisco Bay Area dropped by 70%. Scientists found that the reduction in traffic corresponded to a 30% decrease in fine particulate and ozone pollution when compared to previous years.
+        </p>
+      ),
+      visual: {
+        type: 'map-layer',
+        about: (
+          <LayerInfo>
+            <p>Slowdown Proxy Maps show areas with the greatest reduction in car activity shaded in blue. Darker blues indicate areas of greater change.</p>
+          </LayerInfo>
+        ),
+        data: {
+          bbox: [-122.2635, 37.6967, -122.1492, 37.7507],
+          spotlight: 'sf',
+          layers: ['slowdown']
+        }
+      }
+    },
+    {
+      id: 'changes-in-urban-heat-continued',
+      name: 'Changes in Urban Heat During Bay Area Shelter-In-Place Orders, Continued',
+      contentComp: (
         <>
           <p>
-            Sudden changes in surface transportation may also be changing how cities trap and emit heat. Satellite and thermal data from the joint NASA-U.S. Geological Survey Landsat satellite and NASA’s ECOsystem Spaceborne Thermal Radiometer Experiment on Space Station (ECOSTRESS) instrument aboard the International Space Station show decreases in air pollution and the prevalence of empty parking lots changed how much solar radiation is absorbed and reflected from ground surfaces during the pandemic. In March, surface traffic in the San Francisco Bay Area dropped by 70%. Scientists found that the reduction in traffic corresponded to a 30% decrease in fine particulate and ozone pollution when compared to previous years.
+            Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, heat dissipated quickly, cooling the urban environment. As a result, scientists found that large parking lots, highway corridors, and commercial rooftops were on average 10-15°F cooler from March to May 2020, compared to previous years.
           </p>
         </>
       ),
@@ -112,20 +162,25 @@ export default {
                 ]
               }
             }
-          ]
+          ],
+          name: 'Surface Temperature',
+          legend: {
+            type: 'gradient',
+            min: '15',
+            max: '45℃',
+            stops: [
+              '#3d4fc0',
+              '#7495f1',
+              '#acc7fa',
+              '#dedbda',
+              '#f5b89e',
+              '#e77962',
+              '#b4152d'
+            ]
+          },
+          info: 'Surface Temperature from Landsat-8.'
         }
       }
-    },
-    {
-      id: 'changes-in-urban-heat-continued',
-      name: 'Changes in Urban Heat During Bay Area Shelter-In-Place Orders, Continued',
-      contentComp: (
-        <>
-          <p>
-            Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, heat dissipated quickly, cooling the urban environment. As a result, scientists found that large parking lots, highway corridors, and commercial rooftops were on average 10-15°F cooler from March to May 2020, compared to previous years.
-          </p>
-        </>
-      )
     },
     {
       id: 'fewer-prescribed-burns',
@@ -142,6 +197,22 @@ export default {
         data: {
           bbox: [-75, 24, -107, 40],
           mapStyle: 'mapbox://styles/covid-nasa/ckhyrwyqa10fn19pu38wdrpjo',
+          name: 'Fire anomalies',
+          legend: {
+            type: 'gradient',
+            min: '-10',
+            max: '10%',
+            stops: [
+              '#0a03fb',
+              '#5a59fb',
+              '#b0b0fd',
+              '#fff8f8',
+              '#fea4a5',
+              '#fd5556',
+              '#fd1c21'
+            ]
+          },
+          info: 'This data shows the change in active fires compared to the baseline of 2012-2019.',
           maps: [
             {
               id: 'fire-mar',
@@ -224,7 +295,13 @@ export default {
             </Link>
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: []
+        }
+      }
     }
   ]
 };

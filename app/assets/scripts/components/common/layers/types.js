@@ -176,9 +176,19 @@ export const layerTypes = {
   },
   raster: {
     update: (ctx, layerInfo, prevProps) => {
-      const { mbMapComparing, mbMapComparingLoaded, props } = ctx;
-      const { id, compare, paint } = layerInfo;
+      const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
+      const { id, compare, paint, source } = layerInfo;
       const { comparing } = props;
+
+      // Check if the source tiles have changed and need to be replaced. This
+      // may happen in the stories when maintaining the layer and changing the
+      // spotlight. One example is the slowdown raster layer on la and sf.
+      const sourceTiles = mbMap.getSource(id).tiles;
+      const newSourceTiles = source.tiles;
+      // Quick compare
+      if (sourceTiles && sourceTiles.join('-') !== newSourceTiles.join('-')) {
+        replaceRasterTiles(mbMap, id, newSourceTiles);
+      }
 
       // Do not update if:
       if (

@@ -26,9 +26,7 @@ import Dropdown, {
 import ShadowScrollbar from '../../common/shadow-scrollbar';
 import MapMessage from '../../common/map-message';
 import MultiMap from './multi-map';
-import LayerLegend from '../../common/layer-legend';
-import Heading from '../../../styles/type/heading';
-import collecticon from '../../../styles/collecticons';
+import AboutData from './about-data';
 
 import { themeVal } from '../../../styles/utils/general';
 import media from '../../../styles/utils/media-queries';
@@ -45,9 +43,17 @@ import {
   toggleLayerCommon,
   toggleLayerCompare
 } from '../../../utils/map-explore-utils';
-import { getSpotlightLayers } from '../../common/layers';
-import { utcDate } from '../../../utils/utils';
-import { replaceSub2 } from '../../../utils/format';
+import { utcDate, filterComponentProps } from '../../../utils/utils';
+import {
+  findById,
+  getPreviousItem,
+  getNextItem,
+  createItemUrl,
+  getCurrentItemNum,
+  getCurrentItemName,
+  getMapLayers,
+  getMapMessage
+} from './utils';
 
 const InpageHeaderInnerAlt = styled.div`
   display: flex;
@@ -146,156 +152,12 @@ const ExploreCarto = styled.section`
   overflow: hidden;
 `;
 
-const MapLayerLegend = styled.div`
-  display: grid;
-  grid-gap: ${glsp(0.5)};
-`;
-
-const LayerInfo = styled.div`
-  display: grid;
-  grid-template-columns: min-content 1fr;
-  grid-gap: ${glsp(0.5)};
-  font-size: 0.875rem;
-  padding-top: ${glsp(0.5)};
-
-  &::before {
-    ${collecticon('circle-information')}
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  p {
-    grid-row: 1;
-  }
-`;
-
 const StoryContent = styled.div`
   display: grid;
   grid-gap: ${glsp()};
 `;
 
-const findById = (haystack = [], id) => {
-  const idx = haystack.findIndex((c) => c.id === id);
-  return [idx === -1 ? null : idx, haystack[idx]];
-};
-
-const getPreviousItem = (chapters, currChapterIdx, currSectionIdx = 0) => {
-  // Try to get the previous section.
-  const chapter = chapters[currChapterIdx];
-  const prevSec = get(chapter, ['sections', currSectionIdx - 1]);
-  if (prevSec) {
-    return {
-      chapter,
-      section: prevSec
-    };
-  }
-
-  // There's no previous section. Get the previous chapter.
-  const prevChapter = chapters[currChapterIdx - 1];
-  // There's no previous chapter.
-  if (!prevChapter) return null;
-
-  // If the chapter has sections return the last
-  if (prevChapter.sections) {
-    const lastSection = prevChapter.sections[prevChapter.sections.length - 1];
-    return {
-      chapter: prevChapter,
-      section: lastSection
-    };
-  } else {
-    return {
-      chapter: prevChapter
-    };
-  }
-};
-
-const getNextItem = (chapters, currChapterIdx, currSectionIdx = 0) => {
-  // Try to get the next section.
-  const chapter = chapters[currChapterIdx];
-  const nextSec = get(chapter, ['sections', currSectionIdx + 1]);
-  if (nextSec) {
-    return {
-      chapter,
-      section: nextSec
-    };
-  }
-
-  // There's no next section. Get the next chapter.
-  const nextChapter = chapters[currChapterIdx + 1];
-  // There's no next chapter.
-  if (!nextChapter) return null;
-
-  // If the chapter has sections return the first
-  if (nextChapter.sections) {
-    return {
-      chapter: nextChapter,
-      section: nextChapter.sections[0]
-    };
-  } else {
-    return {
-      chapter: nextChapter
-    };
-  }
-};
-
-const createItemUrl = (story, item) => {
-  if (!item) return '/discoveries';
-
-  const { chapter, section } = item;
-  const base = `/discoveries/${story.id}/${chapter.id}`;
-  return section ? `${base}/${section.id}` : base;
-};
-
-const getCurrentItemNum = (chapterIdx, sectionIdx = null) => {
-  const sec = sectionIdx !== null ? `.${sectionIdx + 1}` : '';
-  return `${chapterIdx + 1}${sec}`;
-};
-
-const getCurrentItemName = (chapter, section = null) => {
-  return section ? (
-    <>
-      {chapter.name} ({section.name})
-    </>
-  ) : (
-    <>{chapter.name}</>
-  );
-};
-
-const getMapLayers = (spotlightId, layers) => {
-  return [
-    ...getSpotlightLayers(spotlightId || 'global'),
-    // Include any layer that was defined on the story. These will be custom
-    // layers specific for this chapter. Mostly external TMS
-    ...layers.reduce(
-      (acc, l) => (typeof l === 'string' ? acc : [...acc, l]),
-      []
-    )
-  ];
-};
-
-const getMapMessage = (layers, item, date) => {
-  const renderMsg = (mapLabel) =>
-    mapLabel
-      ? typeof mapLabel === 'function'
-        ? mapLabel(date)
-        : mapLabel
-      : '';
-
-  // The map label can come directly from a layer's visual which is the case
-  // when there's only one map. Or it can also come from the compare map, when a
-  // map is being compared. The item0s mapLabel will take precedence.
-  const itemMapLabel = get(item, 'visual.data.mapLabel');
-  if (itemMapLabel) {
-    return [true, renderMsg(itemMapLabel)];
-  }
-
-  // Check if there's any layer that's comparing.
-  const comparingLayer = find(layers, 'comparing');
-  const isComparing = !!comparingLayer;
-  const compareMapLabel = get(comparingLayer, 'compare.mapLabel');
-
-  return [isComparing, renderMsg(compareMapLabel)];
-};
+const CleanLink = filterComponentProps(Link, ['active']);
 
 class StoriesSingle extends React.Component {
   constructor (props) {
@@ -534,74 +396,6 @@ If this is a system layer, check that a compare property is defined. In alternat
     }
   }
 
-  renderLegend (item) {
-    const { visual } = item;
-    // If there are no visuals there's nothing to do.
-    if (!visual) return;
-
-    let layersWithLegend = [];
-
-    if (visual.type === 'map-layer') {
-      const { layers = [], spotlight } = visual.data;
-
-      const mapLayers = getMapLayers(spotlight, layers);
-      // Map the layer ids to layer definition objects.
-      layersWithLegend = layers
-        .map((l, idx) => {
-          if (typeof l === 'string') {
-            const layerDef = mapLayers.find((layer) => layer.id === l);
-            if (!layerDef) {
-              throw new Error(
-                `Layer definition not found for story layer with id [${l}]`
-              );
-            }
-            return layerDef;
-          }
-          return l;
-        })
-        .filter((l) => !!l.legend);
-    }
-
-    if (visual.type === 'multi-map' && visual.data.legend) {
-      const { legend, name, info } = visual.data;
-      layersWithLegend = [{
-        id: item.id,
-        legend,
-        info,
-        name: name || 'Multi map'
-      }];
-    }
-
-    if (!layersWithLegend.length) return null;
-
-    return (
-      <MapLayerLegend>
-        <Heading as='h2' size='medium'>
-          About the data
-        </Heading>
-        {layersWithLegend.map((l) => {
-          const { type } = l.legend;
-          const legend = {
-            ...l.legend,
-            // We don't have adjustable gradients here, so convert to normal one.
-            type: type === 'gradient-adjustable' ? 'gradient' : type
-          };
-          return (
-            <div key={l.id}>
-              <Heading as='h3' size='small'>
-                {replaceSub2(l.name)}
-              </Heading>
-              <LayerLegend dataOrder={l.dataOrder} legend={legend} id={l.id} />
-              <LayerInfo>
-                <p>{l.info}</p>
-              </LayerInfo>
-            </div>
-          );
-        })}
-      </MapLayerLegend>
-    );
-  }
-
   renderChapterDropdown (itemName) {
     const {
       story,
@@ -640,7 +434,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                 return (
                   <li key={chapter.id}>
                     <DropMenuItem
-                      as={Link}
+                      as={CleanLink}
                       active={chapter.id === chapterId && !sectionId}
                       to={chapterUrl}
                       title='View chapter of this story'
@@ -653,7 +447,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                         {chapter.sections.map((section) => (
                           <li key={section.id}>
                             <DropMenuItem
-                              as={Link}
+                              as={CleanLink}
                               active={
                                 chapter.id === chapterId &&
                                 section.id === sectionId
@@ -813,7 +607,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                 content={
                   <StoryContent>
                     <div>{panelContent}</div>
-                    {this.renderLegend(currItem)}
+                    <AboutData id={currItem.id} visual={currItem.visual} />
                   </StoryContent>
                 }
               />
