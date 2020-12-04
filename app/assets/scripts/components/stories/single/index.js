@@ -84,16 +84,21 @@ const InpageTitleAlt = styled.h1`
 `;
 
 const InpageSecTitle = styled.h2`
-  min-width: 0;
+  min-width: 0px;
 
   > ${Button} {
-    font-size: 1.25rem;
-    line-height: 2rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
     margin-left: ${glsp(-0.75)};
+    display: inline-flex;
+    max-width: 100%;
+
+    ${media.mediumUp`
+      font-size: 1.25rem;
+    `}
 
     span {
       ${truncated()}
-      max-width: 100%;
     }
   }
 `;
@@ -136,7 +141,7 @@ const InpageToolbarAlt = styled.div`
   flex-flow: row nowrap;
   align-items: flex-end;
   margin-left: auto;
-  padding: ${glsp(0.25, 0, 0.25, 1)};
+  padding-left: ${glsp()};
 
   > *:last-child {
     margin-right: ${glsp(-0.5)};
