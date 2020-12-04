@@ -42,21 +42,21 @@ const MapsWrapper = styled.div`
 
 const MapsNav = styled.ul`
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 0;
-  width: 100%;
   z-index: 10;
   display: flex;
-  justify-content: center;
+  flex-flow: column;
   padding: ${glsp()};
-
-  li:not(:last-child) {
-    margin-right: ${glsp(0.5)};
-  }
+  transform: translate(0, -50%);
 
   ${media.largeUp`
     display: none;
   `}
+
+  li:not(:last-child) {
+    margin-bottom: ${glsp(0.5)};
+  }
 `;
 
 const MapsNavItem = styled.a`
