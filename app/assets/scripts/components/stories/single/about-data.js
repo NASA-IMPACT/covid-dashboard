@@ -37,7 +37,7 @@ export const LayerInfo = styled.div`
 
 const AboutData = ({ visual, id }) => {
   // If there are no visuals there's nothing to do.
-  if (!visual) return;
+  if (!visual) return null;
 
   let layersWithLegend = [];
 
