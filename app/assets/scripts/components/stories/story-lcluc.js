@@ -321,7 +321,13 @@ export default {
             </Link>
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: []
+        }
+      }
     }
   ]
 };
