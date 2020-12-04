@@ -309,7 +309,7 @@ class MbMap extends React.Component {
     // Add zoom controls.
     this.mbMapComparing.addControl(
       new mapboxgl.NavigationControl(),
-      'top-left'
+      'top-right'
     );
 
     // Remove compass.
@@ -394,7 +394,7 @@ class MbMap extends React.Component {
 
     if (!this.props.disableControls) {
       // Add zoom controls.
-      this.mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      this.mbMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
       // Remove compass.
       document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
