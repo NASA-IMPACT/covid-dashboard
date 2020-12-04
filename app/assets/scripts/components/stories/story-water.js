@@ -1,17 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import Heading from '../../styles/type/heading';
-import { glsp } from '../../styles/utils/theme-values';
-
 import config from '../../config';
+import { LayerInfo } from './single/about-data';
 const { api } = config;
-
-const MapLayerLegend = styled.div`
-  display: grid;
-  grid-gap: ${glsp(0.5)};
-`;
 
 export default {
   id: 'water-quality',
@@ -163,22 +155,17 @@ export default {
       id: 'counting-crops',
       name: 'Counting Crops During a Lockdown',
       contentComp: (
-        <>
-          <p>
-            CEarth-observing satellites have been critical to filling in information about crop planting and conditions, particularly where social distancing and shutdowns have made it difficult to collect ground data. NASA Harvest researchers at the University of Maryland in College Park are using data from U.S. and European satellites to supplement data collected on the ground by the U.S. Department of Agriculture. Using satellite data and machine learning, the researchers are monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
-          </p>
-          <MapLayerLegend>
-            <Heading as='h2' size='medium'>
-              About the data
-            </Heading>
-            <p>
-              Landsat-8, visualized using the agriculture band combination (6, 5, 2).
-            </p>
-          </MapLayerLegend>
-        </>
+        <p>
+          CEarth-observing satellites have been critical to filling in information about crop planting and conditions, particularly where social distancing and shutdowns have made it difficult to collect ground data. NASA Harvest researchers at the University of Maryland in College Park are using data from U.S. and European satellites to supplement data collected on the ground by the U.S. Department of Agriculture. Using satellite data and machine learning, the researchers are monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
+        </p>
       ),
       visual: {
         type: 'map-layer',
+        about: (
+          <LayerInfo>
+            <p>Landsat-8, visualized using the agriculture band combination (6, 5, 2).</p>
+          </LayerInfo>
+        ),
         data: {
           bbox: [-93.7916, 41.5923, -92.9731, 42.0248],
           mapLabel: 'March 4, 2020',
@@ -266,18 +253,15 @@ export default {
               Learn More About Changing Human Behavior During the COVID-19 Pandemic
             </Link>
           </p>
-          <MapLayerLegend>
-            <Heading as='h2' size='medium'>
-              About the data
-            </Heading>
-            <p>
-              Landsat-8, visualized using the bathymetric band combination (4,3,1).
-            </p>
-          </MapLayerLegend>
         </>
       ),
       visual: {
         type: 'map-layer',
+        about: (
+          <LayerInfo>
+            <p>Landsat-8, visualized using the bathymetric band combination (4,3,1).</p>
+          </LayerInfo>
+        ),
         data: {
           bbox: [-89.9533, 16.5, -87.2012, 18.2],
           mapLabel: () => 'March 3, 2020',
