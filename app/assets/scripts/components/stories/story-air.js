@@ -1,16 +1,9 @@
-import React from 'react';import styled from 'styled-components';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Heading from '../../styles/type/heading';
-import { glsp } from '../../styles/utils/theme-values';
-
 import config from '../../config';
+import { LayerInfo } from './single/about-data';
 const { api } = config;
-
-const MapLayerLegend = styled.div`
-  display: grid;
-  grid-gap: ${glsp(0.5)};
-`;
 
 export default {
   id: 'air-quality',
@@ -45,18 +38,15 @@ export default {
           <p>
             Cities are easy to spot from space. Choose any large, urban area around the world, and you’re likely see similar things: dense population centers, complex webs of highways and, more often than not, smog. Smog is the hazy curtain of air that often hangs over cities. It occurs when nitrogen dioxide  produced from fossil fuel emissions from gasoline in cars or coal in powerplants chemically reacts with sunlight and other pollutants like carbon monoxide (CO). Thick smog is harmful to breathe and can significantly reduce visibility. During lockdowns, satellites observed sharp reductions in nitrogen dioxide emissions in cities around the world, and smog began to vanish. Skies were bluer, air was cleaner, and, in some places, views previously obscured by air pollution were suddenly revealed. In Los Angeles, NASA scientists detected that nitrogen dioxide levels fell by more than 30% during the height of COVID-related shutdowns. Other large cities around the world experienced similar reductions.
           </p>
-          <MapLayerLegend>
-            <Heading as='h2' size='medium'>
-              About the data
-            </Heading>
-            <p>
-              Landsat-8, visualized using the RGB band combination.
-            </p>
-          </MapLayerLegend>
         </>
       ),
       visual: {
         type: 'map-layer',
+        about: (
+          <LayerInfo>
+            <p>Landsat-8, visualized using the RGB band combination.</p>
+          </LayerInfo>
+        ),
         data: {
           bbox: [-118.529, 33.835, -118.034, 34.168],
           mapLabel: () => 'February 26, 2020',
