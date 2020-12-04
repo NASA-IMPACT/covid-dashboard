@@ -138,8 +138,11 @@ const InpageToolbarAlt = styled.div`
 `;
 
 const ChapterCount = styled.strong`
-  line-height: 2rem;
-  margin-right: ${glsp(0.5)};
+  display: none;
+
+  ${media.mediumUp`
+    display: block;
+  `}
 `;
 
 const ExploreCarto = styled.section`
