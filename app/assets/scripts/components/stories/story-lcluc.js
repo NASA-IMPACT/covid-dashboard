@@ -103,23 +103,25 @@ export default {
           <p>
             It wasn’t just ground transportation in Los Angeles that was affected by COVID-related shutdowns – its ports also showed less activity. During the pandemic, supply chains around the world dependent on cargo shipping saw interruptions as many ports closed, shipments canceled, and in some locations, altered routes prevented the efficient movement of cargo. According to the Port of Los Angeles, its port saw a 19% reduction in shipping cargo volume during the early months of the pandemic, compared to the same time period in 2019. The image here shows a reduction in the number of ships at the port, which could potentially also affect the area’s overall water quality.
           </p>
+          <MapLayerLegend>
+            <Heading as='h2' size='medium'>
+              About the data
+            </Heading>
+            <p>
+              Ships detected in PlanetScope imagery are shown in orange.
+            </p>
+          </MapLayerLegend>
         </>
       ),
       visual: {
         type: 'map-layer',
         data: {
-          bbox: [-118.6759, 33.4267, -117.0733, 34.3439],
+          // bbox: [-118.6759, 33.4267, -117.0733, 34.3439],
           spotlight: 'la',
+          mapLabel: () => 'March 11, 2020',
+          date: '2020-03-11T00:00:00Z',
           layers: [
-            // ports,
-            {
-              id: 'planet-background',
-              type: 'raster',
-              source: {
-                type: 'raster',
-                tiles: [`${api}/planet/{z}/{x}/{y}?date=2020_03_22&site=la`]
-              }
-            }
+            'detections-ship'
           ]
         }
       }
