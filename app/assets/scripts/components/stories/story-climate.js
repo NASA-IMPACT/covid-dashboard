@@ -73,9 +73,32 @@ export default {
         </>
       ),
       visual: {
-        type: 'map-layer',
+        type: 'multi-map',
         data: {
-          layers: ['co2']
+          mapsPerRow: 1,
+          bbox: [-148.7109, -47.7540, 179.6484, 62.2679],
+          maps: [
+            {
+              id: 'no2',
+              label: 'NO₂ March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_202003_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'co2',
+              label: 'CO₂ March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_03_01.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            }
+          ]
         }
       }
     },
@@ -88,7 +111,62 @@ export default {
             Further complicating the ability to discern pandemic-related changes in carbon dioxide concentrations is the fact that initial lockdowns corresponded with the beginning of spring in the Northern Hemisphere – when trees and other plants began to rapidly absorb carbon dioxide from the atmosphere. Trees, grasslands, and other land ecosystems absorb billions of tons of carbon dioxide as they bloom in the spring and then release most of that carbon dioxide back into the atmosphere as they decay in the fall. The ocean also exchanges billions of tons of carbon dioxide with the atmosphere each year. Typically, these components of the natural carbon cycle are reasonably well balanced when averaged over the year: absorbing about as much carbon dioxide as the emit, along with about half of the carbon dioxide produced by human activities. However, seasonal swings in the uptake and release of carbon dioxide by plants on land, and temperature and rainfall changes associated with naturally occurring climatological phenomena such as the El Niño Southern Oscillation, can mask any smaller changes related to the COVID-19 pandemic.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'multi-map',
+        data: {
+          name: 'CO₂ - 16 day average',
+          bbox: [-140, -40, 140, 40],
+          legend: {
+            type: 'gradient-adjustable',
+            min: '< 408 ppm',
+            max: '> 419 ppm',
+            stops: [
+              '#313695',
+              '#588cbf',
+              '#a3d2e5',
+              '#e8f6e8',
+              '#fee89c',
+              '#fba55c',
+              '#e24932'
+            ]
+          },
+          info: 'This layer shows the average background concentration of carbon dioxide (CO₂) in our atmosphere for 2020. Redder colors indicate more CO₂. Bluer colors indicate less CO₂.',
+          mapsPerRow: 2,
+          maps: [
+            {
+              id: 'jan',
+              label: 'Jan 15 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_01_15.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            },
+            {
+              id: 'apr',
+              label: 'Apr 15 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_04_15.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            },
+            {
+              id: 'jul',
+              label: 'Jul 15 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_07_15.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'oco2-and-gosat',
@@ -265,6 +343,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
+          mapLabel: () => 'Most recent CO₂ difference',
           layers: ['co2-diff']
         }
       }
