@@ -239,10 +239,10 @@ const getNextItem = (chapters, currChapterIdx, currSectionIdx = 0) => {
 };
 
 const createItemUrl = (story, item) => {
-  if (!item) return '/stories';
+  if (!item) return '/discoveries';
 
   const { chapter, section } = item;
-  const base = `/stories/${story.id}/${chapter.id}`;
+  const base = `/discoveries/${story.id}/${chapter.id}`;
   return section ? `${base}/${section.id}` : base;
 };
 
@@ -271,6 +271,30 @@ const getMapLayers = (spotlightId, layers) => {
       []
     )
   ];
+};
+
+const getMapMessage = (layers, item, date) => {
+  const renderMsg = (mapLabel) =>
+    mapLabel
+      ? typeof mapLabel === 'function'
+        ? mapLabel(date)
+        : mapLabel
+      : '';
+
+  // The map label can come directly from a layer's visual which is the case
+  // when there's only one map. Or it can also come from the compare map, when a
+  // map is being compared. The item0s mapLabel will take precedence.
+  const itemMapLabel = get(item, 'visual.data.mapLabel');
+  if (itemMapLabel) {
+    return [true, renderMsg(itemMapLabel)];
+  }
+
+  // Check if there's any layer that's comparing.
+  const comparingLayer = find(layers, 'comparing');
+  const isComparing = !!comparingLayer;
+  const compareMapLabel = get(comparingLayer, 'compare.mapLabel');
+
+  return [isComparing, renderMsg(compareMapLabel)];
 };
 
 class StoriesSingle extends React.Component {
@@ -340,13 +364,23 @@ class StoriesSingle extends React.Component {
       const currItem = section || chapter;
       const currVisType = get(currItem, 'visual.type');
 
+      /* eslint-disable-next-line prefer-const */
+      let newState = {
+        // Reset map data on story change
+        activeLayers: [],
+        /* eslint-disable-next-line react/no-unused-state */
+        layersState: {}
+      };
+
       // If the visual type changes to a non map value we have to reset the map
       // loaded state.
       if (currVisType !== 'map-layer') {
-        this.setState({ mapLoaded: false });
+        newState.mapLoaded = false;
       }
 
-      this.updateItemVisuals(currItem);
+      this.setState(newState, () => {
+        this.updateItemVisuals(currItem);
+      });
     }
   }
 
@@ -505,12 +539,14 @@ If this is a system layer, check that a compare property is defined. In alternat
     // If there are no visuals there's nothing to do.
     if (!visual) return;
 
+    let layersWithLegend = [];
+
     if (visual.type === 'map-layer') {
       const { layers = [], spotlight } = visual.data;
 
       const mapLayers = getMapLayers(spotlight, layers);
       // Map the layer ids to layer definition objects.
-      const layersWithLegend = layers
+      layersWithLegend = layers
         .map((l, idx) => {
           if (typeof l === 'string') {
             const layerDef = mapLayers.find((layer) => layer.id === l);
@@ -524,40 +560,46 @@ If this is a system layer, check that a compare property is defined. In alternat
           return l;
         })
         .filter((l) => !!l.legend);
-
-      if (!layersWithLegend.length) return null;
-
-      return (
-        <MapLayerLegend>
-          <Heading as='h2' size='medium'>
-            About the data
-          </Heading>
-          {layersWithLegend.map((l) => {
-            const { type } = l.legend;
-            const legend = {
-              ...l.legend,
-              // We don't have adjustable gradients here, so convert to normal one.
-              type: type === 'gradient-adjustable' ? 'gradient' : type
-            };
-            return (
-              <div key={l.id}>
-                <Heading as='h3' size='small'>
-                  {replaceSub2(l.name)}
-                </Heading>
-                <LayerLegend
-                  dataOrder={l.dataOrder}
-                  legend={legend}
-                  id={l.id}
-                />
-                <LayerInfo>
-                  <p>{l.info}</p>
-                </LayerInfo>
-              </div>
-            );
-          })}
-        </MapLayerLegend>
-      );
     }
+
+    if (visual.type === 'multi-map' && visual.data.legend) {
+      const { legend, name, info } = visual.data;
+      layersWithLegend = [{
+        id: item.id,
+        legend,
+        info,
+        name: name || 'Multi map'
+      }];
+    }
+
+    if (!layersWithLegend.length) return null;
+
+    return (
+      <MapLayerLegend>
+        <Heading as='h2' size='medium'>
+          About the data
+        </Heading>
+        {layersWithLegend.map((l) => {
+          const { type } = l.legend;
+          const legend = {
+            ...l.legend,
+            // We don't have adjustable gradients here, so convert to normal one.
+            type: type === 'gradient-adjustable' ? 'gradient' : type
+          };
+          return (
+            <div key={l.id}>
+              <Heading as='h3' size='small'>
+                {replaceSub2(l.name)}
+              </Heading>
+              <LayerLegend dataOrder={l.dataOrder} legend={legend} id={l.id} />
+              <LayerInfo>
+                <p>{l.info}</p>
+              </LayerInfo>
+            </div>
+          );
+        })}
+      </MapLayerLegend>
+    );
   }
 
   renderChapterDropdown (itemName) {
@@ -590,7 +632,7 @@ If this is a system layer, check that a compare property is defined. In alternat
             <DropTitle>Chapters</DropTitle>
             <DropMenu role='menu' selectable>
               {story.chapters.map((chapter) => {
-                const baseUrl = `/stories/${story.id}/${chapter.id}`;
+                const baseUrl = `/discoveries/${story.id}/${chapter.id}`;
                 const chapterUrl = chapter.sections
                   ? `${baseUrl}/${chapter.sections[0].id}`
                   : baseUrl;
@@ -675,13 +717,11 @@ If this is a system layer, check that a compare property is defined. In alternat
     const comparingLayer = find(layers, 'comparing');
     const isComparing = !!comparingLayer;
 
-    const mapLabel = get(comparingLayer, 'compare.mapLabel');
-    const compareMessage =
-      isComparing && mapLabel
-        ? typeof mapLabel === 'function'
-          ? mapLabel(this.state.timelineDate)
-          : mapLabel
-        : '';
+    const [showMapMessage, mapMessage] = getMapMessage(
+      layers,
+      currItem,
+      this.state.timelineDate
+    );
 
     const { type: visualType, data: visualData } = currItem.visual || {};
 
@@ -729,8 +769,11 @@ If this is a system layer, check that a compare property is defined. In alternat
             <ExploreCanvas panelSec={this.state.panelSec}>
               {visualType === 'map-layer' && (
                 <ExploreCarto>
-                  <MapMessage active={isComparing && !!compareMessage}>
-                    <p>{compareMessage}</p>
+                  <MapMessage
+                    active={showMapMessage && !!mapMessage}
+                    id={itemNum}
+                  >
+                    <p>{mapMessage}</p>
                   </MapMessage>
                   <MbMap
                     ref={this.mbMapRef}
@@ -752,6 +795,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                     // dynamically, the component needs to be remounted if the
                     // number of maps change.
                     key={`maps-${visualData.maps.length}`}
+                    mapsPerRow={visualData.mapsPerRow}
                     maps={visualData.maps}
                     bbox={visualData.bbox}
                     mapStyle={visualData.mapStyle}

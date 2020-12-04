@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'changing-landscapes',
-  name: 'Changing landscapes during the COVID-19 pandemic',
+  name: 'Changing Landscapes',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-changing-landscapes.jpg',
   chapters: [
@@ -127,15 +127,7 @@ export default {
           bbox: [-122.6357, 37.1198, -121.5351, 38.3551],
           spotlight: 'sf',
           layers: [
-            'slowdown',
-            {
-              id: 'planet-background',
-              type: 'raster',
-              source: {
-                type: 'raster',
-                tiles: [`${api}/planet/{z}/{x}/{y}?date=2020_03_11&site=sf`]
-              }
-            }
+            'slowdown'
           ]
         }
       }
@@ -149,7 +141,37 @@ export default {
             Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, heat dissipated quickly, cooling the urban environment. As a result, scientists found that large parking lots, highway corridors, and commercial rooftops were on average 10-15°F cooler from March to May 2020, compared to previous years.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'multi-map',
+        data: {
+          bbox: [-121.99956, 37.33972, -121.81417, 37.48344],
+          // units are in kelvin with a rescale factor of 0.1
+          // current rescale values translate to 15 & 45 celsius
+          maps: [
+            {
+              id: 'st-2018',
+              label: 'April 2018',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/ls8-surface-temperature/LC08_CU_002009_20180414_20190615_C01_V01_ST.cog.tif&resampling_method=bilinear&rescale=2881,3182&color_map=coolwarm`
+                ]
+              }
+            },
+            {
+              id: 'st-2020',
+              label: 'April 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/ls8-surface-temperature/LC08_CU_002009_20200403_20200412_C01_V01_ST.cog.tif&resampling_method=bilinear&rescale=2881,3182&color_map=coolwarm`
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'fewer-prescribed-burns',
@@ -241,7 +263,7 @@ export default {
           </p>
           <p>
             <Link
-              to='/stories/air-quality/aq-and-covid'
+              to='/discoveries/air-quality/aq-and-covid'
               title='Explore How COVID-19 Is Affecting Earth&apos;s Air Quality'
             >
               Explore How COVID-19 Is Affecting Earth&apos;s Air Quality

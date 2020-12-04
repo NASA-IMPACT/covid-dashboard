@@ -122,7 +122,7 @@ const summaries = {
       </p>
     </>
   ),
-  wble: (
+  gl: (
     <>
       <p>
         As human activity levels shift in accordance with social distancing measures during the COVID-19 pandemic, researchers are using NASA’s ocean color satellites to observe potential changes in water quality within the Great Lakes region that might occur as a result of the shutdowns. Specifically, scientists are comparing how regions of the lakes (e.g., the Western Basin of Lake Erie and Saginaw Bay in Lake Huron) typically impacted by human activity fare against more remote, pristine regions (e.g., Thunder Bay in Lake Huron) that are relatively untouched by society. These comparisons will help determine whether any observed changes during the pandemic are due to shifts in human activity or natural variation.

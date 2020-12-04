@@ -13,7 +13,14 @@ import { visuallyHidden } from '../../../styles/helpers';
 // Set mapbox token.
 mapboxgl.accessToken = config.mbToken;
 
-const renderGridColumn = ({ mapCount }) => {
+const renderGridColumn = ({ mapCount, rowColumns }) => {
+  // If the user defined the amount of maps per row, that takes precedence.
+  if (rowColumns) {
+    return css`
+      grid-template-columns: repeat(${rowColumns}, 1fr);
+    `;
+  }
+
   if (mapCount < 2) return;
 
   if (mapCount % 3 !== 0 && mapCount % 2 === 0) {
@@ -62,9 +69,11 @@ const MapsNavItem = styled.a`
     box-shadow: 0 0 4px 4px ${themeVal('color.baseAlphaA')};
     border-radius: ${themeVal('shape.ellipsoid')};
 
-    ${({ active }) => active && css`
-      background: ${themeVal('color.primary')};
-    `}
+    ${({ active }) =>
+      active &&
+      css`
+        background: ${themeVal('color.primary')};
+      `}
   }
 
   span {
@@ -189,7 +198,7 @@ SmallMultipleMap.propTypes = {
 // different key property.
 /* eslint-disable-next-line react/display-name */
 const MultiMap = React.forwardRef((props, ref) => {
-  const { maps, bbox, mapStyle } = props;
+  const { maps, bbox, mapStyle, mapsPerRow } = props;
 
   // On small screens the maps are rendered side by side and the container is
   // programmatically scrolled to the correct place when the navigation is used.
@@ -241,7 +250,11 @@ const MultiMap = React.forwardRef((props, ref) => {
           </li>
         ))}
       </MapsNav>
-      <MapsWrapperInner ref={mapsScrollContainer} mapCount={maps.length}>
+      <MapsWrapperInner
+        ref={mapsScrollContainer}
+        mapCount={maps.length}
+        rowColumns={mapsPerRow}
+      >
         {maps.map((m, idx) => (
           <SmallMultipleMap
             ref={theRefs.current[idx]}
@@ -258,6 +271,7 @@ const MultiMap = React.forwardRef((props, ref) => {
 });
 
 MultiMap.propTypes = {
+  mapsPerRow: T.number,
   bbox: T.array,
   mapStyle: T.string,
   maps: T.array

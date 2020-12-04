@@ -6,7 +6,7 @@ const { api } = config;
 
 export default {
   id: 'air-quality',
-  name: 'Air Quality During COVID-19 Shutdowns',
+  name: 'Air Quality',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-air.jpg',
   chapters: [
@@ -23,6 +23,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
+          mapLabel: () => 'March 2020',
           layers: ['no2-diff'],
           date: '2020-03-01T00:00:00Z'
         }
@@ -242,22 +243,145 @@ export default {
           // Data visual: Planet Labs grounded plane imagery at BWI/ATL airport
         },
         {
-          id: 'part2',
-          name: 'Part 2',
+          id: 'atlanta',
+          name: 'Atlanta',
           contentComp: (
             <>
               <p>
                 Scientists behind the research studying air quality at airports during the pandemic explained that because people are seeing better air quality with less traffic during shutdowns, they may also wonder if this is what the future could look like if we relied more heavily on electric vehicles. Unlike cars, however, airplanes are not expected to become electric anytime soon. Therefore, Scientists installed two sensors at the Baltimore-Washington International Airport and two sensors at the Hartsfield-Jackson Atlanta International Airport to better characterize how airplanes contribute to air pollution. Researchers are comparing the on-the-ground sensor information with satellite information from TROPOMI. So far, they have found that nitrogen dioxide hotspots in Atlanta shifted from the airport, seen here, to the city center from April-June 2020. By September, however, satellites revealed the airport had reemerged as a dominant nitrogen dioxide emission source.
               </p>
             </>
-          )
-          // Data visual: Pandora NO2/formaldehyde levels at BWI/ATL airport
+          ),
+          visual: {
+            type: 'multi-map',
+            data: {
+              bbox: [-84.5549, 33.5242, -84.2198, 33.9889],
+              name: 'NO₂ levels',
+              legend: {
+                type: 'gradient',
+                min: '1',
+                max: '3.5',
+                stops: [
+                  '#99c5e0',
+                  '#f9eaa9',
+                  '#f7765d',
+                  '#c13b72',
+                  '#461070',
+                  '#050308'
+                ]
+              },
+              info: 'Levels in 10¹⁵ molecules cm⁻². Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
+              mapsPerRow: 5,
+              maps: [
+                {
+                  id: 'no2-mar-2019',
+                  label: 'Mar 22 - Apr 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_03.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-may-2019',
+                  label: 'May 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_05.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-jun-2019',
+                  label: 'Jun 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_06.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-jul-2019',
+                  label: 'Jul 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_07.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-aug-2019',
+                  label: 'Aug - Sep 2019',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_08.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-mar-2020',
+                  label: 'Mar 22 - Apr 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_03.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-may-2020',
+                  label: 'May 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_05.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-jun-2020',
+                  label: 'Jun 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_06.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-jul-2020',
+                  label: 'Jul 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_07.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                },
+                {
+                  id: 'no2-aug-2020',
+                  label: 'Aug - Sep 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_08.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                    ]
+                  }
+                }
+              ]
+            }
+          }
         }
       ]
     },
     {
       id: 'seeing-rebounds',
-      name: 'Seeing Rebounds in NO',
+      name: 'Seeing Rebounds in NO₂',
       contentComp: (
         <>
           <p>
@@ -265,7 +389,7 @@ export default {
           </p>
           <p>
             <Link
-              to='/stories/climate/climate-change-and-covid'
+              to='/discoveries/climate/climate-change-and-covid'
               title='Explore How COVID-19 Is Affecting Earth&apos;s Climate'
             >
               Explore How COVID-19 Is Affecting Earth&apos;s Climate

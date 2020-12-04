@@ -1,6 +1,6 @@
 /**
  * How to add a new story page:
- * 1) Create a file for the page inside scripts/components/stories/.
+ * 1) Create a file for the page inside scripts/components/discoveries/.
  *    The name of the file should be `story-[name].js
  *    The file will have to export an object with the following properties:
  *    - id: string

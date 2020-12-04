@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import config from '../../config';
+const { api } = config;
+
 export default {
   id: 'climate',
-  name: 'Understanding the Long-Term Impacts of COVID-19 on Climate',
+  name: 'Climate Change',
   publishDate: '2020/12/01',
   thumbnail: 'thumbnail-climate.jpg',
   chapters: [
@@ -13,10 +16,33 @@ export default {
       contentComp: (
         <>
           <p>
-            Throughout the COVID-19 pandemic, communities have seen significant reductions in automobile traffic, energy consumption, and other related activities. The sudden change in our everyday lives has led to substantial yet temporary reductions in fossil fuel use across the globe during this extraordinary time. Given these sharp decreases, and the observed associated declines in pollutants associated with fossil fuel combustion, such as nitrogen dioxide (NO<sub>2</sub>), scientists have wondered whether corresponding decreases in carbon dioxide (CO<sub>2</sub>), which is also primarily emitted from the burning of fossil fuels, could be observed from satellites and what impact, if any, such decreases could have on future climate projections.
+            Throughout the COVID-19 pandemic, communities have seen significant reductions in automobile traffic, energy consumption, and other related activities. The sudden change in our everyday lives has led to substantial, yet temporary, reductions in fossil fuel use across the globe. The combustion of fossil fuels produces greenhouse gases, such as carbon dioxide (CO<sub>2</sub>) and methane (CH<sub>4</sub>), which play a major role in regulating Earth’s climate. These sharp, global decreases are giving scientists an unprecedented opportunity to study how changes in human activities impact the global carbon cycle and to better understand the relative roles natural carbon cycle variations and humans play in driving climate change. Given the observed associated declines in other air pollutants associated with fossil fuel combustion, such as {' '}
+            <Link
+              to='/discoveries/air-quality/aq-and-covid'
+              title='Read how COVID affect the climate'
+            >
+              nitrogen dioxide
+            </Link>
+            (NO<sub>2</sub>) , scientists wondered whether corresponding decreases in carbon dioxide could be observed from satellites and what impact, if any, such decreases could have on future climate projections.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['no2-diff'],
+          date: '2020-03-01T00:00:00Z',
+          compare: {
+            mapLabel: () => 'NO₂ Baseline (5 years) compared to NO₂ Difference for March 2020',
+            source: {
+              type: 'raster',
+              tiles: [
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_03_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+              ]
+            }
+          }
+        }
+      }
     },
     {
       id: 'co2-emissions-during-lockdowns',
@@ -24,7 +50,7 @@ export default {
       contentComp: (
         <>
           <p>
-            At the peak of initial pandemic-related shutdowns, cities experienced significant reductions in fossil fuel use compared to previous years. This was largely due to ordinances that asked large portions of the population to stay at home. As a result of these measures, there were fewer cars on the road, planes in the sky, and ships at sea, and business and industrial activity was significantly curtailed, leading to far fewer fossil fuel emissions. Estimates based on global fossil fuel consumption from the Global Carbon Project confirmed these reductions. However, while NASA scientists could easily detect decreases in other fossil fuel combustion byproducts from space, such as nitrogen dioxide, corresponding reductions in carbon dioxide were not as readily apparent. It took much careful analysis to produce the map shown here, depicting global carbon dioxide changes in March 2020, at the height of the initial onset of the pandemic in the United States.
+            At the peak of initial pandemic-related shutdowns, fossil fuel use in urban areas declined significantly compared to previous years. This was largely due to local directives that required  most people to stay at home. As a result of these measures, there were fewer cars on the road, planes in the sky, and ships at sea, leading to far less fossil fuel emissions. Estimates of global fossil fuel consumption from the Global Carbon Project confirmed these reductions. However, while NASA scientists could easily detect decreases in other fossil fuel combustion byproducts from space, such as nitrogen dioxide, corresponding reductions in carbon dioxide were not as readily apparent. It took careful analysis to produce the map shown here, depicting global carbon dioxide changes in March 2020, at the height of the initial onset of the pandemic in the United States.
           </p>
         </>
       ),
@@ -42,14 +68,37 @@ export default {
       contentComp: (
         <>
           <p>
-            Unlike nitrogen dioxide, which is chemically destroyed in the atmosphere a few hours after being emitted, carbon dioxide can last for centuries. This allows it to be transported far from its emission source by winds and causes it to be mixed with the surrounding air to produce a smooth global distribution pattern, such as the one seen here. Atmospheric carbon dioxide concentrations only vary by a few percent over the entire planet – from about 408 to 419 parts per million (ppm). This makes it very difficult to discern the impact of temporary changes in emissions during coronavirus-related shutdowns, as scientists expected that any observed fluctuations would be no larger than 0.1%. Teasing out the impacts of reductions in carbon dioxide emissions for specific locations required the ingenuity of NASA and its partners in the Japan Aerospace Exploration Agency (JAXA), along with advanced modeling, and the development of new analysis techniques.
+            Unlike nitrogen dioxide, which dissipates in the atmosphere a few hours after emission, carbon dioxide can last for centuries. Because of this, nitrogen dioxide emissions are typically more localized, while winds can carry carbon dioxide emissions far from their original source. This creates a smooth, global distribution pattern for carbon dioxide, such as the one seen here, as new emissions mix with the surrounding air. As a result, atmospheric carbon dioxide concentrations are relatively steady over the entire planet. This makes it very difficult to discern the impact of temporary changes in carbon dioxide emissions during coronavirus-related shutdowns, as scientists expected that any observed fluctuations would be no larger than 0.1% below normal levels. Teasing out the impacts of such reductions for specific locations during the pandemic has required NASA and its partners in the Japan Aerospace Exploration Agency (JAXA) to use advanced modeling and develop new analysis techniques.
           </p>
         </>
       ),
       visual: {
-        type: 'map-layer',
+        type: 'multi-map',
         data: {
-          layers: ['co2']
+          mapsPerRow: 1,
+          bbox: [-148.7109, -47.7540, 179.6484, 62.2679],
+          maps: [
+            {
+              id: 'no2',
+              label: 'NO₂ March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRM/OMI_trno2_0.10x0.10_202003_Col3_V4.nc.tif&resampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'co2',
+              label: 'CO₂ March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_03_01.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            }
+          ]
         }
       }
     },
@@ -59,21 +108,93 @@ export default {
       contentComp: (
         <>
           <p>
-            Further complicating our ability to discern pandemic-related changes in carbon dioxide concentrations is the fact that the height of the pandemic corresponded with the beginning of spring in the northern hemisphere – when trees and other plants began to rapidly absorb carbon dioxide from the atmosphere. Nature plays an enormous role in regulating the abundance of atmospheric carbon dioxide. Not only do trees, grasslands, and other land ecosystems affect the seasonal absorption, sequestration, and emission of carbon dioxide, so does the ocean: together absorbing and emitting billions of tons of CO<sub>2</sub> each year. While the emission and absorption of carbon dioxide by these ecosystems is typically well-balanced, it can also vary regionally and seasonally in response to naturally occurring climatological phenomena such as the El Niño Southern Oscillation. These natural swings can mask any smaller changes related to the COVID-19 pandemic.
+            Further complicating the ability to discern pandemic-related changes in carbon dioxide concentrations is the fact that initial lockdowns corresponded with the beginning of spring in the Northern Hemisphere – when trees and other plants began to rapidly absorb carbon dioxide from the atmosphere. Trees, grasslands, and other land ecosystems absorb billions of tons of carbon dioxide as they bloom in the spring and then release most of that carbon dioxide back into the atmosphere as they decay in the fall. The ocean also exchanges billions of tons of carbon dioxide with the atmosphere each year. Typically, these components of the natural carbon cycle are reasonably well balanced when averaged over the year: absorbing about as much carbon dioxide as the emit, along with about half of the carbon dioxide produced by human activities. However, seasonal swings in the uptake and release of carbon dioxide by plants on land, and temperature and rainfall changes associated with naturally occurring climatological phenomena such as the El Niño Southern Oscillation, can mask any smaller changes related to the COVID-19 pandemic.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'multi-map',
+        data: {
+          name: 'CO₂ - 16 day average',
+          bbox: [-140, -40, 140, 40],
+          legend: {
+            type: 'gradient-adjustable',
+            min: '< 408 ppm',
+            max: '> 419 ppm',
+            stops: [
+              '#313695',
+              '#588cbf',
+              '#a3d2e5',
+              '#e8f6e8',
+              '#fee89c',
+              '#fba55c',
+              '#e24932'
+            ]
+          },
+          info: 'This layer shows the average background concentration of carbon dioxide (CO₂) in our atmosphere for 2020. Redder colors indicate more CO₂. Bluer colors indicate less CO₂.',
+          mapsPerRow: 2,
+          maps: [
+            {
+              id: 'jan',
+              label: 'Jan 15 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_01_15.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            },
+            {
+              id: 'apr',
+              label: 'Apr 15 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_04_15.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            },
+            {
+              id: 'jul',
+              label: 'Jul 15 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_07_15.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
-      id: 'tracking-carbon-dioxide-with-oco2-gosat',
-      name: 'Tracking Carbon Dioxide Changes with OCO-2 and GOSAT',
+      id: 'oco2-and-gosat',
+      name: 'OCO-2 and GOSAT Provide Two Complementary Ways to Track Changes in CO₂',
       contentComp: (
         <>
           <p>
-            Two Earth-observing satellites – NASA’s Orbiting Carbon Observatory-2 (OCO-2) and Japan’s Greenhouse gases Observing SATellite (GOSAT) – have tracked changes in atmospheric carbon dioxide emissions resulting from the COVID-19 pandemic. New measurements collected in 2020 were compared with results from previous years to glean insights into any small variations. Each satellite plays a unique role in studying carbon dioxide. OCO-2, which launched in 2014, collects measurements at relatively high spatial resolution (one square mile) along a narrow ground track as it orbits Earth from pole to pole, monitoring regional-scale changes in carbon dioxide. In contrast, GOSAT, which launched in 2009, collects measurements at isolated points, but can be targeted to track changes in carbon dioxide and methane (CH4) emissions in large urban areas such as Beijing, Tokyo, and Los Angeles. OCO-2 collects about a million measurements a day as it flies over Earth’s sunlit hemisphere, while GOSAT collects about 10,000. However, thick clouds and airborne particles such as dust, smoke or smog reduce the number of reliable estimates each day to about 600 for GOSAT and 85,000 for OCO-2. So, while these satellites provide a large number of measurements over the globe each day, their spatial sampling can still be quite sparse.
+            Two Earth-observing satellites – NASA’s Orbiting Carbon Observatory-2 (OCO-2) and Japan’s  Greenhouse gases Observing SATellite (GOSAT) – have tracked changes in atmospheric carbon dioxide emissions resulting from the COVID-19 pandemic. Measurements collected in 2020 were compared with results from previous years to glean insights into any small variations. Each of these satellites plays a unique role in studying carbon dioxide. OCO-2, whose data are shown here, collects measurements at relatively high spatial resolution and monitors regional-scale changes in carbon dioxide. GOSATcollects measurements at isolated points and can be targeted to track changes in carbon dioxide and methane emissions in large urban areas, such as Beijing, Tokyo, and Los Angeles. While both satellites provide a large number of measurements over the globe each day, thick clouds and airborne particles such as dust, smoke or smog reduce the number of reliable estimates they produce, so their spatial sampling is relatively sparse.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['co2'],
+          date: '2020-03-01T00:00:00Z',
+          bbox: [-125.1562, 29.3055, -72.5097, 48.8068],
+          compare: {
+            mapLabel: () => '5 year average compared to March 1st 2020',
+            source: {
+              type: 'raster',
+              tiles: [
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-base/xco2_16day_base.2020_03_01.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+              ]
+            }
+          }
+        }
+      }
     },
     {
       id: 'looking-for-needle-in-haystack',
@@ -81,32 +202,116 @@ export default {
       contentComp: (
         <>
           <p>
-            Searching for small changes in regional atmospheric carbon dioxide emissions against the backdrop of existing atmospheric CO<sub>2</sub> is like looking for a needle in a haystack. To do this, scientists incorporated OCO-2 data from November 2019 through September 2020 into a NASA computer model that simulates how Earth’s atmosphere moves. The resulting gap-free global map was able to compensate for OCO-2’s relatively sparse CO<sub>2</sub> measurements. Scientists then compared the modeled projection with an averaged set of OCO-2 data collected over the same months during each year from 2015 through 2019. This method helped distinguish between changes in carbon dioxide due to emissions and those associated with year-to-year variations in wind transport, which can mask the smaller reductions in carbon dioxide that scientists expected to observe as a result of pandemic-related restrictions. What they saw were small reductions of 0.5ppm (about 0.125%) in carbon dioxide over China, Europe and the United States, at times corresponding to the largest reported emissions reductions in those regions. They also saw an increase in regional emissions over China as it emerged from COVID-19 lockdowns in late April.
+            Searching for small changes in regional atmospheric carbon dioxide emissions against the backdrop of existing carbon dioxide levels is like looking for a needle in a haystack. To do this, scientists incorporated OCO-2 data from November 2019 through September 2020 into a NASA computer model that simulates how Earth’s atmosphere moves. The result was a gap-free global map that compensated for OCO-2’s relatively sparse carbon dioxide measurements. Scientists then compared the modeled projection with an averaged set of OCO-2 data collected over the same months from 2015 through 2019. This method helped distinguish between changes in carbon dioxide due to emissions and those associated with year-to-year variations in patterns of how winds move around the globe, which can make it hard to spot the smaller reductions in carbon dioxide that scientists expected to observe as a result of the pandemic. What they saw were small reductions of 0.5 parts per million (ppm) (about 0.125%) in carbon dioxide over China, Europe, and the United States, at times during the months corresponding to the largest reported emissions reductions in those regions. They also saw an increase in regional emissions over China as it emerged from COVID-19 shutdowns in late April 2020.
           </p>
         </>
-      )
+      ),
+
+      visual: {
+        type: 'multi-map',
+        data: {
+          maps: [
+            {
+              id: 'co2',
+              label: 'CO₂ Average April 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-mean/xco2_16day_mean.2020_04_01.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                ]
+              }
+            },
+            {
+              id: 'co2-diff',
+              label: 'CO₂ Difference April 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-diff/xco2_16day_diff.2020_04_01.tif&resampling_method=bilinear&bidx=1&rescale=-0.000001%2C0.000001&color_map=rdbu_r`
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
-      id: 'looking-for-needle-in-haystack-continued',
-      name: 'Looking for a Needle in a Haystack, Continued',
+      id: 'not-all-changes-related-to-pandemic',
+      name: 'Not all Changes Observed in CO₂ Were Related to the Pandemic',
       contentComp: (
         <>
           <p>
-            Scientists were also able to infer regional-scale differences in carbon dioxide that were completely unrelated to the pandemic. Increased carbon dioxide observed at high northern latitudes was likely due to intense wildfires across Siberia in April 2020. In addition, a 1ppm decline in carbon dioxide concentrations across central India and southern and eastern Africa in February was likely due to the additional absorption of carbon dioxide by land ecosystems and the Indian Ocean Dipole, an El Niño-like disturbance across the Indian Ocean basin.
+          Scientists were also able to infer regional-scale differences in carbon dioxide that were completely unrelated to the pandemic using these new techniques. Increased carbon dioxide observed at high northern latitudes was likely due to intense wildfires across Siberia in April 2020. In addition, a small, 1ppm decline in carbon dioxide concentrations across Central India and Southern and Eastern Africa in January, shown here, was likely due to the additional absorption of carbon dioxide by land ecosystems and the Indian Ocean Dipole, an El Niño-like disturbance across the Indian Ocean basin.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['co2-diff'],
+          date: '2020-01-15T00:00:00Z',
+          bbox: [-24.9609, -36.5978, 100.8984, 47.9899]
+        }
+      }
     },
     {
-      id: 'getting-a-closer-view',
-      name: 'Getting a Closer View: CO₂ Changes Over Large Urban Areas',
+      id: 'co2-changes-over-large-urban-areas',
+      name: 'CO₂ Changes Over Large Urban Areas',
       contentComp: (
         <>
           <p>
-            The biggest changes in economic activity associated with the pandemic – and, subsequently, the largest reductions in fossil fuel emissions – occurred in large urban areas. Tracking these changes from space is challenging for a couple of reasons: first, since cities cover only a tiny fraction of Earth’s surface, spacecraft don’t fly directly over them very often, and second, cities are frequently covered by clouds and passing weather systems that can easily transport carbon dioxide in and out of these areas. GOSAT can easily target cities and has the unique ability to distinguish between changes in carbon dioxide that occur near Earth’s surface, which are more likely to originate from a city, and those at higher altitudes, which are more likely to have been transported from somewhere else. Scientists used this capability to devise a new technique to tease out changes in carbon dioxide emissions due to the pandemic based on their altitude. Using this new process, scientists were able to determine that for all months studied in 2020, the average concentration of carbon dioxide over Beijing, Tokyo, New York, Mumbai, Delhi and Dhaka was reduced compared to the previous years studied.
+            The most severe changes in economic activity associated with the pandemic – and, subsequently, the largest reductions in fossil fuel emissions – occurred in large urban areas. Tracking these changes from space is challenging. Spacecraft don’t fly directly over cities very often and they frequently are covered by clouds and passing weather systems that can easily transport carbon dioxide in and out. GOSAT’s agile pointing system can look at cities and distinguish between changes in carbon dioxide that occur near Earth’s surface, which are more likely to originate from a city, and those at higher altitudes, which are more likely to have been transported from somewhere else. Scientists used this capability to devise a new technique to tease out changes in carbon dioxide emissions due to the pandemic based on their altitude. Using this process, scientists found a lower average concentration of carbon dioxide over Beijing, Tokyo, New York, Mumbai, Delhi, and Dhaka during the pandemic months studied in 2020, compared to previous years.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'multi-map',
+        data: {
+          bbox: [116.17, 40.11, 116.6, 39.7],
+          maps: [
+            {
+              id: 'gosat-january',
+              label: 'January 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/GOSAT_XCO2_202001_be_BG_circle_cog.tif&resampling_method=bilinear`
+                ]
+              }
+            },
+            {
+              id: 'gosat-february',
+              label: 'February 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/GOSAT_XCO2_202002_be_BG_circle_cog.tif&resampling_method=bilinear`
+                ]
+              }
+            },
+            {
+              id: 'gosat-march',
+              label: 'March 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/GOSAT_XCO2_202003_be_BG_circle_cog.tif&resampling_method=bilinear`
+                ]
+              }
+            },
+            {
+              id: 'gosat-april',
+              label: 'April 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2/GOSAT_XCO2_202004_be_BG_circle_cog.tif&resampling_method=bilinear`
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     {
       id: 'what-we-have-learned',
@@ -114,20 +319,20 @@ export default {
       contentComp: (
         <>
           <p>
-            While detecting and tracking small changes in atmospheric carbon dioxide due to the COVID-19 pandemic was challenging, OCO-2 and GOSAT were able to observe a temporary decrease in the rate carbon dioxide was added to our atmosphere. Scientists don’t expect to see an overall reduction in the global concentration of atmospheric carbon dioxide, however.
+            Scientists met the challenge of detecting and tracking the small, temporary changes in atmospheric carbon dioxide caused by the COVID-19 pandemic using data from OCO-2 and GOSAT. While the rate at which carbon dioxide was added to our atmosphere was temporarily decreased, an overall reduction in the global concentration of atmospheric carbon dioxide is not expected.
           </p>
           <p>
-            The research provided a real-world test of the latest state-of-the-art techniques for detecting changes in atmospheric carbon dioxide. Despite sampling limitations, both of these first-generation space-based greenhouse gas monitoring satellites were able to accurately detect small variations in carbon dioxide emissions, and their space-based data complemented ground-based and aircraft measurements. The research also reinforced the value of combining different types of measurements to detect changes in carbon dioxide emission sources.
+            This research provided a real-world test for these first-generation greenhouse-gas monitoring satellites. It showed that even small, year-to-year reductions in carbon dioxide emissions can be tracked using space-based sensors. This capability will be increasingly important to inform and test carbon management policies. Another key takeaway from this research is the need to improve our understanding of the contributions of the natural carbon cycle. By improving our ability to track and diagnose its changes, scientists will be able to more accurately attribute and interpret changes in carbon dioxide levels caused by human activities.
           </p>
           <p>
             A key takeaway of the research is the need to improve our understanding of the contributions of the natural carbon cycle. By improving our ability to track and diagnose its changes, scientists will be able to more accurately attribute and interpret changes in carbon dioxide due to human activities. For example, we would have to reduce carbon dioxide emissions by as much as we have done this year for every year in the next couple of decades to meet the ambitious goals of the Paris agreement and limit temperature increases to less than 2 degrees C. This test shows we are learning how to do that.
           </p>
           <p>
-            The research is also providing new insights into the types of sensors and analysis tools needed to track changes in carbon dioxide from space. These capabilities will be increasingly important as society seeks to decarbonize economies. Results of these COVID-related studies will benefit development of several next-generation satellites launching in the next few years, including Japan’s GOSAT-GW satellite, the Copernicus CO2M constellation, and NASA’s GeoCarb, the first geostationary greenhouse gas satellite.
+            The research is also providing new insights into the sensors and analysis tools needed to track changes in carbon dioxide from space. For example, it reinforced the value of combining different types of measurements to detect small changes in carbon dioxide emission sources. Results of these COVID-related studies will benefit development of several next-generation satellites launching in the next few years, including Japan’s GOSAT-GW satellite, the Copernicus CO2M constellation, and NASA’s GeoCarb.
           </p>
           <p>
             <Link
-              to='/stories/water-quality/water-quality-during-pandemic'
+              to='/discoveries/water-quality/water-quality-during-pandemic'
               title='Read how COVID affect changing landscapes'
             >
               Explore How COVID-19 Is Affecting Water Quality
@@ -138,6 +343,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
+          mapLabel: () => 'Most recent CO₂ difference',
           layers: ['co2-diff']
         }
       }
