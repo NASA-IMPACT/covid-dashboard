@@ -60,6 +60,7 @@ const InpageHeaderInnerAlt = styled.div`
   flex-flow: row nowrap;
   align-items: flex-end;
   padding: ${glsp(0.25, 1)};
+  max-width: 100vw;
 
   ${media.mediumUp`
     padding: ${glsp()};
@@ -70,24 +71,34 @@ const InpageHeaderInnerAlt = styled.div`
   `}
 `;
 
+const InpageHeadlineAlt = styled(InpageHeadline)`
+  flex: 1;
+`;
+
 const InpageTitleAlt = styled.h1`
-  font-size: 0.875rem;
+  ${truncated()}
+  font-size: 1rem;
   line-height: 1.25rem;
   font-weight: ${themeVal('type.base.light')};
   margin: ${glsp(0, 0, -0.25, 0)};
 `;
 
 const InpageSecTitle = styled.h2`
-  min-width: 0;
+  min-width: 0px;
 
   > ${Button} {
-    font-size: 1.5rem;
-    line-height: 2.25rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
     margin-left: ${glsp(-0.75)};
+    display: inline-flex;
+    max-width: 100%;
+
+    ${media.mediumUp`
+      font-size: 1.25rem;
+    `}
 
     span {
       ${truncated()}
-      max-width: 100%;
     }
   }
 `;
@@ -138,8 +149,13 @@ const InpageToolbarAlt = styled.div`
 `;
 
 const ChapterCount = styled.strong`
+  display: none;
   line-height: 2rem;
   margin-right: ${glsp(0.5)};
+
+  ${media.mediumUp`
+    display: block;
+  `}
 `;
 
 const ExploreCarto = styled.section`
@@ -524,12 +540,12 @@ If this is a system layer, check that a compare property is defined. In alternat
         <Inpage>
           <InpageHeader>
             <InpageHeaderInnerAlt>
-              <InpageHeadline>
+              <InpageHeadlineAlt>
                 <InpageTitleAlt>{story.name}</InpageTitleAlt>
                 <InpageSecTitle>
                   {this.renderChapterDropdown(itemName)}
                 </InpageSecTitle>
-              </InpageHeadline>
+              </InpageHeadlineAlt>
               <InpageToolbarAlt>
                 <ChapterCount>
                   Chapter {itemNum} of {story.chapters.length}
