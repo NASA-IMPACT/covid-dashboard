@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import config from '../../config';
+import { LayerInfo } from './single/about-data';
 const { api } = config;
 
 export default {
@@ -37,15 +38,18 @@ export default {
           <p>
             Cities are easy to spot from space. Choose any large, urban area around the world, and you’re likely see similar things: dense population centers, complex webs of highways and, more often than not, smog. Smog is the hazy curtain of air that often hangs over cities. It occurs when nitrogen dioxide  produced from fossil fuel emissions from gasoline in cars or coal in powerplants chemically reacts with sunlight and other pollutants like carbon monoxide (CO). Thick smog is harmful to breathe and can significantly reduce visibility. During lockdowns, satellites observed sharp reductions in nitrogen dioxide emissions in cities around the world, and smog began to vanish. Skies were bluer, air was cleaner, and, in some places, views previously obscured by air pollution were suddenly revealed. In Los Angeles, NASA scientists detected that nitrogen dioxide levels fell by more than 30% during the height of COVID-related shutdowns. Other large cities around the world experienced similar reductions.
           </p>
-          <p>
-            Imagery: Landsat 8, February 26, 2020.
-          </p>
         </>
       ),
       visual: {
         type: 'map-layer',
+        about: (
+          <LayerInfo>
+            <p>Landsat-8, visualized using the RGB band combination.</p>
+          </LayerInfo>
+        ),
         data: {
           bbox: [-118.529, 33.835, -118.034, 34.168],
+          mapLabel: () => 'February 26, 2020',
           layers: [
             {
               id: 'ls8-sf',
@@ -231,20 +235,82 @@ export default {
       name: 'Measuring Air Pollution on the Ground at Airports',
       sections: [
         {
-          id: 'part1',
-          name: 'Part 1',
+          id: 'atlanta-planet',
+          name: 'Airplanes',
           contentComp: (
             <>
               <p>
                 New research during the pandemic is also looking at how COVID-related travel bans are impacting air quality around airports. Current conditions create a unique opportunity to study airport-related pollutants, especially nitrogen dioxide and formaldehyde. While travel bans and strict regulations around air travel have been in place, air traffic has yet to return to previous levels, and many planes remain grounded. Here we see Planet Labs imagery using artificial intelligence to detect grounded airplanes at the Hartsfield-Jackson Atlanta International airport in March 2020. During this time, the airport reported a decline of 85% in passenger traffic.
               </p>
             </>
-          )
-          // Data visual: Planet Labs grounded plane imagery at BWI/ATL airport
+          ),
+          visual: {
+            type: 'multi-map',
+            data: {
+              bbox: [-84.5549, 33.5242, -84.2198, 33.9889],
+              name: 'NO₂ levels',
+              legend: {
+                type: 'gradient',
+                min: '1',
+                max: '3.5',
+                stops: [
+                  '#99c5e0',
+                  '#f9eaa9',
+                  '#f7765d',
+                  '#c13b72',
+                  '#461070',
+                  '#050308'
+                ]
+              },
+              info: 'Levels in 10¹⁵ molecules cm⁻². Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
+              maps: [
+                {
+                  id: 'jun',
+                  label: 'June 2, 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200602T140812_1_1054_3B_Visual.tif`
+                    ]
+                  }
+                },
+                {
+                  id: 'jul',
+                  label: 'July 14, 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200714T155856_1035_3B_Visual.tif`
+                    ]
+                  }
+                },
+                {
+                  id: 'aug',
+                  label: 'August 4, 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200804T160153_100c_3B_Visual.tif`
+                    ]
+                  }
+                },
+                {
+                  id: 'sep',
+                  label: 'September 20, 2020',
+                  source: {
+                    type: 'raster',
+                    tiles: [
+                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200920T163110_05_1064_3B_Visual.tif`
+                    ]
+                  }
+                }
+              ]
+            }
+          }
         },
         {
-          id: 'atlanta',
-          name: 'Atlanta',
+          id: 'atlanta-no2',
+          name: 'NO₂',
           contentComp: (
             <>
               <p>
