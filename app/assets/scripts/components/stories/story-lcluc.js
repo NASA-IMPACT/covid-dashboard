@@ -53,7 +53,48 @@ export default {
             When China implemented restrictions on businesses in the early months of 2020, NASA researchers documented changes in nighttime lights throughout the region. Images of Earth at night provide an extraordinary view of how human activity changes over time. During the COVID-19 pandemic, scientists are using satellite observations to track variations in nighttime lights, which show changes in transportation, energy use, and migration as human response to the pandemic evolves. From January through February 2020, nighttime lights in the central commercial district of Wuhan dimmed as people stayed home instead of shopping or socializing. Even highways, represented by the bright lines in the satellite imagery, darkened with less activity during shutdown periods.
           </p>
         </>
-      )
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          bbox: [113.7442, 30.2021, 114.859, 30.9092],
+          layers: [
+            {
+              id: 'jan',
+              type: 'raster',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/bmhd-wuhan/BMHD_Wuhan_China_VNP46A2_Jan192020_ON.cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
+                ]
+              },
+              name: 'Nightlights HD',
+              legend: {
+                type: 'gradient',
+                min: 'less',
+                max: 'more',
+                stops: [
+                  '#08041d',
+                  '#1f0a46',
+                  '#52076c',
+                  '#f57c16',
+                  '#f7cf39'
+                ]
+              },
+              info: 'The High Definition Nightlights dataset is processed to eliminate light sources, including moonlight reflectance and other interferences. Darker colors indicate fewer night lights and less activity. Lighter colors indicate more night lights and more activity.'
+            }
+          ],
+          compare: {
+            mapLabel: () => 'January 2020 compared to February 2020',
+            source: {
+              type: 'raster',
+              tiles: [
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/bmhd-wuhan/BMHD_Wuhan_China_VNP46A2_Feb42020_ON.cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
+              ]
+            }
+          }
+        }
+      }
     },
     {
       id: 'changes-in-traffic',
