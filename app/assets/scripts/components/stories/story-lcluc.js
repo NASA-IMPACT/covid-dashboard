@@ -180,8 +180,11 @@ export default {
         type: 'multi-map',
         data: {
           bbox: [-121.99956, 37.33972, -121.81417, 37.48344],
-          // units are in kelvin with a rescale factor of 0.1
-          // current rescale values translate to 15 & 45 celsius
+          // units are in kelvin with a:
+          // - range: 1-65535
+          // - multiplicative scale factor: 0.00341802
+          // - additive scale factor: 149
+          // 40710 & 49487 translate to 15 & 45 celsius
           maps: [
             {
               id: 'st-2018',
@@ -189,7 +192,7 @@ export default {
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/ls8-surface-temperature/LC08_CU_002009_20180414_20190615_C01_V01_ST.cog.tif&resampling_method=bilinear&rescale=2881,3182&color_map=coolwarm`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/ls8-surface-temperature/LC08_L2SP_044034_20180414_20200901_02_T1_ST_B10.cog.tif&resampling_method=bilinear&rescale=40710,49487&color_map=coolwarm`
                 ]
               }
             },
@@ -199,7 +202,7 @@ export default {
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/ls8-surface-temperature/LC08_CU_002009_20200403_20200412_C01_V01_ST.cog.tif&resampling_method=bilinear&rescale=2881,3182&color_map=coolwarm`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/ls8-surface-temperature/LC08_L2SP_044034_20200403_20200822_02_T1_ST_B10.cog.tif&resampling_method=bilinear&rescale=40710,49487&color_map=coolwarm`
                 ]
               }
             }
@@ -219,7 +222,7 @@ export default {
               '#b4152d'
             ]
           },
-          info: 'Surface Temperature from Landsat-8.'
+          info: 'Surface Temperature from Landsat-8, Collection 2 Level 2 data.'
         }
       }
     },
