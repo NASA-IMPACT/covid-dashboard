@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import config from '../../config';
+import { LayerInfo } from './single/about-data';
 const { api } = config;
 
 export default {
@@ -58,6 +59,7 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['co2-diff'],
+          mapLabel: () => 'March 1, 2020',
           date: '2020-03-01T00:00:00Z'
         }
       }
@@ -74,6 +76,13 @@ export default {
       ),
       visual: {
         type: 'multi-map',
+        about: (
+          <LayerInfo>
+            <p>
+              Top: darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity. Bottom: redder colors indicate more CO₂. Bluer colors indicate less CO₂.
+            </p>
+          </LayerInfo>
+        ),
         data: {
           mapsPerRow: 1,
           bbox: [-148.7109, -47.7540, 179.6484, 62.2679],
@@ -212,13 +221,20 @@ export default {
       contentComp: (
         <>
           <p>
-            Searching for small changes in regional atmospheric carbon dioxide emissions against the backdrop of existing carbon dioxide levels is like looking for a needle in a haystack. To do this, scientists incorporated OCO-2 data from November 2019 through September 2020 into a NASA computer model that simulates how Earth’s atmosphere moves. The result was a gap-free global map that compensated for OCO-2’s relatively sparse carbon dioxide measurements. Scientists then compared the modeled projection with an averaged set of OCO-2 data collected over the same months from 2015 through 2019. This method helped distinguish between changes in carbon dioxide due to emissions and those associated with year-to-year variations in patterns of how winds move around the globe, which can make it hard to spot the smaller reductions in carbon dioxide that scientists expected to observe as a result of the pandemic. What they saw were small reductions of 0.5 parts per million (ppm) (about 0.125%) in carbon dioxide over China, Europe, and the United States, at times during the months corresponding to the largest reported emissions reductions in those regions. They also saw an increase in regional emissions over China as it emerged from COVID-19 shutdowns in late April 2020.
+            Searching for small changes in regional atmospheric carbon dioxide emissions against the backdrop of existing carbon dioxide levels is like looking for a needle in a haystack. To do this, scientists incorporated OCO-2 data from November 2019 through September 2020 into a NASA computer model that simulates how Earth’s atmosphere moves. The result was a gap-free global map that compensated for OCO-2’s relatively sparse carbon dioxide measurements. Scientists then compared the modeled projection with an averaged set of OCO-2 data collected over the same months from 2015 through 2019. This method helped distinguish between changes in carbon dioxide due to emissions and those associated with year-to-year variations in patterns of how winds move around the globe, which can make it hard to spot the smaller reductions in carbon dioxide that scientists expected to observe as a result of the pandemic. What they saw were small reductions of 0.5 parts per million (ppm) (about 0.125%) in carbon dioxide over China, Europe, and the United States, at times during the months corresponding to the largest reported emissions reductions in those regions.
           </p>
         </>
       ),
 
       visual: {
         type: 'multi-map',
+        about: (
+          <LayerInfo>
+            <p>
+              Average: redder colors indicate more CO₂. Bluer colors indicate less CO₂. Difference: redder colors indicate increases in CO₂ in relation to the baseline. Bluer colors indicate lower levels of CO₂.
+            </p>
+          </LayerInfo>
+        ),
         data: {
           maps: [
             {
