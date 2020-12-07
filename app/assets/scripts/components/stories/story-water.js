@@ -197,7 +197,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
-          bbox: [12.0327, 44.7896, 13.8208, 45.7885],
+          bbox: [12.05, 44.8, 13.6, 45.72],
           layers: [
             {
               id: 'tsm-nas',
@@ -205,7 +205,7 @@ export default {
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/tsm/nas-2020_03_21.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/tsm/nas-2020_01_11.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
                 ]
               },
               name: 'Turbidity',
@@ -226,11 +226,11 @@ export default {
             }
           ],
           compare: {
-            mapLabel: () => 'March 2020 compared to April 2020',
+            mapLabel: () => 'January 2020 compared to March 2020',
             source: {
               type: 'raster',
               tiles: [
-                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/tsm/nas-2020_04_18.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/tsm/nas-2020_03_21.tif&resampling_method=bilinear&bidx=1&rescale=-100%2C100&color_map=rdbu_r`
               ]
             }
           }
