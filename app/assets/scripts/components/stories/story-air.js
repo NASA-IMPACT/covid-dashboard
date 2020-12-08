@@ -130,64 +130,54 @@ export default {
     {
       id: 'lockdowns-no2',
       name: '“Like Flipping a Switch”: Lockdowns and NO₂',
-      sections: [
-        {
-          id: 'part1',
-          name: 'Part 1',
-          contentComp: (
-            <>
-              <p>
-                Nitrogen dioxide is only one component of air quality: sulfur dioxide (SO<sub>2</sub>), ozone (O<sub>3</sub>), formaldehyde (CH<sub>2</sub>O), and carbon monoxide, along with a host of other atmospheric constituents, also influence the quality of the air we breathe. The difference in nitrogen dioxide is that it has a relatively short lifetime in the atmosphere; once it’s emitted, it only lasts a few hours before it disappears. Therefore, once communities entered shutdowns, and people’s mobility was severely restricted, the effect on nitrogen dioxide concentrations was the equivalent of flipping a switch. That is not, however, the case with all air pollutants.
-              </p>
-            </>
-          ),
-          visual: {
-            type: 'map-layer',
-            data: {
-              layers: ['no2'],
-              date: '2020-04-01T00:00:00Z',
-              bbox: [-37.17, 34.16, 53.78, 68.84],
-              compare: {
-                mapLabel: () => '5 year average compared to April 2020',
-                source: {
-                  type: 'raster',
-                  tiles: [
-                    `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_04_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
-                  ]
-                }
-              }
-            }
-          }
-        },
-        {
-          id: 'part2',
-          name: 'Part 2',
-          contentComp: (
-            <>
-              <p>
-                Even with the strong correlation between nitrogen dioxide and the combustion of fossil fuels, atmospheric concentrations of nitrogen dioxide naturally fluctuate throughout the year, and weather patterns also influence its concentrations. For example, nitrogen dioxide typically falls dramatically during spring and summer months, and rain and wind increase its dispersion, lowering local concentrations. During the COVID-19 pandemic, NASA scientists have been able to attribute the observed changes in nitrogen dioxide to changes in our behavior, and they have been careful to account for any impacts on air pollution that are the result of natural weather variations.
-              </p>
-            </>
-          ),
-          visual: {
-            type: 'map-layer',
-            data: {
-              layers: ['no2'],
-              date: '2020-04-01T00:00:00Z',
-              bbox: [-37.17, 34.16, 53.78, 68.84],
-              compare: {
-                mapLabel: () => '5 year average compared to April 2020',
-                source: {
-                  type: 'raster',
-                  tiles: [
-                    `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_04_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
-                  ]
-                }
-              }
+      contentComp: (
+        <>
+          <p>
+            Nitrogen dioxide is only one component of air quality: sulfur dioxide (SO<sub>2</sub>), ozone (O<sub>3</sub>), formaldehyde (CH<sub>2</sub>O), and carbon monoxide, along with a host of other atmospheric constituents, also influence the quality of the air we breathe. The difference in nitrogen dioxide is that it has a relatively short lifetime in the atmosphere; once it’s emitted, it only lasts a few hours before it disappears. Therefore, once communities entered shutdowns, and people’s mobility was severely restricted, the effect on nitrogen dioxide concentrations was the equivalent of flipping a switch. That is not, however, the case with all air pollutants.
+          </p>
+        </>
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['no2'],
+          date: '2020-04-01T00:00:00Z',
+          bbox: [-37.17, 34.16, 53.78, 68.84],
+          compare: {
+            mapLabel: () => '5 year average compared to April 2020',
+            source: {
+              type: 'raster',
+              tiles: [
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/OMNO2d_HRMBaseline/OMI_trno2_0.10x0.10_Baseline_04_Col3_V4.nc.tif&esampling_method=bilinear&bidx=1&rescale=0%2C1.5e16&color_map=custom_no2`
+              ]
             }
           }
         }
-      ]
+      }
+    },
+    {
+      id: 'seasonal-changes-no2',
+      name: 'Seasonal Changes in NO₂',
+      contentComp: (
+        <>
+          <p>
+            Even with the strong correlation between nitrogen dioxide and the combustion of fossil fuels, atmospheric concentrations of nitrogen dioxide naturally fluctuate throughout the year, and weather patterns also influence its concentrations. For example, nitrogen dioxide typically falls dramatically during spring and summer months, and rain and wind increase its dispersion, lowering local concentrations. During the COVID-19 pandemic, NASA scientists have been able to attribute the observed changes in nitrogen dioxide to changes in our behavior, and they have been careful to account for any impacts on air pollution that are the result of natural weather variations.
+          </p>
+        </>
+      ),
+      visual: {
+        type: 'map-layer',
+        data: {
+          layers: ['no2'],
+          date: '2019-06-01T00:00:00Z',
+          bbox: [-37.17, 34.16, 53.78, 68.84],
+          compare: {
+            mapLabel: () => 'January 2019 compared to June 2019',
+            date: '2019-01-01T00:00:00Z',
+            layers: ['no2']
+          }
+        }
+      }
     },
     {
       id: 'seeing-air-pollution-from-space',
@@ -195,13 +185,14 @@ export default {
       contentComp: (
         <>
           <p>
-            NASA has used the Ozone Monitoring Instrument (OMI) aboard the Aura satellite to observe global nitrogen dioxide levels since 2004. A joint endeavor between NASA, the Royal Netherlands Meteorological Institute (KNMI) and the Finnish Meteorological Institute (FMI), OMI’s longer data record provides important context with which to compare any changes observed during the pandemic. NASA scientists are also leveraging other space-based instruments from international partners to study changes in nitrogen dioxide during the pandemic. These include the TROPOspheric Monitoring Instrument (TROPOMI) instrument aboard the European Commission’s Copernicus Sentinel-5P satellite. Launched in 2016, TROPOMI provides higher resolution observations than OMI.
+            NASA has used the Ozone Monitoring Instrument (OMI) aboard the Aura satellite to observe global nitrogen dioxide levels since 2004. A joint endeavor between NASA, the Royal Netherlands Meteorological Institute (KNMI) and the Finnish Meteorological Institute (FMI), OMI’s longer data record provides important context with which to compare any changes observed during the pandemic. NASA scientists are also leveraging other space-based instruments from international partners to study changes in nitrogen dioxide during the pandemic. These include the TROPOspheric Monitoring Instrument (TROPOMI) aboard the European Commission’s Copernicus Sentinel-5P satellite. Launched in 2016, TROPOMI provides higher resolution observations than OMI.
           </p>
         </>
       ),
       visual: {
         type: 'map-layer',
         data: {
+          mapLabel: () => 'Most recent NO₂',
           layers: ['no2']
         }
       }
@@ -220,11 +211,11 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['nightlights-viirs'],
-          date: '2020-03-01T00:00:00Z',
+          date: '2020-03-20T00:00:00Z',
           bbox: [-118.6759, 33.4267, -117.0733, 34.3439],
           spotlight: 'la',
           compare: {
-            mapLabel: () => 'February 1, 2020 compared to March 1, 2020',
+            mapLabel: () => 'February 1, 2020 compared to March 20, 2020',
             compareDate: () => new Date('2020-02-01T00:00:00Z')
           }
         }
@@ -233,217 +224,140 @@ export default {
     {
       id: 'measuring-pollution-on-the-ground',
       name: 'Measuring Air Pollution on the Ground at Airports',
-      sections: [
-        {
-          id: 'atlanta-planet',
-          name: 'Airplanes',
-          contentComp: (
-            <>
-              <p>
-                New research during the pandemic is also looking at how COVID-related travel bans are impacting air quality around airports. Current conditions create a unique opportunity to study airport-related pollutants, especially nitrogen dioxide and formaldehyde. While travel bans and strict regulations around air travel have been in place, air traffic has yet to return to previous levels, and many planes remain grounded. Here we see Planet Labs imagery using artificial intelligence to detect grounded airplanes at the Hartsfield-Jackson Atlanta International airport in March 2020. During this time, the airport reported a decline of 85% in passenger traffic.
-              </p>
-            </>
-          ),
-          visual: {
-            type: 'multi-map',
-            data: {
-              bbox: [-84.5549, 33.5242, -84.2198, 33.9889],
-              name: 'NO₂ levels',
-              legend: {
-                type: 'gradient',
-                min: '1',
-                max: '3.5',
-                stops: [
-                  '#99c5e0',
-                  '#f9eaa9',
-                  '#f7765d',
-                  '#c13b72',
-                  '#461070',
-                  '#050308'
+      contentComp: (
+        <>
+          <p>
+            New research during the pandemic is also looking at how COVID-related travel bans are impacting air quality around airports. Current conditions create a unique opportunity to study airport-related pollutants, especially nitrogen dioxide and formaldehyde. While travel bans and strict regulations around air travel have been in place, air traffic has yet to return to previous levels, and many planes remain grounded.
+          </p>
+          <p>
+            Scientists have installed two sensors at the Baltimore-Washington International Airport and two sensors at the Hartsfield-Jackson Atlanta International Airport to better characterize how airplanes contribute to air pollution. They are comparing the on-the-ground sensor information from the Pandora network with satellite information from TROPOMI. So far, they have found that nitrogen dioxide hotspots in Atlanta shifted from the airport, shown here, to the city center from April-June 2020. By September, however, satellites revealed the airport had reemerged as a dominant nitrogen dioxide emission source.
+          </p>
+        </>
+      ),
+      visual: {
+        type: 'multi-map',
+        data: {
+          bbox: [-84.5, 33.58, -84.28, 33.93],
+          name: 'NO₂ levels',
+          legend: {
+            type: 'gradient',
+            min: '1',
+            max: '3.5',
+            stops: [
+              '#99c5e0',
+              '#f9eaa9',
+              '#f7765d',
+              '#c13b72',
+              '#461070',
+              '#050308'
+            ]
+          },
+          info: 'Levels in 10¹⁵ molecules cm⁻². Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
+          mapsPerRow: 5,
+          maps: [
+            {
+              id: 'no2-mar-2019',
+              label: 'Mar 22 - Apr 2019',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_03.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                 ]
-              },
-              info: 'Levels in 10¹⁵ molecules cm⁻². Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
-              maps: [
-                {
-                  id: 'jun',
-                  label: 'June 2, 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200602T140812_1_1054_3B_Visual.tif`
-                    ]
-                  }
-                },
-                {
-                  id: 'jul',
-                  label: 'July 14, 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200714T155856_1035_3B_Visual.tif`
-                    ]
-                  }
-                },
-                {
-                  id: 'aug',
-                  label: 'August 4, 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200804T160153_100c_3B_Visual.tif`
-                    ]
-                  }
-                },
-                {
-                  id: 'sep',
-                  label: 'September 20, 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-planet/20200920T163110_05_1064_3B_Visual.tif`
-                    ]
-                  }
-                }
-              ]
-            }
-          }
-        },
-        {
-          id: 'atlanta-no2',
-          name: 'NO₂',
-          contentComp: (
-            <>
-              <p>
-                Scientists behind the research studying air quality at airports during the pandemic explained that because people are seeing better air quality with less traffic during shutdowns, they may also wonder if this is what the future could look like if we relied more heavily on electric vehicles. Unlike cars, however, airplanes are not expected to become electric anytime soon. Therefore, Scientists installed two sensors at the Baltimore-Washington International Airport and two sensors at the Hartsfield-Jackson Atlanta International Airport to better characterize how airplanes contribute to air pollution. Researchers are comparing the on-the-ground sensor information with satellite information from TROPOMI. So far, they have found that nitrogen dioxide hotspots in Atlanta shifted from the airport, seen here, to the city center from April-June 2020. By September, however, satellites revealed the airport had reemerged as a dominant nitrogen dioxide emission source.
-              </p>
-            </>
-          ),
-          visual: {
-            type: 'multi-map',
-            data: {
-              bbox: [-84.5549, 33.5242, -84.2198, 33.9889],
-              name: 'NO₂ levels',
-              legend: {
-                type: 'gradient',
-                min: '1',
-                max: '3.5',
-                stops: [
-                  '#99c5e0',
-                  '#f9eaa9',
-                  '#f7765d',
-                  '#c13b72',
-                  '#461070',
-                  '#050308'
+              }
+            },
+            {
+              id: 'no2-may-2019',
+              label: 'May 2019',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_05.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
                 ]
-              },
-              info: 'Levels in 10¹⁵ molecules cm⁻². Darker colors indicate higher nitrogen dioxide (NO₂) levels associated and more activity. Lighter colors indicate lower levels of NO₂ and less activity.',
-              mapsPerRow: 5,
-              maps: [
-                {
-                  id: 'no2-mar-2019',
-                  label: 'Mar 22 - Apr 2019',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_03.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-may-2019',
-                  label: 'May 2019',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_05.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-jun-2019',
-                  label: 'Jun 2019',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_06.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-jul-2019',
-                  label: 'Jul 2019',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_07.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-aug-2019',
-                  label: 'Aug - Sep 2019',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_08.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-mar-2020',
-                  label: 'Mar 22 - Apr 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_03.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-may-2020',
-                  label: 'May 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_05.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-jun-2020',
-                  label: 'Jun 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_06.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-jul-2020',
-                  label: 'Jul 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_07.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                },
-                {
-                  id: 'no2-aug-2020',
-                  label: 'Aug - Sep 2020',
-                  source: {
-                    type: 'raster',
-                    tiles: [
-                      `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_08.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
-                    ]
-                  }
-                }
-              ]
+              }
+            },
+            {
+              id: 'no2-jun-2019',
+              label: 'Jun 2019',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_06.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'no2-jul-2019',
+              label: 'Jul 2019',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_07.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'no2-aug-2019',
+              label: 'Aug - Sep 2019',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2019_08.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'no2-mar-2020',
+              label: 'Mar 22 - Apr 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_03.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'no2-may-2020',
+              label: 'May 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_05.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'no2-jun-2020',
+              label: 'Jun 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_06.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'no2-jul-2020',
+              label: 'Jul 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_07.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                ]
+              }
+            },
+            {
+              id: 'no2-aug-2020',
+              label: 'Aug - Sep 2020',
+              source: {
+                type: 'raster',
+                tiles: [
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/atlanta-no2/Atlanta_2020_08.tif&resampling_method=bilinear&bidx=1&rescale=1%2C3.5&color_map=custom_no2`
+                ]
+              }
             }
-          }
+          ]
         }
-      ]
+      }
     },
     {
       id: 'seeing-rebounds',

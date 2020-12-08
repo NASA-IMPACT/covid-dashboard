@@ -149,7 +149,7 @@ export default {
       name: 'Changes in Urban Heat During Bay Area Shelter-In-Place Orders',
       contentComp: (
         <p>
-          Sudden changes in surface transportation may also be changing how cities trap and emit heat. Satellite and thermal data from the joint NASA-U.S. Geological Survey Landsat satellite and NASA’s ECOsystem Spaceborne Thermal Radiometer Experiment on Space Station (ECOSTRESS) instrument aboard the International Space Station show decreases in air pollution and the prevalence of empty parking lots changed how much solar radiation is absorbed and reflected from ground surfaces during the pandemic. In March, surface traffic in the San Francisco Bay Area dropped by 70%. Scientists found that the reduction in traffic corresponded to a 30% decrease in fine particulate and ozone pollution when compared to previous years.
+          Sudden changes in surface transportation may also be changing how cities trap and emit heat. In March, surface traffic in the San Francisco Bay Area dropped by 70%. Scientists found that the reduction in traffic corresponded to a 30% decrease in fine particulate and ozone pollution when compared to previous years.
         </p>
       ),
       visual: {
@@ -172,14 +172,14 @@ export default {
       contentComp: (
         <>
           <p>
-            Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, heat dissipated quickly, cooling the urban environment. As a result, scientists found that large parking lots, highway corridors, and commercial rooftops were on average 10-15°F cooler from March to May 2020, compared to previous years.
+            Satellite and thermal data from the joint NASA-U.S. Geological Survey Landsat satellite and NASA’s ECOsystem Spaceborne Thermal Radiometer Experiment on Space Station (ECOSTRESS) instrument aboard the International Space Station show how decreases in air pollution and the prevalence of empty parking lots during the pandemic changed how much solar radiation is absorbed and reflected from ground surfaces Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, heat dissipated quickly, cooling the urban environment. As a result, scientists found that large parking lots, highway corridors, and commercial rooftops were on average 10-15°F cooler from March to May 2020, compared to previous years.
           </p>
         </>
       ),
       visual: {
         type: 'multi-map',
         data: {
-          bbox: [-121.99956, 37.33972, -121.81417, 37.48344],
+          bbox: [-122.2635, 37.6967, -122.1492, 37.7507],
           // units are in kelvin with a:
           // - range: 1-65535
           // - multiplicative scale factor: 0.00341802
@@ -210,7 +210,7 @@ export default {
           name: 'Surface Temperature',
           legend: {
             type: 'gradient',
-            min: '15',
+            min: '15℃',
             max: '45℃',
             stops: [
               '#3d4fc0',
@@ -244,8 +244,8 @@ export default {
           name: 'Fire anomalies',
           legend: {
             type: 'gradient',
-            min: '-10',
-            max: '10%',
+            min: '-10%',
+            max: '+10%',
             stops: [
               '#0a03fb',
               '#5a59fb',
