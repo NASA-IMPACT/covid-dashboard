@@ -36,7 +36,7 @@ export default {
       contentComp: (
         <>
           <p>
-            Cities are easy to spot from space. Choose any large, urban area around the world, and you’re likely see similar things: dense population centers, complex webs of highways and, more often than not, smog. Smog is the hazy curtain of air that often hangs over cities. It occurs when nitrogen dioxide  produced from fossil fuel emissions from gasoline in cars or coal in powerplants chemically reacts with sunlight and other pollutants like carbon monoxide (CO). Thick smog is harmful to breathe and can significantly reduce visibility. During lockdowns, satellites observed sharp reductions in nitrogen dioxide emissions in cities around the world, and smog began to vanish. Skies were bluer, air was cleaner, and, in some places, views previously obscured by air pollution were suddenly revealed. In Los Angeles, NASA scientists detected that nitrogen dioxide levels fell by more than 30% during the height of COVID-related shutdowns. Other large cities around the world experienced similar reductions.
+            Cities are easy to spot from space. Choose any large, urban area around the world, and you’re likely to see similar things: dense population centers, complex webs of highways and, more often than not, smog. Smog is the hazy curtain of air that often hangs over cities. It occurs when nitrogen dioxide  produced from fossil fuel emissions from gasoline in cars or coal in powerplants chemically reacts with sunlight and other pollutants like carbon monoxide (CO). Thick smog is harmful to breathe and can significantly reduce visibility. During lockdowns, satellites observed sharp reductions in nitrogen dioxide emissions in cities around the world, and smog began to vanish. Skies were bluer, air was cleaner, and, in some places, views previously obscured by air pollution were suddenly revealed. In Los Angeles, NASA scientists detected that nitrogen dioxide levels fell by more than 30% during the height of COVID-related shutdowns. Other large cities around the world experienced similar reductions.
           </p>
         </>
       ),
@@ -84,7 +84,7 @@ export default {
             data: {
               layers: ['no2'],
               date: '2020-02-01T00:00:00Z',
-              bbox: [114.84, 38.32, 117.85, 41.22],
+              bbox: [110, 28, 122, 42],
               compare: {
                 mapLabel: () => '5 year average compared to February 2020',
                 source: {
@@ -185,7 +185,25 @@ export default {
       contentComp: (
         <>
           <p>
-            NASA has used the Ozone Monitoring Instrument (OMI) aboard the Aura satellite to observe global nitrogen dioxide levels since 2004. A joint endeavor between NASA, the Royal Netherlands Meteorological Institute (KNMI) and the Finnish Meteorological Institute (FMI), OMI’s longer data record provides important context with which to compare any changes observed during the pandemic. NASA scientists are also leveraging other space-based instruments from international partners to study changes in nitrogen dioxide during the pandemic. These include the TROPOspheric Monitoring Instrument (TROPOMI) aboard the European Commission’s Copernicus Sentinel-5P satellite. Launched in 2016, TROPOMI provides higher resolution observations than OMI.
+            NASA has used the{' '}
+            <a
+              href='https://aura.gsfc.nasa.gov/omi.html'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore the OMI product'
+            >
+              Ozone Monitoring Instrument (OMI)
+            </a>{' '}
+            aboard the Aura satellite to observe global nitrogen dioxide levels since 2004. A joint endeavor between NASA, the Royal Netherlands Meteorological Institute (KNMI) and the Finnish Meteorological Institute (FMI), OMI’s longer data record provides important context with which to compare any changes observed during the pandemic. NASA scientists are also leveraging other space-based instruments from international partners to study changes in nitrogen dioxide during the pandemic. These include the{' '}
+            <a
+              href='http://www.tropomi.eu/'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore the TROPOMI product'
+            >
+              TROPOspheric Monitoring Instrument (TROPOMI)
+            </a>{' '}
+            aboard the European Commission’s Copernicus Sentinel-5P satellite. Launched in 2016, TROPOMI provides higher resolution observations than OMI.
           </p>
         </>
       ),
@@ -203,7 +221,16 @@ export default {
       contentComp: (
         <>
           <p>
-            Changes in nighttime lights during the pandemic can also be tied to changes in nitrogen dioxide levels if the data are properly processed and interpreted.This is because nitrogen dioxide is primarily emitted from burning fossi fuels, and highways light up on nighttime satellite imagery when vehicles are present. Here we see the illuminated web of highways connecting the Los Angeles metropolitan region. Researchers are using night light observations to track variations in energy use, migration, and transportation in response to social distancing and shutdown measures during the pandemic. These data, collected by the Visible Infrared Imaging Radiometer Suite (VIIRS) instrument aboard the joint NASA-National Oceanic and Atmospheric Administration (NOAA) Suomi-National Polar-orbiting Partnership (NPP) satellite, correlate with changes seen in car traffic on the ground – and, therefore, nitrogen dioxide reductions. While this research is still ongoing, the 31% reduction in nitrogen dioxide levels in Los Angeles during the height of pandemic-related lockdowns compared to recent years seems to correspond with a 15% reduction in nighttime lights over highways during the same period.
+            Changes in nighttime lights during the pandemic can also be tied to changes in nitrogen dioxide levels if the data are properly processed and interpreted. This is because nitrogen dioxide is primarily emitted from burning fossil fuels, and highways light up on nighttime satellite imagery when vehicles are present. Here we see the illuminated web of highways connecting the Los Angeles metropolitan region. Researchers are using night light observations to track variations in energy use, migration, and transportation in response to social distancing and shutdown measures during the pandemic. These data, collected by the{' '}
+            <a
+              href='https://www.jpss.noaa.gov/viirs.html'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore the VIIRS product'
+            >
+              Visible Infrared Imaging Radiometer Suite (VIIRS)
+            </a>{' '}
+            instrument aboard the joint NASA-National Oceanic and Atmospheric Administration (NOAA) Suomi-National Polar-orbiting Partnership (NPP) satellite, correlate with changes seen in car traffic on the ground – and, therefore, nitrogen dioxide reductions. While this research is still ongoing, the 31% reduction in nitrogen dioxide levels in Los Angeles during the height of pandemic-related lockdowns compared to recent years seems to correspond with a 15% reduction in nighttime lights over highways during the same period.
           </p>
         </>
       ),
@@ -230,7 +257,16 @@ export default {
             New research during the pandemic is also looking at how COVID-related travel bans are impacting air quality around airports. Current conditions create a unique opportunity to study airport-related pollutants, especially nitrogen dioxide and formaldehyde. While travel bans and strict regulations around air travel have been in place, air traffic has yet to return to previous levels, and many planes remain grounded.
           </p>
           <p>
-            Scientists have installed two sensors at the Baltimore-Washington International Airport and two sensors at the Hartsfield-Jackson Atlanta International Airport to better characterize how airplanes contribute to air pollution. They are comparing the on-the-ground sensor information from the Pandora network with satellite information from TROPOMI. So far, they have found that nitrogen dioxide hotspots in Atlanta shifted from the airport, shown here, to the city center from April-June 2020. By September, however, satellites revealed the airport had reemerged as a dominant nitrogen dioxide emission source.
+            Scientists have installed two sensors at the Baltimore-Washington International Airport and two sensors at the Hartsfield-Jackson Atlanta International Airport to better characterize how airplanes contribute to air pollution. They are comparing the on-the-ground sensor information from NASA&apos;s{' '}
+            <a
+              href='https://pandora.gsfc.nasa.gov/'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore the Pandora Project'
+            >
+               Pandora Project
+            </a>{' '}
+            with satellite information from TROPOMI. So far, they have found that nitrogen dioxide hotspots in Atlanta shifted from the airport, shown here, to the city center from April-June 2020. By September, however, satellites revealed the airport had reemerged as a dominant nitrogen dioxide emission source.
           </p>
         </>
       ),
@@ -365,7 +401,16 @@ export default {
       contentComp: (
         <>
           <p>
-            After the initial shock of COVID-related shutdowns in the spring, communities worldwide began to reopen and gradually increase mobility. Cars returned to the road, and travel restrictions slowly eased. These resumptions corresponded with relative increases in nitrogen dioxide levels and other air pollutants, as air quality levels began to return to pre-pandemic levels. This demonstrates how quickly atmospheric nitrogen dioxide responds to reductions in emissions. They will persist as long as emissions persist and decline rapidly if emissions are reduced. NASA scientists will continue to monitor nitrogen dioxide levels and long-term trends around the world. NASA is expected to launch its Tropospheric Emissions: Monitoring of Pollution, (TEMPO) instrument in 2022, which will provide hourly, high-resolution measurements of nitrogen dioxide, ozone, and other air pollutants across North America, improving future air quality forecasts.
+            After the initial shock of COVID-related shutdowns in the spring, communities worldwide began to reopen and gradually increase mobility. Cars returned to the road, and travel restrictions slowly eased. These resumptions corresponded with relative increases in nitrogen dioxide levels and other air pollutants, as air quality levels began to return to pre-pandemic levels. This demonstrates how quickly atmospheric nitrogen dioxide responds to reductions in emissions. They will persist as long as emissions persist and decline rapidly if emissions are reduced. NASA scientists will continue to monitor nitrogen dioxide levels and long-term trends around the world. NASA is expected to launch its{' '}
+            <a
+              href='http://tempo.si.edu/overview.html'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore the TEMPO instrument'
+            >
+               Tropospheric Emissions: Monitoring of Pollution (TEMPO)
+            </a>{' '}
+            instrument in 2022, which will provide hourly, high-resolution measurements of nitrogen dioxide, ozone, and other air pollutants across North America, improving future air quality forecasts.
           </p>
           <p>
             <Link
@@ -381,7 +426,7 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['no2'],
-          bbox: [114.84, 38.32, 117.85, 41.22],
+          bbox: [110, 28, 122, 42],
           compare: {
             mapLabel: () => 'February 2020 compared current NO₂ levels',
             layers: ['no2'],
