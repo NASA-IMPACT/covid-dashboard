@@ -23,8 +23,8 @@ export default {
               title='Read how COVID affect the climate'
             >
               nitrogen dioxide
-            </Link>
-            (NO<sub>2</sub>) , scientists wondered whether corresponding decreases in carbon dioxide could be observed from satellites and what impact, if any, such decreases could have on future climate projections.
+            </Link>{' '}
+            (NO<sub>2</sub>), scientists wondered whether corresponding decreases in carbon dioxide could be observed from satellites and what impact, if any, such decreases could have on future climate projections.
           </p>
         </>
       ),
@@ -59,8 +59,8 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['co2-diff'],
-          mapLabel: () => 'March 1, 2020',
-          date: '2020-03-01T00:00:00Z'
+          mapLabel: () => 'March 31, 2020',
+          date: '2020-03-31T00:00:00Z'
         }
       }
     },
@@ -193,7 +193,25 @@ export default {
       contentComp: (
         <>
           <p>
-            Two Earth-observing satellites – NASA’s Orbiting Carbon Observatory-2 (OCO-2) and Japan’s  Greenhouse gases Observing SATellite (GOSAT) – have tracked changes in atmospheric carbon dioxide emissions resulting from the COVID-19 pandemic. Measurements collected in 2020 were compared with results from previous years to glean insights into any small variations. Each of these satellites plays a unique role in studying carbon dioxide. OCO-2, whose data are shown here, collects measurements at relatively high spatial resolution and monitors regional-scale changes in carbon dioxide. GOSATcollects measurements at isolated points and can be targeted to track changes in carbon dioxide and methane emissions in large urban areas, such as Beijing, Tokyo, and Los Angeles. While both satellites provide a large number of measurements over the globe each day, thick clouds and airborne particles such as dust, smoke or smog reduce the number of reliable estimates they produce, so their spatial sampling is relatively sparse.
+            Two Earth-observing satellites – NASA’s{' '}
+            <a
+              href='https://ocov2.jpl.nasa.gov/'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore the OCO-2 product'
+            >
+              Orbiting Carbon Observatory-2 (OCO-2)
+            </a>{' '}
+            and Japan&apos;s{' '}
+            <a
+              href='https://www.eorc.jaxa.jp/GOSAT/index.html'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore GOSAT'
+            >
+              Greenhouse gases Observing SATellite (GOSAT)
+            </a>{' '}
+            – have tracked changes in atmospheric carbon dioxide emissions resulting from the COVID-19 pandemic. Measurements collected in 2020 were compared with results from previous years to glean insights into any small variations. Each of these satellites plays a unique role in studying carbon dioxide. OCO-2, whose data are shown here, collects measurements at relatively high spatial resolution and monitors regional-scale changes in carbon dioxide. GOSAT collects measurements at isolated points and can be targeted to track changes in carbon dioxide and methane emissions in large urban areas, such as Beijing, Tokyo, and Los Angeles. While both satellites provide a large number of measurements over the globe each day, thick clouds and airborne particles such as dust, smoke or smog reduce the number of reliable estimates they produce, so their spatial sampling is relatively sparse.
           </p>
         </>
       ),
@@ -201,14 +219,14 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['co2'],
-          date: '2020-03-01T00:00:00Z',
+          date: '2020-03-31T00:00:00Z',
           bbox: [-125.1562, 29.3055, -72.5097, 48.8068],
           compare: {
-            mapLabel: () => '5 year average compared to March 1st 2020',
+            mapLabel: () => '5 year average compared to March 31st 2020',
             source: {
               type: 'raster',
               tiles: [
-                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-base/xco2_16day_base.2020_03_01.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/xco2-base/xco2_16day_base.2020_03_31.tif&resampling_method=bilinear&bidx=1&rescale=0.000408%2C0.000419&color_map=rdylbu_r`
               ]
             }
           }
@@ -236,6 +254,7 @@ export default {
           </LayerInfo>
         ),
         data: {
+          bbox: [-10, 38, 48, 55],
           maps: [
             {
               id: 'co2',
@@ -267,7 +286,7 @@ export default {
       contentComp: (
         <>
           <p>
-          Scientists were also able to infer regional-scale differences in carbon dioxide that were completely unrelated to the pandemic using these new techniques. Increased carbon dioxide observed at high northern latitudes was likely due to intense wildfires across Siberia in April 2020. In addition, a small, 1ppm decline in carbon dioxide concentrations across Central India and Southern and Eastern Africa in January, shown here, was likely due to the additional absorption of carbon dioxide by land ecosystems and the Indian Ocean Dipole, an El Niño-like disturbance across the Indian Ocean basin.
+            Scientists were also able to infer regional-scale differences in carbon dioxide that were completely unrelated to the pandemic using these new techniques. Increased carbon dioxide observed over Australia early in the year was likely due to intense wildfires in late 2019. In addition, a small, 1ppm decline in carbon dioxide concentrations across Central India and Southern and Eastern Africa in January, shown here, was likely due to the additional absorption of carbon dioxide by land ecosystems and the Indian Ocean Dipole, an El Niño-like disturbance across the Indian Ocean basin.
           </p>
         </>
       ),
@@ -276,7 +295,7 @@ export default {
         data: {
           layers: ['co2-diff'],
           date: '2020-01-15T00:00:00Z',
-          bbox: [-24.9609, -36.5978, 100.8984, 47.9899]
+          bbox: [-15, -36.5978, 170, 47.9899]
         }
       }
     },
@@ -292,7 +311,13 @@ export default {
       ),
       visual: {
         type: 'multi-map',
+        about: (
+          <LayerInfo>
+            <p>Redder colors indicate increased CO<sub>2</sub> enhancements. Bluer colors indicate decreased CO<sub>2</sub> enhancements.</p>
+          </LayerInfo>
+        ),
         data: {
+          name: 'XCO₂ (Diff)',
           bbox: [116.17, 40.11, 116.6, 39.7],
           maps: [
             {
@@ -354,7 +379,15 @@ export default {
             A key takeaway of the research is the need to improve our understanding of the contributions of the natural carbon cycle. By improving our ability to track and diagnose its changes, scientists will be able to more accurately attribute and interpret changes in carbon dioxide due to human activities. For example, we would have to reduce carbon dioxide emissions by as much as we have done this year for every year in the next couple of decades to meet the ambitious goals of the Paris agreement and limit temperature increases to less than 2 degrees C. This test shows we are learning how to do that.
           </p>
           <p>
-            The research is also providing new insights into the sensors and analysis tools needed to track changes in carbon dioxide from space. For example, it reinforced the value of combining different types of measurements to detect small changes in carbon dioxide emission sources. Results of these COVID-related studies will benefit development of several next-generation satellites launching in the next few years, including Japan’s GOSAT-GW satellite, the Copernicus CO2M constellation, and NASA’s GeoCarb.
+            The research is also providing new insights into the sensors and analysis tools needed to track changes in carbon dioxide from space. For example, it reinforced the value of combining different types of measurements to detect small changes in carbon dioxide emission sources. Results of these COVID-related studies will benefit development of several next-generation satellites launching in the next few years, including Japan&apos;s GOSAT-GW satellite, the Copernicus CO2M constellation, and NASA&apos;s{' '}
+            <a
+              href='https://www.nasa.gov/feature/jpl/geocarb-a-new-view-of-carbon-over-the-americas'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore GeoCarb'
+            >
+               GeoCarb
+            </a>.
           </p>
           <p>
             <Link
