@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * Rounds a number to a specified amount of decimals.
  *
@@ -102,3 +104,23 @@ export function formatThousands (num, options) {
 
 // Add zero leading decimals
 export const zeroPad = v => v < 10 ? `0${v}` : v;
+
+/**
+ * Replaces the character ₂ (\u2082) with a sub tag.
+ *
+ * @param {string} input Input string
+ *
+ * @returns React component
+ */
+export const replaceSub2 = (input) => {
+  if (!input.split) return input;
+  const content = input.split('\u2082');
+
+  return content.reduce(
+    (accum, el, ind) =>
+      ind < content.length - 1
+        ? [...accum, el, <sub key={el}>2</sub>]
+        : [...accum, el],
+    []
+  );
+};

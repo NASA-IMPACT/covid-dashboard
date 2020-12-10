@@ -104,7 +104,7 @@ export default class Dropdown extends React.Component {
   // Lifecycle method.
   componentWillUnmount () {
     activeDropdowns.splice(activeDropdowns.indexOf(this), 1);
-    window.removeEventListener('click', this._bodyListener);
+    window.removeEventListener('click', this._bodyListener, true);
   }
 
   _bodyListener (e) {

@@ -70,7 +70,8 @@ export const InpageHeaderInner = styled(Constrainer)`
 export const InpageHeadline = styled.div`
   display: flex;
   flex-flow: column;
-  min-width: 0;
+  min-width: 0px;
+  flex: 1;
   grid-row: 1;
   grid-column: span 4;
 

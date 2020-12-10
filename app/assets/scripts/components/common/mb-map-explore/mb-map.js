@@ -156,7 +156,13 @@ class MbMap extends React.Component {
     const currId = this.props.layers.map((l) => l.id).join('.');
     const prevIds = prevProps.layers.map((l) => l.id).join('.');
     if (currId !== prevIds) {
-      this.props.activeLayers.forEach((layerId) => {
+      // The 'layers' update before the 'activeLayers', therefore we have to
+      // check the current 'activeLayers' against the previous 'layers'. However
+      // when the 'layers' update, the prevProps.activeLayers will be the same
+      // as this.props.activeLayers. By using the prevProps.activeLayers we fix
+      // the problem when 'layers' update at the same time as 'activeLayers'
+      // which happens for the stories.
+      prevProps.activeLayers.forEach((layerId) => {
         const layerInfo = prevProps.layers.find((l) => l.id === layerId);
         const fns = layerTypes[layerInfo.type];
         if (fns) {
@@ -252,7 +258,7 @@ class MbMap extends React.Component {
   updateSpotlights () {
     // Check if spotlights are available
     const { spotlightList } = this.props;
-    if (!spotlightList && !spotlightList.isReady()) return;
+    if (!spotlightList || !spotlightList.isReady()) return;
 
     // Get spotlights from API data
     const spotlights = spotlightList.getData();
@@ -303,7 +309,7 @@ class MbMap extends React.Component {
     // Add zoom controls.
     this.mbMapComparing.addControl(
       new mapboxgl.NavigationControl(),
-      'top-left'
+      'top-right'
     );
 
     // Remove compass.
@@ -388,7 +394,7 @@ class MbMap extends React.Component {
 
     if (!this.props.disableControls) {
       // Add zoom controls.
-      this.mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+      this.mbMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
       // Remove compass.
       document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
@@ -431,18 +437,19 @@ class MbMap extends React.Component {
     }
 
     this.mbMap.on('load', () => {
-      this.props.onAction('map.loaded');
+      const allProps = this.props;
+      const { spotlightList, comparing, onAction } = allProps;
+      onAction('map.loaded');
 
-      if (this.props.comparing) {
+      if (comparing) {
         // Fake previous props to simulate the enabling of the compare option.
         this.enableCompare({
-          ...this.props,
+          ...allProps,
           comparing: false
         });
       }
 
       // If spotlight list is available on map mount, add it to the map
-      const { spotlightList } = this.props;
       if (spotlightList && spotlightList.isReady()) {
         this.updateSpotlights(spotlightList.getData());
       }

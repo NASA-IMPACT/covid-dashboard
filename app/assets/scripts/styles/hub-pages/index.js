@@ -78,6 +78,8 @@ export const EntryNavLinkMedia = styled.figure`
 
 export const EntryNavLink = styled(NavLink)`
   display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
   position: relative;
   padding: ${glsp()};
   border-radius: ${themeVal('shape.rounded')};
@@ -86,7 +88,6 @@ export const EntryNavLink = styled(NavLink)`
   line-height: 1.5rem;
   transition: all 0.16s ease 0s;
   min-height: 8rem;
-  align-items: flex-end;
   background: ${themeVal('color.link')};
 
   ${media.mediumUp`
@@ -119,4 +120,15 @@ export const EntryNavLink = styled(NavLink)`
 export const EntryNavLinkTitle = styled.strong`
   position: relative;
   z-index: 2;
+`;
+
+export const EntryNavLinkInfo = styled.div`
+  position: relative;
+  z-index: 2;
+  display: flex;
+  font-size: 0.875rem;
+
+  > *:not(:last-child) {
+    margin-right: ${glsp()};    
+  }
 `;

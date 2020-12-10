@@ -10,7 +10,9 @@ const dateFormats = {
 const prepDateSource = (source, date, timeUnit = 'month') => {
   return {
     ...source,
-    tiles: source.tiles.map((t) => t.replace('{date}', format(date, dateFormats[timeUnit])))
+    tiles: source.tiles.map((t) =>
+      t.replace('{date}', format(date, dateFormats[timeUnit]))
+    )
   };
 };
 
@@ -79,7 +81,7 @@ export const layerTypes = {
     update: (ctx, layerInfo, prevProps) => {
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
       const { id, source, compare, paint } = layerInfo;
-      const prevLayerInfo = prevProps.layers.find(l => l.id === layerInfo.id);
+      const prevLayerInfo = prevProps.layers.find((l) => l.id === layerInfo.id);
       const { date, comparing } = props;
 
       const knobPos = layerInfo.knobCurrPos;
@@ -88,14 +90,15 @@ export const layerTypes = {
       // Do not update if:
       if (
         // There's no date defined.
-        prevProps.date && date &&
+        prevProps.date &&
+        date &&
         // Dates are the same
         date.getTime() === prevProps.date.getTime() &&
         // Knob position for gamma correction is the same.
         knobPos === knobPosPrev &&
         // Compare didn't change.
         comparing === prevProps.comparing
-      ) return;
+      ) { return; }
 
       // The source we're updating is not present.
       if (!mbMap.getSource(id)) return;
@@ -111,10 +114,18 @@ export const layerTypes = {
 
       // Update/init compare layer tiles.
       if (comparing) {
-        const sourceCompare = prepSource({ ...layerInfo, ...compare },
+        const compareDate =
+          typeof compare.compareDate === 'function'
+            ? compare.compareDate(date)
+            // Default compare date is 5y ago.
+            : sub(date, { years: 5 });
+
+        const sourceCompare = prepSource(
+          { ...layerInfo, ...compare },
           compare.source || source,
-          sub(date, { years: compare.yearDiff === undefined ? 5 : compare.yearDiff }),
-          knobPos);
+          compareDate,
+          knobPos
+        );
         if (mbMapComparing.getSource(id)) {
           replaceRasterTiles(mbMapComparing, id, sourceCompare.tiles);
         } else {
@@ -147,7 +158,10 @@ export const layerTypes = {
       if (mbMap.getSource(id)) {
         mbMap.setLayoutProperty(id, 'visibility', 'visible');
       } else {
-        mbMap.addSource(id, prepSource(layerInfo, source, date, layerInfo.knobCurrPos));
+        mbMap.addSource(
+          id,
+          prepSource(layerInfo, source, date, layerInfo.knobCurrPos)
+        );
         mbMap.addLayer(
           {
             id: id,
@@ -161,6 +175,49 @@ export const layerTypes = {
     }
   },
   raster: {
+    update: (ctx, layerInfo, prevProps) => {
+      const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
+      const { id, compare, paint, source } = layerInfo;
+      const { comparing } = props;
+
+      // Check if the source tiles have changed and need to be replaced. This
+      // may happen in the stories when maintaining the layer and changing the
+      // spotlight. One example is the slowdown raster layer on la and sf.
+      const sourceTiles = mbMap.getSource(id).tiles;
+      const newSourceTiles = source.tiles;
+      // Quick compare
+      if (sourceTiles && sourceTiles.join('-') !== newSourceTiles.join('-')) {
+        replaceRasterTiles(mbMap, id, newSourceTiles);
+      }
+
+      // Do not update if:
+      if (
+        // Compare didn't change.
+        comparing === prevProps.comparing ||
+        // There's no comparing map.
+        !mbMapComparing
+      ) { return; }
+
+      // If we're comparing, and the compare map is not loaded.
+      if (comparing && !mbMapComparingLoaded) return;
+
+      // END update checks.
+
+      if (mbMapComparing.getSource(id)) {
+        mbMapComparing.setLayoutProperty(id, 'visibility', 'visible');
+      } else {
+        mbMapComparing.addSource(id, compare.source);
+        mbMapComparing.addLayer(
+          {
+            id: id,
+            type: 'raster',
+            source: id,
+            paint: paint || {}
+          },
+          'admin-0-boundary-bg'
+        );
+      }
+    },
     hide: (ctx, layerInfo) => {
       const { mbMap } = ctx;
       const { id } = layerInfo;
@@ -199,24 +256,27 @@ export const layerTypes = {
       // Do not update if:
       if (
         // There's no date defined.
-        prevProps.date && date &&
+        prevProps.date &&
+        date &&
         // Dates are the same
         date.getTime() === prevProps.date.getTime()
-      ) return;
+      ) { return; }
 
       // The source we're updating is not present.
       if (!mbMap.getSource(vecId) || !mbMap.getSource(rastId)) return;
       const formatDate = format(date, dateFormats[layerInfo.timeUnit]);
       const vectorData = source.data.replace('{date}', formatDate);
-      const rasterTiles = backgroundSource.tiles.map(tile => tile.replace('{date}', formatDate));
+      const rasterTiles = backgroundSource.tiles.map((tile) =>
+        tile.replace('{date}', formatDate)
+      );
 
       // inference data moves around, recenter on each update
       fetch(vectorData)
-        .then(res => res.json())
-        .then(geo => {
+        .then((res) => res.json())
+        .then((geo) => {
           mbMap.fitBounds(bbox(geo));
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err); // eslint-disable-line no-console
         });
 
@@ -257,18 +317,27 @@ export const layerTypes = {
       };
       const rasterL = {
         ...backgroundSource,
-        tiles: backgroundSource.tiles.map(tile => tile.replace('{date}', formatDate))
+        tiles: backgroundSource.tiles.map((tile) =>
+          tile.replace('{date}', formatDate)
+        )
       };
 
-      toggleOrAddLayer(mbMap, vecId, vectorL, 'line', inferPaint, 'admin-0-boundary-bg');
+      toggleOrAddLayer(
+        mbMap,
+        vecId,
+        vectorL,
+        'line',
+        inferPaint,
+        'admin-0-boundary-bg'
+      );
       toggleOrAddLayer(mbMap, rastId, rasterL, 'raster', {}, vecId);
 
       fetch(vectorL.data)
-        .then(res => res.json())
-        .then(geo => {
+        .then((res) => res.json())
+        .then((geo) => {
           mbMap.fitBounds(bbox(geo));
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err); // eslint-disable-line no-console
         });
     }
