@@ -21,7 +21,9 @@ export default () => css`
 
   .mapboxgl-map {
     color: ${themeVal('type.base.color')};
-    font: ${themeVal('type.base.style')} ${themeVal('type.base.weight')} ${themeVal('type.base.size')}/${themeVal('type.base.line')} ${themeVal('type.base.family')};
+    font: ${themeVal('type.base.style')} ${themeVal('type.base.weight')}
+      ${themeVal('type.base.size')} / ${themeVal('type.base.line')}
+      ${themeVal('type.base.family')};
 
     *:active,
     *:focus {
@@ -43,7 +45,6 @@ export default () => css`
     > button + button {
       margin-top: -${themeVal('layout.border')};
     }
-
 
     .mapboxgl-ctrl-zoom-in.mapboxgl-ctrl-zoom-in {
       ${Button.getStyles({
@@ -113,12 +114,18 @@ export default () => css`
     left: 0;
   }
 
+  .mapboxgl-ctrl-top-right {
+    top: ${glsp(2.5)};
+    right: 0;
+  }
+
   /* GEOCODER styles */
   .mapboxgl-ctrl.mapboxgl-ctrl-geocoder {
     ${stackSkin()}
     border-radius: ${themeVal('shape.rounded')};
     color: ${themeVal('type.base.color')};
-    font: ${themeVal('type.base.style')} ${themeVal('type.base.weight')} 0.875rem/1.25rem ${themeVal('type.base.family')};
+    font: ${themeVal('type.base.style')} ${themeVal('type.base.weight')}
+      0.875rem/1.25rem ${themeVal('type.base.family')};
 
     &::before {
       position: absolute;
@@ -164,11 +171,12 @@ export default () => css`
     .mapboxgl-ctrl-geocoder--input {
       height: 2rem;
       width: 100%;
-      font: ${themeVal('type.base.style')} ${themeVal('type.base.weight')} 0.875rem/${themeVal('type.base.line')} ${themeVal('type.base.family')};
+      font: ${themeVal('type.base.style')} ${themeVal('type.base.weight')}
+        0.875rem / ${themeVal('type.base.line')} ${themeVal('type.base.family')};
       padding: 0.25rem 2rem;
       color: inherit;
 
-       &::placeholder {
+      &::placeholder {
         color: inherit;
         opacity: 0.64;
       }
@@ -179,7 +187,7 @@ export default () => css`
       margin-bottom: 0.5rem;
       border-radius: ${themeVal('shape.rounded')};
       font: inherit;
-      color: #FFFFFF;
+      color: #ffffff;
 
       a {
         padding: 0.375rem 1rem;
@@ -241,7 +249,7 @@ export default () => css`
     height: 3rem;
     left: 0;
     margin-top: 0;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     background-size: 3rem;
     background-color: ${themeVal('color.primary')};
   }

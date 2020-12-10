@@ -349,8 +349,8 @@ class CarsAndConstructionLongForm extends React.Component {
             <InpageHGroup title='Credits' dashColor={metadata.color} />
             <Prose>
               <ul>
-                <li>ARIA at NASA-JPL</li>
-                <li>Caltech EOS at Nanyang Technological University</li>
+                <li>ARIA at NASA-JPL / Caltech</li>
+                <li>EOS at Nanyang Technological University</li>
               </ul>
             </Prose>
           </Gridder>
