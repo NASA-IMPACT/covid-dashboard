@@ -54,6 +54,7 @@ import {
   getMapLayers,
   getMapMessage
 } from './utils';
+import { replaceSub2 } from '../../../utils/format';
 
 const InpageHeaderInnerAlt = styled.div`
   display: flex;
@@ -118,6 +119,10 @@ const DropdownScrollInner = styled.div`
 
   li li a {
     padding-left: 2rem;
+  }
+
+  ${DropMenuItem} {
+    display: block;
   }
 `;
 
@@ -456,7 +461,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                       title='View chapter of this story'
                       data-dropdown='click.close'
                     >
-                      {chapter.name}
+                      {replaceSub2(chapter.name)}
                     </DropMenuItem>
                     {chapter.sections && (
                       <ul>
@@ -472,7 +477,7 @@ If this is a system layer, check that a compare property is defined. In alternat
                               title='View chapter of this story'
                               data-dropdown='click.close'
                             >
-                              {section.name}
+                              {replaceSub2(section.name)}
                             </DropMenuItem>
                           </li>
                         ))}

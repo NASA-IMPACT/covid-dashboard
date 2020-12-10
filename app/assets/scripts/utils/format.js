@@ -113,6 +113,7 @@ export const zeroPad = v => v < 10 ? `0${v}` : v;
  * @returns React component
  */
 export const replaceSub2 = (input) => {
+  if (!input.split) return input;
   const content = input.split('\u2082');
 
   return content.reduce(

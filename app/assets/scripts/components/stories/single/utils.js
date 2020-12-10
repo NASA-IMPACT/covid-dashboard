@@ -3,6 +3,7 @@ import get from 'lodash.get';
 import find from 'lodash.find';
 
 import { getSpotlightLayers } from '../../common/layers';
+import { replaceSub2 } from '../../../utils/format';
 
 export const findById = (haystack = [], id) => {
   const idx = haystack.findIndex((c) => c.id === id);
@@ -84,10 +85,10 @@ export const getCurrentItemNum = (chapterIdx, sectionIdx = null) => {
 export const getCurrentItemName = (chapter, section = null) => {
   return section ? (
     <>
-      {chapter.name} ({section.name})
+      {replaceSub2(chapter.name)} ({replaceSub2(section.name)})
     </>
   ) : (
-    <>{chapter.name}</>
+    <>{replaceSub2(chapter.name)}</>
   );
 };
 
