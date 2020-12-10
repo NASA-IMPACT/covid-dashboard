@@ -16,7 +16,7 @@ export default {
       name: 'Changing Behavior and Changing Landscapes',
       contentComp: (
         <p>
-          Throughout the COVID-19 pandemic, governments have implemented, eased, and re-implemented restrictions limiting mobility and international travel to help slow the spread of the virus. As a result, people have largely stayed home, and the ways in which we interact with the human-made and natural environments have changed. These changes have reverberated throughout Earth’s systems and are observed in different ways by NASA satellites.
+          Throughout the COVID-19 pandemic, governments have implemented, eased, and re-implemented restrictions limiting mobility and international travel to help slow the spread of the novel coronavirus. As a result, people have largely stayed home, and the ways in which we interact with the human-made and natural environments have changed. These changes have reverberated throughout Earth’s systems and are observed in different ways by NASA satellites.
         </p>
       ),
       visual: {
@@ -27,7 +27,7 @@ export default {
           </LayerInfo>
         ),
         data: {
-          bbox: [113.7442, 30.2021, 114.859, 30.9092],
+          bbox: [113.9, 30.4, 114.7, 30.8],
           mapLabel: () => 'Feb 25, 2020',
           layers: [
             {
@@ -57,7 +57,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
-          bbox: [113.7442, 30.2021, 114.859, 30.9092],
+          bbox: [113.9, 30.4, 114.7, 30.8],
           layers: [
             {
               id: 'jan',
@@ -65,7 +65,7 @@ export default {
               source: {
                 type: 'raster',
                 tiles: [
-                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/bmhd-wuhan/BMHD_Wuhan_China_VNP46A2_Jan192020_ON.cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
+                  `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/bmhd-wuhan/BMHD_Wuhan_China_VNP46A2_Feb42020_ON.cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
                 ]
               },
               name: 'Nightlights HD',
@@ -89,7 +89,7 @@ export default {
             source: {
               type: 'raster',
               tiles: [
-                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/bmhd-wuhan/BMHD_Wuhan_China_VNP46A2_Feb42020_ON.cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
+                `${api}/{z}/{x}/{y}@1x?url=s3://covid-eo-data/standalone/bmhd-wuhan/BMHD_Wuhan_China_VNP46A2_Jan192020_ON.cog.tif&resampling_method=bilinear&bidx=1%2C2%2C3`
               ]
             }
           }
@@ -123,7 +123,7 @@ export default {
       name: 'Tracking Changes in Ports',
       contentComp: (
         <p>
-          It wasn’t just ground transportation in Los Angeles that was affected by COVID-related shutdowns – its ports also showed less activity. During the pandemic, supply chains around the world dependent on cargo shipping saw interruptions as many ports closed, shipments canceled, and in some locations, altered routes prevented the efficient movement of cargo. According to the Port of Los Angeles, its port saw a 19% reduction in shipping cargo volume during the early months of the pandemic, compared to the same time period in 2019. The image here shows a reduction in the number of ships at the port, which could potentially also affect the area’s overall water quality.
+          It wasn’t just ground transportation in Los Angeles that was affected by COVID-related shutdowns – its port also showed less activity. During the pandemic, supply chains around the world dependent on cargo shipping saw interruptions as many ports closed, shipments canceled, and in some locations, altered routes prevented the efficient movement of cargo. According to the Port of Los Angeles, its port saw a 19% reduction in shipping cargo volume during the early months of the pandemic, compared to the same time period in 2019. The image here shows a reduction in the number of ships at the port, which could potentially also affect the area’s overall water quality.
         </p>
       ),
       visual: {
@@ -172,7 +172,24 @@ export default {
       contentComp: (
         <>
           <p>
-            Satellite and thermal data from the joint NASA-U.S. Geological Survey Landsat satellite and NASA’s ECOsystem Spaceborne Thermal Radiometer Experiment on Space Station (ECOSTRESS) instrument aboard the International Space Station show how decreases in air pollution and the prevalence of empty parking lots during the pandemic changed how much solar radiation is absorbed and reflected from ground surfaces Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, heat dissipated quickly, cooling the urban environment. As a result, scientists found that large parking lots, highway corridors, and commercial rooftops were on average 10-15°F cooler from March to May 2020, compared to previous years.
+            Satellite and thermal data also showed how the decreases in air pollution and the prevalence of empty parking lots during the pandemic changed how much solar radiation is absorbed and reflected from ground surfaces Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, measurements from the joint NASA-U.S. Geological Survey{' '}
+            <a
+              href='https://landsat.gsfc.nasa.gov/'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Landsat'
+            >
+              Landsat satellite
+            </a>{' '}and NASA&apos;s{' '}
+            <a
+              href='https://ecostress.jpl.nasa.gov/'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore the ECOSTRESS product'
+            >
+              ECOsystem Spaceborne Thermal Radiometer Experiment on Space Station (ECOSTRESS)
+            </a>{' '}
+            instrument showed heat dissipated quickly, cooling the urban environment. As a result, scientists found that large parking lots, highway corridors, and commercial rooftops were on average 10-15°F cooler from March to May 2020, compared to previous years.
           </p>
         </>
       ),
@@ -232,7 +249,16 @@ export default {
       contentComp: (
         <>
           <p>
-            Limits on work and travel during the pandemic affected how humans interact with the natural environment. For example, satellites observed a reduction in managed forest fires, otherwise known as prescribed burns, on federal lands. Prescribed fires are an important way to reduce fuel loads and maintain biodiversity. In March 2020, the U.S. Forest Service and other federal agencies temporarily suspended all prescribed burns on federal lands in the Southeast United States. State agencies in Mississippi, South Carolina, and North Carolina also issued spring burning bans in response to the COVID-19 pandemic. The Forest Service’s suspension aimed to prevent virus exposure to employees and to reduce smoke exposure to vulnerable communities, since COVID-19 is a respiratory illness. Using fire data from the Visible Infrared Imaging Radiometer Suite (VIIRS) on the Suomi NPP satellite, researchers at NASA’s Goddard Space Flight Center detected a 42% reduction in active fires in the Southeastern U.S. this spring compared to previous years.
+            Limits on work and travel during the pandemic also affected how humans interact with the natural environment. For example, satellites observed a reduction in managed forest fires, otherwise known as prescribed burns, on federal lands. Prescribed burns are an important way to reduce fuel loads and maintain biodiversity. In March 2020, the U.S. Forest Service and other federal agencies temporarily suspended all prescribed burns on federal lands in the Southeast United States. State agencies in Mississippi, South Carolina, and North Carolina also issued spring burning bans in response to the COVID-19 pandemic. The Forest Service’s suspension aimed to prevent virus exposure to employees and to reduce smoke exposure to vulnerable communities, since COVID-19 is a respiratory illness. Using fire data from the{' '}
+            <a
+              href='https://www.jpss.noaa.gov/viirs.html'
+              target='_blank'
+              rel='noopener noreferrer'
+              title='Explore the VIIRS product'
+            >
+              Visible Infrared Imaging Radiometer Suite (VIIRS)
+            </a>{' '}
+            on the Suomi NPP satellite, researchers at NASA’s Goddard Space Flight Center detected a 42% reduction in active fires in the Southeastern U.S. this spring compared to previous years.
           </p>
         </>
       ),
