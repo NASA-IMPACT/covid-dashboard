@@ -17,21 +17,7 @@ export default {
       contentComp: (
         <>
           <p>
-          While some researchers are studying the COVID-19 pandemic’s impact on{' '}
-            <Link
-              to='/discoveries/climate/climate-change-and-covid'
-              title='Read how COVID affect the climate'
-            >
-              climate
-            </Link>{' '}
-            and{' '}
-            <Link
-              to='/discoveries/air-quality/aq-and-covid'
-              title='Read how COVID affect the climate'
-            >
-              air quality
-            </Link>
-            , others are studying the effects it may have on water quality. Human activity influences water quality, and behavior changes during the COVID-19 pandemic may be beginning to affect local and regional water quality around the world. Though in many cases that relationship is hard to identify, runoff from agriculture and cities can overload coastal waters with excess nutrients, ships in ports and other waterways can mix up sediment and increase turbidity, and even air pollution can end up in the water. Although there are various indications that overall water quality is improving in many places during pandemic-related shutdowns, the cause of these changes and their long-term effects are under investigation by researchers using satellite-based observations and on-the-ground validation.
+            Human activity influences water quality, and our behavior changes during the COVID-19 pandemic may be affecting local and regional water quality around the world. Runoff from agriculture and cities can overload coastal waters with excess nutrients, ships in ports and other waterways can mix up sediment and increase turbidity, and even air pollution can end up in the water. Although there are various indications that overall water quality is improving in many places during pandemic-related shutdowns, the cause of these changes and their long-term effects are under investigation by researchers using satellite-based observations and on-the-ground validation.
           </p>
         </>
       ),
@@ -52,7 +38,7 @@ export default {
       contentComp: (
         <>
           <p>
-            California was one of the first places in the United States to impose COVID-19 related restrictions. A shelter-in-place mandate went into effect for six counties in the San Francisco metropolitan area on March 17, 2020. NASA scientists are using satellite data to investigate the connection between observed changes in air and water quality since the mandate began. Nitrogen compounds, commonly found in air pollutants, can contribute to the formation of algal blooms in water and cause water bodies to become more acidic. Research using satellite data to detect anomalies in levels of algae (chlorophyll-a) and total suspended solids across multiple sites, including the San Francisco Bay, have shown improvements in water quality during recent shutdowns. The lessons learned from this work will help inform similar work in other coastal cities.
+            California was one of the first places in the United States to impose COVID-19 related restrictions. A shelter-in-place mandate went into effect for six counties in the San Francisco metropolitan area on March 17, 2020. NASA scientists are using satellite data to investigate the connection between observed changes in air and water quality since the mandate began. Nitrogen compounds, commonly found in air pollutants, can contribute to the formation of algal blooms in water and cause water bodies to become more acidic. Research using satellite data to detect changes in levels of algae (chlorophyll-a) and total suspended solids across multiple sites, including the San Francisco Bay, have shown improvements in water quality during recent shutdowns. The lessons learned from this work will help inform similar work in other coastal cities.
           </p>
         </>
       ),
@@ -60,7 +46,7 @@ export default {
         type: 'map-layer',
         data: {
           layers: ['no2'],
-          date: '2020-03-01T00:00:00Z',
+          date: '2020-04-01T00:00:00Z',
           bbox: [-122.63570045, 37.11988178, -121.53518996, 38.35512939],
           compare: true
         }
@@ -72,7 +58,7 @@ export default {
       contentComp: (
         <>
           <p>
-            Chlorophyll-a concentrations and water turbidity fluctuate based on a variety of factors, including natural geography and the weather, making it difficult to identify changes due to COVID-19 restrictions. In coastal areas such as the Chesapeake Bay, which are strongly influenced by human activities such as agricultural practices, higher chlorophyll-a concentrations can result from the discharge of fertilizers. Agricultural run-off may mask any improvements in water quality from pandemic-related shutdowns.
+            Chlorophyll-a concentrations and water turbidity fluctuate based on a variety of factors, including natural geography and the weather, making it difficult to identify changes due to COVID-19 restrictions. In coastal areas like the Chesapeake Bay, which is strongly influenced by human activities like agricultural practices, higher chlorophyll-a concentrations can result from the discharge of fertilizers. Agricultural run-off may mask any improvements in water quality from pandemic-related shutdowns.
           </p>
         </>
       ),
@@ -117,7 +103,7 @@ export default {
       contentComp: (
         <>
           <p>
-            Researchers are using NASA satellites to observe changes in water quality within the Great Lakes region. Comparing data from April-June 2020 to a baseline average for 2010-2019, researchers observed slight increases in chlorophyll-a and suspended sediment concentrations in the Western Basin of Lake Erie, the portion of the lake most affected by humans and agriculture. Research is ongoing, however, as scientists are unsure whether these changes are due to COVID-19 related behavioral changes, since they still fall within the historical range of chlorophyll-a and suspended sediment levels in the lake.
+            Similarly, researchers are using NASA satellites to observe changes in water quality within the Great Lakes region. Comparing data from April-June 2020 to a baseline average for 2010-2019, researchers observed slight increases in chlorophyll-a and suspended sediment concentrations in the Western Basin of Lake Erie, the portion of the lake most affected by humans and agriculture. Research is ongoing, however, as scientists are unsure whether these changes are due to COVID-19 related behavioral changes, since they still fall within the historical range of chlorophyll-a and suspended sediment levels in the lake.
           </p>
         </>
       ),
@@ -156,7 +142,7 @@ export default {
       name: 'Counting Crops During a Lockdown',
       contentComp: (
         <p>
-          CEarth-observing satellites have been critical to filling in information about crop planting and conditions, particularly where social distancing and shutdowns have made it difficult to collect ground data. NASA Harvest researchers at the University of Maryland in College Park are using data from U.S. and European satellites to supplement data collected on the ground by the U.S. Department of Agriculture. Using satellite data and machine learning, the researchers are monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
+          Earth-observing satellites have been critical to filling in information about crop planting and conditions, particularly where social distancing and shutdowns have made it difficult to collect ground data. NASA Harvest researchers at the University of Maryland in College Park are using data from U.S. and European satellites to supplement data collected on the ground by the U.S. Department of Agriculture. Using satellite data and machine learning, the researchers are monitoring key commodity crops that have high impacts on markets and food security, including corn and soybeans in the U.S. (pictured here) and winter wheat in Russia.
         </p>
       ),
       visual: {
@@ -197,7 +183,7 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
-          bbox: [12.05, 44.8, 13.6, 45.72],
+          bbox: [12.2, 45.2, 12.7, 45.6],
           layers: [
             {
               id: 'tsm-nas',
@@ -243,7 +229,10 @@ export default {
       contentComp: (
         <>
           <p>
-            A team from the University of Alabama in Huntsville is using satellite and ground-based data to monitor water quality off the coast of Belize to understand how the pandemic is affecting sources of urban and agricultural pollutants, such as nitrogen and phosphorus. By observing land-use changes from shutdowns and decreased tourism, researchers are tracking the production of pollutants that reach water bodies and ecosystems. While Belize experienced similar declines in tourism to other locations, so far researchers have not found vast improvements in water quality. Research conducted during this pandemic will help guide future land-use planners and coastal development. During the COVID-19 pandemic, scientists will continue to use remote sensing data to observe any changes in water quality due to changes in human behavior.
+            A team from the University of Alabama in Huntsville is using satellite and ground-based data to monitor water quality off the coast of Belize to understand how the pandemic is affecting sources of urban and agricultural pollutants, such as nitrogen and phosphorus. By observing land-use changes from shutdowns and decreased tourism, researchers are tracking the production of pollutants that reach water bodies and ecosystems. While Belize experienced similar declines in tourism to other locations, so far researchers have not found vast improvements in water quality. Research conducted during this pandemic will help guide future land-use planners and coastal development.
+          </p>
+          <p>
+            During the COVID-19 pandemic, scientists will continue to use remote sensing data to observe any changes in water quality due to changes in human behavior.
           </p>
           <p>
             <Link
