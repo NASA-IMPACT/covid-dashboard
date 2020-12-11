@@ -172,7 +172,7 @@ export default {
       contentComp: (
         <>
           <p>
-            Satellite and thermal data also showed how the decreases in air pollution and the prevalence of empty parking lots during the pandemic changed how much solar radiation is absorbed and reflected from ground surfaces Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, measurements from the joint NASA-U.S. Geological Survey{' '}
+            Satellite and thermal data also showed how the decreases in air pollution and the prevalence of empty parking lots during the pandemic changed how much solar radiation is absorbed and reflected from ground surfaces. Cleaner air meant that heat re-emitted during the day from dark asphalt and cement surfaces did not stay trapped near the ground as long. Instead, measurements from the joint NASA-U.S. Geological Survey{' '}
             <a
               href='https://landsat.gsfc.nasa.gov/'
               target='_blank'
