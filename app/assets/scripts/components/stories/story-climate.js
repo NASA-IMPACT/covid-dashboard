@@ -17,14 +17,14 @@ export default {
       contentComp: (
         <>
           <p>
-            Throughout the COVID-19 pandemic, communities have seen significant reductions in automobile traffic, energy consumption, and other related activities. The sudden change in our everyday lives has led to substantial, yet temporary, reductions in fossil fuel use across the globe. The combustion of fossil fuels produces greenhouse gases, such as carbon dioxide (CO<sub>2</sub>) and methane (CH<sub>4</sub>), which play a major role in regulating Earth’s climate. These sharp, global decreases are giving scientists an unprecedented opportunity to study how changes in human activities impact the global carbon cycle and to better understand the relative roles natural carbon cycle variations and humans play in driving climate change. Given the observed associated declines in other air pollutants associated with fossil fuel combustion, such as {' '}
+            Throughout the COVID-19 pandemic, communities have seen significant reductions in automobile traffic, energy consumption, and other related activities. The sudden change in our everyday lives has led to substantial, yet temporary, reductions in fossil fuel use across the globe. These changes had an immediate and easily observed impact on pollutants associated with fossil fuel combustion, such as nitrogen dioxide (NO<sub>2</sub>), shown here. The combustion of fossil fuels also produces greenhouse gases, such as carbon dioxide (CO<sub>2</sub>) and methane (CH<sub>4</sub>), which play a major role in regulating Earth&apos;s climate. Given the observed associated declines in{' '}
             <Link
               to='/discoveries/air-quality/aq-and-covid'
               title='Read how COVID affect the climate'
             >
               nitrogen dioxide
             </Link>{' '}
-            (NO<sub>2</sub>), scientists wondered whether corresponding decreases in carbon dioxide could be observed from satellites and what impact, if any, such decreases could have on future climate projections.
+            (NO<sub>2</sub>), scientists wondered whether corresponding decreases in carbon dioxide could be observed from satellites and what impact, if any, such decreases could have on future climate projections. These temporary changes are giving scientists an unprecedented opportunity to study how changes in human activities impact the global carbon cycle and to better understand the relative roles natural carbon cycle variations and humans play in driving climate change.
           </p>
         </>
       ),
