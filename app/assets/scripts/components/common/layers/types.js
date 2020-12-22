@@ -4,7 +4,7 @@ import bbox from '@turf/bbox';
 const dateFormats = {
   monthOnly: 'MM',
   month: 'yyyyMM',
-  day: 'yyyy_MM_dd'
+  day: 'yyyy-MM-dd'
 };
 
 const prepDateSource = (source, date, timeUnit = 'month') => {
