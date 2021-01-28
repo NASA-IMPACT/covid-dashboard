@@ -361,9 +361,9 @@ export function toggleLayerCompare (layer) {
   }
 }
 
-function isDateInDomain (date, domain) {
+function isDateInDomain (date, domain, isPeriodic) {
   if (!date) return false;
-  if (domain.length === 2) {
+  if (isPeriodic) {
     // Start and end, check if between dates.
     const [s, e] = domain;
     return isWithinInterval(date, { start: utcDate(s), end: utcDate(e) });
@@ -380,7 +380,7 @@ export function toggleLayerRasterTimeseries (layer) {
   this.setState(state => {
     // Init the timeline date.
     const timelineDate = state.timelineDate &&
-      isDateInDomain(state.timelineDate, layer.domain)
+      isDateInDomain(state.timelineDate, layer.domain, layer.isPeriodic)
       ? state.timelineDate
       : utcDate(layer.domain[layer.domain.length - 1]);
 

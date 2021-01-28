@@ -12,11 +12,8 @@ import {
 import { themeVal } from '../../../styles/utils/general';
 import { utcDate, bisectByDate } from '../../../utils/utils';
 
-const getClosestDate = (data, date, timeUnit) => {
-  // If we're working with a discrete domain, get the closest value.
-  if (data.length > 2) {
-    return bisectByDate(data, date, d => utcDate(d));
-  } else {
+const getClosestDate = (data, date, timeUnit, isPeriodic) => {
+  if (isPeriodic) {
     // If we only have start and end, round based on time unit.
     if (timeUnit === 'day') {
       const h = getHours(date);
@@ -30,6 +27,9 @@ const getClosestDate = (data, date, timeUnit) => {
         ? startOfMonth(add(date, { months: 1 }))
         : startOfMonth(date);
     }
+  // If we're working with a discrete domain, get the closest value.
+  } else {
+    return bisectByDate(data, date, d => utcDate(d));
   }
 };
 
@@ -72,7 +72,7 @@ export default {
       .style('pointer-events', 'all')
       .on('mouseover', function () {
         const xPos = d3.mouse(this)[0];
-        const date = getClosestDate(ctx.props.xDomain, ctx.xScale.invert(xPos), ctx.props.timeUnit);
+        const date = getClosestDate(ctx.props.xDomain, ctx.xScale.invert(xPos), ctx.props.timeUnit, ctx.props.isPeriodic);
         const xPosSnap = ctx.xScale(date);
         bisectorG.select('.bisector-interact').style('display', '');
         ctx.onInternalAction('bisector.show', { date, x: xPosSnap });
@@ -83,7 +83,7 @@ export default {
       })
       .on('mousemove', function () {
         const xPos = d3.mouse(this)[0];
-        const date = getClosestDate(ctx.props.xDomain, ctx.xScale.invert(xPos), ctx.props.timeUnit);
+        const date = getClosestDate(ctx.props.xDomain, ctx.xScale.invert(xPos), ctx.props.timeUnit, ctx.props.isPeriodic);
         const xPosSnap = ctx.xScale(date);
         const { height } = ctx.getSize();
         bisectorG.select('.bisector-interact')
@@ -95,7 +95,7 @@ export default {
       })
       .on('click', function () {
         const xPos = d3.mouse(this)[0];
-        const date = getClosestDate(ctx.props.xDomain, ctx.xScale.invert(xPos), ctx.props.timeUnit);
+        const date = getClosestDate(ctx.props.xDomain, ctx.xScale.invert(xPos), ctx.props.timeUnit, ctx.props.isPeriodic);
         ctx.props.onAction('date.set', { date });
       });
   },
