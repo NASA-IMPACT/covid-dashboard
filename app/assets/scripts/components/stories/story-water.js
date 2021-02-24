@@ -110,9 +110,9 @@ export default {
       visual: {
         type: 'map-layer',
         data: {
-          layers: ['water-wq-gl-chl'],
-          mapLabel: 'April 1, 2020',
-          date: '2020-04-01T00:00:00Z',
+          layers: ['water-chlorophyll'],
+          mapLabel: 'March 31, 2020',
+          date: '2020-03-31T00:00:00Z',
           spotlight: 'gl',
           bbox: [-84.3695, 45.2013, -81.7492, 41.253]
         }
