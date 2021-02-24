@@ -256,7 +256,7 @@ class CO2LongForm extends React.Component {
                 To track the changes in atmospheric CO<sub>2</sub> during
                 COVID-19 shutdowns, researchers are using observations from the{' '}
                 <a
-                  href='https://oco.jpl.nasa.gov/'
+                  href='https://ocov2.jpl.nasa.gov/'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
@@ -366,7 +366,7 @@ class CO2LongForm extends React.Component {
               <ul>
                 <li>
                   <a
-                    href='https://oco.jpl.nasa.gov/'
+                    href='https://ocov2.jpl.nasa.gov/'
                     target='_blank'
                     rel='noopener noreferrer'
                   >
