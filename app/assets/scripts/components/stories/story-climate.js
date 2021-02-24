@@ -24,7 +24,7 @@ export default {
             >
               nitrogen dioxide
             </Link>{' '}
-            (NO<sub>2</sub>), scientists wondered whether corresponding decreases in carbon dioxide could be observed from satellites and what impact, if any, such decreases could have on future climate projections. These temporary changes are giving scientists an unprecedented opportunity to study how changes in human activities impact the global carbon cycle and to better understand the relative roles natural carbon cycle variations and humans play in driving climate change.
+            , scientists wondered whether corresponding decreases in carbon dioxide could be observed from satellites and what impact, if any, such decreases could have on future climate projections. These temporary changes are giving scientists an unprecedented opportunity to study how changes in human activities impact the global carbon cycle and to better understand the relative roles natural carbon cycle variations and humans play in driving climate change.
           </p>
         </>
       ),
