@@ -120,13 +120,9 @@ const dateMax = (...args) =>
   args.reduce((curr, d) => (curr.getTime() > d.getTime() ? curr : d));
 
 const cogLayers = {
-  no2: {
-    title: <>NO<sub>2</sub> Concentration</>,
-    unit: <>molecules/cm<sup>2</sup></>
-  },
-  co2: {
-    title: <>CO<sub>2</sub> Concentration</>,
-    unit: 'ppm'
+  "modis-vi": {
+    title: <>MODIS Vegetation Indices</>,
+    unit: <></>
   }
 };
 
