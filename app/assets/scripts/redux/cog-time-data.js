@@ -17,7 +17,7 @@ export function fetchCogTimeData (id, timeframe, area) {
     const { start, end, timeUnit } = timeframe;
     const dateFormat = timeUnit === 'month'
       ? 'yyyyMM'
-      : 'yyyy_MM_dd';
+      : 'yyyy.MM.dd';
 
     const interval = timeUnit === 'month'
       ? eachMonthOfInterval({ start, end })
@@ -39,7 +39,8 @@ export function fetchCogTimeData (id, timeframe, area) {
         });
         const v = id === 'co2'
           ? body.mean < 0 ? null : body.mean * 1000000
-          : body.mean < 0 ? null : body.mean;
+          : body.mean < 0 ? body.mean : body.mean;
+
         return {
           date: date.toISOString(),
           value: v
