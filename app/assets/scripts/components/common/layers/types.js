@@ -4,7 +4,7 @@ import bbox from '@turf/bbox';
 const dateFormats = {
   monthOnly: 'MM',
   month: 'yyyyMM',
-  day: 'yyyy_MM_dd'
+  day: 'yyyy.MM.dd'
 };
 
 const prepDateSource = (source, date, timeUnit = 'month') => {
@@ -79,6 +79,7 @@ const toggleOrAddLayer = (mbMap, id, source, type, paint, beforeId) => {
 export const layerTypes = {
   'raster-timeseries': {
     update: (ctx, layerInfo, prevProps) => {
+
       const { mbMap, mbMapComparing, mbMapComparingLoaded, props } = ctx;
       const { id, source, compare, paint } = layerInfo;
       const prevLayerInfo = prevProps.layers.find((l) => l.id === layerInfo.id);
