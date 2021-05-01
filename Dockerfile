@@ -1,6 +1,6 @@
 FROM node:12
 
-RUN yarn install
 COPY . .
+RUN yarn install
 
 CMD yarn serve
