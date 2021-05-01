@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/NASA-IMPACT/covid-dashboard",
   "scripts": {
-    "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo \"export default {\n  environment: 'development'\n};\" > app/assets/scripts/config/local.js",
+    "postinstall": "[ -f app/assets/scripts/config/local.js ] || cp app/assets/scripts/config/local.js.example app/assets/scripts/config/local.js",
     "serve": "NODE_ENV=development gulp serve",
     "build": "NODE_ENV=production gulp",
     "lint": "yarn lint:js && yarn lint:css",

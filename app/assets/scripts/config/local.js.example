@@ -1,0 +1,4 @@
+export default {
+  environment: 'development',
+  api: 'http://localhost:8000/v1'
+};
