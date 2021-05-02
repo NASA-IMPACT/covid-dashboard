@@ -39,19 +39,13 @@ import no2 from './indicator-no2';
 import co2 from './indicator-co2';
 import bm from './indicator-nightlights';
 import population from './indicator-population';
-import waterQuality from './indicator-water-quality';
-import shipping from './indicator-shipping';
-import caco from './indicator-cars-and-construction';
 
 const indicators = [
-  caco,
   co2,
   agriculture,
   bm,
   no2,
-  population,
-  shipping,
-  waterQuality
+  population
 ];
 
 export default indicators;

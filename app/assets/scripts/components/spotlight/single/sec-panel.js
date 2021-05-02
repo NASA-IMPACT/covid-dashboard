@@ -193,14 +193,11 @@ class SecPanel extends React.Component {
     const {
       onPanelChange,
       indicators,
-      indicatorGroups,
       summary
     } = this.props;
 
     // Ensure that we only deal with groups that have data.
-    const groups = (indicatorGroups || []).filter((g) =>
-      g.indicators.some((indId) => indicators.find((ind) => ind.id === indId))
-    );
+    const groups = [];
 
     return (
       <PanelSelf
@@ -276,7 +273,6 @@ SecPanel.propTypes = {
   onPanelChange: T.func,
   summary: T.node,
   indicators: T.array,
-  indicatorGroups: T.array,
   selectedDate: T.object
 };
 

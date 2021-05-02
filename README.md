@@ -72,10 +72,18 @@ or
 ```
 yarn stage
 ```
+
 This will package the app and place all the contents in the `dist` directory.
 The app can then be run by any web server.
 
 **When building the site for deployment provide the base url trough the `BASEURL` environment variable. Omit the leading slash. (E.g. https://example.com)**
+
+Run on AWS:
+
+```bash
+export API_URL=CHANGEME
+yarn deploy
+```
 
 # License
 This project is licensed under **Apache 2**, see the [LICENSE](LICENSE) file for more details.

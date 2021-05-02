@@ -197,15 +197,12 @@ class SpotlightAreasSingle extends React.Component {
   }
 
   render () {
-    const { spotlight, spotlightList, indicatorGroups, summary } = this.props;
+    const { spotlight, spotlightList, summary } = this.props;
 
-    if (spotlight.hasError() || indicatorGroups.hasError()) return <UhOh />;
+    if (spotlight.hasError()) return <UhOh />;
 
     const { indicators } = spotlight.getData();
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
-    const indicatorGroupsData = indicatorGroups.isReady()
-      ? indicatorGroups.getData()
-      : null;
 
     const layers = this.getLayersWithState();
     const activeTimeseriesLayers = this.getActiveTimeseriesLayers();
@@ -289,7 +286,6 @@ class SpotlightAreasSingle extends React.Component {
                   }}
                   summary={summary}
                   indicators={indicators}
-                  indicatorGroups={indicatorGroupsData}
                   selectedDate={
                     activeTimeseriesLayers.length
                       ? this.state.timelineDate
@@ -309,7 +305,6 @@ SpotlightAreasSingle.propTypes = {
   fetchSpotlightSingle: T.func,
   spotlight: T.object,
   spotlightList: T.object,
-  indicatorGroups: T.object,
   summary: T.node,
   match: T.object,
   location: T.object,
@@ -325,8 +320,7 @@ function mapStateToProps (state, props) {
     spotlightList: wrapApiResult(state.spotlight.list),
     spotlight: wrapApiResult(
       getFromState(state, ['spotlight', 'single', spotlightId])
-    ),
-    indicatorGroups: wrapApiResult(state.indicators.groups)
+    )
   };
 }
 

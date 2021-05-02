@@ -1,4 +1,4 @@
 export default {
   environment: 'staging',
-  api: 'https://08dvkxus0a.execute-api.us-east-1.amazonaws.com/v1'
+  api: process.env.API_URL || 'http://localhost:8000/v1'
 };
