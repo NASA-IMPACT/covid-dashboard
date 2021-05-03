@@ -21,13 +21,8 @@ import LayerDataLoader from './layer-data-loader';
 // Views
 import Home from './components/home';
 import GlobalExplore from './components/global';
-import GetStartedHub from './components/getstarted/hub';
 import SpotlightHub from './components/spotlight/hub';
 import SpotlightSingle from './components/spotlight/single';
-import IndicatorsHub from './components/indicators/hub';
-import StoriesHub from './components/stories/hub';
-import StoriesSingle from './components/stories/single';
-import IndicatorsSingle from './components/indicators/single';
 import Sandbox from './components/sandbox';
 import UhOh from './components/uhoh';
 import About from './components/about';
@@ -86,7 +81,6 @@ class Root extends React.Component {
               {this.state.dataReady && (
                 <Switch>
                   <Route exact path='/' component={Home} />
-                  <Route exact path='/getstarted' component={GetStartedHub} />
                   <Route exact path='/explore' component={SpotlightHub} />
                   <Route
                     exact
@@ -97,18 +91,6 @@ class Root extends React.Component {
                     exact
                     path='/explore/:spotlightId'
                     component={SpotlightSingle}
-                  />
-                  <Route exact path='/indicators' component={IndicatorsHub} />
-                  <Route
-                    exact
-                    path='/indicators/:indicatorId'
-                    component={IndicatorsSingle}
-                  />
-                  <Route exact path='/discoveries' component={StoriesHub} />
-                  <Route
-                    exact
-                    path='/discoveries/:storyId/:chapterId/:sectionId?'
-                    component={StoriesSingle}
                   />
                   <Route path='/sandbox' component={Sandbox} />
                   <Route path='/about' component={About} />

@@ -192,7 +192,6 @@ class SecPanel extends React.Component {
   render () {
     const {
       onPanelChange,
-      indicators,
       summary
     } = this.props;
 
@@ -240,23 +239,6 @@ class SecPanel extends React.Component {
                             <p>{group.prose}</p>
                           </Prose>
                         )}
-                        {group.indicators.map((indId) => {
-                          const ind = indicators.find((o) => o.id === indId);
-                          if (!ind) return null;
-
-                          return (
-                            <section key={ind.id}>
-                              <Prose size='small'>
-                                <Heading as='h2' size='medium'>
-                                  {ind.name}
-                                </Heading>
-                                {ind.description && <p>{ind.description}</p>}
-                                {ind.data && this.renderChart(ind)}
-                                {ind.notes && <p>{ind.notes}</p>}
-                              </Prose>
-                            </section>
-                          );
-                        })}
                       </PanelBodyInner>
                     )}
                   />
@@ -272,7 +254,6 @@ class SecPanel extends React.Component {
 SecPanel.propTypes = {
   onPanelChange: T.func,
   summary: T.node,
-  indicators: T.array,
   selectedDate: T.object
 };
 

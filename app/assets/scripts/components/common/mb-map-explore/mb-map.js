@@ -502,10 +502,7 @@ class MbMap extends React.Component {
       ];
     };
 
-    const { indicators } = spotlight;
     const spotlightLayers = getSpotlightLayers(spotlightId);
-
-    const indicatorsToShow = truncateArray(indicators, 3);
     const layersToShow = truncateArray(spotlightLayers, 3);
 
     return (
@@ -531,14 +528,6 @@ class MbMap extends React.Component {
           spotlight.id && (
             <Prose>
               <PopoverDetails>
-                <dt>Indicators</dt>
-                {indicatorsToShow.length ? (
-                  indicatorsToShow.map(({ id, name }) => (
-                    <dd key={id}>{name}</dd>
-                  ))
-                ) : (
-                  <dd>There are no indicators</dd>
-                )}
                 <dt>Layers</dt>
                 {layersToShow.map(({ id, name }) => (
                   <dd key={id}>{name}</dd>

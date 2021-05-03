@@ -1,10 +1,10 @@
 {
-  "name": "covid-dashboard",
+  "name": "earthdata-example-dashboard",
   "version": "1.9.1",
-  "description": "Frontend application for the Covid Dashboard",
+  "description": "Frontend application for the Earthdata Example Dashboard",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NASA-IMPACT/covid-dashboard.git"
+    "url": "https://github.com/NASA-IMPACT/earthdata-example-dashboard.git"
   },
   "author": {
     "name": "Development Seed",
@@ -12,9 +12,9 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/NASA-IMPACT/covid-dashboard/issues"
+    "url": "https://github.com/NASA-IMPACT/earthdata-example-dashboard/issues"
   },
-  "homepage": "https://github.com/NASA-IMPACT/covid-dashboard",
+  "homepage": "https://github.com/NASA-IMPACT/earthdata-example-dashboard",
   "scripts": {
     "postinstall": "[ -f app/assets/scripts/config/local.js ] || cp app/assets/scripts/config/local.js.example app/assets/scripts/config/local.js",
     "serve": "NODE_ENV=development gulp serve",

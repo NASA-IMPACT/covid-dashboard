@@ -45,7 +45,6 @@ import { zeroPad } from '../../utils/format';
 import stories from './stories';
 import { getSpotlightLayers } from '../common/layers';
 import { mod } from '../../utils/utils';
-import indicators from '../indicators';
 
 const CYCLE_TIME = 8000;
 
@@ -466,7 +465,6 @@ class Home extends React.Component {
 
     const { isReady, getData } = this.props.spotlightList;
     const spotlightsCount = isReady() ? getData().length : 0;
-    const indicatorsCount = indicators.filter(i => i.LongForm).length;
 
     return (
       <App pageTitle='Home'>
@@ -487,10 +485,8 @@ class Home extends React.Component {
                   <Prose>
                     <p>
                       As communities around the world have changed their behavior in response
-                      to the spread of COVID-19, NASA satellites have observed changes in the
-                      environment. This <strong>experimental</strong> dashboard reflects a rapid response to
-                      COVID-19 that is currently underway and will continue to evolve as more
-                      data becomes available. <Link to='/about' title='Read more on the about page'>Read more...</Link>
+                      to the spread of global phenomena, NASA satellites have observed changes in the
+                      environment. <Link to='/about' title='Read more on the about page'>Read more...</Link>
                     </p>
                   </Prose>
                 </IntroWelcome>
@@ -499,8 +495,6 @@ class Home extends React.Component {
                   <IntroStatsList>
                     <dt>Areas</dt>
                     <dd><Link to='/explore' title='Explore the areas'>{zeroPad(spotlightsCount)}</Link></dd>
-                    <dt>Indicators</dt>
-                    <dd><Link to='/indicators' title='Learn about the indicators'>{zeroPad(indicatorsCount)}</Link></dd>
                   </IntroStatsList>
                 </IntroStats>
                 <IntroStories>

@@ -144,9 +144,8 @@ class ExpMapSecPanel extends React.Component {
         bodyContent={
           <BodyScroll>
             <SummaryExpandable>
-              <p>As communities around the world have changed their behavior in response to the spread of novel coronavirus, NASA satellites have observed associated changes in the environment.</p>
-              <p>Use the dashboard to interact with real NASA data and investigate how social distancing measures and regional shelter-in-place guidelines have affected Earth’s air, land, and water.</p>
-              <p>Explore global changes in nitrogen dioxide (NO<sub>2</sub>), a common air pollutant, and carbon dioxide (CO<sub>2</sub>), a potent greenhouse gas, on the worldwide map, or see how localized changes in water quality, nightlights, and other economic indicators for specific spotlight areas may have been influenced by changes in our behavior due to COVID-19.</p>
+              <p>As communities around the world have changed their behavior in response to global phenomena, NASA satellites have observed associated changes in the environment.</p>
+              <p>Use the dashboard to interact with real NASA data and investigate how these phenomena affected Earth’s air, land, and water.</p>
               <p>This experimental dashboard will continue to evolve as more data become available.</p>
             </SummaryExpandable>
             <InsightsBlock>

@@ -53,27 +53,20 @@ class SpotlightAreasHub extends React.Component {
               <HubFold>
                 <Prose>
                   <p>
-                    The global trajectory of the novel coronavirus and different
-                    levels of response to its spread have led to regional
+                    The global trajectory of the global phenomena have led to regional
                     changes in air and water quality, night lights, and other
-                    economic indicators.
+                    economic factors.
                   </p>
                   <p>
                     This dashboard highlights {spotlightsCount} spotlight areas around the
                     world, allowing you to explore how a specific location&apos;s
-                    response to COVID-19 outbreaks has influenced local
+                    response to global phenomena has influenced local
                     environmental signals.
                   </p>
                   <p>
                     The {spotlightsCount} spotlight areas were chosen based on their large
                     populations and high level of economic activity, which
-                    reveal significant changes in response to coronavirus
-                    lockdown measures. For instance, larger urban areas where
-                    more people live and work see more significant fluctuations
-                    in NO<sub>2</sub>, while locations with active ports reveal changes in
-                    water quality. This unique vantage point from space allows
-                    researchers to track global and regional changes on our
-                    planet, particularly during times of stress and crisis.
+                    reveal significant changes in response to global phenomena.
                   </p>
                   <p>
                     Click below to visit a spotlight area.

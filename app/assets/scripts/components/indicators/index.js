@@ -34,19 +34,9 @@
  * 3) Add the page to the indicators array
  *
  */
-import agriculture from './indicator-agriculture';
-import no2 from './indicator-no2';
-import co2 from './indicator-co2';
-import bm from './indicator-nightlights';
-import population from './indicator-population';
+// import agriculture from './indicator-agriculture';
 
-const indicators = [
-  co2,
-  agriculture,
-  bm,
-  no2,
-  population
-];
+const indicators = [];
 
 export default indicators;
 

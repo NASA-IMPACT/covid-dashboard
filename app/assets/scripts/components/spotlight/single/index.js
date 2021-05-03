@@ -201,7 +201,6 @@ class SpotlightAreasSingle extends React.Component {
 
     if (spotlight.hasError()) return <UhOh />;
 
-    const { indicators } = spotlight.getData();
     const spotlightAreas = spotlightList.isReady() && spotlightList.getData();
 
     const layers = this.getLayersWithState();
@@ -285,7 +284,6 @@ class SpotlightAreasSingle extends React.Component {
                     this.onPanelChange('panelSec', revealed);
                   }}
                   summary={summary}
-                  indicators={indicators}
                   selectedDate={
                     activeTimeseriesLayers.length
                       ? this.state.timelineDate

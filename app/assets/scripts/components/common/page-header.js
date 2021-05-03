@@ -16,8 +16,6 @@ import media from '../../styles/utils/media-queries';
 import { surfaceElevatedD } from '../../styles/skins';
 import { wrapApiResult } from '../../redux/reduxeed';
 import { headingAlt } from '../../styles/type/heading';
-import indicatorsList from '../indicators';
-import storiesList from '../stories';
 
 import Button from '../../styles/button/button';
 import { CopyField } from './copy-field';
@@ -538,79 +536,6 @@ class PageHeader extends React.Component {
                                 title={`Explore ${ss.label}`}
                               >
                                 {ss.label}
-                              </Button>
-                            </li>
-                          ))}
-                      </PrimeSubmenu>
-                    </PrimeMenuBlock>
-                  </li>
-                  <li>
-                    <Button
-                      element={NavLinkFilter}
-                      to='/indicators'
-                      exact
-                      variation='achromic-plain'
-                      title='View the Indicators page'
-                      useIcon={
-                        isMediumDown ? null : ['chevron-down--small', 'after']
-                      }
-                    >
-                      Indicators
-                    </Button>
-                    <PrimeMenuBlock>
-                      <PrimeMenuBlockTitle>Indicators</PrimeMenuBlockTitle>
-                      <PrimeSubmenu aria-label='submenu'>
-                        {indicatorsList
-                          .filter((d) => !!d.LongForm)
-                          .map((d) => (
-                            <li key={d.id}>
-                              <Button
-                                element={NavLinkFilter}
-                                to={`/indicators/${d.id}`}
-                                variation={
-                                  isMediumDown
-                                    ? 'achromic-plain'
-                                    : 'primary-plain'
-                                }
-                                title='Learn about the indicator'
-                              >
-                                {d.name}
-                              </Button>
-                            </li>
-                          ))}
-                      </PrimeSubmenu>
-                    </PrimeMenuBlock>
-                  </li>
-                  <li>
-                    <Button
-                      element={NavLinkFilter}
-                      to='/discoveries'
-                      exact
-                      variation='achromic-plain'
-                      title='View the Discoveries page'
-                      useIcon={
-                        isMediumDown ? null : ['chevron-down--small', 'after']
-                      }
-                    >
-                      Discoveries
-                    </Button>
-                    <PrimeMenuBlock>
-                      <PrimeMenuBlockTitle>Discoveries</PrimeMenuBlockTitle>
-                      <PrimeSubmenu aria-label='submenu'>
-                        {storiesList
-                          .map((s) => (
-                            <li key={s.id}>
-                              <Button
-                                element={NavLinkFilter}
-                                to={`/discoveries/${s.id}/${s.chapters[0].id}`}
-                                variation={
-                                  isMediumDown
-                                    ? 'achromic-plain'
-                                    : 'primary-plain'
-                                }
-                                title='Learn about this story'
-                              >
-                                {s.name}
                               </Button>
                             </li>
                           ))}

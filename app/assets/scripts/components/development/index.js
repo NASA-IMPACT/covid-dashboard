@@ -73,14 +73,14 @@ export default class Development extends React.Component {
                 </p>
                 <p>This dashboard is built by the <a hreh='https://earthdata.nasa.gov'>NASA Earth Science Data Systems program</a> with help from various science teams and data providers. We are grateful for the many third-party open source projects that we have used.</p>
                 <p>
-                  We welcome your feedback to help improve the Dashboard. To do so you can use the feedback option on this website. For an overview of known issues, please consult the Github <a href='https://github.com/NASA-IMPACT/covid-dashboard/issues'>issue queue</a>.
+                  We welcome your feedback to help improve the Dashboard. To do so you can use the feedback option on this website. For an overview of known issues, please consult the Github <a href='https://github.com/NASA-IMPACT/earthdata-example/issues'>issue queue</a>.
                 </p>
               </Prose>
               <ContributeCta>
                 <Button
                   size='large'
                   element='a'
-                  href='https://github.com/NASA-IMPACT/covid-dashboard'
+                  href='https://github.com/NASA-IMPACT/earthdata-example'
                   variation='primary-raised-dark'
                   useIcon={['brand-github', 'after']}
                 >

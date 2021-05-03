@@ -1,11 +1,30 @@
-# COVID-19 Dashboard
-As communities around the world have changed their behavior in response to the spread of COVID-19, NASA satellites have observed changes in the environment. This experimental dashboard reflects a rapid response to COVID-19 that is currently underway and will continue to evolve as more data becomes available.
+# Earthdata Example Dashboard
 
+The Earthdata Example Dashboard is a stripped-down version of the dashboard developed to support deriving insights on the impact of COVID-19 on different environmental factors. This stripped down version of the site supports exploring Earth Satellite imagery.
+
+Source code: https://github.com/nasa-impact/earthdata-example
 Visit the live site on: https://earthdata.nasa.gov/covid19/
 
 This dashboard is powered by an [open source API](https://github.com/NASA-IMPACT/covid-api/) that is developed in parallel. This API focuses on serving the Cloud Optimized GeoTIFF and time-series indicator data that people can interact with in the dashboard.
 
-![](https://user-images.githubusercontent.com/751330/85645349-7213ac00-b667-11ea-9ab0-52e2b16d416d.jpg)
+## Current Features
+
+* Earthdata (Raster) Visualization
+
+
+## Future Features
+
+To simplify configuration for this example dashboard, a number of key features of the original COVID-19 dashboard have been removed. Specifically:
+
+* [Indicators](https://earthdata.nasa.gov/covid19/indicators)
+* [Discoveries](https://earthdata.nasa.gov/covid19/discoveries)
+
+It is the intent of this repository to add generators and guidance for adding those to a new deployment.
+
+## New features
+
+* Vector data visualization
+* User-provided search parameters produces data visualization
 
 ## Installation and Usage
 The steps below will walk you through setting up your own instance of the project.

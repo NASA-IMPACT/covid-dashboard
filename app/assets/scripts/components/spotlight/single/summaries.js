@@ -135,8 +135,6 @@ const summaries = {
       </p>
       <p>
         Ohio and Michigan, which border the Great Lakes, issued shelter-in-place orders in mid-March. As a result, most people remained at home. With people housebound, the typical drivers of water quality in the Great Lakes region shifted. For instance, idle factories and reduced commuter traffic caused changes in thermal and carbon outputs, which, in turn, could affect the growth of phytoplankton (chlorophyll). Additionally, changes in{' '}
-        <Link to='/indicators/agriculture'>agriculture</Link>,{' '}
-        <Link to='/indicators/shipping'>ship traffic</Link>{' '}
         and even whether sewage is predominantly coming from residential or commercial sources during the shutdown could also affect the amount of nutrients and sediment entering the Great Lakes ecosystem.
       </p>
       <p>

@@ -142,7 +142,7 @@ const PageFooter = props => {
             <dd>
               <Button
                 element='a'
-                href='https://github.com/NASA-IMPACT/covid-dashboard'
+                href='https://github.com/NASA-IMPACT/earthdata-example-dashboard'
                 title='Explore the code'
                 variation='base-plain'
                 size='small'
