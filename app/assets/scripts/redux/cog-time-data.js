@@ -11,7 +11,7 @@ const cogTimeDataActions = makeActions('COG_TIME_DATA', true);
 
 export const invalidateCogTimeData = cogTimeDataActions.invalidate;
 
-export function fetchCogTimeData(id, timeframe, area) {
+export function fetchCogTimeData (id, timeframe, area) {
   return async function (dispatch) {
     dispatch(cogTimeDataActions.request(id));
     const { start, end, timeUnit } = timeframe;
