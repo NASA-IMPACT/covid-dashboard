@@ -32,8 +32,8 @@ export function fetchCogTimeData (id, timeframe, area) {
         const { body } = await fetchJSON(url, {
           method: 'POST',
           body: JSON.stringify({
-            type: id,
-            month: reqDate,
+            datasetId: id,
+            date: reqDate,
             geojson: area
           })
         });
