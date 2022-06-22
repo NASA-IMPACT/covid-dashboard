@@ -6,7 +6,7 @@ module.exports = {
     appDescription: 'Although NASA can&apos;t see the novel #coronavirus from space, we can see how our response to it affects the environment. Explore the data using our new experimental dashboard.',
     gaTrackingCode: 'UA-170089104-1',
     twitterHandle: '@NASAEarthData',
-    mbToken: 'pk.eyJ1IjoiY292aWQtbmFzYSIsImEiOiJja2F6eHBobTUwMzVzMzFueGJuczF6ZzdhIn0.8va1fkyaWgM57_gZ2rBMMg',
+    mbToken: '', // Set via ENV variable. MB_TOKEN
     api: 'https://8ib71h0627.execute-api.us-east-1.amazonaws.com/v1',
     map: {
       center: [0, 0],

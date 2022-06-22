@@ -53,6 +53,9 @@ module.exports = {
 };
 ```
 
+To be able to use the app you will need a [mapbox token](https://www.mapbox.com/).  
+Once obtained add it to the `config/local.js` file, under the `mbToken` key.
+
 #### Starting the app
 
 ```
