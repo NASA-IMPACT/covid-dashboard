@@ -1,4 +1,4 @@
-import { format, sub } from 'date-fns';
+import { format } from 'date-fns';
 
 import config from '../../../config';
 
@@ -8,9 +8,9 @@ export default {
   enabled: true,
   compare: {
     enabled: true,
-    help: 'Compare with baseline (2 previous years)',
+    help: 'Compare with baseline (2015-2019)',
     mapLabel: date => `Baseline vs ${format(date, 'MMM yyyy')}`,
-    compareDate: date => sub(date, { years: 2 }),
+    compareDate: date => date,
     timeUnit: 'monthOnly',
     source: {
       type: 'raster',
