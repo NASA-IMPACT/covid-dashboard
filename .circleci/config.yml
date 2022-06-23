@@ -93,9 +93,7 @@ jobs:
       - aws-cli/install
       - aws-s3/copy:
           arguments: |
-            --recursive \
-            --acl public-read \
-            --cache-control "max-age=86400"
+            --recursive
           from: /workspace/dist
           to: 's3://covid-eo'
   deploy-surge:
@@ -144,9 +142,9 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy-surge:
-          requires:
-            - build
-          filters:
-            branches:
-              only: /stage\/.*/
+      # - deploy-surge:
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         only: /stage\/.*/
