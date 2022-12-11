@@ -123,7 +123,7 @@
     "number-to-words": "^1.2.4",
     "polished": "^3.4.1",
     "prop-types": "^15.7.2",
-    "qs": "^6.9.4",
+    "qs": "^6.9.7",
     "react": "^16.9.0",
     "react-compare-image": "^2.0.4",
     "react-custom-scrollbars": "^4.2.1",
